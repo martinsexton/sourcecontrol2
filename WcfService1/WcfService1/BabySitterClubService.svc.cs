@@ -13,6 +13,7 @@ namespace WcfService1
     {
         private IBabySitterRepository _babySitterRepository;
 
+
         public BabySitterClubService(IBabySitterRepository babySitterRepository)
         {
             _babySitterRepository = babySitterRepository;
@@ -20,8 +21,13 @@ namespace WcfService1
 
         public BabySitter GetBabySittersByEircode(string eircode)
         {
-            //TODO user structure mapper to inject repository here.
-            return new BabySitter();
+            return convertToServiceBabySitter(_babySitterRepository.getBabySitter(eircode));
+        }
+
+        //TODO need structure mapper to do this
+        private BabySitter convertToServiceBabySitter(DomainModel.BabySitter sitter)
+        {
+            return new WcfService1.BabySitter();
         }
     }
 }

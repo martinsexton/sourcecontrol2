@@ -9,8 +9,8 @@ using DomainModel;
 
 namespace Repository.API
 {
-    interface IBabySitterRepository
+    public interface IBabySitterRepository
     {
-        BabySitter getBabySitter(String firstname, String surname);
+        BabySitter getBabySitter(String eircode);
     }
 }
