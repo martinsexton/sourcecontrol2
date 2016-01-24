@@ -8,10 +8,10 @@ using DomainModel;
 
 namespace Repository.Implementation
 {
-    class BabySitterRepository : IBabySitterRepository
+    public class BabySitterRepository : IBabySitterRepository
     {
 
-        public BabySitter getBabySitter(string eircode)
+        DomainModel.API.IBabySitter IBabySitterRepository.getBabySitter(string eircode)
         {
             //TODO hook up data source
             return new BabySitter();
