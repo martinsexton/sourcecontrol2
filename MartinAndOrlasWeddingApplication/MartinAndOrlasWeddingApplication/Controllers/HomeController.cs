@@ -19,10 +19,10 @@ namespace MartinAndOrlasWeddingApplication.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
+        [HttpGet]
         public ActionResult Guests()
         {
             ViewBag.Message = "Wedding Guests";
@@ -31,32 +31,142 @@ namespace MartinAndOrlasWeddingApplication.Controllers
             List<MartinAndOrlasWeddingApplication.Models.Guest> modelGuests = new List<MartinAndOrlasWeddingApplication.Models.Guest>();
             foreach(var g in guests){
                 MartinAndOrlasWeddingApplication.Models.Guest gm = new MartinAndOrlasWeddingApplication.Models.Guest();
+                gm.Id = g.getIdentifier();
                 gm.Email = g.getEmail();
                 gm.Firstname = g.getFirstname();
                 gm.Surname = g.getSurname();
                 gm.Status = g.getStatus();
-
+                gm.MobileNumber = g.getMobile();
+                gm.AttendingGuest = g.getAttendingGuestName();
                 modelGuests.Add(gm);
             }
 
             return View(modelGuests);
         }
 
+        [HttpPost]
+        public ActionResult Guests(string filterbutton)
+        {
+            if (filterbutton.Equals("All"))
+            {
+                return Guests();
+            }
+            else
+            {
+                ViewBag.Message = "Wedding Guests";
+                IGuestService service = new GuestService();
+                List<IGuest> guests = service.RetrieveGuestsByStatus(filterbutton);
+                List<MartinAndOrlasWeddingApplication.Models.Guest> modelGuests = new List<MartinAndOrlasWeddingApplication.Models.Guest>();
+                foreach (var g in guests)
+                {
+                    MartinAndOrlasWeddingApplication.Models.Guest gm = new MartinAndOrlasWeddingApplication.Models.Guest();
+                    gm.Id = g.getIdentifier();
+                    gm.Email = g.getEmail();
+                    gm.Firstname = g.getFirstname();
+                    gm.Surname = g.getSurname();
+                    gm.Status = g.getStatus();
+                    gm.MobileNumber = g.getMobile();
+                    gm.AttendingGuest = g.getAttendingGuestName();
+                    modelGuests.Add(gm);
+                }
+
+                return View(modelGuests);
+            }
+        }
+
         public ActionResult Guest(int id)
         {
-            MartinAndOrlasWeddingApplication.Models.Guest g = GenerateTestGuest();
+            IGuestService service = new GuestService();
+            IGuest retrievedGuest = service.RetrieveGuestByIdentifier(id);
+
+            MartinAndOrlasWeddingApplication.Models.Guest g = new MartinAndOrlasWeddingApplication.Models.Guest();
+            if (retrievedGuest != null)
+            {
+                g.Firstname = retrievedGuest.getFirstname();
+                g.Surname = retrievedGuest.getSurname();
+                g.Email = retrievedGuest.getEmail();
+                g.MobileNumber = retrievedGuest.getMobile();
+                g.Status = retrievedGuest.getStatus();
+                g.AttendingGuest = retrievedGuest.getAttendingGuestName();
+            }
             ViewBag.Message = g.Firstname + " " + g.Surname;
-            return View(GenerateTestGuest());
+            return View(g);
         }
 
+        [HttpGet]
         public ActionResult AddGuest()
         {
-            return View();
+            return View(new MartinAndOrlasWeddingApplication.Models.Guest());
         }
 
+        [HttpPost]
+        public ActionResult AddGuest(MartinAndOrlasWeddingApplication.Models.Guest guest)
+        {
+            if (ModelState.IsValid)
+            {
+                //Save Guest Here
+                IGuestService service = new GuestService();
+                WeddingServices.Implementation.Guest destinationGuest = new WeddingServices.Implementation.Guest();
+                destinationGuest.Firstname = guest.Firstname;
+                destinationGuest.Surname = guest.Surname;
+                destinationGuest.Email = guest.Email;
+                destinationGuest.MobileNumber = guest.MobileNumber;
+                destinationGuest.Status = guest.Status;
+                if (guest.AttendingGuest == null)
+                {
+                    destinationGuest.AttendingGuestName = "";
+                }
+                else
+                {
+                    destinationGuest.AttendingGuestName = guest.AttendingGuest;
+                }
+                
+
+                service.AddGuest(destinationGuest);
+                return View("GuestAddedConfirmation", guest);
+            }
+            else
+            {
+                return View(guest);
+            }
+        }
+
+        [HttpGet]
         public ActionResult Rsvp()
         {
-            return View();
+            return View(new MartinAndOrlasWeddingApplication.Models.Guest());
+        }
+
+        [HttpPost]
+        public ActionResult Rsvp(MartinAndOrlasWeddingApplication.Models.Guest guest)
+        {
+            if (ModelState.IsValid)
+            {
+                //Save Guest Here
+                IGuestService service = new GuestService();
+                WeddingServices.Implementation.Guest destinationGuest = new WeddingServices.Implementation.Guest();
+                destinationGuest.Firstname = guest.Firstname;
+                destinationGuest.Surname = guest.Surname;
+                destinationGuest.Email = guest.Email;
+                destinationGuest.MobileNumber = guest.MobileNumber;
+                destinationGuest.Status = guest.Status;
+                if (guest.AttendingGuest == null)
+                {
+                    destinationGuest.AttendingGuestName = "";
+                }
+                else
+                {
+                    destinationGuest.AttendingGuestName = guest.AttendingGuest;
+                }
+
+                service.AddGuest(destinationGuest);
+
+                return View("GuestAddedConfirmation", guest);
+            }
+            else
+            {
+                return View(guest);
+            }
         }
 
         public ActionResult Event()

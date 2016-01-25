@@ -16,6 +16,7 @@ namespace WeddingServices.Implementation
         public string Surname { get; set; }
         public string MobileNumber { get; set; }
         public string Status { get; set; }
+        public string AttendingGuestName { get; set; }
 
         public string getFirstname()
         {
@@ -35,6 +36,21 @@ namespace WeddingServices.Implementation
         public string getEmail()
         {
             return Email;
+        }
+
+        public string getMobile()
+        {
+            return MobileNumber;
+        }
+
+        public int getIdentifier()
+        {
+            return Id;
+        }
+
+        public string getAttendingGuestName()
+        {
+            return AttendingGuestName;
         }
     }
 }

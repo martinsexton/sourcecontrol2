@@ -29,11 +29,17 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script type="text/javascript">
         $(document).ready(function () {
-        window.setTimeout(function() {
-            $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
-                $(this).remove();
+            window.setTimeout(function() {
+                $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
+                    $(this).remove();
+                });
+            }, 2000);
+
+            $('input[type="checkbox"]').click(function () {
+                if ($(this).attr("value") == "IncludeGuest") {
+                    $(".collapse").toggle();
+                }
             });
-        }, 2000);
         });
     </script>
     @RenderSection("scripts", required: false)

@@ -9,5 +9,8 @@ namespace WeddingServices.Interface
     public interface IGuestService
     {
         List<IGuest> RetrieveAllGuests();
+        List<IGuest> RetrieveGuestsByStatus(string status);
+        void AddGuest(IGuest guest);
+        IGuest RetrieveGuestByIdentifier(int id);
     }
 }

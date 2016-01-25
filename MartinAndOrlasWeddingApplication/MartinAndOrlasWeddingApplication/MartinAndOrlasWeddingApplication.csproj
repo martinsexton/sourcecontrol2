@@ -160,6 +160,7 @@
     <Content Include="Views\Home\AddGuest.cshtml" />
     <Content Include="Views\Home\Rsvp.cshtml" />
     <Content Include="Views\Home\Event.cshtml" />
+    <Content Include="Views\Home\GuestAddedConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
