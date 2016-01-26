@@ -38,6 +38,7 @@ namespace MartinAndOrlasWeddingApplication.Controllers
                 gm.Status = g.getStatus();
                 gm.MobileNumber = g.getMobile();
                 gm.AttendingGuest = g.getAttendingGuestName();
+                gm.ReferenceIdentifier = g.getReferenceIdentifier();
                 modelGuests.Add(gm);
             }
 
@@ -67,6 +68,7 @@ namespace MartinAndOrlasWeddingApplication.Controllers
                     gm.Status = g.getStatus();
                     gm.MobileNumber = g.getMobile();
                     gm.AttendingGuest = g.getAttendingGuestName();
+                    gm.ReferenceIdentifier = g.getReferenceIdentifier();
                     modelGuests.Add(gm);
                 }
 
@@ -88,6 +90,7 @@ namespace MartinAndOrlasWeddingApplication.Controllers
                 g.MobileNumber = retrievedGuest.getMobile();
                 g.Status = retrievedGuest.getStatus();
                 g.AttendingGuest = retrievedGuest.getAttendingGuestName();
+                g.ReferenceIdentifier = retrievedGuest.getReferenceIdentifier();
             }
             ViewBag.Message = g.Firstname + " " + g.Surname;
             return View(g);
@@ -97,6 +100,11 @@ namespace MartinAndOrlasWeddingApplication.Controllers
         public ActionResult AddGuest()
         {
             return View(new MartinAndOrlasWeddingApplication.Models.Guest());
+        }
+
+        public ActionResult RetrieveRelatedGuest(string firstname, string surname)
+        {
+            return Json(new { Name = "John" },JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

@@ -40,6 +40,23 @@
                     $(".collapse").toggle();
                 }
             });
+
+            $('#IncludeGuestCheckbox').hide();
+
+            $('#Status').change(function () {
+                var value = $(this).val();
+                if (value == 'Accepted') {
+                    $('#IncludeGuestCheckbox').show();
+                } else {
+                    $('#IncludeGuestCheckbox').hide();
+                }
+            });
+
+            $('#IncludeGuestCheckbox :checkbox').on("change", function () {
+                if ($(this).prop("checked")) {
+                    $.get("/Home/RetrieveRelatedGuest?firstname=" + $('#Firstname').val() + "&surname=" + $('#Surname').val()).done(function (guest) { $("#AttendingGuest").val(guest.Name); });
+                }
+            });
         });
     </script>
     @RenderSection("scripts", required: false)

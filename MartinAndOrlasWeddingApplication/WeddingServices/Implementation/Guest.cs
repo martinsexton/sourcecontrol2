@@ -17,6 +17,7 @@ namespace WeddingServices.Implementation
         public string MobileNumber { get; set; }
         public string Status { get; set; }
         public string AttendingGuestName { get; set; }
+        public int ReferenceIdentifier { get; set; }
 
         public string getFirstname()
         {
@@ -51,6 +52,11 @@ namespace WeddingServices.Implementation
         public string getAttendingGuestName()
         {
             return AttendingGuestName;
+        }
+
+        public int getReferenceIdentifier()
+        {
+            return ReferenceIdentifier;
         }
     }
 }

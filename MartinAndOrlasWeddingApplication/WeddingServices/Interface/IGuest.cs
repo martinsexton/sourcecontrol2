@@ -15,5 +15,6 @@ namespace WeddingServices.Interface
         string getMobile();
         int getIdentifier();
         string getAttendingGuestName();
+        int getReferenceIdentifier();
     }
 }

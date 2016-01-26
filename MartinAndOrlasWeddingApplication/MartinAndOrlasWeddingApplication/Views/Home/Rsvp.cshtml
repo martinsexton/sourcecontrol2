@@ -47,7 +47,7 @@
                             @Html.DropDownListFor(model => model.Status, listItems, "-- Select Status --")
                             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                         </div>
-                        <div class="checkbox">
+                        <div class="checkbox" id="IncludeGuestCheckbox">
                             <label><input type="checkbox" value="IncludeGuest">Include Guest</label>
                         </div>
                         <hr/>

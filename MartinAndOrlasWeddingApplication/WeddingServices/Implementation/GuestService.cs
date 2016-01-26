@@ -21,7 +21,7 @@ namespace WeddingServices.Implementation
         IGuest IGuestService.RetrieveGuestByIdentifier(int id)
         {
             Guest g = null;
-            string query = "SELECT g.Id, g.firstname, g.surname, g.attending_guest_name, g.email, g.mobile_number, g.status FROM Guest AS g WHERE g.Id = @guest_id";
+            string query = "SELECT g.Id, g.firstname, g.surname, g.attending_guest_name, g.email, g.mobile_number, g.status, g.reference_identifier FROM Guest AS g WHERE g.Id = @guest_id";
 
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
@@ -47,6 +47,7 @@ namespace WeddingServices.Implementation
                         g.Email = convertNullFieldToEmptyString(reader, 4);
                         g.MobileNumber = convertNullFieldToEmptyString(reader, 5);
                         g.Status = reader.GetString(6);
+                        g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
                     }
                 }
             }
@@ -55,18 +56,20 @@ namespace WeddingServices.Implementation
         }
 
         void IGuestService.AddGuest(IGuest guest){
-            string query = "INSERT INTO Guest(firstname,surname,email,mobile_number,status,attending_guest_name) " +
-                            "VALUES(@firstname,@surname,@email,@mobile,@status,@guest_name)";
+            string query = "INSERT INTO Guest(firstname,surname,email,mobile_number,status,attending_guest_name,reference_identifier) " +
+                            "VALUES(@firstname,@surname,@email,@mobile,@status,@guest_name,@reference_identifier)";
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
                 using (SqlCommand cmd = new SqlCommand(query,conn))
                 {
-                    cmd.Parameters.Add("@firstname", SqlDbType.VarChar, 20).Value = guest.getFirstname();
+                    cmd.Parameters.Add("@firstname", SqlDbType.VarChar, 20).Value = guest.getFirstname().Trim();
                     cmd.Parameters.Add("@surname", SqlDbType.VarChar, 20).Value = guest.getSurname();
                     cmd.Parameters.Add("@email", SqlDbType.VarChar, 100).Value = guest.getEmail();
                     cmd.Parameters.Add("@mobile", SqlDbType.VarChar, 50).Value = guest.getMobile();
                     cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = guest.getStatus();
                     cmd.Parameters.Add("@guest_name", SqlDbType.VarChar, 100).Value = guest.getAttendingGuestName();
+                    cmd.Parameters.Add("@reference_identifier", SqlDbType.Int).Value = getNextGuestReferenceNumber();
+
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -90,6 +93,7 @@ namespace WeddingServices.Implementation
                         ,g.mobile_number
                         ,g.status
                         ,g.attending_guest_name
+                        ,g.reference_identifier
                     FROM Guest AS g;";
 
                 conn.Open();
@@ -106,6 +110,7 @@ namespace WeddingServices.Implementation
                         g.MobileNumber = convertNullFieldToEmptyString(reader, 4);
                         g.Status = convertNullFieldToEmptyString(reader, 5);
                         g.AttendingGuestName = convertNullFieldToEmptyString(reader, 6);
+                        g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
 
                         guests.Add(g);
                     }
@@ -129,6 +134,7 @@ namespace WeddingServices.Implementation
                         ,g.mobile_number
                         ,g.status
                         ,g.attending_guest_name
+                        ,g.reference_identifier
                     FROM Guest AS g WHERE g.status = @status;";
 
                 conn.Open();
@@ -150,6 +156,7 @@ namespace WeddingServices.Implementation
                         g.MobileNumber = convertNullFieldToEmptyString(reader, 4);
                         g.Status = convertNullFieldToEmptyString(reader, 5);
                         g.AttendingGuestName = convertNullFieldToEmptyString(reader, 6);
+                        g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
 
                         guests.Add(g);
                     }
@@ -161,6 +168,27 @@ namespace WeddingServices.Implementation
         private string convertNullFieldToEmptyString(IDataReader reader, int index)
         {
             return reader.IsDBNull(index) ? null : reader.GetString(index);
+        }
+
+        private int getNextGuestReferenceNumber()
+        {
+            string query = "SELECT Max(reference_identifier) FROM Guest";
+            int maxReferenceNumber = 0;
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        maxReferenceNumber = reader.GetInt32(0);
+                        break;
+                    }
+                }
+            }
+            return ++maxReferenceNumber;
         }
     }
 }
