@@ -11,8 +11,8 @@ namespace WeddingServices.Implementation
 {
     public class GuestService : IGuestService
     {
-        private const string CONNECTION_STRING = "Server=tcp:martinandorlaweddingserver.database.windows.net,1433;Database=Wedding;User ID=sexton.martin@martinandorlaweddingserver;Password=Sydney19+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        //private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
+        //private const string CONNECTION_STRING = "Server=tcp:martinandorlaweddingserver.database.windows.net,1433;Database=Wedding;User ID=sexton.martin@martinandorlaweddingserver;Password=Sydney19+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
         public GuestService()
         {
 
@@ -41,12 +41,12 @@ namespace WeddingServices.Implementation
                     {
                         g = new Guest();
                         g.Id = (int)reader[0];
-                        g.Firstname = (string)reader[1];
-                        g.Surname = (string)reader[2];
-                        g.AttendingGuestName = (string)reader[3];
-                        g.Email = (string)reader[4];
-                        g.MobileNumber = (string)reader[5];
-                        g.Status = (string)reader[6];
+                        g.Firstname = reader.GetString(1);
+                        g.Surname = reader.GetString(2);
+                        g.AttendingGuestName = convertNullFieldToEmptyString(reader, 3);
+                        g.Email = convertNullFieldToEmptyString(reader, 4);
+                        g.MobileNumber = convertNullFieldToEmptyString(reader, 5);
+                        g.Status = reader.GetString(6);
                     }
                 }
             }
@@ -102,10 +102,10 @@ namespace WeddingServices.Implementation
                         g.Id = reader.GetInt32(0);
                         g.Firstname = reader.GetString(1);
                         g.Surname = reader.GetString(2);
-                        g.Email = reader.GetString(3);
-                        g.MobileNumber = reader.GetString(4);
-                        g.Status = reader.GetString(5);
-                        g.AttendingGuestName = reader.GetString(6);
+                        g.Email = convertNullFieldToEmptyString(reader, 3);
+                        g.MobileNumber = convertNullFieldToEmptyString(reader, 4);
+                        g.Status = convertNullFieldToEmptyString(reader, 5);
+                        g.AttendingGuestName = convertNullFieldToEmptyString(reader, 6);
 
                         guests.Add(g);
                     }
@@ -146,16 +146,21 @@ namespace WeddingServices.Implementation
                         g.Id = reader.GetInt32(0);
                         g.Firstname = reader.GetString(1);
                         g.Surname = reader.GetString(2);
-                        g.Email = reader.GetString(3);
-                        g.MobileNumber = reader.GetString(4);
-                        g.Status = reader.GetString(5);
-                        g.AttendingGuestName = reader.GetString(6);
+                        g.Email = convertNullFieldToEmptyString(reader, 3);
+                        g.MobileNumber = convertNullFieldToEmptyString(reader, 4);
+                        g.Status = convertNullFieldToEmptyString(reader, 5);
+                        g.AttendingGuestName = convertNullFieldToEmptyString(reader, 6);
 
                         guests.Add(g);
                     }
                 }
             }
             return guests;
+        }
+
+        private string convertNullFieldToEmptyString(IDataReader reader, int index)
+        {
+            return reader.IsDBNull(index) ? null : reader.GetString(index);
         }
     }
 }

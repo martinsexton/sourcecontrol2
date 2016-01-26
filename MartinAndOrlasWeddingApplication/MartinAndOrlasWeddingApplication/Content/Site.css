@@ -74,3 +74,25 @@ textarea {
   background-color: #eeeeee;
   height: 300px;
 }
+
+table.table-fixedheader {
+    width:100%;
+}
+
+table.table-fixedheader, table.table-fixedheader>thead,
+table.table-fixedheader>tbody, table.table-fixedheader>thead>tr,
+table.table-fixedheader>tbody>tr, table.table-fixedheader>thead>tr>th, table.table-fixedheader>tbody>td{
+    display:block;
+}
+
+table.table-fixedheader>thead>tr:after,table.table-fixedheader>tbody>tr:after {
+    content: ' ';
+    display:block;
+    visibility:hidden;
+    clear:both;
+}
+
+table.table-fixedheader tbody {
+    overflow-y:scroll;
+    height:200px;
+}
