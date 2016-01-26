@@ -12,7 +12,7 @@ namespace WeddingServices.Interface
         List<IGuest> RetrieveGuestsByStatus(string status);
         IGuest RetrieveGuestByIdentifier(int id);
         IGuest RetrieveGuestByName(string firstname, string surname);
-        IGuest RetrievePartner(int id);
+        IGuest RetrievePartner(int referenceIdentifier);
         void AddGuest(IGuest guest);
         
     }
