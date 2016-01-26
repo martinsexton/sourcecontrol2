@@ -104,7 +104,18 @@ namespace MartinAndOrlasWeddingApplication.Controllers
 
         public ActionResult RetrieveRelatedGuest(string firstname, string surname)
         {
-            return Json(new { Name = "John" },JsonRequestBehavior.AllowGet);
+            IGuestService service = new GuestService();
+            IGuest retrievedGuest = service.RetrieveGuestByName(firstname, surname);
+
+            if (retrievedGuest != null)
+            {
+                IGuest partner = service.RetrievePartner(retrievedGuest.getReferenceIdentifier());
+                return Json(new { Name = partner.getFirstname() + " " + partner.getSurname() }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { Name = "" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]

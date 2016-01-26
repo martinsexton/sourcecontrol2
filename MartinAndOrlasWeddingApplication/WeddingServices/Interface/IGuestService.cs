@@ -10,7 +10,10 @@ namespace WeddingServices.Interface
     {
         List<IGuest> RetrieveAllGuests();
         List<IGuest> RetrieveGuestsByStatus(string status);
-        void AddGuest(IGuest guest);
         IGuest RetrieveGuestByIdentifier(int id);
+        IGuest RetrieveGuestByName(string firstname, string surname);
+        IGuest RetrievePartner(int id);
+        void AddGuest(IGuest guest);
+        
     }
 }

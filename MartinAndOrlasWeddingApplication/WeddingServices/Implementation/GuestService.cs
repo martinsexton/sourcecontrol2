@@ -18,10 +18,10 @@ namespace WeddingServices.Implementation
 
         }
 
-        IGuest IGuestService.RetrieveGuestByIdentifier(int id)
+        IGuest IGuestService.RetrieveGuestByName(string firstname, string surname)
         {
             Guest g = null;
-            string query = "SELECT g.Id, g.firstname, g.surname, g.attending_guest_name, g.email, g.mobile_number, g.status, g.reference_identifier FROM Guest AS g WHERE g.Id = @guest_id";
+            string query = "SELECT g.Id, g.firstname, g.surname, g.attending_guest_name, g.email, g.mobile_number, g.status, g.reference_identifier FROM Guest AS g WHERE g.firstname = @firstname and g.surname = @surname";
 
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
@@ -29,11 +29,16 @@ namespace WeddingServices.Implementation
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    SqlParameter param = new SqlParameter();
-                    param.ParameterName = "@guest_id";
-                    param.Value = id;
+                    SqlParameter param1 = new SqlParameter();
+                    param1.ParameterName = "@firstname";
+                    param1.Value = firstname;
 
-                    cmd.Parameters.Add(param);
+                    SqlParameter param2 = new SqlParameter();
+                    param2.ParameterName = "@surname";
+                    param2.Value = surname;
+
+                    cmd.Parameters.Add(param1);
+                    cmd.Parameters.Add(param2);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -52,7 +57,35 @@ namespace WeddingServices.Implementation
                 }
             }
 
-            return g;
+            return g;        
+        }
+
+        IGuest IGuestService.RetrievePartner(int id)
+        {
+            int partnerReference = 0;
+            string query = "select * from relationship where guest_identifier_a = @reference_identifier";
+
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.Add("@reference_identifier", SqlDbType.Int).Value = id;
+                    conn.Open();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        partnerReference = reader.GetInt32(1);
+                    }
+                }
+            }
+            IGuest partner = this.getGuestByReferenceIdentifier(partnerReference);
+            return partner;
+        }
+
+        IGuest IGuestService.RetrieveGuestByIdentifier(int id)
+        {
+            return getGuestByIdentifier(id);
         }
 
         void IGuestService.AddGuest(IGuest guest){
@@ -168,6 +201,80 @@ namespace WeddingServices.Implementation
         private string convertNullFieldToEmptyString(IDataReader reader, int index)
         {
             return reader.IsDBNull(index) ? null : reader.GetString(index);
+        }
+
+        private IGuest getGuestByIdentifier(int id)
+        {
+            Guest g = null;
+            string query = "SELECT g.Id, g.firstname, g.surname, g.attending_guest_name, g.email, g.mobile_number, g.status, g.reference_identifier FROM Guest AS g WHERE g.Id = @guest_id";
+
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    SqlParameter param = new SqlParameter();
+                    param.ParameterName = "@guest_id";
+                    param.Value = id;
+
+                    cmd.Parameters.Add(param);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        g = new Guest();
+                        g.Id = (int)reader[0];
+                        g.Firstname = reader.GetString(1);
+                        g.Surname = reader.GetString(2);
+                        g.AttendingGuestName = convertNullFieldToEmptyString(reader, 3);
+                        g.Email = convertNullFieldToEmptyString(reader, 4);
+                        g.MobileNumber = convertNullFieldToEmptyString(reader, 5);
+                        g.Status = reader.GetString(6);
+                        g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
+                    }
+                }
+            }
+
+            return g;
+        }
+
+        private IGuest getGuestByReferenceIdentifier(int id)
+        {
+            Guest g = null;
+            string query = "SELECT g.Id, g.firstname, g.surname, g.attending_guest_name, g.email, g.mobile_number, g.status, g.reference_identifier FROM Guest AS g WHERE g.reference_identifier = @reference_identifier";
+
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    SqlParameter param = new SqlParameter();
+                    param.ParameterName = "@reference_identifier";
+                    param.Value = id;
+
+                    cmd.Parameters.Add(param);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        g = new Guest();
+                        g.Id = (int)reader[0];
+                        g.Firstname = reader.GetString(1);
+                        g.Surname = reader.GetString(2);
+                        g.AttendingGuestName = convertNullFieldToEmptyString(reader, 3);
+                        g.Email = convertNullFieldToEmptyString(reader, 4);
+                        g.MobileNumber = convertNullFieldToEmptyString(reader, 5);
+                        g.Status = reader.GetString(6);
+                        g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
+                    }
+                }
+            }
+
+            return g;
         }
 
         private int getNextGuestReferenceNumber()
