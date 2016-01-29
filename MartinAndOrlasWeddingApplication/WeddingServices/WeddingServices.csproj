@@ -41,8 +41,10 @@
   <ItemGroup>
     <Compile Include="Implementation\Guest.cs" />
     <Compile Include="Implementation\GuestService.cs" />
+    <Compile Include="Implementation\Relationship.cs" />
     <Compile Include="Interface\IGuest.cs" />
     <Compile Include="Interface\IGuestService.cs" />
+    <Compile Include="Interface\IRelationship.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -11,8 +11,8 @@ namespace WeddingServices.Implementation
 {
     public class GuestService : IGuestService
     {
-        //private const string CONNECTION_STRING = "Server=tcp:martinandorlaweddingserver.database.windows.net,1433;Database=Wedding;User ID=sexton.martin@martinandorlaweddingserver;Password=Sydney19+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
+        private const string CONNECTION_STRING = "Server=tcp:martinandorlaweddingserver.database.windows.net,1433;Database=Wedding;User ID=sexton.martin@martinandorlaweddingserver;Password=Sydney19+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        //private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
         public GuestService()
         {
 
@@ -20,67 +20,7 @@ namespace WeddingServices.Implementation
 
         IGuest IGuestService.RetrieveGuestByName(string firstname, string surname)
         {
-            Guest g = null;
-            string query = "SELECT g.Id, g.firstname, g.surname, g.attending_guest_name, g.email, g.mobile_number, g.status, g.reference_identifier FROM Guest AS g WHERE g.firstname = @firstname and g.surname = @surname";
-
-            using (var conn = new SqlConnection(CONNECTION_STRING))
-            {
-                conn.Open();
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    SqlParameter param1 = new SqlParameter();
-                    param1.ParameterName = "@firstname";
-                    param1.Value = firstname;
-
-                    SqlParameter param2 = new SqlParameter();
-                    param2.ParameterName = "@surname";
-                    param2.Value = surname;
-
-                    cmd.Parameters.Add(param1);
-                    cmd.Parameters.Add(param2);
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        g = new Guest();
-                        g.Id = (int)reader[0];
-                        g.Firstname = reader.GetString(1);
-                        g.Surname = reader.GetString(2);
-                        g.AttendingGuestName = convertNullFieldToEmptyString(reader, 3);
-                        g.Email = convertNullFieldToEmptyString(reader, 4);
-                        g.MobileNumber = convertNullFieldToEmptyString(reader, 5);
-                        g.Status = reader.GetString(6);
-                        g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
-                    }
-                }
-            }
-
-            return g;        
-        }
-
-        IGuest IGuestService.RetrievePartner(int referenceIdentifier)
-        {
-            int partnerReference = 0;
-            string query = "select * from relationship where guest_identifier_a = @reference_identifier";
-
-            using (var conn = new SqlConnection(CONNECTION_STRING))
-            {
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.Add("@reference_identifier", SqlDbType.Int).Value = referenceIdentifier;
-                    conn.Open();
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        partnerReference = reader.GetInt32(1);
-                    }
-                }
-            }
-            IGuest partner = this.getGuestByReferenceIdentifier(partnerReference);
-            return partner;
+            return getGuestByName(firstname, surname);
         }
 
         IGuest IGuestService.RetrieveGuestByIdentifier(int id)
@@ -102,8 +42,8 @@ namespace WeddingServices.Implementation
                         ,g.email
                         ,g.mobile_number
                         ,g.status
-                        ,g.attending_guest_name
                         ,g.reference_identifier
+                        ,g.nick_name
                     FROM Guest AS g;";
 
                 conn.Open();
@@ -119,8 +59,8 @@ namespace WeddingServices.Implementation
                         g.Email = convertNullFieldToEmptyString(reader, 3);
                         g.MobileNumber = convertNullFieldToEmptyString(reader, 4);
                         g.Status = convertNullFieldToEmptyString(reader, 5);
-                        g.AttendingGuestName = convertNullFieldToEmptyString(reader, 6);
                         g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
+                        g.Nickname = convertNullFieldToEmptyString(reader, 7);
 
                         guests.Add(g);
                     }
@@ -143,8 +83,8 @@ namespace WeddingServices.Implementation
                         ,g.email
                         ,g.mobile_number
                         ,g.status
-                        ,g.attending_guest_name
                         ,g.reference_identifier
+                        ,g.nick_name
                     FROM Guest AS g WHERE g.status = @status;";
 
                 conn.Open();
@@ -165,8 +105,8 @@ namespace WeddingServices.Implementation
                         g.Email = convertNullFieldToEmptyString(reader, 3);
                         g.MobileNumber = convertNullFieldToEmptyString(reader, 4);
                         g.Status = convertNullFieldToEmptyString(reader, 5);
-                        g.AttendingGuestName = convertNullFieldToEmptyString(reader, 6);
                         g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
+                        g.Nickname = convertNullFieldToEmptyString(reader, 7);
 
                         guests.Add(g);
                     }
@@ -177,8 +117,8 @@ namespace WeddingServices.Implementation
 
         void IGuestService.AddGuest(IGuest guest)
         {
-            string query = "INSERT INTO Guest(firstname,surname,email,mobile_number,status,attending_guest_name,reference_identifier) " +
-                            "VALUES(@firstname,@surname,@email,@mobile,@status,@guest_name,@reference_identifier)";
+            string query = "INSERT INTO Guest(firstname,surname,email,mobile_number,status,reference_identifier) " +
+                            "VALUES(@firstname,@surname,@email,@mobile,@status,@reference_identifier)";
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -188,9 +128,38 @@ namespace WeddingServices.Implementation
                     cmd.Parameters.Add("@email", SqlDbType.VarChar, 100).Value = guest.getEmail();
                     cmd.Parameters.Add("@mobile", SqlDbType.VarChar, 50).Value = guest.getMobile();
                     cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = guest.getStatus();
-                    cmd.Parameters.Add("@guest_name", SqlDbType.VarChar, 100).Value = guest.getAttendingGuestName();
                     cmd.Parameters.Add("@reference_identifier", SqlDbType.Int).Value = getNextGuestReferenceNumber();
 
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+        }
+
+        void IGuestService.UpdateGuest(IGuest guest)
+        {
+            string query = "UPDATE Guest set status=@status WHERE id = @id";
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = guest.getStatus();
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = guest.getIdentifier();
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+
+            string updateAcceptedGuestQuery = "UPDATE Guest set status=@status WHERE Id=@Id";
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                using (SqlCommand cmd = new SqlCommand(updateAcceptedGuestQuery, conn))
+                {
+                    cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = guest.getRelatedGuest().getStatus();
+                    cmd.Parameters.Add("@Id", SqlDbType.Int).Value = guest.getRelatedGuest().getIdentifier();
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -214,18 +183,78 @@ namespace WeddingServices.Implementation
             return getGuestByX("reference_identifier", id);
         }
 
-        private IGuest getGuestByX(string filterColumn, int identifier)
+        private IGuest getGuestByName(string firstname, string surname)
         {
             Guest g = null;
-            string query = "SELECT g.Id, g.firstname, g.surname, g.attending_guest_name, g.email, g.mobile_number, g.status, g.reference_identifier " +
-                            "FROM Guest AS g WHERE g."+filterColumn+" = @" + filterColumn;
 
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
                 conn.Open();
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("RetrieveGuestInformationByName", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter param = new SqlParameter();
+                    param.ParameterName = "@firstname";
+                    param.Value = firstname;
+
+                    SqlParameter param2 = new SqlParameter();
+                    param2.ParameterName = "@surname";
+                    param2.Value = surname;
+
+                    cmd.Parameters.Add(param);
+                    cmd.Parameters.Add(param2);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        g = new Guest();
+                        g.Id = reader.GetInt32(reader.GetOrdinal("id"));
+                        g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
+                        g.Firstname = reader.GetString(reader.GetOrdinal("firstname"));
+                        g.Surname = reader.GetString(reader.GetOrdinal("surname"));
+                        g.Nickname = convertNullFieldToEmptyString(reader, reader.GetOrdinal("nick_name"));
+                        g.Email = convertNullFieldToEmptyString(reader, reader.GetOrdinal("email"));
+                        g.MobileNumber = convertNullFieldToEmptyString(reader, reader.GetOrdinal("mobile_number"));
+                        g.Status = reader.GetString(reader.GetOrdinal("status"));
+
+                        //If a related guest is identifier then build up model accordingly
+                        if (!reader.IsDBNull(reader.GetOrdinal("related_guest_id")))
+                        {
+                            Relationship relationship = new Relationship();
+                            Guest relatedGuest = new Guest();
+
+                            relatedGuest.Id = reader.GetInt32(reader.GetOrdinal("related_guest_id"));
+                            relatedGuest.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("related_guest_reference_identifier"));
+                            relatedGuest.Firstname = reader.GetString(reader.GetOrdinal("related_guest_firstname"));
+                            relatedGuest.Surname = reader.GetString(reader.GetOrdinal("related_guest_surname"));
+                            relatedGuest.Nickname = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_nick_name"));
+                            relatedGuest.Email = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_email"));
+                            relatedGuest.MobileNumber = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_mobile_number"));
+                            relatedGuest.Status = reader.GetString(reader.GetOrdinal("related_guest_status"));
+
+                            relationship.RelatedGuest = relatedGuest;
+                            g.Relationship = relationship;
+                        }
+                    }
+                }
+            }
+
+            return g;
+        }
+
+        private IGuest getGuestByX(string filterColumn, int identifier)
+        {
+            Guest g = null;
+
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand("RetrieveGuestInformation", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     SqlParameter param = new SqlParameter();
                     param.ParameterName = "@" + filterColumn;
                     param.Value = identifier;
@@ -237,14 +266,32 @@ namespace WeddingServices.Implementation
                     while (reader.Read())
                     {
                         g = new Guest();
-                        g.Id = (int)reader[0];
-                        g.Firstname = reader.GetString(1);
-                        g.Surname = reader.GetString(2);
-                        g.AttendingGuestName = convertNullFieldToEmptyString(reader, 3);
-                        g.Email = convertNullFieldToEmptyString(reader, 4);
-                        g.MobileNumber = convertNullFieldToEmptyString(reader, 5);
-                        g.Status = reader.GetString(6);
+                        g.Id = reader.GetInt32(reader.GetOrdinal("id"));
                         g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
+                        g.Firstname = reader.GetString(reader.GetOrdinal("firstname"));
+                        g.Surname = reader.GetString(reader.GetOrdinal("surname"));
+                        g.Nickname = convertNullFieldToEmptyString(reader, reader.GetOrdinal("nick_name"));
+                        g.Email = convertNullFieldToEmptyString(reader, reader.GetOrdinal("email"));
+                        g.MobileNumber = convertNullFieldToEmptyString(reader, reader.GetOrdinal("mobile_number"));
+                        g.Status = reader.GetString(reader.GetOrdinal("status"));
+
+                        //If a related guest is identifier then build up model accordingly
+                        if(!reader.IsDBNull(reader.GetOrdinal("related_guest_id"))){
+                            Relationship relationship = new Relationship();
+                            Guest relatedGuest = new Guest();
+
+                            relatedGuest.Id = reader.GetInt32(reader.GetOrdinal("related_guest_id"));
+                            relatedGuest.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("related_guest_reference_identifier"));
+                            relatedGuest.Firstname = reader.GetString(reader.GetOrdinal("related_guest_firstname"));
+                            relatedGuest.Surname = reader.GetString(reader.GetOrdinal("related_guest_surname"));
+                            relatedGuest.Nickname = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_nick_name"));
+                            relatedGuest.Email = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_email"));
+                            relatedGuest.MobileNumber = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_mobile_number"));
+                            relatedGuest.Status = reader.GetString(reader.GetOrdinal("related_guest_status"));
+
+                            relationship.RelatedGuest = relatedGuest;
+                            g.Relationship = relationship;
+                        }
                     }
                 }
             }

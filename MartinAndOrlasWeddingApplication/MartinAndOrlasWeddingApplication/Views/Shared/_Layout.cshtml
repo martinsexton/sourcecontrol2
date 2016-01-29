@@ -17,6 +17,7 @@
                     <li>@Html.ActionLink("Rsvp", "Rsvp", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Guests", "Guests", "Home")</li>
+                    <li><a href="@Url.Action("Logout","Login")">Log Out</a></li>
                 </ul>
             </div>
         </div>
@@ -52,11 +53,11 @@
                 }
             });
 
-            $('#IncludeGuestCheckbox :checkbox').on("change", function () {
+            /*$('#IncludeGuestCheckbox :checkbox').on("change", function () {
                 if ($(this).prop("checked")) {
-                    $.get("/Home/RetrieveRelatedGuest?firstname=" + $('#Firstname').val() + "&surname=" + $('#Surname').val()).done(function (guest) { $("#AttendingGuest").val(guest.Name); });
+                    $.get("/Home/RetrieveRelatedGuest?firstname=" + $('#Firstname').val() + "&surname=" + $('#Surname').val()).done(function (guest) { $("#AttendingGuest").val(guest.Name); $("#AttendingGuestIdentifier").val(guest.GuestId); $("#Id").val(guest.Id); });
                 }
-            });
+            });*/
         });
     </script>
     @RenderSection("scripts", required: false)

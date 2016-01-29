@@ -14,7 +14,9 @@ namespace WeddingServices.Interface
         string getEmail();
         string getMobile();
         int getIdentifier();
-        string getAttendingGuestName();
         int getReferenceIdentifier();
+        int getAttendingGuestIdentifier();
+        string getNickname();
+        IGuest getRelatedGuest();
     }
 }

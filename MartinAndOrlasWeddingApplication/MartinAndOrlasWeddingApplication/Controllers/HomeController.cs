@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using MartinAndOrlasWeddingApplication.Models;
 using WeddingServices.Implementation;
 using WeddingServices.Interface;
+using System.Security.Claims;
+
 
 namespace MartinAndOrlasWeddingApplication.Controllers
 {
@@ -37,8 +39,8 @@ namespace MartinAndOrlasWeddingApplication.Controllers
                 gm.Surname = g.getSurname();
                 gm.Status = g.getStatus();
                 gm.MobileNumber = g.getMobile();
-                gm.AttendingGuest = g.getAttendingGuestName();
                 gm.ReferenceIdentifier = g.getReferenceIdentifier();
+                gm.NickName = g.getNickname();
                 modelGuests.Add(gm);
             }
 
@@ -67,8 +69,9 @@ namespace MartinAndOrlasWeddingApplication.Controllers
                     gm.Surname = g.getSurname();
                     gm.Status = g.getStatus();
                     gm.MobileNumber = g.getMobile();
-                    gm.AttendingGuest = g.getAttendingGuestName();
                     gm.ReferenceIdentifier = g.getReferenceIdentifier();
+                    gm.NickName = g.getNickname();
+
                     modelGuests.Add(gm);
                 }
 
@@ -89,8 +92,14 @@ namespace MartinAndOrlasWeddingApplication.Controllers
                 g.Email = retrievedGuest.getEmail();
                 g.MobileNumber = retrievedGuest.getMobile();
                 g.Status = retrievedGuest.getStatus();
-                g.AttendingGuest = retrievedGuest.getAttendingGuestName();
                 g.ReferenceIdentifier = retrievedGuest.getReferenceIdentifier();
+                g.NickName = retrievedGuest.getNickname();
+
+                if (retrievedGuest.getRelatedGuest() != null)
+                {
+                    MartinAndOrlasWeddingApplication.Models.Guest relatedGuest = new MartinAndOrlasWeddingApplication.Models.Guest();
+                    relatedGuest.RelatedGuest = convertModels(retrievedGuest.getRelatedGuest());
+                }
             }
             ViewBag.Message = g.Firstname + " " + g.Surname;
             return View(g);
@@ -107,10 +116,10 @@ namespace MartinAndOrlasWeddingApplication.Controllers
             IGuestService service = new GuestService();
             IGuest retrievedGuest = service.RetrieveGuestByName(firstname, surname);
 
-            if (retrievedGuest != null)
+            if (retrievedGuest != null && retrievedGuest.getRelatedGuest() != null)
             {
-                IGuest partner = service.RetrievePartner(retrievedGuest.getReferenceIdentifier());
-                return Json(new { Name = partner.getFirstname() + " " + partner.getSurname() }, JsonRequestBehavior.AllowGet);
+                IGuest partner = retrievedGuest.getRelatedGuest();
+                return Json(new { Name = partner.getFirstname() + " " + partner.getSurname(), Id = retrievedGuest.getIdentifier(), GuestId = partner.getIdentifier()}, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -131,16 +140,7 @@ namespace MartinAndOrlasWeddingApplication.Controllers
                 destinationGuest.Email = guest.Email;
                 destinationGuest.MobileNumber = guest.MobileNumber;
                 destinationGuest.Status = guest.Status;
-                if (guest.AttendingGuest == null)
-                {
-                    destinationGuest.AttendingGuestName = "";
-                }
-                else
-                {
-                    destinationGuest.AttendingGuestName = guest.AttendingGuest;
-                }
-                
-
+               
                 service.AddGuest(destinationGuest);
                 return View("GuestAddedConfirmation", guest);
             }
@@ -153,7 +153,15 @@ namespace MartinAndOrlasWeddingApplication.Controllers
         [HttpGet]
         public ActionResult Rsvp()
         {
-            return View(new MartinAndOrlasWeddingApplication.Models.Guest());
+            ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
+            Claim firstnameClaim = claimsIdentity.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+            Claim surnameClaim = claimsIdentity.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname");
+            Claim identifierClaim = claimsIdentity.Claims.First(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid");
+
+            IGuestService service = new GuestService();
+            IGuest existingGuest = service.RetrieveGuestByIdentifier(Int32.Parse(identifierClaim.Value));
+
+            return View(convertModels(existingGuest));
         }
 
         [HttpPost]
@@ -161,25 +169,29 @@ namespace MartinAndOrlasWeddingApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                //Save Guest Here
                 IGuestService service = new GuestService();
-                WeddingServices.Implementation.Guest destinationGuest = new WeddingServices.Implementation.Guest();
-                destinationGuest.Firstname = guest.Firstname;
-                destinationGuest.Surname = guest.Surname;
-                destinationGuest.Email = guest.Email;
-                destinationGuest.MobileNumber = guest.MobileNumber;
-                destinationGuest.Status = guest.Status;
-                if (guest.AttendingGuest == null)
-                {
-                    destinationGuest.AttendingGuestName = "";
-                }
-                else
-                {
-                    destinationGuest.AttendingGuestName = guest.AttendingGuest;
-                }
+                IGuest existingCustomer = service.RetrieveGuestByIdentifier(guest.Id);
+                if(existingCustomer != null){
+                    //Need to update here
+                    WeddingServices.Implementation.Guest g = new WeddingServices.Implementation.Guest();
+                    g.Firstname = existingCustomer.getFirstname();
+                    g.Surname = existingCustomer.getSurname();
+                    g.Email = existingCustomer.getEmail();
+                    g.MobileNumber = existingCustomer.getMobile();
+                    g.Status = guest.Status;
+                    g.Id = existingCustomer.getIdentifier();
+                    g.AttendingGuestIdentifier = existingCustomer.getAttendingGuestIdentifier();
 
-                service.AddGuest(destinationGuest);
+                    //Need to ensure associated guest added here
+                    WeddingServices.Implementation.Relationship r = new WeddingServices.Implementation.Relationship();
+                    WeddingServices.Implementation.Guest cg = existingCustomer.getRelatedGuest() as WeddingServices.Implementation.Guest;
+                    cg.Status = guest.RelatedGuest.Status;
 
+                    r.RelatedGuest = cg;
+                    g.Relationship = r;
+
+                    service.UpdateGuest(g);
+                } 
                 return View("GuestAddedConfirmation", guest);
             }
             else
@@ -215,6 +227,33 @@ namespace MartinAndOrlasWeddingApplication.Controllers
             testGuest.FoodChoice = "Beef";
 
             return testGuest;
+        }
+
+        private MartinAndOrlasWeddingApplication.Models.Guest convertModels(IGuest retrievedGuest)
+        {
+            MartinAndOrlasWeddingApplication.Models.Guest portalGuest = new MartinAndOrlasWeddingApplication.Models.Guest();
+            portalGuest.Id = retrievedGuest.getIdentifier();
+            portalGuest.Firstname = retrievedGuest.getFirstname();
+            portalGuest.Surname = retrievedGuest.getSurname();
+            portalGuest.Email = retrievedGuest.getEmail();
+            portalGuest.MobileNumber = retrievedGuest.getMobile();
+            portalGuest.Status = retrievedGuest.getStatus();
+
+            if (retrievedGuest.getRelatedGuest() != null)
+            {
+                MartinAndOrlasWeddingApplication.Models.Guest relatedPortalGuest = new MartinAndOrlasWeddingApplication.Models.Guest();
+
+                relatedPortalGuest.Id = retrievedGuest.getRelatedGuest().getIdentifier();
+                relatedPortalGuest.Firstname = retrievedGuest.getRelatedGuest().getFirstname();
+                relatedPortalGuest.Surname = retrievedGuest.getRelatedGuest().getSurname();
+                relatedPortalGuest.Email = retrievedGuest.getRelatedGuest().getEmail();
+                relatedPortalGuest.MobileNumber = retrievedGuest.getRelatedGuest().getMobile();
+                relatedPortalGuest.Status = retrievedGuest.getRelatedGuest().getStatus();
+
+                portalGuest.RelatedGuest = relatedPortalGuest;
+            }
+
+            return portalGuest;
         }
 
     }

@@ -18,6 +18,9 @@ namespace WeddingServices.Implementation
         public string Status { get; set; }
         public string AttendingGuestName { get; set; }
         public int ReferenceIdentifier { get; set; }
+        public int AttendingGuestIdentifier { get; set; }
+        public string Nickname { get; set; }
+        public IRelationship Relationship { get; set; }
 
         public string getFirstname()
         {
@@ -49,14 +52,31 @@ namespace WeddingServices.Implementation
             return Id;
         }
 
-        public string getAttendingGuestName()
-        {
-            return AttendingGuestName;
-        }
-
         public int getReferenceIdentifier()
         {
             return ReferenceIdentifier;
+        }
+
+        public int getAttendingGuestIdentifier()
+        {
+            return AttendingGuestIdentifier;
+        }
+
+        public string getNickname()
+        {
+            return Nickname;
+        }
+
+        public IGuest getRelatedGuest()
+        {
+            if (Relationship != null)
+            {
+                return Relationship.getRelatedGuest();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

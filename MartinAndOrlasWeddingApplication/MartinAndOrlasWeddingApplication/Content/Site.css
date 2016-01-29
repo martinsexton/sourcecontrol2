@@ -96,3 +96,16 @@ table.table-fixedheader tbody {
     overflow-y:scroll;
     height:200px;
 }
+
+.loginimg {
+  padding: 30px;
+  margin-bottom: 30px;
+  background-image: url(Images/login.jpg);
+  font-size: 21px;
+  font-weight: 200;
+  line-height: 2.1428571435;
+  color: inherit;
+  background-color: #eeeeee;
+  height: 300px;
+  width:570px;
+}
