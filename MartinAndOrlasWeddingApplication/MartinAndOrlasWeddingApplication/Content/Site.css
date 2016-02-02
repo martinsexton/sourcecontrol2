@@ -95,6 +95,13 @@ table.table-fixedheader>thead>tr:after,table.table-fixedheader>tbody>tr:after {
 table.table-fixedheader tbody {
     overflow-y:scroll;
     height:200px;
+    overflow-x:hidden;
+}
+
+div.scrolling {
+    display:block;
+    overflow-y:scroll;
+    height:200px;
 }
 
 .loginimg {
