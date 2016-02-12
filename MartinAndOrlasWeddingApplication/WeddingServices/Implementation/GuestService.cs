@@ -11,8 +11,8 @@ namespace WeddingServices.Implementation
 {
     public class GuestService : IGuestService
     {
-        //private const string CONNECTION_STRING = "Server=tcp:bigdaydbserver.database.windows.net,1433;Database=BigDay;User ID=martin.sexton@bigdaydbserver;Password=Sydney20+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
+        private const string CONNECTION_STRING = "Server=tcp:bigdaydbserver.database.windows.net,1433;Database=BigDay;User ID=martin.sexton@bigdaydbserver;Password=Sydney20+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        //private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
         public GuestService()
         {
 
@@ -153,12 +153,14 @@ namespace WeddingServices.Implementation
                 }
             }
 
-            string updateAcceptedGuestQuery = "UPDATE Guest set status=@status WHERE Id=@Id";
+            string updateAcceptedGuestQuery = "UPDATE Guest set firstname=@fn, surname=@sn, status=@status WHERE Id=@Id";
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
                 using (SqlCommand cmd = new SqlCommand(updateAcceptedGuestQuery, conn))
                 {
                     cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = guest.getRelatedGuest().getStatus();
+                    cmd.Parameters.Add("@fn", SqlDbType.VarChar, 20).Value = guest.getRelatedGuest().getFirstname();
+                    cmd.Parameters.Add("@sn", SqlDbType.VarChar, 20).Value = guest.getRelatedGuest().getSurname();
                     cmd.Parameters.Add("@Id", SqlDbType.Int).Value = guest.getRelatedGuest().getIdentifier();
 
                     conn.Open();

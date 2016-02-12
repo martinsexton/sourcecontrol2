@@ -1,0 +1,41 @@
+﻿@model List<MartinAndOrlasWeddingApplication.Models.Guest>
+
+<div class="mainpicture"></div>
+<a class="btn btn-primary" href="/Home/AddGuest" role="button">Add Guest</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"><h4>Firstname</h4></div>
+        <div class="col-md-4"><h4>Surname</h4></div>
+        <div class="col-md-4"><h4>Status</h4></div>
+    </div>
+    <div class="scrolling">
+        @{
+            var accepted = 0;
+            var declined = 0;
+            var all = 0;
+            foreach (var item in ViewData.Model)
+            {
+                all++;
+                if (item.Status.Equals("Accepted"))
+                {
+                    accepted++;
+                }
+                else if (item.Status.Equals("Declined"))
+                {
+                    declined++;
+                }
+                <div class="row">
+                    <div class="col-md-4">@Html.ActionLink(@item.Firstname, "Guest", new { Id = @item.Id })</div>
+                    <div class="col-md-4">@item.Surname</div>
+                    <div class="col-md-4">@item.Status</div>
+                </div>
+            }
+        }
+    </div>
+</div>
+            @using (Html.BeginForm("Guests", "Home", FormMethod.Post))
+            {
+                <button type="submit" name="filterbutton" class="btn btn-primary btn-md" value="Accepted">Accepted <span class="badge">@accepted</span></button>
+                <button type="submit" name="filterbutton" class="btn btn-danger btn-md" value="Declined">Declined <span class="badge">@declined</span></button>
+                <button type="submit" name="filterbutton" class="btn btn-default btn-md" value="All">All <span class="badge">@all</span></button>
+            }
