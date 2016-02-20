@@ -55,8 +55,10 @@
             $('#Status').change(function () {
                 var value = $(this).val();
                 if (value == 'Accepted') {
+                    $("#RelatedGuest_Status").val("Accepted");
                     $('#IncludeGuestCheckbox').show();
                 } else {
+                    $("#RelatedGuest_Status").val("Declined");
                     $('#IncludeGuestCheckbox').hide();
                 }
             });

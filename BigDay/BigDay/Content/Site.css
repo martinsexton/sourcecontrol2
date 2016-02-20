@@ -9,12 +9,13 @@
     padding-right: 15px;
 
     /*Added the lines below*/
-    background: url(Images/Card2.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+    background: url(Images/background.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
+
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 

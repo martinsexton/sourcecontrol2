@@ -13,6 +13,13 @@ namespace MartinAndOrlasWeddingApplication.Controllers
     [AllowAnonymous]
     public class LoginController : Controller
     {
+        IGuestService service;
+
+        public LoginController(IGuestService s)
+        {
+            service = s;
+        }
+
         [HttpGet]
         public ActionResult Login(string returnUrl)
         {
@@ -30,7 +37,6 @@ namespace MartinAndOrlasWeddingApplication.Controllers
                 return View();
             }
 
-            IGuestService service = new GuestService();
             IGuest guest = service.RetrieveGuestByName(request.Firstname, request.Surname);
             if (guest != null)
             {

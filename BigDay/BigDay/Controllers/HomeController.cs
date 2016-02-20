@@ -4,23 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using WeddingServices.Implementation;
 using WeddingServices.Interface;
 using System.Security.Claims;
+using EmailService.Interface;
 
 namespace BigDay.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        IGuestService service;
+        IEmailService emailService;
+
+        //Inject relevant services into controller via constructor
+        public HomeController(IGuestService s, IEmailService es)
         {
-            return View();
+            service = s;
+            emailService = es;
         }
 
-        public ActionResult About()
+        public ActionResult Index()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
@@ -39,7 +42,6 @@ namespace BigDay.Controllers
             Claim surnameClaim = claimsIdentity.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname");
             Claim identifierClaim = claimsIdentity.Claims.First(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid");
 
-            IGuestService service = new GuestService();
             IGuest existingGuest = service.RetrieveGuestByIdentifier(Int32.Parse(identifierClaim.Value));
 
             return View(convertModels(existingGuest));
@@ -50,7 +52,6 @@ namespace BigDay.Controllers
         {
             if (ModelState.IsValid)
             {
-                IGuestService service = new GuestService();
                 IGuest existingCustomer = service.RetrieveGuestByIdentifier(guest.Id);
                 if (existingCustomer != null)
                 {
@@ -78,6 +79,18 @@ namespace BigDay.Controllers
                     }
                     
                     service.UpdateGuest(g);
+                    if (!String.IsNullOrEmpty(guest.Email))
+                    {
+                        if (guest.Status.Equals("Accepted"))
+                        {
+                            emailService.sendMail("Big Day", "Thanks for coming "+guest.NickName, guest.Email);
+                        }
+                        else
+                        {
+                            emailService.sendMail("Big Day", "Sorry you cant come " + guest.NickName, guest.Email);
+                        }
+                        
+                    }
                 }
                 return View("RsvpResult", guest);
             }
@@ -97,7 +110,6 @@ namespace BigDay.Controllers
             else
             {
                 ViewBag.Message = "Wedding Guests";
-                IGuestService service = new GuestService();
                 List<IGuest> guests = service.RetrieveGuestsByStatus(filterbutton);
                 List<Models.Guest> modelGuests = new List<Models.Guest>();
                 foreach (var g in guests)
@@ -123,7 +135,6 @@ namespace BigDay.Controllers
         public ActionResult Guests()
         {
             ViewBag.Message = "Wedding Guests";
-            IGuestService service = new GuestService();
             List<IGuest> guests = service.RetrieveAllGuests();
             List<Models.Guest> modelGuests = new List<Models.Guest>();
             foreach (var g in guests)
@@ -145,7 +156,6 @@ namespace BigDay.Controllers
 
                 public ActionResult Guest(int id)
         {
-            IGuestService service = new GuestService();
             IGuest retrievedGuest = service.RetrieveGuestByIdentifier(id);
 
             Models.Guest g = new Models.Guest();
