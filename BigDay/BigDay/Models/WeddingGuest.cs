@@ -6,19 +6,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BigDay.Models
 {
-    public class Guest
+    public class WeddingGuest
     {
         public int Id { get; set; }
+        public int ReferenceId { get; set; }
 
-        public int ReferenceIdentifier { set; get; }
-        public Guest RelatedGuest { get; set; }
-
-        [Display(Name = "Food Choice")]
-        public string FoodChoice { set; get; }
+        public int PartnerId { get; set; }
+        public int PartnerReferenceId { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
-        [StringLength(100)]
         public string Email { get; set; }
 
         [Display(Name = "Firstname")]
@@ -31,15 +28,22 @@ namespace BigDay.Models
         [StringLength(20)]
         public string Surname { get; set; }
 
-        [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Mobile Number")]
-        [StringLength(50)]
-        public string MobileNumber { get; set; }
-
         [Display(Name = "Status")]
         [Required(ErrorMessage = "Status is mandatory")]
         public string Status { get; set; }
 
         public string NickName { get; set; }
+
+        [Display(Name = "Firstname")]
+        [StringLength(20)]
+        public string PartnerFirstname { get; set; }
+
+        [Display(Name = "Surname")]
+        [StringLength(20)]
+        public string PartnerSurname { get; set; }
+
+        [Display(Name = "Status")]
+        [Required(ErrorMessage = "Status is mandatory")]
+        public string PartnerStatus { get; set; }
     }
 }

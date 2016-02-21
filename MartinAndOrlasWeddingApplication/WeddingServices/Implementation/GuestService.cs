@@ -11,8 +11,8 @@ namespace WeddingServices.Implementation
 {
     public class GuestService : IGuestService
     {
-        //private const string CONNECTION_STRING = "Server=tcp:bigdaydbserver.database.windows.net,1433;Database=BigDay;User ID=martin.sexton@bigdaydbserver;Password=Sydney20+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
+        private const string CONNECTION_STRING = "Server=tcp:bigdaydbserver.database.windows.net,1433;Database=BigDay;User ID=martin.sexton@bigdaydbserver;Password=Sydney20+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        //private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
         public GuestService()
         {
 
@@ -117,24 +117,7 @@ namespace WeddingServices.Implementation
 
         void IGuestService.AddGuest(IGuest guest)
         {
-            string query = "INSERT INTO Guest(firstname,surname,email,mobile_number,status,reference_identifier) " +
-                            "VALUES(@firstname,@surname,@email,@mobile,@status,@reference_identifier)";
-            using (var conn = new SqlConnection(CONNECTION_STRING))
-            {
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.Add("@firstname", SqlDbType.VarChar, 20).Value = guest.getFirstname().Trim();
-                    cmd.Parameters.Add("@surname", SqlDbType.VarChar, 20).Value = guest.getSurname();
-                    cmd.Parameters.Add("@email", SqlDbType.VarChar, 100).Value = guest.getEmail();
-                    cmd.Parameters.Add("@mobile", SqlDbType.VarChar, 50).Value = guest.getMobile();
-                    cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = guest.getStatus();
-                    cmd.Parameters.Add("@reference_identifier", SqlDbType.Int).Value = getNextGuestReferenceNumber();
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
-            }
+            addGuest(guest);
         }
 
         void IGuestService.UpdateGuest(IGuest guest)
@@ -152,16 +135,66 @@ namespace WeddingServices.Implementation
                     conn.Close();
                 }
             }
+            if (guest.getRelatedGuest() != null)
+            {
+                if (guest.getRelatedGuest().getIdentifier() > 0)
+                {
+                    string updateAcceptedGuestQuery = "UPDATE Guest set firstname=@fn, surname=@sn, status=@status WHERE Id=@Id";
+                    using (var conn = new SqlConnection(CONNECTION_STRING))
+                    {
+                        using (SqlCommand cmd = new SqlCommand(updateAcceptedGuestQuery, conn))
+                        {
+                            cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = guest.getRelatedGuest().getStatus();
+                            cmd.Parameters.Add("@fn", SqlDbType.VarChar, 20).Value = guest.getRelatedGuest().getFirstname();
+                            cmd.Parameters.Add("@sn", SqlDbType.VarChar, 20).Value = guest.getRelatedGuest().getSurname();
+                            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = guest.getRelatedGuest().getIdentifier();
 
-            string updateAcceptedGuestQuery = "UPDATE Guest set firstname=@fn, surname=@sn, status=@status WHERE Id=@Id";
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                        }
+                    }
+                }
+                else
+                {
+                    //Add new user
+                    addGuest(guest);
+                }
+            }
+        }
+
+        private void addGuest(IGuest guest)
+        {
+            int nextRef = getNextGuestReferenceNumber();
+
+            string query = "INSERT INTO Guest(firstname,surname,status,reference_identifier) " +
+                            "VALUES(@firstname,@surname,@status,@reference_identifier)";
+
+            string query2 = "INSERT INTO Relationship(guest_identifier_a,guest_identifier_b,relationship) " +
+                "VALUES(@identifiera,@identifierb,@relationship)";
+
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
-                using (SqlCommand cmd = new SqlCommand(updateAcceptedGuestQuery, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                    cmd.Parameters.Add("@firstname", SqlDbType.VarChar, 20).Value = guest.getRelatedGuest().getFirstname().Trim();
+                    cmd.Parameters.Add("@surname", SqlDbType.VarChar, 20).Value = guest.getRelatedGuest().getSurname();
                     cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = guest.getRelatedGuest().getStatus();
-                    cmd.Parameters.Add("@fn", SqlDbType.VarChar, 20).Value = guest.getRelatedGuest().getFirstname();
-                    cmd.Parameters.Add("@sn", SqlDbType.VarChar, 20).Value = guest.getRelatedGuest().getSurname();
-                    cmd.Parameters.Add("@Id", SqlDbType.Int).Value = guest.getRelatedGuest().getIdentifier();
+                    cmd.Parameters.Add("@reference_identifier", SqlDbType.Int).Value = nextRef;
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                using (SqlCommand cmd = new SqlCommand(query2, conn))
+                {
+                    cmd.Parameters.Add("@identifiera", SqlDbType.VarChar, 20).Value = guest.getReferenceIdentifier();
+                    cmd.Parameters.Add("@identifierb", SqlDbType.VarChar, 20).Value = nextRef;
+                    cmd.Parameters.Add("@relationship", SqlDbType.VarChar, 50).Value = "Married";
 
                     conn.Open();
                     cmd.ExecuteNonQuery();

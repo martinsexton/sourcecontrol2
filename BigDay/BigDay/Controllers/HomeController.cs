@@ -43,60 +43,44 @@ namespace BigDay.Controllers
             Claim identifierClaim = claimsIdentity.Claims.First(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid");
 
             IGuest existingGuest = service.RetrieveGuestByIdentifier(Int32.Parse(identifierClaim.Value));
-
-            return View(convertModels(existingGuest));
+            if(!existingGuest.getStatus().Equals("Unknown")){
+                return View("RsvpReadOnly",convertToViewModel(existingGuest));
+            } else {
+                return View(convertToViewModel(existingGuest));
+            }
+            
         }
 
         [HttpPost]
-        public ActionResult Rsvp(Models.Guest guest)
+        public ActionResult Rsvp(Models.WeddingGuest guest)
         {
             if (ModelState.IsValid)
             {
-                IGuest existingCustomer = service.RetrieveGuestByIdentifier(guest.Id);
-                if (existingCustomer != null)
-                {
-                    //Need to update here
-                    WeddingServices.Implementation.Guest g = new WeddingServices.Implementation.Guest();
-                    g.Firstname = existingCustomer.getFirstname();
-                    g.Surname = existingCustomer.getSurname();
-                    g.Email = existingCustomer.getEmail();
-                    g.MobileNumber = existingCustomer.getMobile();
-                    g.Status = guest.Status;
-                    g.Id = existingCustomer.getIdentifier();
-                    g.AttendingGuestIdentifier = existingCustomer.getAttendingGuestIdentifier();
+                IGuest g = convertToPersistantModel(guest);
+                service.UpdateGuest(g);
+                sendRSVPMail(guest);
 
-                    if (guest.RelatedGuest.Id > 0)
-                    {
-                        WeddingServices.Implementation.Relationship r = new WeddingServices.Implementation.Relationship();
-                        WeddingServices.Implementation.Guest cg = existingCustomer.getRelatedGuest() as WeddingServices.Implementation.Guest;
-
-                        cg.Status = guest.RelatedGuest.Status;
-                        cg.Firstname = guest.RelatedGuest.Firstname;
-                        cg.Surname = guest.RelatedGuest.Surname;
-
-                        r.RelatedGuest = cg;
-                        g.Relationship = r;
-                    }
-                    
-                    service.UpdateGuest(g);
-                    if (!String.IsNullOrEmpty(guest.Email))
-                    {
-                        if (guest.Status.Equals("Accepted"))
-                        {
-                            emailService.sendMail("Big Day", "Thanks for coming "+guest.NickName, guest.Email);
-                        }
-                        else
-                        {
-                            emailService.sendMail("Big Day", "Sorry you cant come " + guest.NickName, guest.Email);
-                        }
-                        
-                    }
-                }
                 return View("RsvpResult", guest);
             }
             else
             {
                 return View(guest);
+            }
+        }
+
+        private void sendRSVPMail(Models.WeddingGuest guest)
+        {
+            if (!String.IsNullOrEmpty(guest.Email))
+            {
+                if (guest.Status.Equals("Accepted"))
+                {
+                    emailService.sendMail("Big Day", "Thanks for coming " + guest.NickName, guest.Email);
+                }
+                else
+                {
+                    emailService.sendMail("Big Day", "Sorry you cant come " + guest.NickName, guest.Email);
+                }
+
             }
         }
 
@@ -111,17 +95,15 @@ namespace BigDay.Controllers
             {
                 ViewBag.Message = "Wedding Guests";
                 List<IGuest> guests = service.RetrieveGuestsByStatus(filterbutton);
-                List<Models.Guest> modelGuests = new List<Models.Guest>();
+                List<Models.WeddingGuest> modelGuests = new List<Models.WeddingGuest>();
                 foreach (var g in guests)
                 {
-                    Models.Guest gm = new Models.Guest();
+                    Models.WeddingGuest gm = new Models.WeddingGuest();
                     gm.Id = g.getIdentifier();
                     gm.Email = g.getEmail();
                     gm.Firstname = g.getFirstname();
                     gm.Surname = g.getSurname();
                     gm.Status = g.getStatus();
-                    gm.MobileNumber = g.getMobile();
-                    gm.ReferenceIdentifier = g.getReferenceIdentifier();
                     gm.NickName = g.getNickname();
 
                     modelGuests.Add(gm);
@@ -136,17 +118,15 @@ namespace BigDay.Controllers
         {
             ViewBag.Message = "Wedding Guests";
             List<IGuest> guests = service.RetrieveAllGuests();
-            List<Models.Guest> modelGuests = new List<Models.Guest>();
+            List<Models.WeddingGuest> modelGuests = new List<Models.WeddingGuest>();
             foreach (var g in guests)
             {
-                Models.Guest gm = new Models.Guest();
+                Models.WeddingGuest gm = new Models.WeddingGuest();
                 gm.Id = g.getIdentifier();
                 gm.Email = g.getEmail();
                 gm.Firstname = g.getFirstname();
                 gm.Surname = g.getSurname();
                 gm.Status = g.getStatus();
-                gm.MobileNumber = g.getMobile();
-                gm.ReferenceIdentifier = g.getReferenceIdentifier();
                 gm.NickName = g.getNickname();
                 modelGuests.Add(gm);
             }
@@ -154,63 +134,64 @@ namespace BigDay.Controllers
             return View(modelGuests);
         }
 
-                public ActionResult Guest(int id)
+        private Models.WeddingGuest convertToViewModel(IGuest g)
+        {
+            Models.WeddingGuest guest = new WeddingGuest();
+            guest.Firstname = g.getFirstname();
+            guest.Surname = g.getSurname();
+            guest.Email = g.getEmail();
+            guest.Status = g.getStatus();
+            guest.NickName = g.getNickname();
+            guest.Id = g.getIdentifier();
+            guest.ReferenceId = g.getReferenceIdentifier();
+
+            if (g.getRelatedGuest() != null)
+            {
+                guest.PartnerFirstname = g.getRelatedGuest().getFirstname();
+                guest.PartnerSurname = g.getRelatedGuest().getSurname();
+                guest.PartnerStatus = g.getRelatedGuest().getStatus();
+                guest.PartnerId = g.getRelatedGuest().getIdentifier();
+                guest.PartnerReferenceId = g.getRelatedGuest().getReferenceIdentifier();
+            }
+
+            return guest;
+        }
+
+        private IGuest convertToPersistantModel(Models.WeddingGuest guest)
+        {
+            WeddingServices.Implementation.Guest g = new WeddingServices.Implementation.Guest();
+            g.Firstname = guest.Firstname;
+            g.Surname = guest.Surname;
+            g.Email = guest.Email;
+            g.Status = guest.Status;
+            g.Id = guest.Id;
+            g.ReferenceIdentifier = guest.ReferenceId;
+
+            if (!String.IsNullOrEmpty(guest.PartnerFirstname) && !String.IsNullOrEmpty(guest.PartnerSurname))
+            {
+                WeddingServices.Implementation.Relationship r = new WeddingServices.Implementation.Relationship();
+                WeddingServices.Implementation.Guest cg = new WeddingServices.Implementation.Guest();
+
+                cg.Status = guest.PartnerStatus;
+                cg.Firstname = guest.PartnerFirstname;
+                cg.Surname = guest.PartnerSurname;
+                cg.Id = guest.PartnerId;
+                cg.ReferenceIdentifier = guest.PartnerReferenceId;
+
+                r.RelatedGuest = cg;
+                g.Relationship = r;
+            }
+
+            return g;
+        }
+
+        public ActionResult Guest(int id)
         {
             IGuest retrievedGuest = service.RetrieveGuestByIdentifier(id);
+            Models.WeddingGuest g = convertToViewModel(retrievedGuest);
 
-            Models.Guest g = new Models.Guest();
-            if (retrievedGuest != null)
-            {
-                g.Firstname = retrievedGuest.getFirstname();
-                g.Surname = retrievedGuest.getSurname();
-                g.Email = retrievedGuest.getEmail();
-                g.MobileNumber = retrievedGuest.getMobile();
-                g.Status = retrievedGuest.getStatus();
-                g.ReferenceIdentifier = retrievedGuest.getReferenceIdentifier();
-                g.NickName = retrievedGuest.getNickname();
-
-                if (retrievedGuest.getRelatedGuest() != null)
-                {
-                    Models.Guest relatedGuest = new Models.Guest();
-                    relatedGuest.RelatedGuest = convertModels(retrievedGuest.getRelatedGuest());
-                }
-            }
             ViewBag.Message = g.Firstname + " " + g.Surname;
             return View(g);
         }
-
-                private Models.Guest convertModels(IGuest retrievedGuest)
-                {
-                    Models.Guest portalGuest = new Models.Guest();
-                    portalGuest.Id = retrievedGuest.getIdentifier();
-                    portalGuest.Firstname = retrievedGuest.getFirstname();
-                    portalGuest.Surname = retrievedGuest.getSurname();
-                    portalGuest.Email = retrievedGuest.getEmail();
-                    portalGuest.MobileNumber = retrievedGuest.getMobile();
-                    portalGuest.Status = retrievedGuest.getStatus();
-                    portalGuest.NickName = retrievedGuest.getNickname();
-
-                    if (retrievedGuest.getRelatedGuest() != null)
-                    {
-                        Models.Guest relatedPortalGuest = new Models.Guest();
-
-                        relatedPortalGuest.Id = retrievedGuest.getRelatedGuest().getIdentifier();
-                        relatedPortalGuest.Firstname = retrievedGuest.getRelatedGuest().getFirstname();
-                        relatedPortalGuest.Surname = retrievedGuest.getRelatedGuest().getSurname();
-                        relatedPortalGuest.Email = retrievedGuest.getRelatedGuest().getEmail();
-                        relatedPortalGuest.MobileNumber = retrievedGuest.getRelatedGuest().getMobile();
-                        relatedPortalGuest.Status = retrievedGuest.getRelatedGuest().getStatus();
-
-                        portalGuest.RelatedGuest = relatedPortalGuest;
-                    }
-                    else
-                    {
-                        Models.Guest relatedPortalGuest = new Models.Guest();
-                        relatedPortalGuest.Id = 0;
-                        portalGuest.RelatedGuest = relatedPortalGuest;
-                    }
-
-                    return portalGuest;
-                }
     }
 }

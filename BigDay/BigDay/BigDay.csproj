@@ -162,8 +162,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Guest.cs" />
     <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Models\WeddingGuest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -212,6 +212,7 @@
     <Content Include="Views\Home\Guests.cshtml" />
     <Content Include="Views\Home\Guest.cshtml" />
     <Content Include="Views\Home\RsvpResult.cshtml" />
+    <Content Include="Views\Home\RsvpReadOnly.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
