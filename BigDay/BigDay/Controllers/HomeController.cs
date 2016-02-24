@@ -146,12 +146,16 @@ namespace BigDay.Controllers
             guest.ReferenceId = g.getReferenceIdentifier();
 
             if (g.getRelatedGuest() != null)
-            {
+            {  
                 guest.PartnerFirstname = g.getRelatedGuest().getFirstname();
                 guest.PartnerSurname = g.getRelatedGuest().getSurname();
-                guest.PartnerStatus = g.getRelatedGuest().getStatus();
                 guest.PartnerId = g.getRelatedGuest().getIdentifier();
                 guest.PartnerReferenceId = g.getRelatedGuest().getReferenceIdentifier();
+
+                if (g.getStatus().Equals("Accepted") && g.getRelatedGuest().getStatus().Equals("Accepted"))
+                {
+                    guest.IncludeGuest = true;
+                }
             }
 
             return guest;
@@ -167,19 +171,22 @@ namespace BigDay.Controllers
             g.Id = guest.Id;
             g.ReferenceIdentifier = guest.ReferenceId;
 
-            if (!String.IsNullOrEmpty(guest.PartnerFirstname) && !String.IsNullOrEmpty(guest.PartnerSurname))
+            if (guest.IncludeGuest)
             {
-                WeddingServices.Implementation.Relationship r = new WeddingServices.Implementation.Relationship();
-                WeddingServices.Implementation.Guest cg = new WeddingServices.Implementation.Guest();
+                if (!String.IsNullOrEmpty(guest.PartnerFirstname) && !String.IsNullOrEmpty(guest.PartnerSurname))
+                {
+                    WeddingServices.Implementation.Relationship r = new WeddingServices.Implementation.Relationship();
+                    WeddingServices.Implementation.Guest cg = new WeddingServices.Implementation.Guest();
 
-                cg.Status = guest.PartnerStatus;
-                cg.Firstname = guest.PartnerFirstname;
-                cg.Surname = guest.PartnerSurname;
-                cg.Id = guest.PartnerId;
-                cg.ReferenceIdentifier = guest.PartnerReferenceId;
+                    cg.Status = guest.Status;
+                    cg.Firstname = guest.PartnerFirstname;
+                    cg.Surname = guest.PartnerSurname;
+                    cg.Id = guest.PartnerId;
+                    cg.ReferenceIdentifier = guest.PartnerReferenceId;
 
-                r.RelatedGuest = cg;
-                g.Relationship = r;
+                    r.RelatedGuest = cg;
+                    g.Relationship = r;
+                }
             }
 
             return g;

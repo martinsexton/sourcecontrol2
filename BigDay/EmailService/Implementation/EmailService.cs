@@ -13,9 +13,10 @@ namespace EmailService.Implementation
     {
         public void sendMail(string subject, string message, string toAddress)
         {
+            SmtpClient client = new SmtpClient();
+
             try
             {
-                SmtpClient client = new SmtpClient();
                 client.Port = 587;
                 client.Host = "smtp.gmail.com";
                 client.EnableSsl = true;
@@ -33,6 +34,10 @@ namespace EmailService.Implementation
             catch(Exception ex){
                 //Do nothing. If we cant email for some reason we dont want it to interfere with capturing
                 //RSVP
+            }
+            finally
+            {
+                client.Dispose();    
             }
         }
     }

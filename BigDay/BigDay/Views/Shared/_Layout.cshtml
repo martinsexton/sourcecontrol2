@@ -45,7 +45,7 @@
             }, 2000);
 
             $('input[type="checkbox"]').click(function () {
-                if ($(this).attr("value") == "IncludeGuest") {
+                if ($(this).attr("value") == "true") {
                     $(".collapseguestdetails").toggle();
                 }
             });
@@ -55,10 +55,8 @@
             $('#Status').change(function () {
                 var value = $(this).val();
                 if (value == 'Accepted') {
-                    $("#PartnerStatus").val("Accepted");
                     $('#IncludeGuestCheckbox').show();
                 } else {
-                    $("#PartnerStatus").val("Declined");
                     $('#IncludeGuestCheckbox').hide();
                 }
             });

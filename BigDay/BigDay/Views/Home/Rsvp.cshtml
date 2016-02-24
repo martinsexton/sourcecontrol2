@@ -54,14 +54,8 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <div class="form-group collapseguestdetails">
-                    @Html.LabelFor(model => model.PartnerStatus, htmlAttributes: new { @class = "control-label col-md-3" })
-                    @Html.DropDownListFor(model => model.PartnerStatus, listItems, "-- Select Status --")
-                </div>
-            </div>
-            <div class="row col-md-12">
                 <div class="col-md-6" id="IncludeGuestCheckbox">
-                    <label><input type="checkbox" value="IncludeGuest">Include Guest</label>
+                    <label>@Html.CheckBoxFor(m => m.IncludeGuest, new { @checked = false })Include Guest</label>
                 </div>
                 <div class="form-group">
                     @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })

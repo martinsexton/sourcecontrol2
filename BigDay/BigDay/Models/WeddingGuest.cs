@@ -14,6 +14,8 @@ namespace BigDay.Models
         public int PartnerId { get; set; }
         public int PartnerReferenceId { get; set; }
 
+        public bool IncludeGuest { get; set; }
+
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -41,9 +43,5 @@ namespace BigDay.Models
         [Display(Name = "Surname")]
         [StringLength(20)]
         public string PartnerSurname { get; set; }
-
-        [Display(Name = "Status")]
-        [Required(ErrorMessage = "Status is mandatory")]
-        public string PartnerStatus { get; set; }
     }
 }

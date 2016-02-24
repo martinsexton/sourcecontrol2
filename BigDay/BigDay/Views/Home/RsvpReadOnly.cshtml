@@ -9,7 +9,7 @@
         <p>Thanks @Html.DisplayFor(model => model.NickName) you have already @Html.DisplayFor(model => model.Status)</p>
         <br/>
         @{
-            if (ViewData.Model.PartnerId > 0)
+            if (ViewData.Model.IncludeGuest)
             {
                 <p>
                     You are attending with @Html.DisplayFor(model => model.PartnerFirstname) @Html.DisplayFor(model => model.PartnerSurname)
