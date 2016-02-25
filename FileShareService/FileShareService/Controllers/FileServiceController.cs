@@ -46,7 +46,8 @@ namespace FileShareService.Controllers
             if (Request.Content.IsMimeMultipartContent())
             {
                 string fullPath = "C:\\FileShareService\\locker\\";
-                var streamProvider = new MultipartFormDataStreamProvider(fullPath);
+                var streamProvider = new CustomMultipartFormDataStreamProvider(fullPath);
+                
 
                 var task = Request.Content.ReadAsMultipartAsync(streamProvider).ContinueWith(t =>
                 {
@@ -67,6 +68,16 @@ namespace FileShareService.Controllers
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotAcceptable, "Invalid Request!"));
             }
+        }
+    }
+
+    public class CustomMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
+    {
+        public CustomMultipartFormDataStreamProvider(string path) : base(path) { }
+
+        public override string GetLocalFileName(HttpContentHeaders headers)
+        {
+            return headers.ContentDisposition.FileName.Replace("\"", string.Empty);
         }
     }
 }
