@@ -6,17 +6,21 @@ using System.Net.Http;
 using System.Web.Http;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace FileShareService.Controllers
 {
-    public class FileServiceController : System.Web.Mvc.Controller
+    [RoutePrefix("FileService")]
+    public class FileServiceController : ApiController //: System.Web.Mvc.Controller
     {
-        // GET: FileService
+        log4net.ILog logger = log4net.LogManager.GetLogger(typeof(FileServiceController));
+
         [HttpGet]
-        public System.Web.Mvc.FileResult DownloadFile(string fn)
-        //public HttpResponseMessage DownloadFile(string fn)
+        [Route("download")]
+        public HttpResponseMessage DownloadFile(string fn)
         {
-            //HttpResponseMessage response = new HttpResponseMessage();
+            logger.Info("Entering DownloadFile on FileServiceController");
+
             string filename = "C:\\FileShareService\\Files\\Downloads\\" + fn;
             FileInfo info = new FileInfo(filename);
             HttpResponseMessage response = null;
@@ -28,12 +32,41 @@ namespace FileShareService.Controllers
                 response.StatusCode = System.Net.HttpStatusCode.OK;
                 response.Content = new StreamContent(new FileStream(filename, FileMode.Open, FileAccess.Read));
                 response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-                response.Content.Headers.ContentDisposition.FileName = "SampleImg";
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 response.Content.Headers.ContentLength = info.Length;
+                response.Content.Headers.ContentDisposition.FileName = fn;
             }
-            //return response;
-            return File(response.Content.ReadAsByteArrayAsync().Result, "application/octet-stream", "test.txt");
+            return response;
+        }
+
+        [Route("upload")]
+        [HttpPost]
+        public Task<IEnumerable<string>> UploadFile()
+        {
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                string fullPath = "C:\\FileShareService\\locker\\";
+                var streamProvider = new MultipartFormDataStreamProvider(fullPath);
+
+                var task = Request.Content.ReadAsMultipartAsync(streamProvider).ContinueWith(t =>
+                {
+                    if (t.IsFaulted || t.IsCanceled)
+                        throw new HttpResponseException(HttpStatusCode.InternalServerError);
+
+                    var fileInfo = streamProvider.FileData.Select(i =>
+                    {
+                        var info = new FileInfo(i.LocalFileName);
+                        return "File uploaded as " + info.FullName + " (" + info.Length + ")";
+                    });
+                    return fileInfo;
+
+                });
+                return task;
+            }
+            else
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotAcceptable, "Invalid Request!"));
+            }
         }
     }
 }

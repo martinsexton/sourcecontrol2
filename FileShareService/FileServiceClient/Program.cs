@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.IO;
+using System.Net.Http.Headers;
 
 namespace FileServiceClient
 {
@@ -12,19 +13,51 @@ namespace FileServiceClient
     {
         static void Main(string[] args)
         {
-            Task t = DownloadFile("");
+            //Task t = DownloadFile("");
+            UploadFile("");
             Console.WriteLine("Continue thread");
             Console.ReadKey();
+        }
+
+        private static void UploadFile(string filename)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Please specify file name  with extension you wish to upload and Press Enter :- ");
+            string fn = Console.ReadLine();
+            string uploadRequestURI = "upload";
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    using (var content = new MultipartFormDataContent())
+                    {
+                        client.BaseAddress = new Uri("http://localhost:9810/FileService/");
+                        var fileContent = new ByteArrayContent(System.IO.File.ReadAllBytes("C:\\Uploads\\"+fn));//(System.IO.File.ReadAllBytes(fileName));
+                        fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                        {
+                            FileName = fn
+                        };
+                        content.Add(fileContent);
+                        var result = client.PostAsync(uploadRequestURI, content).Result;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //Log the exception
+            }
         }
 
         private static async Task DownloadFile(string filename)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Please specify file name  with extension and Press Enter :- ");
+            Console.WriteLine("Please specify file name  with extension you wish to download and Press Enter :- ");
             string fileName = Console.ReadLine();
             string localDownloadPath = string.Concat(@"c:\", fileName); // the path can be configurable
             bool overWrite = true;
-            string actionURL = string.Concat("DownloadFile?fn=", fileName);
+            string actionURL = string.Concat("download?fn=", fileName);
 
             try
             {
