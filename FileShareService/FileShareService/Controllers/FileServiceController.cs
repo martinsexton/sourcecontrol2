@@ -41,7 +41,7 @@ namespace FileShareService.Controllers
 
         [Route("upload")]
         [HttpPost]
-        public Task<IEnumerable<string>> UploadFile()
+        public Task<HttpResponseMessage> UploadFile()
         {
             if (Request.Content.IsMimeMultipartContent())
             {
@@ -54,12 +54,9 @@ namespace FileShareService.Controllers
                     if (t.IsFaulted || t.IsCanceled)
                         throw new HttpResponseException(HttpStatusCode.InternalServerError);
 
-                    var fileInfo = streamProvider.FileData.Select(i =>
-                    {
-                        var info = new FileInfo(i.LocalFileName);
-                        return "File uploaded as " + info.FullName + " (" + info.Length + ")";
-                    });
-                    return fileInfo;
+                    HttpResponseMessage response = new HttpResponseMessage();
+                    response.StatusCode = System.Net.HttpStatusCode.OK;
+                    return response;
 
                 });
                 return task;
