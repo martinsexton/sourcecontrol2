@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace FileShareService.Controllers
 {
     [RoutePrefix("FileService")]
-    public class FileServiceController : ApiController //: System.Web.Mvc.Controller
+    public class FileServiceController : ApiController
     {
         log4net.ILog logger = log4net.LogManager.GetLogger(typeof(FileServiceController));
 
@@ -21,7 +21,8 @@ namespace FileShareService.Controllers
         {
             logger.Info("Entering DownloadFile on FileServiceController");
 
-            string filename = "C:\\FileShareService\\Files\\Downloads\\" + fn;
+            //string filename = "C:\\FileShareService\\Files\\Downloads\\" + fn;
+            string filename = "C:\\FileShareService\\locker\\" + fn;
             FileInfo info = new FileInfo(filename);
             HttpResponseMessage response = null;
 
@@ -43,6 +44,8 @@ namespace FileShareService.Controllers
         [HttpPost]
         public Task<HttpResponseMessage> UploadFile()
         {
+            logger.Info("Entering UploadFile on FileServiceController");
+
             if (Request.Content.IsMimeMultipartContent())
             {
                 string fullPath = "C:\\FileShareService\\locker\\";
