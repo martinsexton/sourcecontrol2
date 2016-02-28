@@ -10,35 +10,36 @@ namespace FileShareClient
 {
     public class FileShareService : IFileShareService
     {
+        private HttpClient client;
+        private const string downloadActionURL = "download?fn=";
+        private const string uploadActionURL = "upload";
+
+        public FileShareService()
+        {
+            //Instantiate HttpClient to be used by library
+            client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.BaseAddress = new Uri("http://localhost:9810/FileService/");
+        }
         public bool uploadFile(byte[] fileContentAsBytes, string filename)
         {
             bool uploadedFile = false;
 
-            using (var client = new HttpClient())
+            using (var content = new MultipartFormDataContent())
             {
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                using (var content = new MultipartFormDataContent())
+                var fileContent = new ByteArrayContent(fileContentAsBytes);
+                fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
                 {
-                    client.BaseAddress = new Uri("http://localhost:9810/FileService/");
-                    var fileContent = new ByteArrayContent(fileContentAsBytes);
-                    fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                    {
-                        FileName = filename
-                    };
-                    content.Add(fileContent);
-                    Task<HttpResponseMessage> result = client.PostAsync("upload", content);
+                    FileName = filename
+                };
+                content.Add(fileContent);
+                Task<HttpResponseMessage> result = client.PostAsync(uploadActionURL, content);
 
-                    result.Wait();
+                result.Wait();
 
-                    HttpResponseMessage response = result.Result;
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        uploadedFile = true;
-                    }
-                    else
-                    {
-                        uploadedFile = false;
-                    }
+                if (result.Result.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    uploadedFile = true;
                 }
             }
             return uploadedFile;
@@ -46,33 +47,15 @@ namespace FileShareClient
 
         public byte[] downloadFile(string fileName)
         {
-            byte[] fileContent = null;
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, string.Concat(downloadActionURL, fileName));
+            var result = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 
-            using (HttpClient httpClient = new HttpClient())
-            {
-                string actionURL = string.Concat("download?fn=", fileName);
-                httpClient.BaseAddress = new Uri("http://localhost:9810/FileService/");
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, actionURL);
+            //We can add timeout here if we want. However the calling service will have to wait for image to come back,
+            //unless we code the calling service using asynch. However the idea of this service is that it can be used
+            //for any calling client. Therefore we cant include specific async behaviour in the API
+            result.Wait();
 
-                var result = httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-
-                //We can add timeout here if we want. However the calling service will have to wait for image to come back,
-                //unless we code the calling service using asynch. However the idea of this service is that it can be used
-                //for any calling client. Therefore we cant include specific async behaviour in the API
-                result.Wait();
-
-                fileContent = ProcessDownloadResponse(result);
-
-                /*var result = httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).
-                        ContinueWith((response)
-                            =>
-                        {
-                            fileContent = ProcessDownloadResponse(response);
-                        });
-                }
-                return fileContent;*/
-            }
-            return fileContent;
+            return ProcessDownloadResponse(result);
         }
 
 

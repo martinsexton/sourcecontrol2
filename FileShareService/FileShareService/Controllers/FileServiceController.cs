@@ -21,7 +21,6 @@ namespace FileShareService.Controllers
         {
             logger.Info("Entering DownloadFile on FileServiceController");
 
-            //string filename = "C:\\FileShareService\\Files\\Downloads\\" + fn;
             string filename = "C:\\FileShareService\\locker\\" + fn;
             FileInfo info = new FileInfo(filename);
             HttpResponseMessage response = null;
