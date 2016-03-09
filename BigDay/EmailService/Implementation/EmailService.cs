@@ -23,7 +23,7 @@ namespace EmailService.Implementation
                 client.Timeout = 10000;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential("sexton.martin@gmail.com", "yellowsub");
+                client.Credentials = new System.Net.NetworkCredential("martinandorla2016@gmail.com", "Maryborough2016");
 
                 MailMessage mm = new MailMessage("donotreply@domain.com", toAddress, subject, message);
                 mm.BodyEncoding = UTF8Encoding.UTF8;
