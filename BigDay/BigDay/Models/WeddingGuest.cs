@@ -30,6 +30,10 @@ namespace BigDay.Models
         [StringLength(20)]
         public string Surname { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Special Dietry Requirements")]
+        public string DietComment { get; set; }
+
         [Display(Name = "Status")]
         [Required(ErrorMessage = "Status is mandatory")]
         public string Status { get; set; }

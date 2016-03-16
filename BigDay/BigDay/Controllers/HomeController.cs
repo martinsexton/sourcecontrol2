@@ -139,6 +139,7 @@ namespace BigDay.Controllers
             Models.WeddingGuest guest = new WeddingGuest();
             guest.Firstname = g.getFirstname();
             guest.Surname = g.getSurname();
+            guest.DietComment = g.getDietComment();
             guest.Email = g.getEmail();
             guest.Status = g.getStatus();
             guest.NickName = g.getNickname();
@@ -170,6 +171,7 @@ namespace BigDay.Controllers
             g.Status = guest.Status;
             g.Id = guest.Id;
             g.ReferenceIdentifier = guest.ReferenceId;
+            g.DietComment = guest.DietComment;
 
             if (guest.IncludeGuest)
             {

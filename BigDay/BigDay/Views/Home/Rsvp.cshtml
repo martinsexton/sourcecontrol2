@@ -39,6 +39,12 @@
                 </div>
             </div>
             <div class="row col-md-12">
+                <div class="form-group" id="IncludeDietComment">
+                    @Html.LabelFor(model => model.DietComment, htmlAttributes: new { @class = "control-label col-md-3" })
+                    @Html.TextAreaFor(model => model.DietComment, new { htmlAttributes = new { @class = "form-control col-md-3", @readonly = "true" } })
+                </div>
+            </div>
+            <div class="row col-md-12">
                 <div class="form-group collapseguestdetails col-md-12">
                     <h3>Guest Details</h3>
                 </div>

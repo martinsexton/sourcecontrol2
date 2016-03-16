@@ -51,13 +51,16 @@
             });
 
             $('#IncludeGuestCheckbox').hide();
+            $('#IncludeDietComment').hide();
 
             $('#Status').change(function () {
                 var value = $(this).val();
                 if (value == 'Accepted') {
                     $('#IncludeGuestCheckbox').show();
+                    $('#IncludeDietComment').show();
                 } else {
                     $('#IncludeGuestCheckbox').hide();
+                    $('#IncludeDietComment').hide();
                 }
             });
         });

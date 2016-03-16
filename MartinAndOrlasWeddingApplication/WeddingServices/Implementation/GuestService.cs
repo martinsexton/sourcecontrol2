@@ -11,8 +11,8 @@ namespace WeddingServices.Implementation
 {
     public class GuestService : IGuestService
     {
-        private const string CONNECTION_STRING = "Server=tcp:bigdaydbserver.database.windows.net,1433;Database=BigDay;User ID=martin.sexton@bigdaydbserver;Password=Sydney20+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        //private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
+        //private const string CONNECTION_STRING = "Server=tcp:bigdaydbserver.database.windows.net,1433;Database=BigDay;User ID=martin.sexton@bigdaydbserver;Password=Sydney20+;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private const string CONNECTION_STRING = "Data Source=IEDUB4024176X\\sqlexpress;Initial Catalog=Wedding;Integrated Security=True;Connection Timeout=30;";
         public GuestService()
         {
 
@@ -44,6 +44,7 @@ namespace WeddingServices.Implementation
                         ,g.status
                         ,g.reference_identifier
                         ,g.nick_name
+                        ,g.diet_comment
                     FROM Guest AS g;";
 
                 conn.Open();
@@ -61,6 +62,7 @@ namespace WeddingServices.Implementation
                         g.Status = convertNullFieldToEmptyString(reader, 5);
                         g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
                         g.Nickname = convertNullFieldToEmptyString(reader, 7);
+                        g.DietComment = convertNullFieldToEmptyString(reader, 8);
 
                         guests.Add(g);
                     }
@@ -85,6 +87,7 @@ namespace WeddingServices.Implementation
                         ,g.status
                         ,g.reference_identifier
                         ,g.nick_name
+                        ,g.diet_comment
                     FROM Guest AS g WHERE g.status = @status;";
 
                 conn.Open();
@@ -107,6 +110,7 @@ namespace WeddingServices.Implementation
                         g.Status = convertNullFieldToEmptyString(reader, 5);
                         g.ReferenceIdentifier = reader.GetInt32(reader.GetOrdinal("reference_identifier"));
                         g.Nickname = convertNullFieldToEmptyString(reader, 7);
+                        g.DietComment = convertNullFieldToEmptyString(reader, 8);
 
                         guests.Add(g);
                     }
@@ -122,12 +126,13 @@ namespace WeddingServices.Implementation
 
         void IGuestService.UpdateGuest(IGuest guest)
         {
-            string query = "UPDATE Guest set status=@status WHERE id = @id";
+            string query = "UPDATE Guest set status=@status, diet_comment=@diet_comment WHERE id = @id";
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.Add("@status", SqlDbType.VarChar, 50).Value = guest.getStatus();
+                    cmd.Parameters.Add("@diet_comment", SqlDbType.VarChar, 50).Value = guest.getDietComment();
                     cmd.Parameters.Add("@id", SqlDbType.Int).Value = guest.getIdentifier();
 
                     conn.Open();
@@ -250,6 +255,7 @@ namespace WeddingServices.Implementation
                         g.Firstname = reader.GetString(reader.GetOrdinal("firstname"));
                         g.Surname = reader.GetString(reader.GetOrdinal("surname"));
                         g.Nickname = convertNullFieldToEmptyString(reader, reader.GetOrdinal("nick_name"));
+                        g.DietComment = convertNullFieldToEmptyString(reader, reader.GetOrdinal("diet_comment"));
                         g.Email = convertNullFieldToEmptyString(reader, reader.GetOrdinal("email"));
                         g.MobileNumber = convertNullFieldToEmptyString(reader, reader.GetOrdinal("mobile_number"));
                         g.Status = reader.GetString(reader.GetOrdinal("status"));
@@ -268,6 +274,7 @@ namespace WeddingServices.Implementation
                             relatedGuest.Email = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_email"));
                             relatedGuest.MobileNumber = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_mobile_number"));
                             relatedGuest.Status = reader.GetString(reader.GetOrdinal("related_guest_status"));
+                            relatedGuest.DietComment = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_diet_comment"));
 
                             relationship.RelatedGuest = relatedGuest;
                             g.Relationship = relationship;
@@ -306,6 +313,7 @@ namespace WeddingServices.Implementation
                         g.Firstname = reader.GetString(reader.GetOrdinal("firstname"));
                         g.Surname = reader.GetString(reader.GetOrdinal("surname"));
                         g.Nickname = convertNullFieldToEmptyString(reader, reader.GetOrdinal("nick_name"));
+                        g.DietComment = convertNullFieldToEmptyString(reader, reader.GetOrdinal("diet_comment"));
                         g.Email = convertNullFieldToEmptyString(reader, reader.GetOrdinal("email"));
                         g.MobileNumber = convertNullFieldToEmptyString(reader, reader.GetOrdinal("mobile_number"));
                         g.Status = reader.GetString(reader.GetOrdinal("status"));
@@ -323,6 +331,7 @@ namespace WeddingServices.Implementation
                             relatedGuest.Email = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_email"));
                             relatedGuest.MobileNumber = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_mobile_number"));
                             relatedGuest.Status = reader.GetString(reader.GetOrdinal("related_guest_status"));
+                            relatedGuest.DietComment = convertNullFieldToEmptyString(reader, reader.GetOrdinal("related_guest_diet_comment"));
 
                             relationship.RelatedGuest = relatedGuest;
                             g.Relationship = relationship;

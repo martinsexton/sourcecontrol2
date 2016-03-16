@@ -3,6 +3,7 @@ CREATE TABLE Guest(
 	reference_identifier int unique NOT NULL,
 	firstname nvarchar(20) NOT NULL,
 	surname nvarchar(20) NOT NULL,
+	diet_comment nvarchar(max) NULL,
 	nick_name nvarchar(20) NULL,
 	email nvarchar(100) NULL,
 	mobile_number nvarchar(50) NULL,
@@ -30,58 +31,58 @@ select * from relationship
 --delete from Guest;
 --delete from RelationShip;
 
-insert into Guest values (1,'Georgina','Duggan','Gina',NULL,'086 856 1016','Unknown');
-insert into Guest values (2,'Trevor','Horgan','Trevor',NULL,NULL,'Unknown');
-insert into Guest values (3,'Colm','Blunnie','Colm',NULL,'086 020 3412','Unknown');
-insert into Guest values (4,'Jane','Blunnie','Jane',NULL,NULL,'Unknown');
-insert into Guest values (5,'Paul','Gormley','Paul',NULL,'087 130 2325','Unknown');
-insert into Guest values (6,'Jane','Gormley','Jane',NULL,NULL,'Unknown');
-insert into Guest values (7,'David','Branley','Dave',NULL,NULL,'Unknown');
-insert into Guest values (8,'Sarah','Branley','Sarah',NULL,NULL,'Unknown');
-insert into Guest values (9,'Barry','Joyce','Baz',NULL,'087 702 1200','Unknown');
-insert into Guest values (10,'Barry','Kelly','Baz',NULL,'087 795 9425','Unknown');
-insert into Guest values (11,'Jane','Kelly','Jane',NULL,NULL,'Unknown');
-insert into Guest values (12,'Shane','Clusky','Clusky',NULL,'087 764 6709','Unknown');
-insert into Guest values (13,'Ed','Byrne','The Chin',NULL,NULL,'Unknown');
-insert into Guest values (14,'Edel','Byrne','Edel',NULL,NULL,'Unknown');
-insert into Guest values (15,'Cathal','Linnane','Linnane',NULL,'087 614 2332','Unknown');
-insert into Guest values (16,'Andrea','Mccullough','Andrea',NULL,NULL,'Unknown');
-insert into Guest values (17,'Seamus','Cuddy','Cuddy',NULL,NULL,'Unknown');
-insert into Guest values (18,'Denis','Mchugh','Denny',NULL,NULL,'Unknown');
-insert into Guest values (19,'David','Mcloughlain','Dave',NULL,'086 059 6714','Unknown');
-insert into Guest values (20,'Yune','Azpiazu','Yune',NULL,'086 059 6714','Unknown');
-insert into Guest values (21,'Johnny','Grealish','Johnny',NULL,'086 059 6714','Unknown');
-insert into Guest values (22,'Deirdre','Grealish','Dee',NULL,'086 059 6714','Unknown');
-insert into Guest values (23,'Emilia','Alguilar','Emi',NULL,'086 059 6714','Unknown');
-insert into Guest values (24,'Ondrej','Louda','Ondrej',NULL,'086 059 6714','Unknown');
-insert into Guest values (25,'Stephen','Franklin','C',NULL,'086 059 6714','Unknown');
-insert into Guest values (26,'Niamh','Franklin','Niamh',NULL,'086 059 6714','Unknown');
-insert into Guest values (27,'Gerard','Hayes','Ger',NULL,'086 059 6714','Unknown');
-insert into Guest values (28,'Clodagh','Hayes','Clodagh',NULL,'086 059 6714','Unknown');
-insert into Guest values (29,'Mike','Guiney','Mike',NULL,'086 059 6714','Unknown');
-insert into Guest values (30,'Edel','Guiney','Edel',NULL,'086 059 6714','Unknown');
-insert into Guest values (31,'Gordon','Murray','Gordo',NULL,'086 059 6714','Unknown');
-insert into Guest values (32,'Ronnie','Murray','Ronnie',NULL,'086 059 6714','Unknown');
-insert into Guest values (33,'James','Canon','James',NULL,'086 059 6714','Unknown');
-insert into Guest values (34,'Michelle','Canon','James',NULL,'086 059 6714','Unknown');
-insert into Guest values (35,'Pamela','Canon','Pam',NULL,'086 059 6714','Unknown');
-insert into Guest values (36,'Pat','Canon','Pat',NULL,'086 059 6714','Unknown');
-insert into Guest values (37,'Liam','Canon','Liameen',NULL,'086 059 6714','Unknown');
-insert into Guest values (38,'Siobhan','Jennings','Siobhan',NULL,'086 059 6714','Unknown');
-insert into Guest values (39,'Jason','McCormac','Jayo',NULL,'086 059 6714','Unknown');
-insert into Guest values (40,'Sarah','McCormac','Jayo',NULL,'086 059 6714','Unknown');
-insert into Guest values (41,'Alan','Keane','Kano',NULL,'086 059 6714','Unknown');
-insert into Guest values (42,'Mairead','Keane','Mairead',NULL,'086 059 6714','Unknown');
-insert into Guest values (43,'Kevin','Keane','Kev',NULL,'086 059 6714','Unknown');
-insert into Guest values (44,'Maura','Keane','Maura',NULL,'086 059 6714','Unknown');
-insert into Guest values (45,'Marius','Claudy','Marius',NULL,'086 059 6714','Unknown');
-insert into Guest values (46,'Michelle','Claudy','Michelle',NULL,'086 059 6714','Unknown');
-insert into Guest values (47,'Mark','Smyth','Mark',NULL,'086 059 6714','Unknown');
-insert into Guest values (48,'Fiona','Smyth','Fiona',NULL,'086 059 6714','Unknown');
-insert into Guest values (49,'Paul','Murphy','Paul',NULL,'086 059 6714','Unknown');
-insert into Guest values (50,'Catherine','Murphy','Catherine',NULL,'086 059 6714','Unknown');
-insert into Guest values (51,'Joe','Murphy','Joe',NULL,'086 059 6714','Unknown');
-insert into Guest values (52,'Nicola','Murphy','Nicola',NULL,'086 059 6714','Unknown');
+insert into Guest values (1,'Georgina','Duggan',NULL,'Gina',NULL,'086 856 1016','Unknown');
+insert into Guest values (2,'Trevor','Horgan',NULL,'Trevor',NULL,NULL,'Unknown');
+insert into Guest values (3,'Colm','Blunnie',NULL,'Colm',NULL,'086 020 3412','Unknown');
+insert into Guest values (4,'Jane','Blunnie',NULL,'Jane',NULL,NULL,'Unknown');
+insert into Guest values (5,'Paul','Gormley',NULL,'Paul',NULL,'087 130 2325','Unknown');
+insert into Guest values (6,'Jane','Gormley',NULL,'Jane',NULL,NULL,'Unknown');
+insert into Guest values (7,'David','Branley',NULL,'Dave',NULL,NULL,'Unknown');
+insert into Guest values (8,'Sarah','Branley',NULL,'Sarah',NULL,NULL,'Unknown');
+insert into Guest values (9,'Barry','Joyce',NULL,'Baz',NULL,'087 702 1200','Unknown');
+insert into Guest values (10,'Barry','Kelly',NULL,'Baz',NULL,'087 795 9425','Unknown');
+insert into Guest values (11,'Jane','Kelly',NULL,'Jane',NULL,NULL,'Unknown');
+insert into Guest values (12,'Shane','Clusky',NULL,'Clusky',NULL,'087 764 6709','Unknown');
+insert into Guest values (13,'Ed','Byrne',NULL,'The Chin',NULL,NULL,'Unknown');
+insert into Guest values (14,'Edel','Byrne',NULL,'Edel',NULL,NULL,'Unknown');
+insert into Guest values (15,'Cathal','Linnane',NULL,'Linnane',NULL,'087 614 2332','Unknown');
+insert into Guest values (16,'Andrea','Mccullough',NULL,'Andrea',NULL,NULL,'Unknown');
+insert into Guest values (17,'Seamus','Cuddy',NULL,'Cuddy',NULL,NULL,'Unknown');
+insert into Guest values (18,'Denis','Mchugh',NULL,'Denny',NULL,NULL,'Unknown');
+insert into Guest values (19,'David','Mcloughlain',NULL,'Dave',NULL,'086 059 6714','Unknown');
+insert into Guest values (20,'Yune','Azpiazu',NULL,'Yune',NULL,'086 059 6714','Unknown');
+insert into Guest values (21,'Johnny','Grealish',NULL,'Johnny',NULL,'086 059 6714','Unknown');
+insert into Guest values (22,'Deirdre','Grealish',NULL,'Dee',NULL,'086 059 6714','Unknown');
+insert into Guest values (23,'Emilia','Alguilar',NULL,'Emi',NULL,'086 059 6714','Unknown');
+insert into Guest values (24,'Ondrej','Louda',NULL,'Ondrej',NULL,'086 059 6714','Unknown');
+insert into Guest values (25,'Stephen','Franklin',NULL,'C',NULL,'086 059 6714','Unknown');
+insert into Guest values (26,'Niamh','Franklin',NULL,'Niamh',NULL,'086 059 6714','Unknown');
+insert into Guest values (27,'Gerard','Hayes',NULL,'Ger',NULL,'086 059 6714','Unknown');
+insert into Guest values (28,'Clodagh','Hayes',NULL,'Clodagh',NULL,'086 059 6714','Unknown');
+insert into Guest values (29,'Mike','Guiney',NULL,'Mike',NULL,'086 059 6714','Unknown');
+insert into Guest values (30,'Edel','Guiney',NULL,'Edel',NULL,'086 059 6714','Unknown');
+insert into Guest values (31,'Gordon','Murray',NULL,'Gordo',NULL,'086 059 6714','Unknown');
+insert into Guest values (32,'Ronnie','Murray',NULL,'Ronnie',NULL,'086 059 6714','Unknown');
+insert into Guest values (33,'James','Canon',NULL,'James',NULL,'086 059 6714','Unknown');
+insert into Guest values (34,'Michelle','Canon',NULL,'James',NULL,'086 059 6714','Unknown');
+insert into Guest values (35,'Pamela','Canon',NULL,'Pam',NULL,'086 059 6714','Unknown');
+insert into Guest values (36,'Pat','Canon',NULL,'Pat',NULL,'086 059 6714','Unknown');
+insert into Guest values (37,'Liam','Canon',NULL,'Liameen',NULL,'086 059 6714','Unknown');
+insert into Guest values (38,'Siobhan','Jennings',NULL,'Siobhan',NULL,'086 059 6714','Unknown');
+insert into Guest values (39,'Jason','McCormac',NULL,'Jayo',NULL,'086 059 6714','Unknown');
+insert into Guest values (40,'Sarah','McCormac',NULL,'Jayo',NULL,'086 059 6714','Unknown');
+insert into Guest values (41,'Alan','Keane',NULL,'Kano',NULL,'086 059 6714','Unknown');
+insert into Guest values (42,'Mairead','Keane',NULL,'Mairead',NULL,'086 059 6714','Unknown');
+insert into Guest values (43,'Kevin','Keane',NULL,'Kev',NULL,'086 059 6714','Unknown');
+insert into Guest values (44,'Maura','Keane',NULL,'Maura',NULL,'086 059 6714','Unknown');
+insert into Guest values (45,'Marius','Claudy',NULL,'Marius',NULL,'086 059 6714','Unknown');
+insert into Guest values (46,'Michelle','Claudy',NULL,'Michelle',NULL,'086 059 6714','Unknown');
+insert into Guest values (47,'Mark','Smyth',NULL,'Mark',NULL,'086 059 6714','Unknown');
+insert into Guest values (48,'Fiona','Smyth',NULL,'Fiona',NULL,'086 059 6714','Unknown');
+insert into Guest values (49,'Paul','Murphy',NULL,'Paul',NULL,'086 059 6714','Unknown');
+insert into Guest values (50,'Catherine','Murphy',NULL,'Catherine',NULL,'086 059 6714','Unknown');
+insert into Guest values (51,'Joe','Murphy',NULL,'Joe',NULL,'086 059 6714','Unknown');
+insert into Guest values (52,'Nicola','Murphy',NULL,'Nicola',NULL,'086 059 6714','Unknown');
 
 insert into RelationShip values(1,2,'Married');
 insert into RelationShip values(3,4,'Married');
