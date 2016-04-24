@@ -1,0 +1,47 @@
+﻿@model List<BigDay.Models.WeddingGuest>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>List Of Guests</h3></div>
+    <div class="scrolling panel-body col-md-12">
+        @{
+            var accepted = 0;
+            var declined = 0;
+            var all = 0;
+            foreach (var item in ViewData.Model)
+            {
+                all++;
+                if (item.Status.Equals("Accepted"))
+                {
+                    accepted++;
+                    <div class="row col-md-12">
+                        <div class="col-md-3">@Html.ActionLink(@item.Firstname + ' ' + @item.Surname + " is coming.", "Guest", new { Id = @item.Id })</div>
+                    </div>
+                }
+                else if (item.Status.Equals("Declined"))
+                {
+                    declined++;
+                    <div class="row col-md-12">
+                        <div class="col-md-3">@Html.ActionLink(@item.Firstname + ' ' + @item.Surname + " cant make it.", "Guest", new { Id = @item.Id })</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row col-md-12">
+                        <div class="col-md-3">@Html.ActionLink(@item.Firstname + ' ' + @item.Surname + " has not replied.", "Guest", new { Id = @item.Id })</div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+
+    @using (Html.BeginForm("Guests", "Home", FormMethod.Post))
+    {
+        <div class="row col-md-9">
+            <hr />
+            <button type="submit" name="filterbutton" class="btn btn-default btn-md col-md-3" value="Accepted">Accepted <span class="badge">@accepted</span></button>
+            <button type="submit" name="filterbutton" class="btn btn-default btn-md col-md-3" value="Declined">Declined <span class="badge">@declined</span></button>
+            <button type="submit" name="filterbutton" class="btn btn-default btn-md col-md-3" value="All">All <span class="badge"></span></button>
+        </div>
+
+    }

@@ -1,0 +1,27 @@
+﻿@model BigDay.Models.LoginRequest
+@{
+    ViewBag.Title = "Log In";
+}
+
+<h2>Log In</h2>
+
+@Html.ValidationSummary(true)
+
+@using (Html.BeginForm())
+{
+    <div class="loginimg">
+        <div class="row">
+            @Html.LabelFor(model => model.Firstname, htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <hr/>
+        <div class="row">
+            <button type="Submit">Log In</button>
+        </div>
+        <hr />
+    </div>
+}

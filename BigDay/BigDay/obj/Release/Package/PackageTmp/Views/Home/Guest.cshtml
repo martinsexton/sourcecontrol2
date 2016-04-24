@@ -1,0 +1,18 @@
+﻿@model BigDay.Models.WeddingGuest
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>@ViewBag.Message</h3></div>
+    <div class="panel-body">
+        @if (Model.Status.Equals("Accepted")){
+            if (Model.GuestName != null){
+            <p>@Model.Firstname @Model.Surname is coming with @Model.GuestName</p> <br />
+            } else {
+            <p>@Model.Firstname @Model.Surname is coming</p> <br />
+            }        
+        } else {
+            <p>@Model.Firstname @Model.Surname cant make it.</p> <br />     
+        }
+        <hr />
+    </div>
+</div>
+<a href="/Home/Guests" class="btn btn-default" role="button">Back</a>

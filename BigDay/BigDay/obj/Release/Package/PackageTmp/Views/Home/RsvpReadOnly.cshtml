@@ -1,0 +1,22 @@
+﻿@model BigDay.Models.WeddingGuest
+
+@{
+    ViewBag.Title = "Rsvp";
+}
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>RSVP</h3></div>
+    <div class="panel-body">
+        <p>Thanks @Html.DisplayFor(model => model.NickName) you have already @Html.DisplayFor(model => model.Status)</p>
+        <br/>
+        @{
+            if (ViewData.Model.IncludeGuest)
+            {
+                <p>
+                    You are attending with @Html.DisplayFor(model => model.PartnerFirstname) @Html.DisplayFor(model => model.PartnerSurname)
+                </p>
+            }
+        }
+    </div>
+</div>
+<a href="/Home" class="btn btn-default" role="button">Back</a>
+

@@ -1,0 +1,13 @@
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\EmailService.dll.config
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\EmailService.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\EmailService.pdb
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\Newtonsoft.Json.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\SendGrid.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\SendGrid.SmtpApi.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\SendGridMail.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\System.Net.Http.Formatting.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\Newtonsoft.Json.xml
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\bin\Debug\System.Net.Http.Formatting.xml
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\obj\Debug\EmailService.csprojResolveAssemblyReference.cache
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\obj\Debug\EmailService.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\BigDay\EmailService\obj\Debug\EmailService.pdb
