@@ -8,16 +8,11 @@ namespace WeddingServices.Interface
 {
     public interface IGuest
     {
+        int getIdentifier();
         string getFirstname();
         string getSurname();
         string getStatus();
         string getDietComment();
-        string getEmail();
-        string getMobile();
-        int getIdentifier();
-        int getReferenceIdentifier();
-        int getAttendingGuestIdentifier();
-        string getNickname();
-        IGuest getRelatedGuest();
+        string getGuestName();
     }
 }

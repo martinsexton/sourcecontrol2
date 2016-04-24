@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="BomiCloudService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
+  <Role name="WCFServiceWebRole1">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=bomistorage;AccountKey=a+Seg6exmy5h/A4j7M3nN0/PSqFHzMjhqsLwtpo1jtBfmU8cAXtZKmiRsWl0aWV1IsDi/oBpa9OQGI2VkdjOiA==" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="BearingPoint" thumbprint="FAEB59CB8A806F47FEA5A706DE93D9E0DEECFF52" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>

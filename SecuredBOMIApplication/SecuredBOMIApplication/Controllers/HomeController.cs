@@ -29,7 +29,10 @@ namespace SecuredBOMIApplication.Controllers
         [Authorize]
         public ActionResult Contact()
         {
-            string userfirstname = ClaimsPrincipal.Current.FindFirst(ClaimTypes.GivenName).Value;
+            /*string userfirstname = ClaimsPrincipal.Current.FindFirst(ClaimTypes.GivenName).Value;
+            ViewBag.Message = String.Format("Welcome, {0}!", userfirstname);*/
+
+            string userfirstname = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Name).Value;
             ViewBag.Message = String.Format("Welcome, {0}!", userfirstname);
 
             return View();

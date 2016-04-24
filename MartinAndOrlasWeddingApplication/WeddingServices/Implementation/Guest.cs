@@ -15,13 +15,8 @@ namespace WeddingServices.Implementation
         public string Firstname { get; set; }
         public string Surname { get; set; }
         public string DietComment { get; set; }
-        public string MobileNumber { get; set; }
         public string Status { get; set; }
-        public string AttendingGuestName { get; set; }
-        public int ReferenceIdentifier { get; set; }
-        public int AttendingGuestIdentifier { get; set; }
-        public string Nickname { get; set; }
-        public IRelationship Relationship { get; set; }
+        public string GuestName { get; set; }
 
         public string getFirstname()
         {
@@ -31,6 +26,11 @@ namespace WeddingServices.Implementation
         public string getSurname()
         {
             return Surname;
+        }
+
+        public string getGuestName()
+        {
+            return GuestName;
         }
 
         public string getDietComment()
@@ -43,46 +43,10 @@ namespace WeddingServices.Implementation
             return Status;
         }
 
-        public string getEmail()
-        {
-            return Email;
-        }
-
-        public string getMobile()
-        {
-            return MobileNumber;
-        }
-
         public int getIdentifier()
         {
             return Id;
         }
 
-        public int getReferenceIdentifier()
-        {
-            return ReferenceIdentifier;
-        }
-
-        public int getAttendingGuestIdentifier()
-        {
-            return AttendingGuestIdentifier;
-        }
-
-        public string getNickname()
-        {
-            return Nickname;
-        }
-
-        public IGuest getRelatedGuest()
-        {
-            if (Relationship != null)
-            {
-                return Relationship.getRelatedGuest();
-            }
-            else
-            {
-                return null;
-            }
-        }
     }
 }

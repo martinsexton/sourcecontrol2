@@ -25,11 +25,11 @@
             <div class="row col-md-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Firstname, htmlAttributes: new { @class = "control-label col-md-3" })
-                    @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control col-md-3", @readonly = "true" } })
+                    @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control col-md-3"} })
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-3" })
-                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control col-md-3", @readonly = "true" } })
+                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control col-md-3"} })
                 </div>
             </div>
             <div class="row col-md-12">
@@ -51,12 +51,8 @@
             </div>
             <div class="row col-md-12">
                 <div class="form-group collapseguestdetails">
-                    @Html.LabelFor(model => model.PartnerFirstname, htmlAttributes: new { @class = "control-label col-md-3" })
-                    @Html.EditorFor(model => model.PartnerFirstname, new { htmlAttributes = new { @class = "form-control col-md-3" } })
-                </div>
-                <div class="form-group collapseguestdetails">
-                    @Html.LabelFor(model => model.PartnerSurname, htmlAttributes: new { @class = "control-label col-md-3" })
-                    @Html.EditorFor(model => model.PartnerSurname, new { htmlAttributes = new { @class = "form-control col-md-3" } })
+                    @Html.LabelFor(model => model.GuestName, htmlAttributes: new { @class = "control-label col-md-3" })
+                    @Html.EditorFor(model => model.GuestName, new { htmlAttributes = new { @class = "form-control col-md-3" } })
                 </div>
             </div>
             <div class="row col-md-12">
@@ -65,11 +61,6 @@
                 </div>
                 <div class="form-group">
                     @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.HiddenFor(model => model.PartnerId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.HiddenFor(model => model.ReferenceId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.HiddenFor(model => model.PartnerReferenceId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.HiddenFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.HiddenFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="row col-md-12">

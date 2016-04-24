@@ -16,13 +16,9 @@ namespace FileServiceClient
 
         static void Main(string[] args)
         {
-            for (int i = 0; i < 100; i++)
-            {
-                UploadFile("background2.png");
-            }
-            //UploadFile("background2.png");
-            //UploadFile("powerpoint.pptx");
-            //UploadFile("pdffile.pdf");
+            UploadFile("background2.png");
+            UploadFile("powerpoint.pptx");
+            UploadFile("pdffile.pdf");
 
             //DownloadFile("background2.png");
             //DownloadFile("powerpoint.pptx");
@@ -37,7 +33,7 @@ namespace FileServiceClient
             byte[] fileContent = System.IO.File.ReadAllBytes("C:\\Uploads\\" + fn);
 
             Random rnd = new Random();
-            bool result = service.uploadFile(fileContent, fn + rnd.Next());
+            bool result = service.uploadFile(fileContent, fn);
 
             Console.WriteLine("Result of file upload: " + result);
 

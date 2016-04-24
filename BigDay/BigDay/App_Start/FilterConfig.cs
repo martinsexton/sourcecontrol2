@@ -8,7 +8,8 @@ namespace BigDay
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(new AuthorizeAttribute());
+            //Uncomment below to enable authentication
+            //filters.Add(new AuthorizeAttribute());
         }
     }
 }
