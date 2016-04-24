@@ -170,10 +170,14 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\accommodation.png" />
     <Content Include="Content\Images\background.png" />
-    <Content Include="Content\Images\Card.jpg" />
-    <Content Include="Content\Images\Card2.jpg" />
+    <Content Include="Content\Images\church.png" />
+    <Content Include="Content\Images\churchpageicon.png" />
+    <Content Include="Content\Images\headericon.png" />
     <Content Include="Content\Images\OM.png" />
+    <Content Include="Content\Images\reception.png" />
+    <Content Include="Content\Images\receptiondetails.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -213,6 +217,8 @@
     <Content Include="Views\Home\Guest.cshtml" />
     <Content Include="Views\Home\RsvpResult.cshtml" />
     <Content Include="Views\Home\RsvpReadOnly.cshtml" />
+    <Content Include="Views\Home\ChurchDetails.cshtml" />
+    <Content Include="Views\Home\ReceptionDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

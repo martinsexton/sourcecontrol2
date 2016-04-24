@@ -3,3 +3,8 @@ C:\Users\martin.sexton\Source\Repos\NewRepo\MartinAndOrlasWeddingApplication\Wed
 C:\Users\martin.sexton\Source\Repos\NewRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Release\WeddingServices.dll
 C:\Users\martin.sexton\Source\Repos\NewRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Release\WeddingServices.pdb
 C:\Users\martin.sexton\Source\Repos\NewRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Release\WeddingServices.csprojResolveAssemblyReference.cache
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\bin\Release\WeddingServices.dll
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\bin\Release\WeddingServices.pdb
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Release\WeddingServices.csprojResolveAssemblyReference.cache
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Release\WeddingServices.dll
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Release\WeddingServices.pdb

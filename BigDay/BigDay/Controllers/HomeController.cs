@@ -34,6 +34,16 @@ namespace BigDay.Controllers
             return View();
         }
 
+        public ActionResult ChurchDetails()
+        {
+            return View();
+        }
+
+        public ActionResult ReceptionDetails()
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult Rsvp()
         {
