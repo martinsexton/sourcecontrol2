@@ -1,0 +1,69 @@
+﻿@model MartinAndOrlasWeddingApplication.Models.Guest
+
+<div class="mainpicture"></div>
+<p>Hi @User.Identity.Name, Hope you can come</p>
+
+@using (Html.BeginForm())
+{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Accepted",
+        Value = "Accepted"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Declined",
+        Value = "Declined"
+    });
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Firstname, htmlAttributes: new { @class = "control-label col-md-3" })
+                    @Html.DisplayFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control col-md-3" } })
+                </div>
+                <div class="form-group col-md-6 collapse">
+                    @Html.LabelFor(model => model.RelatedGuest.Firstname, htmlAttributes: new { @class = "control-label col-md-3" })
+                    @Html.EditorFor(model => model.RelatedGuest.Firstname, new { htmlAttributes = new { @class = "form-control col-md-3" } })
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-3" })
+                    @Html.DisplayFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control col-md-3" } })
+                </div>
+                <div class="form-group col-md-6 collapse">
+                    @Html.LabelFor(model => model.RelatedGuest.Surname, htmlAttributes: new { @class = "control-label col-md-3" })
+                    @Html.EditorFor(model => model.RelatedGuest.Surname, new { htmlAttributes = new { @class = "form-control col-md-3" } })
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-3" })
+                    @Html.DropDownListFor(model => model.Status, listItems, "-- Select Status --")
+                </div>
+                <div class="form-group col-md-6 collapse">
+                    @Html.LabelFor(model => model.RelatedGuest.Status, htmlAttributes: new { @class = "control-label col-md-3" })
+                    @Html.DropDownListFor(model => model.RelatedGuest.Status, listItems, "-- Select Status --")
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <div class="checkbox col-md-6" id="IncludeGuestCheckbox">
+                    <label><input type="checkbox" value="IncludeGuest">Include Guest</label>
+                </div>
+                <div class="form-group">
+                    @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <div class="form-group col-md-6">
+                    <input type="submit" value="Submit" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

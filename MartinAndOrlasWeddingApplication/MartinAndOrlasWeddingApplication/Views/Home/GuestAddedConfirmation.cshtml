@@ -1,0 +1,14 @@
+﻿@model MartinAndOrlasWeddingApplication.Models.Guest
+
+<div class="mainpicture"></div>
+
+@if (Model.Status.Equals("Accepted"))
+{
+    <h1>Thanks for coming @Html.DisplayFor(model => model.Firstname)</h1>
+}
+else
+{
+    <h1>Pity you can't come @Html.DisplayFor(model => model.Firstname)</h1>
+}
+
+

@@ -1,0 +1,118 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    font-family: 'Goudy Old Style';
+    font-size: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.navbar-inverse {
+  background-color: transparent;
+  font-size: 25px;
+  font-weight: 300;
+  border-color: transparent;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: green;
+  background-color: transparent;
+  font-size: 25px;
+  font-weight: 300;
+}
+
+.mainpicture {
+  padding: 30px;
+  margin-bottom: 30px;
+  background-image: url(Images/Card2.jpg);
+  font-size: 21px;
+  font-weight: 200;
+  line-height: 2.1428571435;
+  color: inherit;
+  background-color: #eeeeee;
+  height: 300px;
+}
+
+.maincard {
+  padding: 30px;
+  margin-bottom: 30px;
+  background-image: url(Images/Card.jpg);
+  font-size: 30px;
+  font-weight: 300;
+  text-align: center;
+  line-height: 2.1428571435;
+  color: inherit;
+  background-color: #eeeeee;
+  height: 300px;
+}
+
+.textcard {
+  padding: 30px;
+  margin-bottom: 30px;
+  background-image: url(Images/Card.jpg);
+  line-height: 2.1428571435;
+  color: inherit;
+  background-color: #eeeeee;
+  height: 300px;
+}
+
+table.table-fixedheader {
+    width:100%;
+}
+
+table.table-fixedheader, table.table-fixedheader>thead,
+table.table-fixedheader>tbody, table.table-fixedheader>thead>tr,
+table.table-fixedheader>tbody>tr, table.table-fixedheader>thead>tr>th, table.table-fixedheader>tbody>td{
+    display:block;
+}
+
+table.table-fixedheader>thead>tr:after,table.table-fixedheader>tbody>tr:after {
+    content: ' ';
+    display:block;
+    visibility:hidden;
+    clear:both;
+}
+
+table.table-fixedheader tbody {
+    overflow-y:scroll;
+    height:200px;
+    overflow-x:hidden;
+}
+
+div.scrolling {
+    display:block;
+    overflow-y:scroll;
+    height:200px;
+}
+
+.loginimg {
+  padding: 30px;
+  margin-bottom: 30px;
+  background-image: url(Images/login.jpg);
+  font-size: 21px;
+  font-weight: 200;
+  line-height: 2.1428571435;
+  color: inherit;
+  background-color: #eeeeee;
+  height: 300px;
+  width:570px;
+}

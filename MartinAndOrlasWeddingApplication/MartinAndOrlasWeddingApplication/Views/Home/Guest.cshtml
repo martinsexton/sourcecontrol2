@@ -1,0 +1,29 @@
+﻿@model MartinAndOrlasWeddingApplication.Models.Guest
+
+<div class="panel panel-primary">
+    <div class="panel-heading"><h3>@ViewBag.Message</h3></div>
+    <div class="textcard">
+        @if (@Model.Status == "Accepted")
+        {
+            <div class="alert">
+                <strong>Accepted</strong> @Model.Firstname is coming.
+            </div>
+        }
+        else if (@Model.Status == "Declined")
+        {
+            <div class="alert">
+                <strong>Declined</strong> @Model.Firstname Cant come.
+            </div>
+        }
+        else
+        {
+            <div class="alert">
+                <strong>@Model.Firstname has not responded yet!!</strong>
+            </div>
+        }
+        <hr />
+        <span class="glyphicon glyphicon-info-sign"></span>
+        @Html.DisplayFor(model => model.Status)
+        <hr />
+    </div>
+</div>
