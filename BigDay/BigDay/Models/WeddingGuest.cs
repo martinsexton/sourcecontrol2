@@ -23,7 +23,7 @@ namespace BigDay.Models
         public string Surname { get; set; }
 
         [DataType(DataType.MultilineText)]
-        [Display(Name = "Special Dietry Requirements")]
+        [Display(Name = "Dietry Requirements")]
         public string DietComment { get; set; }
 
         [Display(Name = "Status")]

@@ -1,69 +1,71 @@
 ﻿@model BigDay.Models.WeddingGuest
 
-@{
-    ViewBag.Title = "Rsvp";
-}
-
-<h2>Rsvp</h2>
 @using (Html.BeginForm())
 {
     List<SelectListItem> listItems = new List<SelectListItem>();
     listItems.Add(new SelectListItem
     {
-        Text = "Accepted",
+        Text = "Wouldn't Miss It",
         Value = "Accepted"
     });
     listItems.Add(new SelectListItem
     {
-        Text = "Declined",
+        Text = "Sorry, Can't Make It",
         Value = "Declined"
     });
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 centered">
+                <img src="~/Content/Images/headericon.png" class="img-responsive" />
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
-        <div class="form-horizontal">
+        <div class="form-horizontal col-md-3 col-centered">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div class="row col-md-12">
+            <div class="row">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Firstname, htmlAttributes: new { @class = "control-label col-md-3" })
-                    @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control col-md-3"} })
+                    @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control col-md-3" } })
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-3" })
-                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control col-md-3"} })
+                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control col-md-3" } })
                 </div>
             </div>
-            <div class="row col-md-12">
+            <div class="row">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-3" })
                     @Html.DropDownListFor(model => model.Status, listItems, "-- Select Status --")
                 </div>
             </div>
-            <div class="row col-md-12">
+            <div class="row">
                 <div class="form-group" id="IncludeDietComment">
                     @Html.LabelFor(model => model.DietComment, htmlAttributes: new { @class = "control-label col-md-3" })
                     @Html.TextAreaFor(model => model.DietComment, new { htmlAttributes = new { @class = "form-control col-md-3", @readonly = "true" } })
                 </div>
             </div>
-            <div class="row col-md-12">
+            <div class="row">
                 <div class="form-group collapseguestdetails col-md-12">
                     <h3>Guest Details</h3>
                 </div>
             </div>
-            <div class="row col-md-12">
+            <div class="row">
                 <div class="form-group collapseguestdetails">
                     @Html.LabelFor(model => model.GuestName, htmlAttributes: new { @class = "control-label col-md-3" })
                     @Html.EditorFor(model => model.GuestName, new { htmlAttributes = new { @class = "form-control col-md-3" } })
                 </div>
             </div>
-            <div class="row col-md-12">
-                <div class="col-md-6" id="IncludeGuestCheckbox">
+            <div class="row">
+                <div class="col-md-3" id="IncludeGuestCheckbox">
                     <label>@Html.CheckBoxFor(m => m.IncludeGuest, new { @checked = false })Include Guest</label>
                 </div>
                 <div class="form-group">
                     @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
-            <div class="row col-md-12">
+            <div class="row">
                 <div class="form-group col-md-6">
                     <input type="submit" value="Submit" class="btn btn-primary" />
                 </div>

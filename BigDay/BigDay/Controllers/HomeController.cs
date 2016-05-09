@@ -27,12 +27,6 @@ namespace BigDay.Controllers
             return View();
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
 
         public ActionResult ChurchDetails()
         {
@@ -48,6 +42,12 @@ namespace BigDay.Controllers
         public ActionResult Rsvp()
         {
             return View(new WeddingGuest());
+        }
+
+        [HttpGet]
+        public ActionResult Map()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -112,6 +112,7 @@ namespace BigDay.Controllers
 
             return View(modelGuests);
         }
+
 
         private Models.WeddingGuest convertToViewModel(IGuest g)
         {

@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    color: white;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -20,6 +21,19 @@
   height: auto;
   max-width: 100%;
   margin: 0 auto;
+}
+
+.col-centered{
+    float:none;
+    margin: 0 auto;
+}
+
+.rsvp-card {
+    background-image: url('Images/card.jpg');
+    display: block;
+    height: auto;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
