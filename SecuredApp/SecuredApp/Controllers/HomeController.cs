@@ -17,11 +17,11 @@ namespace SecuredApp.Controllers
             return View();
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public ActionResult Projects()
         {
-            string userFirstname = ClaimsPrincipal.Current.FindFirst(ClaimTypes.GivenName).Value;
-            ViewBag.Message = String.Format("Welcome {0}", userFirstname);
+            //string userFirstname = ClaimsPrincipal.Current.FindFirst(ClaimTypes.GivenName).Value;
+            //ViewBag.Message = String.Format("Welcome {0}", userFirstname);
 
             return View();
         }

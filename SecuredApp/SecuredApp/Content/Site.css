@@ -3,6 +3,11 @@
     padding-bottom: 20px;
 }
 
+/*Angular marks inputs that are invalid as pink*/
+/*input.ng-invalid {
+    background-color: lightpink;
+}*/
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
