@@ -1,0 +1,85 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    color: white;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    /*Added the lines below*/
+    height:1300px;
+    background: url(Images/background.png) repeat center center fixed; 
+    background-size:cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.img-responsive {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.col-centered{
+    float:none;
+    margin: 0 auto;
+}
+
+.rsvp-card {
+    background-image: url('Images/card.jpg');
+    display: block;
+    height: auto;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.collapseguestdetails {
+  display: none;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+table.table-fixedheader {
+    width:100%;
+}
+
+table.table-fixedheader, table.table-fixedheader>thead,
+table.table-fixedheader>tbody, table.table-fixedheader>thead>tr,
+table.table-fixedheader>tbody>tr, table.table-fixedheader>thead>tr>th, table.table-fixedheader>tbody>td{
+    display:block;
+}
+
+table.table-fixedheader>thead>tr:after,table.table-fixedheader>tbody>tr:after {
+    content: ' ';
+    display:block;
+    visibility:hidden;
+    clear:both;
+}
+
+table.table-fixedheader tbody {
+    overflow-y:scroll;
+    height:200px;
+    overflow-x:hidden;
+}
+
+div.scrolling {
+    display:block;
+    overflow-y:scroll;
+    height:200px;
+}
+

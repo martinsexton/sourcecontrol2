@@ -21,17 +21,29 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+<<<<<<< HEAD
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Rsvp", "Rsvp", "Home")</li>
                     <li>@Html.ActionLink("Guests", "Guests", "Home")</li>
                     <li><a href="@Url.Action("Logout","Login")">Log Out</a></li>
+=======
+                    <li>@Html.ActionLink("Rsvp", "Rsvp", "Home")</li>
+                    <li>@Html.ActionLink("Church", "ChurchDetails", "Home")</li>
+                    <li>@Html.ActionLink("Reception", "ReceptionDetails", "Home")</li>
+                    <li>@Html.ActionLink("Map", "Map", "Home")</li>
+>>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
                 </ul>
             </div>
         </div>
     </div>
+<<<<<<< HEAD
     <div class="container body-content">
         @RenderBody()
         <hr />
+=======
+    <div class="body-content">
+        @RenderBody()
+>>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
     </div>
 
     @Scripts.Render("~/bundles/jquery")

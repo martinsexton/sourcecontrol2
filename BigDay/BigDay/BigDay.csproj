@@ -170,10 +170,22 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+<<<<<<< HEAD
     <Content Include="Content\Images\background.png" />
     <Content Include="Content\Images\Card.jpg" />
     <Content Include="Content\Images\Card2.jpg" />
     <Content Include="Content\Images\OM.png" />
+=======
+    <Content Include="Content\Images\accommodation.png" />
+    <Content Include="Content\Images\background.png" />
+    <Content Include="Content\Images\card.jpg" />
+    <Content Include="Content\Images\church.png" />
+    <Content Include="Content\Images\churchpageicon.png" />
+    <Content Include="Content\Images\headericon.png" />
+    <Content Include="Content\Images\OM.png" />
+    <Content Include="Content\Images\reception.png" />
+    <Content Include="Content\Images\receptiondetails.png" />
+>>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -204,7 +216,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Home\Contact.cshtml" />
+=======
+>>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Rsvp.cshtml" />
@@ -213,6 +228,12 @@
     <Content Include="Views\Home\Guest.cshtml" />
     <Content Include="Views\Home\RsvpResult.cshtml" />
     <Content Include="Views\Home\RsvpReadOnly.cshtml" />
+<<<<<<< HEAD
+=======
+    <Content Include="Views\Home\ChurchDetails.cshtml" />
+    <Content Include="Views\Home\ReceptionDetails.cshtml" />
+    <Content Include="Views\Home\Map.cshtml" />
+>>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

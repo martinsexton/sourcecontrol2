@@ -27,10 +27,21 @@ namespace BigDay.Controllers
             return View();
         }
 
+<<<<<<< HEAD
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
+=======
+
+        public ActionResult ChurchDetails()
+        {
+            return View();
+        }
+
+        public ActionResult ReceptionDetails()
+        {
+>>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
             return View();
         }
 
@@ -40,6 +51,15 @@ namespace BigDay.Controllers
             return View(new WeddingGuest());
         }
 
+<<<<<<< HEAD
+=======
+        [HttpGet]
+        public ActionResult Map()
+        {
+            return View();
+        }
+
+>>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
         [HttpPost]
         public ActionResult Rsvp(Models.WeddingGuest guest)
         {
@@ -103,6 +123,10 @@ namespace BigDay.Controllers
             return View(modelGuests);
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
         private Models.WeddingGuest convertToViewModel(IGuest g)
         {
             Models.WeddingGuest guest = new WeddingGuest();

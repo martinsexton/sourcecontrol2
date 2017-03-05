@@ -1,0 +1,10 @@
+C:\Users\martin.sexton\Source\Repos\NewRepo\MartinAndOrlasWeddingApplication\WeddingServices\bin\Debug\WeddingServices.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\MartinAndOrlasWeddingApplication\WeddingServices\bin\Debug\WeddingServices.pdb
+C:\Users\martin.sexton\Source\Repos\NewRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Debug\WeddingServices.csprojResolveAssemblyReference.cache
+C:\Users\martin.sexton\Source\Repos\NewRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Debug\WeddingServices.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Debug\WeddingServices.pdb
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\bin\Debug\WeddingServices.dll
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\bin\Debug\WeddingServices.pdb
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Debug\WeddingServices.csprojResolveAssemblyReference.cache
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Debug\WeddingServices.dll
+C:\Users\martin.sexton\Source\Repos\MartinsRepo\MartinAndOrlasWeddingApplication\WeddingServices\obj\Debug\WeddingServices.pdb

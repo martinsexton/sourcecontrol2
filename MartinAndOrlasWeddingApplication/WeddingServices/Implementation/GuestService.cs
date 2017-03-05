@@ -141,7 +141,11 @@ namespace WeddingServices.Implementation
             }
             if (guest.getGuestName() != null)
             {
+<<<<<<< HEAD
                 insert += ",diet_comment";
+=======
+                insert += ",guest_name";
+>>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
                 values += ",@guest_name";
             }
             insert += ")";

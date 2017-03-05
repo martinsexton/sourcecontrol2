@@ -1,0 +1,5 @@
+C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileShareClient\bin\Debug\FileShareClient.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileShareClient\bin\Debug\FileShareClient.pdb
+C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileShareClient\obj\Debug\FileShareClient.dll
+C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileShareClient\obj\Debug\FileShareClient.pdb
+C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileShareClient\obj\Debug\FileShareClient.csprojResolveAssemblyReference.cache
