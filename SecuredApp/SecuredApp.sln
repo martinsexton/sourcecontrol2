@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecuredBOMIApplication", "SecuredBOMIApplication\SecuredBOMIApplication.csproj", "{A0FB17ED-6044-499E-8C93-D79EBE9A0434}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecuredApp", "SecuredApp\SecuredApp.csproj", "{A625B47E-5CEA-438B-AE52-38FEB2C32E75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A0FB17ED-6044-499E-8C93-D79EBE9A0434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0FB17ED-6044-499E-8C93-D79EBE9A0434}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0FB17ED-6044-499E-8C93-D79EBE9A0434}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0FB17ED-6044-499E-8C93-D79EBE9A0434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A625B47E-5CEA-438B-AE52-38FEB2C32E75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A625B47E-5CEA-438B-AE52-38FEB2C32E75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A625B47E-5CEA-438B-AE52-38FEB2C32E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A625B47E-5CEA-438B-AE52-38FEB2C32E75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace SecuredBOMIApplication
+namespace SecuredApp
 {
     public class BundleConfig
     {
