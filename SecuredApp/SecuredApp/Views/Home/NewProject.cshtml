@@ -1,45 +1,47 @@
-﻿<form ng-app="myApp" name="projectForm" action="#">
-    <div class="container" style="padding-top: 20px;">
-        <div class="row">
-            <div class="col-md-6">
-                <p class="text-info">New Project</p>
-                <div class="row">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="projectName" aria-describedby="projectNameHelp" placeholder="Enter Name" ng-model="projName" required>
-                        <small id="projectNameHelp" class="form-text text-muted">Enter the name of the project.</small>
+﻿<div  ng-controller="postController">
+    <form ng-app="postApp" name="projectForm" action="#" ng-submit="submitForm()">
+        <div class="container" style="padding-top: 20px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-info">New Project</p>
+                    <div class="row">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="projectName" aria-describedby="projectNameHelp" placeholder="Enter Name" ng-model="project.projName" required>
+                            <small id="projectNameHelp" class="form-text text-muted">Enter the name of the project.</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <input type="date" class="form-control" id="fromDate" aria-describedby="fromDateHelp" ng-model="project.fromDate" required>
+                            <small id="fromDateHelp" class="form-text text-muted">Enter start date of project</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <input type="tel" class="form-control" id="contactNumber" aria-describedby="contactNumberHelp" ng-model="project.contactNumber" required>
+                            <small id="contactNumberHelp" class="form-text text-muted">Contact Number For Project</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="5" id="details" aria-describedby="detailsHelp" ng-model="project.details" required></textarea>
+                            <small id="detailsHelp" class="form-text text-muted">Enter any details</small>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <input type="date" class="form-control" id="fromDate" aria-describedby="fromDateHelp" ng-model="fromDate" required>
-                        <small id="fromDateHelp" class="form-text text-muted">Enter start date of project</small>
-                    </div>
+                <div class="col-md-6">
+                    <p class="text-info">Details</p>
+                    Name: <p class="text-muted">{{project.projName | uppercase}}</p>
+                    <br />
+                    From Date: <p class="text-muted">{{project.fromDate | date}}</p>
+                    <br />
+                    Contact Number: <p class="text-muted">{{project.contactNumber}}</p>
+                    <br />
+                    Details: <p class="text-muted">{{project.details}}</p>
+                    <br />
+                    <button type="submit" class="btn btn-primary" ng-disabled="projectForm.$invalid">Save</button>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <input type="tel" class="form-control" id="contactNumber" aria-describedby="contactNumberHelp" ng-model="contactNumber" required>
-                        <small id="contactNumberHelp" class="form-text text-muted">Contact Number For Project</small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <textarea class="form-control" rows="5" id="details" aria-describedby="detailsHelp" ng-model="details" required></textarea>
-                        <small id="detailsHelp" class="form-text text-muted">Enter any details</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <p class="text-info">Details</p>
-                Name: <p class="text-muted">{{projName | uppercase}}</p>
-                <br />
-                From Date: <p class="text-muted">{{fromDate | date}}</p>
-                <br />
-                Contact Number: <p class="text-muted">{{contactNumber}}</p>
-                <br />
-                Details: <p class="text-muted">{{details}}</p>
-                <br />
-                <button type="submit" class="btn btn-primary" ng-disabled="projectForm.$invalid">Save</button>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
