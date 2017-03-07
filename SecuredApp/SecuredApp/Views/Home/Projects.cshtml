@@ -1,73 +1,9 @@
-﻿<div ng-app="myApp" ng-controller="myCtrl" ng-init="quantity=1;cost=5;person={firstName:'John',lastName:'Doe'};names=['Jani','Hege','Kai']">
-    <form ng-app="myApp" name="myForm">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>New Project</h3>
-                    <div class="row">
-                        Name:
-                        <input type="text" name="projectName" ng-model="projName" required>
-                    </div>
-                    <div class="row">
-                        Start Date:
-                        <input type="date" name="fromDate" ng-model="fromDate">
-                    </div>
-                    <div class="row">
-                        Contact Number:
-                        <input type="tel" name="contactNumber" ng-model="contactNumber" />
-                        <span ng-show="myForm.myAddress.$error.number">Not a valid number</span>
-                    </div>
-                    <div class="row">
-                        Details:
-                        <textarea ng-model="details" maxlength="400" rows="5" cols="50"></textarea>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <h3>Details</h3>
-                    Name: {{projName | uppercase}}
-                    <br />
-                    From Date: {{fromDate | date}}
-                    <br />
-                    Contact Number: {{contactNumber}}
-                    <br />
-                    Details: {{details}}
-                </div>
-            </div>
-            <!--<div class="row">
-                <div class="col-md-6">
-                    Email:
-                    <input type="email" name="myAddress" ng-model="text">
-                    <span ng-show="myForm.myAddress.$error.email">Not a valid e-mail address</span>
-                </div>
-            </div>-->
-        </div>
-    </form>
+﻿<div class="jumbotron">
+    <div style="padding-top: 100px;">
+        <!--<p><a href="http://denisoneill.azurewebsites.net/Home/NewProject" class="btn btn-primary btn-lg">Create New Project &raquo;</a></p>
+        <p><a href="http://denisoneill.azurewebsites.net/Home/Projects" class="btn btn-primary btn-lg">List Projects &raquo;</a></p>-->
 
-    <!--<p>Name: <input type="text" ng-model="name"></p>
-    <p ng-bind="name"></p>
-    <p>My first expression: {{ 5 + 5 }}</p>
-
-    First Name: <input type="text" ng-model="firstName"><br>
-    Last Name: <input type="text" ng-model="lastName"><br>
-    <br>
-    Full Name: {{firstName + " " + lastName}}
-    <br />
-    <p>Total in dollar: {{ quantity * cost }}</p>
-    <br />
-    <p>The name is {{ person.lastName }}</p>
-    <br />
-    <ul>
-        <li ng-repeat="x in names">
-            {{ x }}
-        </li>
-    </ul>
-    <br />
-    <w3-test-directive></w3-test-directive>
-    <br />-->
+        <p><a href="https://localhost:44302/Home/NewProject" class="btn btn-primary btn-lg">Create New Project &raquo;</a></p>
+        <p><a href="https://localhost:44302/Home/Projects" class="btn btn-primary btn-lg">List Projects &raquo;</a></p>
+    </div>
 </div>
-
-
-
-
-
-
