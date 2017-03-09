@@ -7,7 +7,8 @@ postApp.controller('postController', ['$scope', '$http', function ($scope, $http
         return $http({
             method: "GET",
             url: "http://localhost:51745/api/projects",
-            headers: { 'Content-Type': 'application/json' }
+            //headers: { 'Content-Type': 'application/json' },
+            resonseType: "json"
         }).then(function successCallback(response) {
             alert("success");
         }, function errorCallback(response) {
