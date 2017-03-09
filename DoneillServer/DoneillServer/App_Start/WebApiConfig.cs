@@ -15,7 +15,6 @@ namespace DoneillServer
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            //var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors();
 
             config.Routes.MapHttpRoute(

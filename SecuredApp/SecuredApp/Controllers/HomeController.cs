@@ -26,12 +26,17 @@ namespace SecuredApp.Controllers
             return View();
         }
 
+        public ActionResult ListProjects()
+        {
+            return View();
+        }
+
         public ActionResult NewProject()
         {
             return View();
         }
 
-        [Authorize(Roles = "admin,engineer")]
+        //[Authorize(Roles = "admin,engineer")]
         public ActionResult RecordTimesheet()
         {
             return View();

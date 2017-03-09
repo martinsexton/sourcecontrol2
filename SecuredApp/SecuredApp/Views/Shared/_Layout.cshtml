@@ -22,7 +22,9 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    @if (Request.IsAuthenticated)
+                    <li>@Html.ActionLink("Projects", "Projects", "Home")</li>
+                    <li>@Html.ActionLink("Record Timesheet", "RecordTimesheet", "Home")</li>
+                    <!--@if (Request.IsAuthenticated)
                     {
                         if (User.IsInRole("admin"))
                         {
@@ -32,7 +34,7 @@
                         {
                             <li>@Html.ActionLink("Record Timesheet", "RecordTimesheet", "Home")</li>
                         }
-                    }
+                    }-->
                     <li>@Html.ActionLink("Sign in", "SignIn", "Home")</li>
                     <li>@Html.ActionLink("Sign out", "SignOut", "Home")</li>
                 </ul>

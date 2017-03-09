@@ -1,7 +1,22 @@
-﻿
-@{
-    ViewBag.Title = "RecordTimesheet";
-}
-
-<h2>RecordTimesheet</h2>
-
+﻿<form ng-app="timeApp" name="timesheetForm" ng-controller="recordTimesheetController">
+    <div class="container" style="padding-top: 20px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <select class="form-control" ng-model="timesheetProject">
+                        <option ng-repeat="p in projects">{{p.Name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="date" class="form-control" id="weekEndDate" aria-describedby="weekEndDateHelp" ng-model="weekEndDate" required>
+                    <small id="weekEndDateHelp" class="form-text text-muted">Date (Week Ending)</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{weekEndDate}}
+</form>

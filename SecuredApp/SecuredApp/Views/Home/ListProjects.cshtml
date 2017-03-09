@@ -1,0 +1,24 @@
+﻿<div ng-app="postApp" ng-controller="listProjectsController" style="padding-top: 20px;">
+    <h1>List Projects</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="list-group">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item" ng-repeat="p in projects" ng-click="showDetails(p)">{{p.Name}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p class="text-info">Details</p>
+                Name: <p class="text-muted">{{item_details.Name | uppercase}}</p>
+                <br />
+                From Date: <p class="text-muted">{{item_details.FromDate | date}}</p>
+                <br />
+                Contact Number: <p class="text-muted">{{item_details.ContactNumber}}</p>
+                <br />
+                Details: <p class="text-muted">{{item_details.Details}}</p>
+            </div>
+        </div>
+    </div>
+</div>

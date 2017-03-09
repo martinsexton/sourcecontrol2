@@ -1,44 +1,41 @@
 ﻿var postApp = angular.module('postApp', []);
 
 postApp.controller('postController', ['$scope', '$http', function ($scope, $http) {
-    //Create empty project object
     $scope.project = { projName: "", fromDate: "", contactNumber: "", details: "" };
-    $scope.GetAllData = function () {
+}]);
+
+postApp.controller('listProjectsController', ['$scope', 'projectService', function ($scope, projectService) {
+    projectService.getProjects().then(function mySucces(response) {
+        $scope.projects = response.data;
+        if (response.data.length > 0) {
+            $scope.item_details = response.data[0];
+        }
+    }, function myError(response) {
+    })
+
+    $scope.showDetails = function (project) {
+        $scope.item_details = project;
+    }
+}]);
+
+postApp.service('projectService', ['$http', function ($http) {
+    this.getProjects = function () {
         return $http({
             method: "GET",
-            url: "http://localhost:51745/api/projects",
-            //headers: { 'Content-Type': 'application/json' },
-            resonseType: "json"
-        }).then(function successCallback(response) {
-            alert("success");
-        }, function errorCallback(response) {
-            alert("failed");
-        });
-        /*return $http({
-            method: "GET",
-            url: "http://localhost:51745/api/projects",
+            url: "http://doneillserver.azurewebsites.net/api/projects",
             headers: { 'Content-Type': 'application/json' }
-        }).success(function (data) {
-            //$scope.employees = data;
-            alert("success");
-        }).error(function (data) {
-            alert("failure");
-        });;*/
-    };
-    //projectService.getProjects($scope);
+        });
+    }
 }]);
 
 postApp.service('projectService', ['$http', function ($http) {
     this.getProjects = function ($scope) {
         return $http({
             method: "GET",
-            url: "http://localhost:51745/api/projects",
+            url: "http://doneillserver.azurewebsites.net/api/projects",
             headers: { 'Content-Type': 'application/json' }
         }).success(function (data) {
-            //$scope.employees = data;
-            alert("success");
         }).error(function (data) {
-            alert("failure");
         });;
     };
 }]);

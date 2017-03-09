@@ -28,10 +28,11 @@ namespace DoneillServer.Controllers
         {
             Project p = new Project();
 
+            p.identifier = 1;
             p.Name = "Test Name";
-            /*p.FromDate = DateTime.Now;
+            p.FromDate = DateTime.Now;
             p.ContactNumber = "087 7943849";
-            p.Details = "Details";*/
+            p.Details = "Details";
 
             return p;
         }

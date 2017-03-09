@@ -168,6 +168,7 @@
     <Content Include="Scripts\projects.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\timesheets.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -187,6 +188,7 @@
     <Content Include="Views\Home\SuccessfulSignout.cshtml" />
     <Content Include="Views\Home\RecordTimesheet.cshtml" />
     <Content Include="Views\Home\NewProject.cshtml" />
+    <Content Include="Views\Home\ListProjects.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
