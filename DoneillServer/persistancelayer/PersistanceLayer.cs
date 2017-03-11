@@ -72,5 +72,26 @@ namespace persistancelayer
             }
             return projects;
         }
+
+
+        public void CreateTimesheet(ITimeSheet t)
+        {
+            string insert = "INSERT INTO dbo.TimeSheet(engineer_name,week_end_date) ";
+            string values = "VALUES(@engineerName,@weekEndDate)";
+            string query = insert + values;
+
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.Add("@engineerName", SqlDbType.VarChar, 50).Value = t.getEngineerName();
+                    cmd.Parameters.Add("@weekEndDate", SqlDbType.DateTime).Value = t.getWeekEndDate();
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }            
+        }
     }
 }
