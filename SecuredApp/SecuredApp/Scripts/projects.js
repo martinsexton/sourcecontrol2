@@ -5,7 +5,7 @@ postApp.controller('postController', ['$scope', '$http', function ($scope, $http
     $scope.saveProject = function () {
         var request = {
             method: 'POST',
-            url: 'http://localhost:51745/api/projects',
+            url: 'http://doneillwebapi.azurewebsites.net/api/project',
             data: JSON.stringify($scope.project),
             headers: { 'Content-Type': 'application/json' }
         };
@@ -17,13 +17,6 @@ postApp.controller('postController', ['$scope', '$http', function ($scope, $http
             })
             .error(function () {
             });
-
-        //return $http({
-        //    method: "POST",
-        //    url: "http://localhost:51745/api/projects",
-        //    data: $scope.project,
-        //    headers: { 'Content-Type': 'application/json' }
-        //});
     }
 }]);
 
@@ -45,20 +38,8 @@ postApp.service('projectService', ['$http', function ($http) {
     this.getProjects = function () {
         return $http({
             method: "GET",
-            url: "http://localhost:51745/api/projects",
+            url: "http://doneillwebapi.azurewebsites.net/api/project",
             headers: { 'Content-Type': 'application/json' }
         });
     }
 }]);
-
-//postApp.service('projectService', ['$http', function ($http) {
-//    this.getProjects = function ($scope) {
-//        return $http({
-//            method: "GET",
-//            url: "http://localhost:51745/api/projects",
-//            headers: { 'Content-Type': 'application/json' }
-//        }).success(function (data) {
-//        }).error(function (data) {
-//        });;
-//    };
-//}]);

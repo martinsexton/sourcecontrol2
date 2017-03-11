@@ -1,4 +1,4 @@
-﻿using persistancelayer.api.model;
+﻿//using persistancelayer.api.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,8 @@ using System.Web;
 
 namespace DoneillServer.Models
 {
-    public class Project : IProject
+    //public class Project : IProject
+    public class Project
     {
         //public int identifier { get; set; }
         public string Name { get; set; }

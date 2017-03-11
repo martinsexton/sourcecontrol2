@@ -8,9 +8,9 @@ using System.IO;
 using System.Net.Http.Headers;
 using DoneillServer.Models;
 using System.Web.Http.Cors;
-using persistancelayer.api;
-using persistancelayer;
-using persistancelayer.api.model;
+//using persistancelayer.api;
+//using persistancelayer;
+//using persistancelayer.api.model;
 
 namespace DoneillServer.Controllers
 {
@@ -20,7 +20,16 @@ namespace DoneillServer.Controllers
         [HttpGet]
         public IEnumerable<Project> Get()
         {
-            IPersistanceLayer pl = new PersistanceLayer();
+            Project np = new Project();
+            np.Name = "sdf";
+            np.StartDate = DateTime.Now;
+            np.ContactNumber = "sdfsdf";
+            np.Details = "sdf";
+
+            return new Project[] { np };
+
+
+            /*IPersistanceLayer pl = new PersistanceLayer();
             List<IProject> projects = pl.RetrieveProjects();
             List<Project> projectsForDisplay = new List<Project>();
 
@@ -34,7 +43,8 @@ namespace DoneillServer.Controllers
                 projectsForDisplay.Add(np);
             }
 
-            return projectsForDisplay;
+            return projectsForDisplay;*/
+
         }
 
         // GET api/values/5
@@ -52,8 +62,8 @@ namespace DoneillServer.Controllers
         [HttpPost]
         public void Post(Project value)
         {
-            IPersistanceLayer pl = new PersistanceLayer();
-            pl.CreateProject(value);
+            //IPersistanceLayer pl = new PersistanceLayer();
+            //pl.CreateProject(value);
         }
 
         // PUT api/values/5
