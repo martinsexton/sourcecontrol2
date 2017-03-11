@@ -11,7 +11,7 @@ timeApp.service('projectService', ['$http', function ($http) {
     this.getProjects = function () {
         return $http({
             method: "GET",
-            url: "http://doneillserver.azurewebsites.net/api/projects",
+            url: "http://localhost:51745/api/projects",
             headers: { 'Content-Type': 'application/json' }
         });
     }

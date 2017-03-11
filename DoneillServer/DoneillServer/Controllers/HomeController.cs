@@ -28,9 +28,9 @@ namespace DoneillServer.Controllers
         {
             Project p = new Project();
 
-            p.identifier = 1;
+            //p.identifier = 1;
             p.Name = "Test Name";
-            p.FromDate = DateTime.Now;
+            //p.StartDate = DateTime.Now;
             p.ContactNumber = "087 7943849";
             p.Details = "Details";
 

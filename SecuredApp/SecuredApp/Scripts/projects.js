@@ -1,7 +1,30 @@
 ﻿var postApp = angular.module('postApp', []);
 
 postApp.controller('postController', ['$scope', '$http', function ($scope, $http) {
-    $scope.project = { projName: "", fromDate: "", contactNumber: "", details: "" };
+    $scope.project = { Name: "", StartDate: "", ContactNumber: "", Details: "" };
+    $scope.saveProject = function () {
+        var request = {
+            method: 'POST',
+            url: 'http://localhost:51745/api/projects',
+            data: JSON.stringify($scope.project),
+            headers: { 'Content-Type': 'application/json' }
+        };
+
+        // SEND THE FILES.
+        $http(request)
+            .success(function (d) {
+                $scope.project = { Name: "", StartDate: "", ContactNumber: "", Details: "" };
+            })
+            .error(function () {
+            });
+
+        //return $http({
+        //    method: "POST",
+        //    url: "http://localhost:51745/api/projects",
+        //    data: $scope.project,
+        //    headers: { 'Content-Type': 'application/json' }
+        //});
+    }
 }]);
 
 postApp.controller('listProjectsController', ['$scope', 'projectService', function ($scope, projectService) {
@@ -22,20 +45,20 @@ postApp.service('projectService', ['$http', function ($http) {
     this.getProjects = function () {
         return $http({
             method: "GET",
-            url: "http://doneillserver.azurewebsites.net/api/projects",
+            url: "http://localhost:51745/api/projects",
             headers: { 'Content-Type': 'application/json' }
         });
     }
 }]);
 
-postApp.service('projectService', ['$http', function ($http) {
-    this.getProjects = function ($scope) {
-        return $http({
-            method: "GET",
-            url: "http://doneillserver.azurewebsites.net/api/projects",
-            headers: { 'Content-Type': 'application/json' }
-        }).success(function (data) {
-        }).error(function (data) {
-        });;
-    };
-}]);
+//postApp.service('projectService', ['$http', function ($http) {
+//    this.getProjects = function ($scope) {
+//        return $http({
+//            method: "GET",
+//            url: "http://localhost:51745/api/projects",
+//            headers: { 'Content-Type': 'application/json' }
+//        }).success(function (data) {
+//        }).error(function (data) {
+//        });;
+//    };
+//}]);

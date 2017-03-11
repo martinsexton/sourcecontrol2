@@ -8,6 +8,9 @@ using System.IO;
 using System.Net.Http.Headers;
 using DoneillServer.Models;
 using System.Web.Http.Cors;
+using persistancelayer.api;
+using persistancelayer;
+using persistancelayer.api.model;
 
 namespace DoneillServer.Controllers
 {
@@ -17,37 +20,21 @@ namespace DoneillServer.Controllers
         [HttpGet]
         public IEnumerable<Project> Get()
         {
-            Project p1 = new Project();
-            p1.identifier = 1;
-            p1.Name = "Honan Chaple Upgrade";
-            p1.FromDate = DateTime.Now;
-            p1.ContactNumber = "087 7485948";
-            p1.Details = "Need to upgrade heating system";
+            IPersistanceLayer pl = new PersistanceLayer();
+            List<IProject> projects = pl.RetrieveProjects();
+            List<Project> projectsForDisplay = new List<Project>();
 
+            foreach(IProject p in projects){
+                Project np = new Project();
+                np.Name = p.getName();
+                np.StartDate = p.getStartDate();
+                np.ContactNumber = p.getContactNumber();
+                np.Details = p.getDetails();
 
-            Project p2 = new Project();
-            p2.identifier = 2;
-            p2.Name = "Burkes Garage";
-            p2.FromDate = DateTime.Now;
-            p2.ContactNumber = "021 485748";
-            p2.Details = "Switches needed in staff room";
+                projectsForDisplay.Add(np);
+            }
 
-            Project p3 = new Project();
-            p3.identifier = 1;
-            p3.Name = "UCC";
-            p3.FromDate = DateTime.Now;
-            p3.ContactNumber = "021 948394";
-            p3.Details = "Alarm system to upgrade";
-
-
-            Project p4 = new Project();
-            p4.identifier = 2;
-            p4.Name = "Riordans Pub";
-            p4.FromDate = DateTime.Now;
-            p4.ContactNumber = "087 84758937";
-            p4.Details = "Work needed in kitchen";
-
-            return new Project[] { p1, p2,p3,p4 };
+            return projectsForDisplay;
         }
 
         // GET api/values/5
@@ -65,7 +52,8 @@ namespace DoneillServer.Controllers
         [HttpPost]
         public void Post(Project value)
         {
-            
+            IPersistanceLayer pl = new PersistanceLayer();
+            pl.CreateProject(value);
         }
 
         // PUT api/values/5
