@@ -9,6 +9,10 @@ namespace persistancelayer.impl.model
 {
     class Timesheet : ITimeSheet
     {
+        public int identifier { get; set; }
+        public string engineerName { get; set; }
+        public DateTime weekEndDate { get; set; }
+
         public List<ITimeSheetItem> getItems()
         {
             throw new NotImplementedException();
@@ -16,12 +20,18 @@ namespace persistancelayer.impl.model
 
         public string getEngineerName()
         {
-            throw new NotImplementedException();
+            return engineerName;
         }
 
         public DateTime getWeekEndDate()
         {
-            throw new NotImplementedException();
+            return weekEndDate;
+        }
+
+
+        public int getIdentifier()
+        {
+            return identifier;
         }
     }
 }

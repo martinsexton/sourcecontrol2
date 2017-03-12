@@ -115,5 +115,37 @@ namespace persistancelayer
                 }
             }            
         }
+
+
+        public List<ITimeSheet> RetrieveTimesheets()
+        {
+            List<ITimeSheet> timesheets = new List<ITimeSheet>();
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                    SELECT
+                        ts.Id
+                        ,ts.engineer_name
+                        ,ts.week_end_date
+                    FROM TimeSheet AS ts;";
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Timesheet ts = new Timesheet();
+                        ts.identifier = reader.GetInt32(0);
+                        ts.engineerName = reader.GetString(1);
+                        ts.weekEndDate = reader.GetDateTime(2);
+
+                        timesheets.Add(ts);
+                    }
+                }
+            }
+            return timesheets;
+        }
     }
 }

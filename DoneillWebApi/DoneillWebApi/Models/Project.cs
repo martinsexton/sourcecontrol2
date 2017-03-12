@@ -8,7 +8,7 @@ namespace DoneillWebApi.Models
 {
     public class Project : IProject
     {
-        //public int identifier { get; set; }
+        public int identifier { get; set; }
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public string ContactNumber { get; set; }

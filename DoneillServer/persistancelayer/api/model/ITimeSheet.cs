@@ -11,5 +11,6 @@ namespace persistancelayer.api.model
         List<ITimeSheetItem> getItems();
         String getEngineerName();
         DateTime getWeekEndDate();
+        int getIdentifier();
     }
 }

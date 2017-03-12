@@ -1,0 +1,14 @@
+﻿<div ng-app="timeApp" ng-controller="listTimesheetController" style="padding-top: 20px;">
+    <h1>List Timesheets</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="list-group">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item" ng-repeat="p in timesheets">{{p.engineerName + " For week ending " + p.weekEndDate}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

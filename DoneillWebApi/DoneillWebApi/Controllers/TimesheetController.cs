@@ -1,6 +1,7 @@
 ﻿using DoneillWebApi.Models;
 using persistancelayer;
 using persistancelayer.api;
+using persistancelayer.api.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,23 @@ namespace DoneillWebApi.Controllers
         [HttpGet]
         public IEnumerable<Timesheet> Get()
         {
-            throw new NotImplementedException();
+            IPersistanceLayer pl = new PersistanceLayer();
+            List<ITimeSheet> timeSheets = pl.RetrieveTimesheets();
+            List<Timesheet> timesheetsForDisplay = new List<Timesheet>();
+
+            foreach (ITimeSheet p in timeSheets)
+            {
+                Timesheet np = new Timesheet();
+
+                np.engineerName = p.getEngineerName();
+                np.weekEndDate = p.getWeekEndDate();
+                np.identifier = p.getIdentifier();
+
+
+                timesheetsForDisplay.Add(np);
+            }
+
+            return timesheetsForDisplay;
         }
 
         // GET api/values/5

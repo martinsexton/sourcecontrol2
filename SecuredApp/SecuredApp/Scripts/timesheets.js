@@ -1,5 +1,22 @@
 ﻿var timeApp = angular.module('timeApp', []);
 
+timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetService', function ($scope, $http, timesheetService) {
+    timesheetService.getTimesheets().then(function mySucces(response) {
+        $scope.timesheets = response.data;
+    }, function myError(response) {
+    })
+}]);
+
+timeApp.service('timesheetService', ['$http', function ($http) {
+    this.getTimesheets = function () {
+        return $http({
+            method: "GET",
+            url: "http://doneillwebapi.azurewebsites.net/api/timesheet",
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+}]);
+
 timeApp.controller('recordTimesheetController', ['$scope', '$http', 'projectService', function ($scope, $http, projectService) {
     $scope.showdetails = false;
     $scope.showsavebutton = false;

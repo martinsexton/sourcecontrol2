@@ -31,6 +31,11 @@ namespace SecuredApp.Controllers
             return View();
         }
 
+        public ActionResult ListTimesheets()
+        {
+            return View();
+        }
+
         public ActionResult NewProject()
         {
             return View();

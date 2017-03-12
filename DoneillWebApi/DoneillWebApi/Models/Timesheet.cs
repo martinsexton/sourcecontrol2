@@ -8,6 +8,7 @@ namespace DoneillWebApi.Models
 {
     public class Timesheet : ITimeSheet
     {
+        public int identifier { get; set; }
         public string engineerName { get; set; }
         public DateTime weekEndDate { get; set; }
         public TimesheetItem[] items = new TimesheetItem[5];
@@ -39,6 +40,12 @@ namespace DoneillWebApi.Models
         public DateTime getWeekEndDate()
         {
             return weekEndDate;
+        }
+
+
+        public int getIdentifier()
+        {
+            return identifier;
         }
     }
 }

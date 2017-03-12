@@ -48,6 +48,9 @@
                 <div class="row" ng-show="showdetails">
                     <p class="text-info">Details</p>
                     <br />
+                    Engineer Name: <p class="text-muted">{{timesheet.engineerName | uppercase}}</p>
+                    <br/>
+                    Week Ending: <p class="text-muted">{{timesheet.weekEndDate | uppercase}}</p>
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="rd in recordedDays">{{"Worked for " + rd.ProjectName + " on " + rd.Day + " from " + rd.dayStartTime + " to " + rd.dayEndTime}}<span class="badge">{{rd.dayEndTime - rd.dayStartTime}} Hours</span></li>
                     </ul>
