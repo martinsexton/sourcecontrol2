@@ -1,6 +1,7 @@
 ﻿var timeApp = angular.module('timeApp', []);
 
 timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetService', function ($scope, $http, timesheetService) {
+    $scope.showtimesheetdetails = false;
     timesheetService.getTimesheets().then(function mySucces(response) {
         $scope.timesheets = response.data;
     }, function myError(response) {
@@ -9,6 +10,10 @@ timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetServ
     $scope.showTimesheetDetails = function (timesheet) {
         timesheetService.getTimesheetItems(timesheet).then(function mySucces(response) {
             $scope.timesheetitems = response.data;
+            $scope.selectedtimesheet = timesheet;
+            if ($scope.timesheetitems.length > 0) {
+                $scope.showtimesheetdetails = true;
+            }
         }, function myError(response) {
         })
     }

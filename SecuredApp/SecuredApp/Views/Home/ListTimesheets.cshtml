@@ -9,7 +9,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" ng-show="showtimesheetdetails">
+                Engineer Name: <p class="text-muted">{{selectedtimesheet.engineerName | uppercase}}</p>
+                <br />
+                Week Ending: <p class="text-muted">{{selectedtimesheet.weekEndDate | uppercase}}</p>
+                <br />
                 <div class="list-group">
                     <div class="list-group">
                         <a href="#" class="list-group-item" ng-repeat="tsi in timesheetitems">{{tsi.Day + " Worked For " + tsi.ProjectName + " between " + tsi.dayStartTime + " and " + tsi.dayEndTime}}</a>
