@@ -1,7 +1,6 @@
 ﻿var timeApp = angular.module('timeApp', []);
 
 timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetService', function ($scope, $http, timesheetService) {
-    $scope.showtimesheetdetails = false;
     timesheetService.getTimesheets().then(function mySucces(response) {
         $scope.timesheets = response.data;
     }, function myError(response) {
@@ -54,8 +53,8 @@ timeApp.controller('recordTimesheetController', ['$scope', '$http', 'projectServ
         if ($scope.recordedDays.length == 5) {
             $scope.showsavebutton = true;
         }
-        var index = $scope.days.indexOf($scope.recordedDay.Day);
-        $scope.days.splice(index, 1);
+        //var index = $scope.days.indexOf($scope.recordedDay.Day);
+        //$scope.days.splice(index, 1);
     }
 
     $scope.saveTimesheet = function() {
@@ -69,7 +68,17 @@ timeApp.controller('recordTimesheetController', ['$scope', '$http', 'projectServ
         // SEND THE FILES.
         $http(request)
             .success(function (d) {
-                $scope.project = { Name: "", StartDate: "", ContactNumber: "", Details: "" };
+                $scope.showsavebutton = false;
+                $scope.showdetails = false;
+
+                $scope.recordedDay.Day = "";
+                $scope.recordedDay.ProjectName = "";
+                $scope.recordedDay.dayStartTime = "";
+                $scope.recordedDay.dayEndTime = "";
+
+                $scope.recordedDays = [];
+                $scope.timesheet.engineerName = "";
+                $scope.timesheet.weekEndDate = "";
             })
             .error(function () {
             });
