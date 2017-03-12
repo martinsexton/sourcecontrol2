@@ -3,6 +3,10 @@
     padding-bottom: 20px;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+ }
+
 /*Angular marks inputs that are invalid as pink*/
 /*input.ng-invalid {
     background-color: lightpink;

@@ -1,7 +1,7 @@
 ﻿<div class="page-header">
     <h1><small>New Project</small></h1>
 </div>
-<form ng-app="postApp" name="projectForm" ng-controller="postController" ng-submit="saveProject()">
+<form ng-app="postApp" name="projectForm" ng-controller="postController" ng-submit="saveProject()" ng-cloak>
     <div class="container" style="padding-top: 20px;">
         <div class="row">
             <div class="col-md-6">
@@ -30,17 +30,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <p class="text-info">Details</p>
-                Name: <p class="text-muted">{{project.Name | uppercase}}</p>
-                <br />
-                From Date: <p class="text-muted">{{project.StartDate | date}}</p>
-                <br />
-                Contact Number: <p class="text-muted">{{project.ContactNumber}}</p>
-                <br />
-                Details: <p class="text-muted">{{project.Details}}</p>
-                <br />
-                <button class="btn btn-primary" ng-disabled="projectForm.$invalid">Save</button>
+            <div class="col-md-6 panel panel-primary">
+                <div class="panel-heading">Details</div>
+                <div class="panel-body">
+                    Name: <p class="text-muted">{{project.Name | uppercase}}</p>
+                    <br />
+                    From Date: <p class="text-muted">{{project.StartDate | date}}</p>
+                    <br />
+                    Contact Number: <p class="text-muted">{{project.ContactNumber}}</p>
+                    <br />
+                    Details: <p class="text-muted">{{project.Details}}</p>
+                    <br />
+                    <button class="btn btn-primary" ng-disabled="projectForm.$invalid">Save</button>
+                </div>
             </div>
         </div>
     </div>

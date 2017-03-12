@@ -1,4 +1,4 @@
-﻿<div ng-app="timeApp" ng-controller="listTimesheetController" style="padding-top: 20px;">
+﻿<div ng-app="timeApp" ng-controller="listTimesheetController" style="padding-top: 20px;" ng-cloak>
     <div class="page-header">
         <h1><small>Work Sheets</small></h1>
     </div>
@@ -11,14 +11,17 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" ng-show="showtimesheetdetails">
-                Engineer Name: <p class="text-muted">{{selectedtimesheet.engineerName | uppercase}}</p>
-                <br />
-                Week Ending: <p class="text-muted">{{selectedtimesheet.weekEndDate | uppercase}}</p>
-                <br />
-                <div class="list-group">
+            <div class="col-md-6 panel panel-primary" ng-show="showtimesheetdetails">
+                <div class="panel-heading">Details</div>
+                <div class="panel-body">
+                    Engineer Name: <p class="text-muted">{{selectedtimesheet.engineerName | uppercase}}</p>
+                    <br />
+                    Week Ending: <p class="text-muted">{{selectedtimesheet.weekEndDate | uppercase}}</p>
+                    <br />
                     <div class="list-group">
-                        <a href="#" class="list-group-item" ng-repeat="tsi in timesheetitems">{{tsi.Day + " Worked For " + tsi.ProjectName + " between " + tsi.dayStartTime + " and " + tsi.dayEndTime}}</a>
+                        <div class="list-group">
+                            <a href="#" class="list-group-item" ng-repeat="tsi in timesheetitems">{{tsi.Day + " Worked For " + tsi.ProjectName + " between " + tsi.dayStartTime + " and " + tsi.dayEndTime}}</a>
+                        </div>
                     </div>
                 </div>
             </div>

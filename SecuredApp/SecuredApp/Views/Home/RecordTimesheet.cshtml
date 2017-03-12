@@ -1,4 +1,4 @@
-﻿<form ng-app="timeApp" name="timesheetForm" ng-controller="recordTimesheetController" ng-submit="saveTimesheet()">
+﻿<form ng-app="timeApp" name="timesheetForm" ng-controller="recordTimesheetController" ng-submit="saveTimesheet()" ng-cloak>
     <div class="container" style="padding-top: 20px;">
         <div class="row">
             <div class="col-sm-6">
@@ -49,7 +49,7 @@
                     <p class="text-info">Details</p>
                     <br />
                     Engineer Name: <p class="text-muted">{{timesheet.engineerName | uppercase}}</p>
-                    <br/>
+                    <br />
                     Week Ending: <p class="text-muted">{{timesheet.weekEndDate | uppercase}}</p>
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="rd in recordedDays">{{"Worked for " + rd.ProjectName + " on " + rd.Day + " from " + rd.dayStartTime + " to " + rd.dayEndTime}}<span class="badge">{{rd.dayEndTime - rd.dayStartTime}} Hours</span></li>
