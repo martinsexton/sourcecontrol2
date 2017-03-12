@@ -5,11 +5,30 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <div class="list-group">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item" ng-repeat="p in projects" ng-click="showDetails(p)">{{p.Name}}</a>
-                    </div>
-                </div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td>
+                                <a href="#" ng-click="sortType = 'Name'; sortReverse = !sortReverse">
+                                    Project Name
+                                    <span ng-show="sortType == 'Name'" class="fa fa-caret-down"></span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#" ng-click="sortType = 'StartDate'; sortReverse = !sortReverse">
+                                    Start Date
+                                    <span ng-show="sortType == 'StartDate'" class="fa fa-caret-down"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="p in projects | orderBy:sortType:sortReverse" ng-click="showDetails(p)">
+                            <td>{{ p.Name }}</td>
+                            <td>{{ p.StartDate }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="col-md-6 panel panel-primary">
                 <div class="panel-heading">Details</div>

@@ -1,6 +1,9 @@
 ﻿var timeApp = angular.module('timeApp', []);
 
 timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetService', function ($scope, $http, timesheetService) {
+    $scope.sortType = 'engineerName'; // set the default sort type
+    $scope.sortReverse = false;  // set the default sort order
+
     timesheetService.getTimesheets().then(function mySucces(response) {
         $scope.timesheets = response.data;
     }, function myError(response) {

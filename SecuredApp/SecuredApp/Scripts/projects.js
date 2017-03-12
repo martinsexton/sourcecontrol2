@@ -21,6 +21,9 @@ postApp.controller('postController', ['$scope', '$http', function ($scope, $http
 }]);
 
 postApp.controller('listProjectsController', ['$scope', 'projectService', function ($scope, projectService) {
+    $scope.sortType = 'Name'; // set the default sort type
+    $scope.sortReverse = false;  // set the default sort order
+
     projectService.getProjects().then(function mySucces(response) {
         $scope.projects = response.data;
         if (response.data.length > 0) {

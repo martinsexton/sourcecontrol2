@@ -5,18 +5,37 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <div class="list-group">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item" ng-repeat="t in timesheets" ng-click="showTimesheetDetails(t)">{{t.engineerName + " For week ending " + t.weekEndDate}}</a>
-                    </div>
-                </div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td>
+                                <a href="#" ng-click="sortType = 'engineerName'; sortReverse = !sortReverse">
+                                    Engineer Name
+                                    <span ng-show="sortType == 'engineerName'" class="fa fa-caret-down"></span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#" ng-click="sortType = 'weekEndDate'; sortReverse = !sortReverse">
+                                    Week Ending
+                                    <span ng-show="sortType == 'weekEndDate'" class="fa fa-caret-down"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="t in timesheets | orderBy:sortType:sortReverse" ng-click="showTimesheetDetails(t)">
+                            <td>{{ t.engineerName }}</td>
+                            <td>{{ t.weekEndDate }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="col-md-6 panel panel-primary" ng-show="showtimesheetdetails">
                 <div class="panel-heading">Details</div>
                 <div class="panel-body">
                     Engineer Name: <p class="text-muted">{{selectedtimesheet.engineerName | uppercase}}</p>
                     <br />
-                    Week Ending: <p class="text-muted">{{selectedtimesheet.weekEndDate | uppercase}}</p>
+                    Week Ending: <p class="text-muted">{{selectedtimesheet.weekEndDate | date:'yyyy-MM-dd'}}</p>
                     <br />
                     <div class="list-group">
                         <div class="list-group">
