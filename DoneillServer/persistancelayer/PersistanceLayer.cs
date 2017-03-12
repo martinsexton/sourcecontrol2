@@ -183,7 +183,7 @@ namespace persistancelayer
                         tsi.dayOfWeek = reader.GetString(2);
                         tsi.project = reader.GetString(3);
                         tsi.startTime = reader.GetString(4);
-                        tsi.endTime = reader.GetString(4);
+                        tsi.endTime = reader.GetString(5);
 
                         timesheetitems.Add(tsi);
                     }
