@@ -21,7 +21,8 @@ namespace SecuredApp
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/bootstrap-formhelpers-phone.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/projects").Include(
                     "~/Scripts/projects.js",
