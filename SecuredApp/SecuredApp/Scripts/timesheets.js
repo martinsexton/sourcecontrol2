@@ -2,6 +2,7 @@
 
 timeApp.controller('recordTimesheetController', ['$scope', '$http', 'projectService', function ($scope, $http, projectService) {
     $scope.showdetails = false;
+    $scope.showsavebutton = false;
     $scope.recordedDays = [];
     $scope.recordedDay = { Day: "", ProjectName: "", dayStartTime: "", dayEndTime: "" };
     $scope.days = ["Mon", "Tue", "Wed", "Thurs", "Fri"];
@@ -9,7 +10,10 @@ timeApp.controller('recordTimesheetController', ['$scope', '$http', 'projectServ
 
     $scope.recordDay = function () {
         $scope.showdetails = true;
-        $scope.recordedDays.push({ Day: $scope.recordedDay.Day, ProjectName:$scope.recordedDay.ProjectName, dayStartTime: $scope.recordedDay.dayStartTime, dayEndTime: $scope.recordedDay.dayEndTime })
+        $scope.recordedDays.push({ Day: $scope.recordedDay.Day, ProjectName: $scope.recordedDay.ProjectName, dayStartTime: $scope.recordedDay.dayStartTime, dayEndTime: $scope.recordedDay.dayEndTime })
+        if ($scope.recordedDays.length == 5) {
+            $scope.showsavebutton = true;
+        }
         var index = $scope.days.indexOf($scope.recordedDay.Day);
         $scope.days.splice(index, 1);
     }

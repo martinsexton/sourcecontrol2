@@ -1,14 +1,63 @@
 ﻿<form ng-app="timeApp" name="timesheetForm" ng-controller="recordTimesheetController" ng-submit="saveTimesheet()">
     <div class="container" style="padding-top: 20px;">
         <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="engineerName" aria-describedby="engineerNameHelp" placeholder="Enter Name" ng-model="timesheet.engineerName" required>
-                    <small id="engineerNameHelp" class="form-text text-muted">Enter your name</small>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="engineerName" aria-describedby="engineerNameHelp" placeholder="Enter Name" ng-model="timesheet.engineerName" required>
+                        <small id="engineerNameHelp" class="form-text text-muted">Enter your name</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <input type="date" class="form-control" id="weekEndDate" aria-describedby="weekEndDateHelp" ng-model="timesheet.weekEndDate" required>
+                        <small id="weekEndDateHelp" class="form-text text-muted">Date (Week Ending)</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <select class="form-control" ng-model="recordedDay.ProjectName">
+                            <option ng-repeat="p in projects">{{p.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <select class="form-control" ng-model="recordedDay.Day">
+                            <option ng-repeat="d in days">{{d}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="dayStartTime" aria-describedby="dayStartTimeHelp" placeholder="HH:MM" ng-model="recordedDay.dayStartTime" required>
+                        <small id="dayStartTimeHelp" class="form-text text-muted">Record Start Time</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="dayEndTime" aria-describedby="dayEndTimeHelp" placeholder="HH:MM" ng-model="recordedDay.dayEndTime" required>
+                        <small id="dayEndTimeHelp" class="form-text text-muted">Record End Time</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="recordDay()">Add</button>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row" ng-show="showdetails">
+                    <p class="text-info">Details</p>
+                    <br />
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="rd in recordedDays">{{"Worked for " + rd.ProjectName + " on " + rd.Day + " from " + rd.dayStartTime + " to " + rd.dayEndTime}}<span class="badge">{{rd.dayEndTime - rd.dayStartTime}} Hours</span></li>
+                    </ul>
+                </div>
+                <div class="row" ng-show="showsavebutton">
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!--<div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
                     <input type="date" class="form-control" id="weekEndDate" aria-describedby="weekEndDateHelp" ng-model="timesheet.weekEndDate" required>
@@ -58,8 +107,8 @@
                 </ul>
             </div>
         </div>
-        <div class="row col-sm-12" ng-show="showdetails">
+        <div class="row col-sm-12" ng-show="showsavebutton">
             <button type="submit" class="btn btn-primary btn-sm">Save</button>
-        </div>
+        </div>-->
     </div>
 </form>
