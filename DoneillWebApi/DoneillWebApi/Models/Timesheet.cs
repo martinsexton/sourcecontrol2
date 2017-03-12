@@ -10,20 +10,19 @@ namespace DoneillWebApi.Models
     {
         public string engineerName { get; set; }
         public DateTime weekEndDate { get; set; }
-        public DateTime timesheetProject { get; set; }
         public TimesheetItem[] items = new TimesheetItem[5];
 
 
         public List<ITimeSheetItem> getItems()
         {
-            List<ITimeSheetItem> items = new List<ITimeSheetItem>();
-            items.Add(items[0]);
-            items.Add(items[1]);
-            items.Add(items[2]);
-            items.Add(items[3]);
-            items.Add(items[4]);
+            List<ITimeSheetItem> items2 = new List<ITimeSheetItem>();
+            items2.Add(items[0]);
+            items2.Add(items[1]);
+            items2.Add(items[2]);
+            items2.Add(items[3]);
+            items2.Add(items[4]);
 
-            return items;
+            return items2;
         }
 
         public string getEngineerName()

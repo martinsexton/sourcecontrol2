@@ -1,13 +1,15 @@
 ﻿var timeApp = angular.module('timeApp', []);
 
 timeApp.controller('recordTimesheetController', ['$scope', '$http', 'projectService', function ($scope, $http, projectService) {
+    $scope.showdetails = false;
     $scope.recordedDays = [];
-    $scope.recordedDay = { Day: "", dayStartTime: "", dayEndTime: "" };
+    $scope.recordedDay = { Day: "", ProjectName: "", dayStartTime: "", dayEndTime: "" };
     $scope.days = ["Mon", "Tue", "Wed", "Thurs", "Fri"];
-    $scope.timesheet = {engineerName:"",weekEndDate:"",timesheetProject:"",items:$scope.recordedDays}
+    $scope.timesheet = {engineerName:"",weekEndDate:"",items:$scope.recordedDays}
 
     $scope.recordDay = function () {
-        $scope.recordedDays.push({ Day: $scope.recordedDay.Day, dayStartTime: $scope.recordedDay.dayStartTime, dayEndTime: $scope.recordedDay.dayEndTime })
+        $scope.showdetails = true;
+        $scope.recordedDays.push({ Day: $scope.recordedDay.Day, ProjectName:$scope.recordedDay.ProjectName, dayStartTime: $scope.recordedDay.dayStartTime, dayEndTime: $scope.recordedDay.dayEndTime })
         var index = $scope.days.indexOf($scope.recordedDay.Day);
         $scope.days.splice(index, 1);
     }

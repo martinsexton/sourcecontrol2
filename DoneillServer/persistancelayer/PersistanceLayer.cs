@@ -76,20 +76,42 @@ namespace persistancelayer
 
         public void CreateTimesheet(ITimeSheet t)
         {
-            string insert = "INSERT INTO dbo.TimeSheet(engineer_name,week_end_date) ";
+            string insert = "INSERT INTO dbo.TimeSheet(engineer_name,week_end_date)  output INSERTED.ID ";
             string values = "VALUES(@engineerName,@weekEndDate)";
+
+            string insert2 = "INSERT INTO dbo.TimeSheetItem(timesheet_id,day_of_week,project,start_time,end_time) ";
+            string values2 = "VALUES(@timesheetId,@dayOfWeek,@project,@startTime,@endTime)";
+
             string query = insert + values;
+            string query2 = insert2 + values2;
 
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
+                int timesheetIdentity = 0;
+
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.Add("@engineerName", SqlDbType.VarChar, 50).Value = t.getEngineerName();
                     cmd.Parameters.Add("@weekEndDate", SqlDbType.DateTime).Value = t.getWeekEndDate();
 
                     conn.Open();
-                    cmd.ExecuteNonQuery();
+                    timesheetIdentity = (int)cmd.ExecuteScalar();
                     conn.Close();
+                }
+
+                foreach(ITimeSheetItem item in t.getItems()){
+                    using (SqlCommand cmd2 = new SqlCommand(query2, conn))
+                    {
+                        cmd2.Parameters.Add("@timesheetId", SqlDbType.VarChar, 50).Value = timesheetIdentity;
+                        cmd2.Parameters.Add("@dayOfWeek", SqlDbType.VarChar, 10).Value = item.getDay();
+                        cmd2.Parameters.Add("@project", SqlDbType.VarChar, 10).Value = item.getProjectName();
+                        cmd2.Parameters.Add("@startTime", SqlDbType.VarChar, 10).Value = item.getStartTime();
+                        cmd2.Parameters.Add("@endTime", SqlDbType.VarChar, 10).Value = item.getEndTime();
+
+                        conn.Open();
+                        cmd2.ExecuteNonQuery();
+                        conn.Close();
+                    }
                 }
             }            
         }

@@ -11,5 +11,6 @@ namespace persistancelayer.api.model
         String getDay();
         String getStartTime();
         String getEndTime();
+        String getProjectName();
     }
 }

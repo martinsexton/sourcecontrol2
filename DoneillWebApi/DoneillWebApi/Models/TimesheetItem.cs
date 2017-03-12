@@ -9,22 +9,29 @@ namespace DoneillWebApi.Models
     public class TimesheetItem : ITimeSheetItem
     {
         public string Day { get; set; }
-        public DateTime dayStartTime { get; set; }
-        public DateTime dayEndTime { get; set; }
+        public string ProjectName { get; set; }
+        public string dayStartTime { get; set; }
+        public string dayEndTime { get; set; }
 
         public string getDay()
         {
-            throw new NotImplementedException();
+            return Day;
         }
 
         public string getStartTime()
         {
-            throw new NotImplementedException();
+            return dayStartTime;
         }
 
         public string getEndTime()
         {
-            throw new NotImplementedException();
+            return dayEndTime;
+        }
+
+
+        public string getProjectName()
+        {
+            return ProjectName;
         }
     }
 }

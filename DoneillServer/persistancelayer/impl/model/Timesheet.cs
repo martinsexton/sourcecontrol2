@@ -19,11 +19,6 @@ namespace persistancelayer.impl.model
             throw new NotImplementedException();
         }
 
-        public string getProjectName()
-        {
-            throw new NotImplementedException();
-        }
-
         public DateTime getWeekEndDate()
         {
             throw new NotImplementedException();
