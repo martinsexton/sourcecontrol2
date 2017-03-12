@@ -8,6 +8,8 @@ namespace persistancelayer.api.model
 {
     public interface ITimeSheetItem
     {
+        int getIdentifier();
+        int getTimesheetIdentifier();
         String getDay();
         String getStartTime();
         String getEndTime();

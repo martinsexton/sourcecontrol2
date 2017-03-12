@@ -44,6 +44,7 @@
     <Compile Include="api\model\ITimeSheet.cs" />
     <Compile Include="api\model\ITimeSheetItem.cs" />
     <Compile Include="impl\model\Timesheet.cs" />
+    <Compile Include="impl\model\TimesheetItem.cs" />
     <Compile Include="PersistanceLayer.cs" />
     <Compile Include="impl\model\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

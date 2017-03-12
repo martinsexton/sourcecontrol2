@@ -38,9 +38,26 @@ namespace DoneillWebApi.Controllers
 
         // GET api/values/5
         [HttpGet]
-        public Timesheet Get(int id)
+        public List<TimesheetItem> Get(int id)
         {
-            throw new NotImplementedException();
+            IPersistanceLayer pl = new PersistanceLayer();
+            List<ITimeSheetItem> timesheetItems = pl.RetrieveTimesheetItems(id);
+            List<TimesheetItem> timesheetItemsForDisplay = new List<TimesheetItem>();
+
+            foreach (ITimeSheetItem tsi in timesheetItems)
+            {
+                TimesheetItem np = new TimesheetItem();
+                np.Id = tsi.getIdentifier();
+                np.TimesheetId = tsi.getTimesheetIdentifier();
+                np.ProjectName = tsi.getProjectName();
+                np.Day = tsi.getDay();
+                np.dayStartTime = tsi.getStartTime();
+                np.dayEndTime = tsi.getEndTime();
+
+                timesheetItemsForDisplay.Add(np);
+            }
+
+            return timesheetItemsForDisplay;
         }
 
         // POST api/values

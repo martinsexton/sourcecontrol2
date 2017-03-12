@@ -8,6 +8,8 @@ namespace DoneillWebApi.Models
 {
     public class TimesheetItem : ITimeSheetItem
     {
+        public int Id { get; set; }
+        public int TimesheetId { get; set; }
         public string Day { get; set; }
         public string ProjectName { get; set; }
         public string dayStartTime { get; set; }
@@ -28,10 +30,19 @@ namespace DoneillWebApi.Models
             return dayEndTime;
         }
 
-
         public string getProjectName()
         {
             return ProjectName;
+        }
+
+        public int getIdentifier()
+        {
+            return Id;
+        }
+
+        public int getTimesheetIdentifier()
+        {
+            return TimesheetId;
         }
     }
 }

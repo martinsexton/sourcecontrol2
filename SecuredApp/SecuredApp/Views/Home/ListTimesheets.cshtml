@@ -5,7 +5,14 @@
             <div class="col-md-6">
                 <div class="list-group">
                     <div class="list-group">
-                        <a href="#" class="list-group-item" ng-repeat="p in timesheets">{{p.engineerName + " For week ending " + p.weekEndDate}}</a>
+                        <a href="#" class="list-group-item" ng-repeat="t in timesheets" ng-click="showTimesheetDetails(t)">{{t.engineerName + " For week ending " + t.weekEndDate}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="list-group">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item" ng-repeat="tsi in timesheetitems">{{tsi.Day + " Worked For " + tsi.ProjectName + " between " + tsi.dayStartTime + " and " + tsi.dayEndTime}}</a>
                     </div>
                 </div>
             </div>

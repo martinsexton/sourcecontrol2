@@ -14,5 +14,6 @@ namespace persistancelayer.api
 
         List<IProject> RetrieveProjects();
         List<ITimeSheet> RetrieveTimesheets();
+        List<ITimeSheetItem> RetrieveTimesheetItems(int timesheetId);
     }
 }

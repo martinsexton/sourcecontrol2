@@ -5,12 +5,30 @@ timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetServ
         $scope.timesheets = response.data;
     }, function myError(response) {
     })
+
+    $scope.showTimesheetDetails = function (timesheet) {
+        timesheetService.getTimesheetItems(timesheet).then(function mySucces(response) {
+            $scope.timesheetitems = response.data;
+        }, function myError(response) {
+        })
+    }
 }]);
 
 timeApp.service('timesheetService', ['$http', function ($http) {
     this.getTimesheets = function () {
         return $http({
             method: "GET",
+            url: "http://doneillwebapi.azurewebsites.net/api/timesheet",
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
+    this.getTimesheetItems = function (timesheet) {
+        return $http({
+            method: "GET",
+            params: {
+                id: timesheet.identifier
+            },
             url: "http://doneillwebapi.azurewebsites.net/api/timesheet",
             headers: { 'Content-Type': 'application/json' }
         });

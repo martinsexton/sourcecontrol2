@@ -147,5 +147,49 @@ namespace persistancelayer
             }
             return timesheets;
         }
+
+
+        public List<ITimeSheetItem> RetrieveTimesheetItems(int timesheetId)
+        {
+            List<ITimeSheetItem> timesheetitems = new List<ITimeSheetItem>();
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                    SELECT
+                        tsi.Id
+                        ,tsi.timesheet_id
+                        ,tsi.day_of_week
+                        ,tsi.project
+                        ,tsi.start_time
+                        ,tsi.end_time
+                    FROM timesheetitem AS tsi WHERE tsi.timesheet_id=@timesheetid;";
+
+                conn.Open();
+
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@timesheetid";
+                param.Value = timesheetId;
+
+                cmd.Parameters.Add(param);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        TimesheetItem tsi = new TimesheetItem();
+                        tsi.identifier = reader.GetInt32(0);
+                        tsi.timesheetIdentifier = reader.GetInt32(1);
+                        tsi.dayOfWeek = reader.GetString(2);
+                        tsi.project = reader.GetString(3);
+                        tsi.startTime = reader.GetString(4);
+                        tsi.endTime = reader.GetString(4);
+
+                        timesheetitems.Add(tsi);
+                    }
+                }
+            }
+            return timesheetitems;
+        }
     }
 }
