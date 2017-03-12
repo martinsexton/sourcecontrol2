@@ -1,7 +1,4 @@
-﻿<div ng-app="postApp" ng-controller="listProjectsController" style="padding-top: 20px;" ng-cloak>
-    <div class="page-header">
-        <h1><small>Projects</small></h1>
-    </div>
+﻿<form ng-app="postApp" ng-controller="listProjectsController" style="padding-top: 20px;" ng-cloak>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -34,15 +31,25 @@
                 <div class="panel-heading">Details</div>
                 <div class="panel-body">
                     <p class="text-info">Details</p>
-                    Name: <p class="text-muted">{{item_details.Name | uppercase}}</p>
-                    <br />
-                    From Date: <p class="text-muted">{{item_details.StartDate | date}}</p>
-                    <br />
-                    Contact Number: <p class="text-muted">{{item_details.ContactNumber}}</p>
-                    <br />
-                    Details: <p class="text-muted">{{item_details.Details}}</p>
+                    <fieldset ng-disabled="readOnlyMode">
+                        <div class="form-group">
+                            Name: <input type="text" class="form-control" id="projectName" ng-model="item_details.Name" required>
+                        </div>
+                        <br />
+                        From Date: <p class="text-muted">{{item_details.StartDate | date}}</p>
+                        <br />
+                        <div class="form-group">
+                            Contact Number: <input type="tel" class="form-control input-medium bfh-phone" id="contactNumber" data-format="+353 (ddd) ddddddd" ng-model="item_details.ContactNumber" required>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            Details: <textarea class="form-control" rows="5" id="details" ng-model="item_details.Details" required></textarea>
+                        </div>
+                    </fieldset>
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="readOnlyMode = !readOnlyMode">Edit</button>
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="updateProject()" ng-disabled=" readonlymode">Update</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</form>

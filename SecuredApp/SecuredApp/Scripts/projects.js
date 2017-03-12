@@ -23,6 +23,7 @@ postApp.controller('postController', ['$scope', '$http', function ($scope, $http
 postApp.controller('listProjectsController', ['$scope', 'projectService', function ($scope, projectService) {
     $scope.sortType = 'Name'; // set the default sort type
     $scope.sortReverse = false;  // set the default sort order
+    $scope.readOnlyMode = true;
 
     projectService.getProjects().then(function mySucces(response) {
         $scope.projects = response.data;
@@ -34,6 +35,10 @@ postApp.controller('listProjectsController', ['$scope', 'projectService', functi
 
     $scope.showDetails = function (project) {
         $scope.item_details = project;
+    }
+
+    $scope.updateProject = function () {
+        //Code here to update project from current project object $scope.item_details
     }
 }]);
 
