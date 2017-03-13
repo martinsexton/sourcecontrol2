@@ -20,18 +20,45 @@ postApp.controller('postController', ['$scope', '$http', function ($scope, $http
     }
 }]);
 
+postApp.filter('offset', function () {
+    return function (input, start) {
+        if (input) {
+            start = parseInt(start, 10);
+            if (start < input.length) {
+                return input.slice(start);
+            }
+        }
+    };
+});
+
 postApp.controller('listProjectsController', ['$scope', 'projectService', function ($scope, projectService) {
     $scope.sortType = 'Name'; // set the default sort type
     $scope.sortReverse = false;  // set the default sort order
     $scope.readOnlyMode = true;
+    $scope.currentPage = 1;
+    $scope.itemPerPage = 5;
+    $scope.start = 0;
 
     projectService.getProjects().then(function mySucces(response) {
         $scope.projects = response.data;
         if (response.data.length > 0) {
+            $scope.total = $scope.projects.length;
             $scope.item_details = response.data[0];
         }
     }, function myError(response) {
     })
+
+    $scope.nextPage = function () {
+        if (($scope.itemPerPage * $scope.currentPage) <= $scope.projects.length) {
+            $scope.currentPage = $scope.currentPage + 1;
+        }
+    };
+
+    $scope.previousPage = function () {
+        if ($scope.currentPage > 0) {
+            $scope.currentPage = $scope.currentPage - 1;
+        }
+    };
 
     $scope.showDetails = function (project) {
         $scope.item_details = project;

@@ -20,12 +20,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="p in projects | orderBy:sortType:sortReverse" ng-click="showDetails(p)">
+                        <tr ng-repeat="p in projects | orderBy:sortType:sortReverse | offset: (currentPage-1)*itemPerPage | limitTo: itemPerPage" ng-click="showDetails(p)">
                             <td>{{ p.Name }}</td>
                             <td>{{ p.StartDate }}</td>
                         </tr>
                     </tbody>
                 </table>
+                <nav aria-label="...">
+                    <ul class="pager">
+                        <li><a href="#" ng-click="previousPage()">Previous</a></li>
+                        <li><a href="#" ng-click="nextPage()">Next</a></li>
+                    </ul>
+                </nav>
             </div>
             <div class="col-md-6 panel panel-primary">
                 <div class="panel-heading">Details</div>
