@@ -55,7 +55,7 @@ postApp.controller('listProjectsController', ['$scope', 'projectService', functi
     };
 
     $scope.previousPage = function () {
-        if ($scope.currentPage > 0) {
+        if ($scope.currentPage > 1) {
             $scope.currentPage = $scope.currentPage - 1;
         }
     };
