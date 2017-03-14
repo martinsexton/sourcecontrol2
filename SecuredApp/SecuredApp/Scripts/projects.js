@@ -65,7 +65,10 @@ postApp.controller('listProjectsController', ['$scope', 'projectService', functi
     }
 
     $scope.updateProject = function () {
-        //Code here to update project from current project object $scope.item_details
+        $scope.readOnlyMode = true;
+        projectService.updateProject($scope.item_details).then(function mySucces(response) {
+        }, function myError(response) {
+        })
     }
 }]);
 
@@ -74,6 +77,18 @@ postApp.service('projectService', ['$http', function ($http) {
         return $http({
             method: "GET",
             url: "http://doneillwebapi.azurewebsites.net/api/project",
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
+    this.updateProject = function (projectdetails) {
+        return $http({
+            method: 'POST',
+            url: 'http://doneillwebapi.azurewebsites.net/api/project',
+            data: JSON.stringify(projectdetails),
+            params: {
+                id: projectdetails.identifier
+            },
             headers: { 'Content-Type': 'application/json' }
         });
     }

@@ -191,5 +191,26 @@ namespace persistancelayer
             }
             return timesheetitems;
         }
+
+
+        public void UpdateProject(int identifier, IProject p)
+        {
+            string query = "UPDATE Project set name=@name, start_date=@startDate, contact_number=@contactNumber, details=@details WHERE Id = @id";
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = identifier;
+                    cmd.Parameters.Add("@name", SqlDbType.NVarChar, 50).Value = p.getName();
+                    cmd.Parameters.Add("@startDate", SqlDbType.DateTime).Value = p.getStartDate();
+                    cmd.Parameters.Add("@contactNumber", SqlDbType.NVarChar, 50).Value = p.getContactNumber();
+                    cmd.Parameters.Add("@details", SqlDbType.NVarChar, 1000).Value = p.getDetails();
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+        }
     }
 }

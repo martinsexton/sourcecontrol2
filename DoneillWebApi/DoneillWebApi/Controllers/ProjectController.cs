@@ -23,6 +23,7 @@ namespace DoneillWebApi.Controllers
 
             foreach(IProject p in projects){
                 Project np = new Project();
+                np.identifier = p.getIdentifier();
                 np.Name = p.getName();
                 np.StartDate = p.getStartDate();
                 np.ContactNumber = p.getContactNumber();
@@ -39,11 +40,7 @@ namespace DoneillWebApi.Controllers
         [HttpGet]
         public Project Get(int id)
         {
-            //return "value";
-            Project p = new Project();
-            p.Name = "Test";
-
-            return p;
+            throw new NotImplementedException();
         }
 
         // POST api/values
@@ -55,8 +52,11 @@ namespace DoneillWebApi.Controllers
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPost]
+        public void Post(int id, Project p)
         {
+            IPersistanceLayer pl = new PersistanceLayer();
+            pl.UpdateProject(id, p);
         }
 
         // DELETE api/values/5

@@ -33,5 +33,11 @@ namespace DoneillWebApi.Models
         {
             return StartDate;
         }
+
+
+        public int getIdentifier()
+        {
+            return identifier;
+        }
     }
 }

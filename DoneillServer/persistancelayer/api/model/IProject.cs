@@ -12,5 +12,6 @@ namespace persistancelayer.api.model
         string getDetails();
         string getContactNumber();
         DateTime getStartDate();
+        int getIdentifier();
     }
 }

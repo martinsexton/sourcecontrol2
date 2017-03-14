@@ -34,5 +34,11 @@ namespace persistancelayer.impl.model
         {
             return StartDate;
         }
+
+
+        public int getIdentifier()
+        {
+            return Id;
+        }
     }
 }

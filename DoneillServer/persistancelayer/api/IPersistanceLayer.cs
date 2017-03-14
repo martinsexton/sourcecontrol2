@@ -10,6 +10,7 @@ namespace persistancelayer.api
     public interface IPersistanceLayer
     {
         void CreateProject(IProject p);
+        void UpdateProject(int identifier, IProject p);
         void CreateTimesheet(ITimeSheet t);
 
         List<IProject> RetrieveProjects();

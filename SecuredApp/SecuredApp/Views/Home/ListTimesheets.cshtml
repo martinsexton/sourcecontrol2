@@ -32,11 +32,10 @@
                 </table>
             </div>
             <div class="col-md-6 panel panel-primary" ng-show="showtimesheetdetails">
-                <div class="panel-heading">Details</div>
                 <div class="panel-body">
-                    Engineer Name: <p class="text-muted">{{selectedtimesheet.engineerName | uppercase}}</p>
+                    <p class="text-info">Engineer Name: </p><p class="text-muted">{{selectedtimesheet.engineerName | uppercase}}</p>
                     <br />
-                    Week Ending: <p class="text-muted">{{selectedtimesheet.weekEndDate | date:'yyyy-MM-dd'}}</p>
+                    <p class="text-info">Week Ending: </p><p class="text-muted">{{selectedtimesheet.weekEndDate | date:'yyyy-MM-dd'}}</p>
                     <br />
                     <div class="list-group">
                         <div class="list-group">
