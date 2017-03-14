@@ -7,10 +7,10 @@
     display: none !important;
  }
 
-/*Angular marks inputs that are invalid as pink*/
-/*input.ng-invalid {
-    background-color: lightpink;
-}*/
+div.panel.col-md-6 {
+  padding-left: 0;
+  padding-right: 0;
+}
 
 /* Set padding to keep content from hitting the edges */
 .body-content {

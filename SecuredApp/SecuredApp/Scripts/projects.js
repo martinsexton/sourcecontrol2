@@ -38,6 +38,7 @@ postApp.controller('listProjectsController', ['$scope', 'projectService', functi
     $scope.currentPage = 1;
     $scope.itemPerPage = 5;
     $scope.start = 0;
+    $scope.panelStyle = "panel-primary"
 
     projectService.getProjects().then(function mySucces(response) {
         $scope.projects = response.data;
@@ -67,7 +68,9 @@ postApp.controller('listProjectsController', ['$scope', 'projectService', functi
     $scope.updateProject = function () {
         $scope.readOnlyMode = true;
         projectService.updateProject($scope.item_details).then(function mySucces(response) {
+            $scope.panelStyle = "panel-success"
         }, function myError(response) {
+            $scope.panelStyle = "panel-danger"
         })
     }
 }]);
