@@ -7,27 +7,42 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="projectName" aria-describedby="projectNameHelp" placeholder="Enter Name" ng-model="project.Name" required>
-                        <small id="projectNameHelp" class="form-text text-muted">Enter the name of the project.</small>
-                    </div>
+                    <md-input-container>
+                        <label>Project Name</label>
+                        <input name="projectName" ng-model="project.Name" required md-maxlength="10">
+                        <div ng-messages="projectForm.project.Name.$error" ng-show="projectForm.project.Name.$dirty">
+                            <div ng-message="required">This is required!</div>
+                            <div ng-message="md-maxlength">That's too long!</div>
+                        </div>
+                    </md-input-container>
                 </div>
                 <div class="row">
-                    <div class="form-group">
-                        <input type="date" class="form-control" id="fromDate" aria-describedby="fromDateHelp" ng-model="project.StartDate" required>
-                        <small id="fromDateHelp" class="form-text text-muted">Enter start date of project</small>
-                    </div>
+                    <md-input-container>
+                        <label>Start Date</label>
+                        <input type="date" name="fromDate" ng-model="project.StartDate" required>
+                        <div ng-messages="project.StartDate.$error" ng-show="project.StartDate.$dirty">
+                            <div ng-message="required">This is required!</div>
+                        </div>
+                    </md-input-container>
                 </div>
                 <div class="row">
-                    <div class="form-group">
-                        <input type="tel" class="form-control input-medium bfh-phone" id="contactNumber" aria-describedby="contactNumberHelp" data-format="+353 (ddd) ddddddd" ng-model="project.ContactNumber" required>
-                    </div>
+                    <md-input-container>
+                        <label>Contact Number</label>
+                        <input type="number" name="contactNumber" ng-model="project.ContactNumber" required>
+                        <div ng-messages="project.ContactNumber.$error" ng-show="project.ContactNumber.$dirty">
+                            <div ng-message="required">This is required!</div>
+                        </div>
+                    </md-input-container>
                 </div>
                 <div class="row">
-                    <div class="form-group">
-                        <textarea class="form-control" rows="5" id="details" aria-describedby="detailsHelp" ng-model="project.Details" required></textarea>
-                        <small id="detailsHelp" class="form-text text-muted">Enter any details</small>
-                    </div>
+                    <md-input-container>
+                        <label>Details</label>
+                        <textarea name="details" ng-model="project.Details" required md-maxlength="150"></textarea>
+                        <div ng-messages="projectForm.project.Details.$error" ng-show="projectForm.project.Details.$dirty">
+                            <div ng-message="required">This is required!</div>
+                            <div ng-message="md-maxlength">That's too long!</div>
+                        </div>
+                    </md-input-container>
                 </div>
             </div>
             <div class="col-md-6 panel panel-primary">
