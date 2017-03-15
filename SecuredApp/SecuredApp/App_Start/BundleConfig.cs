@@ -30,6 +30,7 @@ namespace SecuredApp
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/angular-material.min.css",
                       "~/Content/site.css"));
         }
     }

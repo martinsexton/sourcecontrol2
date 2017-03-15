@@ -1,6 +1,6 @@
-﻿var postApp = angular.module('postApp', ['ngAnimate']);
+﻿var postApp = angular.module('postApp', ['ngAnimate','ngAria','ngMaterial']);
 
-postApp.controller('postController', ['$scope', '$http', function ($scope, $http) {
+postApp.controller('postController', ['$scope', '$mdToast', '$http', function ($scope, $mdToast, $http) {
     $scope.project = { Name: "", StartDate: "", ContactNumber: "", Details: "" };
     $scope.saveProject = function () {
         var request = {
@@ -14,6 +14,11 @@ postApp.controller('postController', ['$scope', '$http', function ($scope, $http
         $http(request)
             .success(function (d) {
                 $scope.project = { Name: "", StartDate: "", ContactNumber: "", Details: "" };
+                $mdToast.show(
+                    $mdToast.simple('Successfully saved Project!')
+                    .position('left bottom')
+                    .hideDelay(2000)
+                );
             })
             .error(function () {
             });
@@ -31,14 +36,13 @@ postApp.filter('offset', function () {
     };
 });
 
-postApp.controller('listProjectsController', ['$scope', 'projectService', function ($scope, projectService) {
+postApp.controller('listProjectsController', ['$scope', '$mdToast', 'projectService', function ($scope, $mdToast, projectService) {
     $scope.sortType = 'Name'; // set the default sort type
     $scope.sortReverse = false;  // set the default sort order
     $scope.readOnlyMode = true;
     $scope.currentPage = 1;
     $scope.itemPerPage = 5;
     $scope.start = 0;
-    $scope.panelStyle = "panel-primary"
     $scope.showDetailsClicked = false;
 
     projectService.getProjects().then(function mySucces(response) {
@@ -70,9 +74,17 @@ postApp.controller('listProjectsController', ['$scope', 'projectService', functi
     $scope.updateProject = function () {
         $scope.readOnlyMode = true;
         projectService.updateProject($scope.item_details).then(function mySucces(response) {
-            $scope.panelStyle = "panel-success"
+            $mdToast.show(
+                $mdToast.simple('Successfully updated Project!')
+                .position('left bottom')
+                .hideDelay(2000)
+            );
         }, function myError(response) {
-            $scope.panelStyle = "panel-danger"
+            $mdToast.show(
+                $mdToast.simple('Failed to update Project!')
+                .position('left bottom')
+                .hideDelay(2000)
+            );
         })
     }
 }]);

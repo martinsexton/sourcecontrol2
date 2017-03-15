@@ -38,7 +38,7 @@
                     </ul>
                 </nav>
             </div>
-            <div class="col-md-6 panel {{panelStyle}} detailsbox" ng-show="showDetailsClicked">
+            <div class="col-md-6 panel panel-primary detailsbox" ng-show="showDetailsClicked">
                 <div class="panel-heading">Details</div>
                 <div class="panel-body">
                     <fieldset ng-disabled="readOnlyMode">
@@ -56,12 +56,8 @@
                             <p class="text-info">Details: </p><textarea class="form-control" rows="5" id="details" ng-model="item_details.Details" required></textarea>
                         </div>
                     </fieldset>
-                    <button type="button" class="btn btn-primary btn-sm" ng-click="readOnlyMode = !readOnlyMode">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" ng-click="updateProject()" ng-disabled="readOnlyMode">
-                        <span class="glyphicon glyphicon-ok"></span>
-                    </button>
+                    <md-button class="md-raised md-primary md-hue-1" ng-click="readOnlyMode = !readOnlyMode"><span class="glyphicon glyphicon-pencil"></span></md-button>
+                    <md-button class="md-raised md-primary md-hue-1" ng-click="updateProject()" ng-disabled="readOnlyMode"><span class="glyphicon glyphicon-ok"></span></md-button>
                 </div>
             </div>
         </div>
