@@ -9,7 +9,7 @@
                 <div class="row">
                     <md-input-container>
                         <label>Project Name</label>
-                        <input name="projectName" ng-model="project.Name" required md-maxlength="10">
+                        <input name="projectName" ng-model="project.Name" required>
                         <div ng-messages="projectForm.project.Name.$error" ng-show="projectForm.project.Name.$dirty">
                             <div ng-message="required">This is required!</div>
                             <div ng-message="md-maxlength">That's too long!</div>
@@ -37,7 +37,7 @@
                 <div class="row">
                     <md-input-container>
                         <label>Details</label>
-                        <textarea name="details" ng-model="project.Details" required md-maxlength="150"></textarea>
+                        <textarea name="details" ng-model="project.Details" required></textarea>
                         <div ng-messages="projectForm.project.Details.$error" ng-show="projectForm.project.Details.$dirty">
                             <div ng-message="required">This is required!</div>
                             <div ng-message="md-maxlength">That's too long!</div>

@@ -1,4 +1,4 @@
-﻿var postApp = angular.module('postApp', ['ngAnimate','ngAria','ngMaterial']);
+﻿var postApp = angular.module('postApp', ['ngAnimate', 'ngAria', 'ngMaterial']);
 
 postApp.controller('postController', ['$scope', '$mdToast', '$http', function ($scope, $mdToast, $http) {
     $scope.project = { Name: "", StartDate: "", ContactNumber: "", Details: "" };
