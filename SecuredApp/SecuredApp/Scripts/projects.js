@@ -1,4 +1,4 @@
-﻿var postApp = angular.module('postApp', []);
+﻿var postApp = angular.module('postApp', ['ngAnimate']);
 
 postApp.controller('postController', ['$scope', '$http', function ($scope, $http) {
     $scope.project = { Name: "", StartDate: "", ContactNumber: "", Details: "" };
@@ -39,6 +39,7 @@ postApp.controller('listProjectsController', ['$scope', 'projectService', functi
     $scope.itemPerPage = 5;
     $scope.start = 0;
     $scope.panelStyle = "panel-primary"
+    $scope.showDetailsClicked = false;
 
     projectService.getProjects().then(function mySucces(response) {
         $scope.projects = response.data;
@@ -62,6 +63,7 @@ postApp.controller('listProjectsController', ['$scope', 'projectService', functi
     };
 
     $scope.showDetails = function (project) {
+        $scope.showDetailsClicked = true;
         $scope.item_details = project;
     }
 

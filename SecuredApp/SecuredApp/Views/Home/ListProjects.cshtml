@@ -33,12 +33,12 @@
                 <span class="label label-primary">Page {{currentPage}}</span>
                 <nav aria-label="...">
                     <ul class="pager">
-                        <li><a href="#" ng-click="previousPage()">Previous</a></li>
-                        <li><a href="#" ng-click="nextPage()">Next</a></li>
+                        <li><a href="#" ng-click="previousPage()"><span class="glyphicon glyphicon-step-backward"></span></a></li>
+                        <li><a href="#" ng-click="nextPage()"><span class="glyphicon glyphicon-step-forward"></span></a></li>
                     </ul>
                 </nav>
             </div>
-            <div class="col-md-6 panel {{panelStyle}}">
+            <div class="col-md-6 panel {{panelStyle}} detailsbox" ng-show="showDetailsClicked">
                 <div class="panel-heading">Details</div>
                 <div class="panel-body">
                     <fieldset ng-disabled="readOnlyMode">
@@ -56,8 +56,12 @@
                             <p class="text-info">Details: </p><textarea class="form-control" rows="5" id="details" ng-model="item_details.Details" required></textarea>
                         </div>
                     </fieldset>
-                    <button type="button" class="btn btn-primary btn-sm" ng-click="readOnlyMode = !readOnlyMode">Edit</button>
-                    <button type="button" class="btn btn-primary btn-sm" ng-click="updateProject()" ng-disabled="readOnlyMode">Update</button>
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="readOnlyMode = !readOnlyMode">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="updateProject()" ng-disabled="readOnlyMode">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
                 </div>
             </div>
         </div>

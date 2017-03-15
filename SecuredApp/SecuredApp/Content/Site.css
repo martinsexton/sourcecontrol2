@@ -12,6 +12,15 @@ div.panel.col-md-6 {
   padding-right: 0;
 }
 
+.detailsbox {
+  -webkit-transition:all linear 0.6s;
+  transition:all linear 0.6s;
+}
+.detailsbox.ng-hide {
+  opacity:0;
+}
+
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;

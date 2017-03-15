@@ -1,8 +1,9 @@
-﻿var timeApp = angular.module('timeApp', []);
+﻿var timeApp = angular.module('timeApp', ['ngAnimate']);
 
 timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetService', function ($scope, $http, timesheetService) {
     $scope.sortType = 'engineerName'; // set the default sort type
     $scope.sortReverse = false;  // set the default sort order
+    $scope.showtsdetails = false;
 
     timesheetService.getTimesheets().then(function mySucces(response) {
         $scope.timesheets = response.data;
@@ -14,7 +15,7 @@ timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetServ
             $scope.timesheetitems = response.data;
             $scope.selectedtimesheet = timesheet;
             if ($scope.timesheetitems.length > 0) {
-                $scope.showtimesheetdetails = true;
+                $scope.showtsdetails = true;
             }
         }, function myError(response) {
         })
