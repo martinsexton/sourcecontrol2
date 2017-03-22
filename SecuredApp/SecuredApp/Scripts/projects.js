@@ -1,5 +1,23 @@
 ﻿var postApp = angular.module('postApp', ['ngAnimate', 'ngAria', 'ngMaterial']);
 
+postApp.controller('projectsController', ['$scope', '$mdToast', '$http', function ($scope, $mdToast, $http) {
+    $scope.currentTab = "listprojects";
+    $scope.showListProjectsTab = true;
+    $scope.showNewProjectsTab = false;
+
+    $scope.setTab = function (tabname) {
+        $scope.currentTab = tabname;
+        if (tabname == "listprojects") {
+            $scope.showListProjectsTab = true;
+            $scope.showNewProjectsTab = false;
+        }
+        if (tabname == "newproject") {
+            $scope.showListProjectsTab = false;
+            $scope.showNewProjectsTab = true;
+        }
+    }
+}]);
+
 postApp.controller('postController', ['$scope', '$mdToast', '$http', function ($scope, $mdToast, $http) {
     $scope.project = { Name: "", StartDate: "", ContactNumber: "", Details: "" };
     $scope.saveProject = function () {

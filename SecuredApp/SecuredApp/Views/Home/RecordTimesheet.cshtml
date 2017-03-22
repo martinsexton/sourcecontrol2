@@ -1,13 +1,69 @@
 ﻿<form ng-app="timeApp" name="timesheetForm" ng-controller="recordTimesheetController" ng-submit="saveTimesheet()" ng-cloak>
     <div class="container" style="padding-top: 20px;">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-xs-6">
                 <div class="row">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="engineerName" aria-describedby="engineerNameHelp" placeholder="Enter Name" ng-model="timesheet.engineerName" required>
-                        <small id="engineerNameHelp" class="form-text text-muted">Enter your name</small>
-                    </div>
+                    <md-input-container>
+                        <label>Engineer Name</label>
+                        <input name="engineerName" ng-model="timesheet.engineerName" required>
+                        <div ng-messages="timesheetForm.timesheet.engineerName.$error" ng-show="timesheetForm.timesheet.engineerName.$dirty">
+                            <div ng-message="required">This is required!</div>
+                            <div ng-message="md-maxlength">That's too long!</div>
+                        </div>
+                    </md-input-container>
                 </div>
+                <!--<div class="row">
+                    <div class="form-group">
+                        <input type="date" class="form-control" id="weekEndDate" aria-describedby="weekEndDateHelp" ng-model="timesheet.weekEndDate" required>
+                        <small id="weekEndDateHelp" class="form-text text-muted">Date (Week Ending)</small>
+                    </div>
+                </div>-->
+                <div class="row">
+                    <!--<div class="form-group">
+                        <select class="form-control" ng-model="recordedDay.ProjectName">
+                            <option ng-repeat="p in projects">{{p.Name}}</option>
+                        </select>
+                    </div>-->
+                    <md-input-container>
+                        <label>Projects</label>
+                        <md-select ng-model="recordedDay.ProjectName">
+                            <md-option ng-repeat="p in projects" ng-value="p.Name">
+                                {{p.Name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <!--<div class="row">
+                    <div class="form-group">
+                        <select class="form-control" ng-model="recordedDay.Day">
+                            <option ng-repeat="d in days">{{d}}</option>
+                        </select>
+                    </div>
+                </div>-->
+                <div class="row">
+                    <!--<div class="form-group">
+                        <input type="text" class="form-control" id="dayStartTime" aria-describedby="dayStartTimeHelp" placeholder="HH:MM" ng-model="recordedDay.dayStartTime" required>
+                        <small id="dayStartTimeHelp" class="form-text text-muted">Record Start Time</small>
+                    </div>-->
+                    <md-input-container>
+                        <label>Start Time</label>
+                        <input type="number" name="dayStartTime" ng-model="recordedDay.dayStartTime" required>
+                        <div ng-messages="timesheetForm.recordedDay.dayStartTime.$error" ng-show="timesheetForm.recordedDay.dayStartTime.$dirty">
+                            <div ng-message="required">This is required!</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <!--<div class="row">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="dayEndTime" aria-describedby="dayEndTimeHelp" placeholder="HH:MM" ng-model="recordedDay.dayEndTime" required>
+                        <small id="dayEndTimeHelp" class="form-text text-muted">Record End Time</small>
+                    </div>
+                </div>-->
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="recordDay()" ng-hide="showsavebutton"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+            </div>
+            <div class="col-xs-6">
                 <div class="row">
                     <div class="form-group">
                         <input type="date" class="form-control" id="weekEndDate" aria-describedby="weekEndDateHelp" ng-model="timesheet.weekEndDate" required>
@@ -15,50 +71,49 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group">
-                        <select class="form-control" ng-model="recordedDay.ProjectName">
-                            <option ng-repeat="p in projects">{{p.Name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <select class="form-control" ng-model="recordedDay.Day">
                             <option ng-repeat="d in days">{{d}}</option>
                         </select>
-                    </div>
+                    </div>-->
+                    <md-input-container>
+                        <label>Projects</label>
+                        <md-select ng-model="recordedDay.Day">
+                            <md-option ng-repeat="d in days" ng-value="d">
+                                {{d}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
                 </div>
                 <div class="row">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="dayStartTime" aria-describedby="dayStartTimeHelp" placeholder="HH:MM" ng-model="recordedDay.dayStartTime" required>
-                        <small id="dayStartTimeHelp" class="form-text text-muted">Record Start Time</small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <input type="text" class="form-control" id="dayEndTime" aria-describedby="dayEndTimeHelp" placeholder="HH:MM" ng-model="recordedDay.dayEndTime" required>
                         <small id="dayEndTimeHelp" class="form-text text-muted">Record End Time</small>
-                    </div>
-                </div>
-                <div class="row">
-                    <button type="button" class="btn btn-primary btn-sm" ng-click="recordDay()" ng-hide="showsavebutton"><span class="glyphicon glyphicon-plus"></span></button>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="row" ng-show="showdetails">
-                    <p class="text-info">Details</p>
-                    <br />
-                    Engineer Name: <p class="text-muted">{{timesheet.engineerName | uppercase}}</p>
-                    <br />
-                    Week Ending: <p class="text-muted">{{timesheet.weekEndDate | date:'yyyy-MM-dd'}}</p>
-                    <ul class="list-group">
-                        <li class="list-group-item" ng-repeat="rd in recordedDays">{{"Worked for " + rd.ProjectName + " on " + rd.Day + " from " + rd.dayStartTime + " to " + rd.dayEndTime}}<span class="badge">{{rd.dayEndTime - rd.dayStartTime}} Hours</span></li>
-                    </ul>
-                </div>
-                <div class="row" ng-show="showsavebutton">
-                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>-->
+                    <md-input-container>
+                        <label>End Time</label>
+                        <input type="number" name="dayEndTime" ng-model="recordedDay.dayEndTime" required>
+                        <div ng-messages="timesheetForm.recordedDay.dayEndTime.$error" ng-show="timesheetForm.recordedDay.dayEndTime.$dirty">
+                            <div ng-message="required">This is required!</div>
+                        </div>
+                    </md-input-container>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="row">
+                <div class="col-xs-12">
+                    <div class="row" ng-show="showdetails">
+                        <!--Engineer Name: <p class="text-muted">{{timesheet.engineerName | uppercase}}</p>
+                        <br />
+                        Week Ending: <p class="text-muted">{{timesheet.weekEndDate | date:'yyyy-MM-dd'}}</p>-->
+                        <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="rd in recordedDays">{{"Worked for " + rd.ProjectName + " on " + rd.Day + " from " + rd.dayStartTime + " to " + rd.dayEndTime}}<span class="badge">{{rd.dayEndTime - rd.dayStartTime}} Hours</span></li>
+                        </ul>
+                    </div>
+                    <div class="row" ng-show="showsavebutton">
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </form>

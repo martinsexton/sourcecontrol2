@@ -1,4 +1,4 @@
-﻿var timeApp = angular.module('timeApp', ['ngAnimate']);
+﻿var timeApp = angular.module('timeApp', ['ngAnimate', 'ngAria', 'ngMaterial']);
 
 timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetService', function ($scope, $http, timesheetService) {
     $scope.sortType = 'engineerName'; // set the default sort type
