@@ -1,9 +1,10 @@
-﻿<div ng-app="postApp" ng-controller="projectsController" ng-cloak>
-    <ul class="nav nav-tabs nav-justified">
-        <li class="active" ng-click="setTab('listprojects')"><a href="#">List Projects</a></li>
-        <li ng-click="setTab('newproject')"><a href="#">New Project</a></li>
-    </ul>
-    <div id="newproject" ng-show="showNewProjectsTab">
+﻿<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#newproject">New Project</a></li>
+    <li><a data-toggle="tab" href="#listprojects">List Projects</a></li>
+</ul>
+
+<div class="tab-content" ng-app="postApp" ng-controller="projectsController" ng-cloak>
+    <div id="newproject" class="tab-pane fade in active">
         <form ng-app="postApp" name="projectForm" ng-controller="postController" ng-submit="saveProject()" ng-cloak>
             <div class="container" style="padding-top: 20px;">
                 <div class="row">
@@ -65,8 +66,7 @@
             </div>
         </form>
     </div>
-
-    <div id="listprojects" ng-show="showListProjectsTab">
+    <div id="listprojects" class="tab-pane fade">
         <form ng-app="postApp" ng-controller="listProjectsController" style="padding-top: 20px;" ng-cloak>
             <div class="container">
                 <div class="row">
