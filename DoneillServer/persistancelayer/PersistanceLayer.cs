@@ -106,7 +106,7 @@ namespace persistancelayer
                     {
                         cmd2.Parameters.Add("@timesheetId", SqlDbType.VarChar, 50).Value = timesheetIdentity;
                         cmd2.Parameters.Add("@dayOfWeek", SqlDbType.VarChar, 10).Value = item.getDay();
-                        cmd2.Parameters.Add("@project", SqlDbType.VarChar, 10).Value = item.getProjectName();
+                        cmd2.Parameters.Add("@project", SqlDbType.VarChar, 50).Value = item.getProjectName();
                         cmd2.Parameters.Add("@startTime", SqlDbType.VarChar, 10).Value = item.getStartTime();
                         cmd2.Parameters.Add("@endTime", SqlDbType.VarChar, 10).Value = item.getEndTime();
 
