@@ -40,9 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="api\IPersistanceLayer.cs" />
+    <Compile Include="api\model\IEmployee.cs" />
     <Compile Include="api\model\IProject.cs" />
     <Compile Include="api\model\ITimeSheet.cs" />
     <Compile Include="api\model\ITimeSheetItem.cs" />
+    <Compile Include="impl\model\Employee.cs" />
     <Compile Include="impl\model\Timesheet.cs" />
     <Compile Include="impl\model\TimesheetItem.cs" />
     <Compile Include="PersistanceLayer.cs" />

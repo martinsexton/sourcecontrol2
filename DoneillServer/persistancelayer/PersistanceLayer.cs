@@ -215,5 +215,26 @@ namespace persistancelayer
                 }
             }
         }
+
+
+        public void CreateEmployee(IEmployee emp)
+        {
+            string insert = "INSERT INTO dbo.Employee(firstname,surname) ";
+            string values = "VALUES(@firstname,@surname)";
+            string query = insert + values;
+
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.Add("@firstname", SqlDbType.VarChar, 50).Value = emp.getFirstName();
+                    cmd.Parameters.Add("@surname", SqlDbType.VarChar, 50).Value = emp.getSurname();
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+        }
     }
 }
