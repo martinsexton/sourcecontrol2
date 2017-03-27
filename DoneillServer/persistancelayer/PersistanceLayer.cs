@@ -219,8 +219,8 @@ namespace persistancelayer
 
         public void CreateEmployee(IEmployee emp)
         {
-            string insert = "INSERT INTO dbo.Employee(firstname,surname) ";
-            string values = "VALUES(@firstname,@surname)";
+            string insert = "INSERT INTO dbo.Employee(firstname,surname,category) ";
+            string values = "VALUES(@firstname,@surname,@category)";
             string query = insert + values;
 
             using (var conn = new SqlConnection(CONNECTION_STRING))
@@ -229,6 +229,7 @@ namespace persistancelayer
                 {
                     cmd.Parameters.Add("@firstname", SqlDbType.VarChar, 50).Value = emp.getFirstName();
                     cmd.Parameters.Add("@surname", SqlDbType.VarChar, 50).Value = emp.getSurname();
+                    cmd.Parameters.Add("@category", SqlDbType.VarChar, 50).Value = emp.getCategory();
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -249,6 +250,7 @@ namespace persistancelayer
                         emp.Id
                         ,emp.firstname
                         ,emp.surname
+                        ,emp.category
                     FROM Employee emp;";
 
                 conn.Open();
@@ -261,6 +263,7 @@ namespace persistancelayer
                         emp.Id = reader.GetInt32(0);
                         emp.FirstName = reader.GetString(1);
                         emp.Surname = reader.GetString(2);
+                        emp.Category = reader.GetString(3);
 
                         employees.Add(emp);
                     }

@@ -1,10 +1,11 @@
 ﻿var employeeApp = angular.module('employeeApp', ['ngAnimate', 'ngAria', 'ngMaterial']);
 
 employeeApp.controller('employeeController', ['$scope', '$mdToast', '$http', function ($scope, $mdToast, $http) {
-    $scope.employee = { FirstName: "", Surname: ""};
+    $scope.employee = { FirstName: "", Surname: "", Category: ""};
     $scope.currentTab = "listemployees";
     $scope.showListEmployeesTab = true;
     $scope.showNewEmployeeTab = false;
+    $scope.employeeCategories = ["1st Year Apprentice", "2nd Year Apprentice", "Electrician"];
 
     $scope.saveEmployee = function () {
         var request = {
