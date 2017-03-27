@@ -52,7 +52,7 @@ namespace persistancelayer
                         ,p.contact_number
                         ,p.details
                         ,p.is_active_ind
-                    FROM Project AS p;";
+                    FROM Project AS p where p.is_active_ind = 1;";
 
                 conn.Open();
 
