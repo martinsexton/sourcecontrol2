@@ -236,5 +236,37 @@ namespace persistancelayer
                 }
             }
         }
+
+
+        public List<IEmployee> RetrieveEmployees()
+        {
+            List<IEmployee> employees = new List<IEmployee>();
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                    SELECT
+                        emp.Id
+                        ,emp.firstname
+                        ,emp.surname
+                    FROM Employee emp;";
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Employee emp = new Employee();
+                        emp.Id = reader.GetInt32(0);
+                        emp.FirstName = reader.GetString(1);
+                        emp.Surname = reader.GetString(2);
+
+                        employees.Add(emp);
+                    }
+                }
+            }
+            return employees;
+        }
     }
 }

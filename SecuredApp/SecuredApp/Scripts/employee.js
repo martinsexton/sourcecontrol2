@@ -41,6 +41,48 @@ employeeApp.controller('employeeController', ['$scope', '$mdToast', '$http', fun
     }
 }]);
 
-employeeApp.controller('listEmployeesController', ['$scope', '$mdToast', function ($scope, $mdToast) {
-    $scope.currentTab = "listemployees";
+employeeApp.controller('listEmployeesController', ['$scope', '$mdToast', 'employeeService', function ($scope, $mdToast, employeeService) {
+    $scope.sortType = 'Name'; // set the default sort type
+    $scope.sortReverse = false;  // set the default sort order
+    $scope.readOnlyMode = true;
+    $scope.currentPage = 1;
+    $scope.itemPerPage = 5;
+    $scope.start = 0;
+    $scope.showDetailsClicked = false;
+
+    employeeService.getEmployees().then(function mySucces(response) {
+        $scope.employees = response.data;
+        if (response.data.length > 0) {
+            $scope.total = $scope.employees.length;
+            $scope.item_details = response.data[0];
+        }
+    }, function myError(response) {
+    })
+
+    $scope.nextPage = function () {
+        if (($scope.itemPerPage * $scope.currentPage) <= $scope.projects.length) {
+            $scope.currentPage = $scope.currentPage + 1;
+        }
+    };
+
+    $scope.previousPage = function () {
+        if ($scope.currentPage > 1) {
+            $scope.currentPage = $scope.currentPage - 1;
+        }
+    };
+
+    $scope.showDetails = function (employee) {
+        $scope.showDetailsClicked = true;
+        $scope.item_details = employee;
+    }
+}]);
+
+employeeApp.service('employeeService', ['$http', function ($http) {
+    this.getEmployees = function () {
+        return $http({
+            method: "GET",
+            url: "http://doneillwebapi.azurewebsites.net/api/employee",
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
 }]);

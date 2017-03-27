@@ -15,6 +15,7 @@ namespace persistancelayer.api
         void CreateTimesheet(ITimeSheet t);
 
         List<IProject> RetrieveProjects();
+        List<IEmployee> RetrieveEmployees();
         List<ITimeSheet> RetrieveTimesheets();
         List<ITimeSheetItem> RetrieveTimesheetItems(int timesheetId);
     }
