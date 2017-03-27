@@ -26,6 +26,7 @@ namespace SecuredApp
 
             bundles.Add(new ScriptBundle("~/bundles/projects").Include(
                     "~/Scripts/projects.js",
+                    "~/Scripts/employee.js",
                     "~/Scripts/timesheets.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

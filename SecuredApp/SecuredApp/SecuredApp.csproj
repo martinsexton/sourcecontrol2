@@ -159,6 +159,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\DenisONeill - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\employee.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -189,9 +190,8 @@
     <Content Include="Views\Home\Projects.cshtml" />
     <Content Include="Views\Home\SuccessfulSignout.cshtml" />
     <Content Include="Views\Home\RecordTimesheet.cshtml" />
-    <Content Include="Views\Home\NewProject.cshtml" />
-    <Content Include="Views\Home\ListProjects.cshtml" />
     <Content Include="Views\Home\ListTimesheets.cshtml" />
+    <Content Include="Views\Home\Employees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

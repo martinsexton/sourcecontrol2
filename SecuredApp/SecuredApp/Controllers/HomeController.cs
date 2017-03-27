@@ -23,7 +23,7 @@ namespace SecuredApp.Controllers
             return View();
         }
 
-        public ActionResult ListProjects()
+        public ActionResult Employees()
         {
             return View();
         }
@@ -33,21 +33,9 @@ namespace SecuredApp.Controllers
             return View();
         }
 
-        public ActionResult NewProject()
-        {
-            return View();
-        }
-
         //[Authorize(Roles = "admin,engineer")]
         public ActionResult RecordTimesheet()
         {
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
