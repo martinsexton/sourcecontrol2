@@ -71,7 +71,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <td>
@@ -107,8 +107,8 @@
                         <div class="panel-heading">Details</div>
                         <div class="panel-body">
                             <fieldset ng-disabled="readOnlyMode">
-                                <md-switch class="md-primary" ng-model="data.cb1" aria-label="Switch 1">
-                                    Active: {{ data.cb1 }}
+                                <md-switch ng-disabled="readOnlyMode" class="md-primary" ng-model="item_details.isActive" aria-label="Switch 1">
+                                    Active
                                 </md-switch>
                                 <div class="form-group">
                                     <p class="text-info">Name: </p><input type="text" class="form-control" id="projectName" ng-model="item_details.Name" required>

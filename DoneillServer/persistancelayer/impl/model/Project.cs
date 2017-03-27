@@ -10,6 +10,7 @@ namespace persistancelayer.impl.model
     class Project : IProject
     {
         public int Id { get; set; }
+        public bool isActive { get; set; }
         public string Name { get; set; }
         public string Details { get; set; }
         public DateTime StartDate { get; set; }
@@ -39,6 +40,11 @@ namespace persistancelayer.impl.model
         public int getIdentifier()
         {
             return Id;
+        }
+
+        bool IProject.getIsActive()
+        {
+            return isActive;
         }
     }
 }

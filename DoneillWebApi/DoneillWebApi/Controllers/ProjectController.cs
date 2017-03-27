@@ -28,6 +28,7 @@ namespace DoneillWebApi.Controllers
                 np.StartDate = p.getStartDate();
                 np.ContactNumber = p.getContactNumber();
                 np.Details = p.getDetails();
+                np.isActive = p.getIsActive();
 
                 projectsForDisplay.Add(np);
             }

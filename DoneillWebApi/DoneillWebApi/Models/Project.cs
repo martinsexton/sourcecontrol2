@@ -10,6 +10,7 @@ namespace DoneillWebApi.Models
     {
         public int identifier { get; set; }
         public string Name { get; set; }
+        public bool isActive { get; set; }
         public DateTime StartDate { get; set; }
         public string ContactNumber { get; set; }
         public string Details { get; set; }
@@ -38,6 +39,11 @@ namespace DoneillWebApi.Models
         public int getIdentifier()
         {
             return identifier;
+        }
+
+        bool IProject.getIsActive()
+        {
+            return isActive;
         }
     }
 }

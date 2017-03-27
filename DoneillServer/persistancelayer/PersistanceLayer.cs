@@ -51,6 +51,7 @@ namespace persistancelayer
                         ,p.start_date
                         ,p.contact_number
                         ,p.details
+                        ,p.is_active_ind
                     FROM Project AS p;";
 
                 conn.Open();
@@ -65,6 +66,7 @@ namespace persistancelayer
                         p.StartDate = reader.GetDateTime(2);
                         p.ContactNumber = reader.GetString(3);
                         p.Details = reader.GetString(4);
+                        p.isActive = reader.GetBoolean(5);
 
                         projects.Add(p);
                     }
@@ -195,7 +197,7 @@ namespace persistancelayer
 
         public void UpdateProject(int identifier, IProject p)
         {
-            string query = "UPDATE Project set name=@name, start_date=@startDate, contact_number=@contactNumber, details=@details WHERE Id = @id";
+            string query = "UPDATE Project set name=@name, start_date=@startDate, contact_number=@contactNumber, details=@details, is_active_ind=@active WHERE Id = @id";
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -205,6 +207,7 @@ namespace persistancelayer
                     cmd.Parameters.Add("@startDate", SqlDbType.DateTime).Value = p.getStartDate();
                     cmd.Parameters.Add("@contactNumber", SqlDbType.NVarChar, 50).Value = p.getContactNumber();
                     cmd.Parameters.Add("@details", SqlDbType.NVarChar, 1000).Value = p.getDetails();
+                    cmd.Parameters.Add("@active", SqlDbType.Bit).Value = p.getIsActive();
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
