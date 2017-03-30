@@ -150,6 +150,11 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\cable2.jpg" />
+    <Content Include="Content\Images\fri.png" />
+    <Content Include="Content\Images\mon.png" />
+    <Content Include="Content\Images\thurs.png" />
+    <Content Include="Content\Images\tue.png" />
+    <Content Include="Content\Images\wed.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

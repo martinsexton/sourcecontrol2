@@ -8,7 +8,11 @@ namespace persistancelayer.api.model
 {
     public interface ITimeSheet
     {
-        List<ITimeSheetItem> getItems();
+        List<ITimeSheetItem> getMondayItems();
+        List<ITimeSheetItem> getTuesdayItems();
+        List<ITimeSheetItem> getWednesdayItems();
+        List<ITimeSheetItem> getThursdayItems();
+        List<ITimeSheetItem> getFridayItems();
         String getEngineerName();
         DateTime getWeekEndDate();
         int getIdentifier();

@@ -13,11 +13,6 @@ namespace persistancelayer.impl.model
         public string engineerName { get; set; }
         public DateTime weekEndDate { get; set; }
 
-        public List<ITimeSheetItem> getItems()
-        {
-            throw new NotImplementedException();
-        }
-
         public string getEngineerName()
         {
             return engineerName;
@@ -32,6 +27,31 @@ namespace persistancelayer.impl.model
         public int getIdentifier()
         {
             return identifier;
+        }
+
+        public List<ITimeSheetItem> getMondayItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ITimeSheetItem> getTuesdayItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ITimeSheetItem> getWednesdayItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ITimeSheetItem> getThursdayItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ITimeSheetItem> getFridayItems()
+        {
+            throw new NotImplementedException();
         }
     }
 }

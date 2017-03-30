@@ -49,7 +49,20 @@ timeApp.controller('recordTimesheetController', ['$scope', '$http', 'projectServ
     $scope.recordedDays = [];
     $scope.recordedDay = { Day: "", ProjectName: "", dayStartTime: "", dayEndTime: "" };
     $scope.days = ["Mon", "Tue", "Wed", "Thurs", "Fri"];
-    $scope.timesheet = {engineerName:"",weekEndDate:"",items:$scope.recordedDays}
+
+    $scope.mondayDetails = [];
+    $scope.tuesdayDetails = [];
+    $scope.wednesdayDetails = [];
+    $scope.thursdayDetails = [];
+    $scope.fridayDetails = [];
+
+    $scope.timesheet = { engineerName: "", weekEndDate: "", mondayItems: $scope.mondayDetails, tuesdayItems : $scope.tuesdayDetails, wednesdayItems : $scope.wednesdayDetails, thursdayItems : $scope.thursdayDetails, fridayItems : $scope.fridayDetails }
+
+    $scope.displayMonDetails = false;
+    $scope.displayTueDetails = false;
+    $scope.displayWedDetails = false;
+    $scope.displayThursDetails = false;
+    $scope.displayFriDetails = false;
 
     $scope.recordDay = function () {
         $scope.showdetails = true;
@@ -59,6 +72,113 @@ timeApp.controller('recordTimesheetController', ['$scope', '$http', 'projectServ
         }
         //var index = $scope.days.indexOf($scope.recordedDay.Day);
         //$scope.days.splice(index, 1);
+    }
+
+    $scope.recordMondayDetails = function () {
+        $scope.mondayDetails.push({ Day: "Monday", ProjectName: $scope.mondayDetails.ProjectName, dayStartTime: $scope.mondayDetails.dayStartTime, dayEndTime: $scope.mondayDetails.dayEndTime })
+        if ($scope.mondayDetails.length > 0) {
+            if ($scope.tuesdayDetails.length > 0) {
+                if ($scope.wednesdayDetails.length > 0) {
+                    if ($scope.thursdayDetails.length > 0) {
+                        if ($scope.fridayDetails.length > 0) {
+                            $scope.showsavebutton = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    $scope.recordTuesdayDetails = function () {
+        $scope.tuesdayDetails.push({ Day: "Tuesday", ProjectName: $scope.tuesdayDetails.ProjectName, dayStartTime: $scope.tuesdayDetails.dayStartTime, dayEndTime: $scope.tuesdayDetails.dayEndTime })
+        if ($scope.mondayDetails.length > 0) {
+            if ($scope.tuesdayDetails.length > 0) {
+                if ($scope.wednesdayDetails.length > 0) {
+                    if ($scope.thursdayDetails.length > 0) {
+                        if ($scope.fridayDetails.length > 0) {
+                            $scope.showsavebutton = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    $scope.recordWednesdayDetails = function () {
+        $scope.wednesdayDetails.push({ Day: "Wednesday", ProjectName: $scope.wednesdayDetails.ProjectName, dayStartTime: $scope.wednesdayDetails.dayStartTime, dayEndTime: $scope.wednesdayDetails.dayEndTime })
+        if ($scope.mondayDetails.length > 0) {
+            if ($scope.tuesdayDetails.length > 0) {
+                if ($scope.wednesdayDetails.length > 0) {
+                    if ($scope.thursdayDetails.length > 0) {
+                        if ($scope.fridayDetails.length > 0) {
+                            $scope.showsavebutton = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    $scope.recordThursdayDetails = function () {
+        $scope.thursdayDetails.push({ Day: "Thursday", ProjectName: $scope.thursdayDetails.ProjectName, dayStartTime: $scope.thursdayDetails.dayStartTime, dayEndTime: $scope.thursdayDetails.dayEndTime })
+        if ($scope.mondayDetails.length > 0) {
+            if ($scope.tuesdayDetails.length > 0) {
+                if ($scope.wednesdayDetails.length > 0) {
+                    if ($scope.thursdayDetails.length > 0) {
+                        if ($scope.fridayDetails.length > 0) {
+                            $scope.showsavebutton = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    $scope.recordFridayDetails = function () {
+        $scope.fridayDetails.push({ Day: "Friday", ProjectName: $scope.fridayDetails.ProjectName, dayStartTime: $scope.fridayDetails.dayStartTime, dayEndTime: $scope.fridayDetails.dayEndTime })
+        if ($scope.mondayDetails.length > 0) {
+            if ($scope.tuesdayDetails.length > 0) {
+                if ($scope.wednesdayDetails.length > 0) {
+                    if ($scope.thursdayDetails.length > 0) {
+                        if ($scope.fridayDetails.length > 0) {
+                            $scope.showsavebutton = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    $scope.showMon = function () {
+        $scope.displayMonDetails = true;
+        $scope.displayTueDetails = false;
+        $scope.displayWedDetails = false;
+        $scope.displayThursDetails = false;
+        $scope.displayFriDetails = false;
+    }
+    $scope.showTue = function () {
+        $scope.displayMonDetails = false;
+        $scope.displayTueDetails = true;
+        $scope.displayWedDetails = false;
+        $scope.displayThursDetails = false;
+        $scope.displayFriDetails = false;
+    }
+    $scope.showWed = function () {
+        $scope.displayMonDetails = false;
+        $scope.displayTueDetails = false;
+        $scope.displayWedDetails = true;
+        $scope.displayThursDetails = false;
+        $scope.displayFriDetails = false;
+    }
+    $scope.showThurs = function () {
+        $scope.displayMonDetails = false;
+        $scope.displayTueDetails = false;
+        $scope.displayWedDetails = false;
+        $scope.displayThursDetails = true;
+        $scope.displayFriDetails = false;
+    }
+    $scope.showFri = function () {
+        $scope.displayMonDetails = false;
+        $scope.displayTueDetails = false;
+        $scope.displayWedDetails = false;
+        $scope.displayThursDetails = false;
+        $scope.displayFriDetails = true;
     }
 
     $scope.saveTimesheet = function() {

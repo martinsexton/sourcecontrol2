@@ -87,10 +87,10 @@ namespace persistancelayer
             string query = insert + values;
             string query2 = insert2 + values2;
 
+            int timesheetIdentity = 0;
+
             using (var conn = new SqlConnection(CONNECTION_STRING))
             {
-                int timesheetIdentity = 0;
-
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.Add("@engineerName", SqlDbType.VarChar, 50).Value = t.getEngineerName();
@@ -100,8 +100,25 @@ namespace persistancelayer
                     timesheetIdentity = (int)cmd.ExecuteScalar();
                     conn.Close();
                 }
+            }
+            saveWeekDayDetails(t.getMondayItems(), timesheetIdentity);
+            saveWeekDayDetails(t.getTuesdayItems(), timesheetIdentity);
+            saveWeekDayDetails(t.getWednesdayItems(), timesheetIdentity);
+            saveWeekDayDetails(t.getThursdayItems(), timesheetIdentity);
+            saveWeekDayDetails(t.getFridayItems(), timesheetIdentity);
+        }
 
-                foreach(ITimeSheetItem item in t.getItems()){
+        private void saveWeekDayDetails(List<ITimeSheetItem> items, int timesheetIdentity)
+        {
+            string insert2 = "INSERT INTO dbo.TimeSheetItem(timesheet_id,day_of_week,project,start_time,end_time) ";
+            string values2 = "VALUES(@timesheetId,@dayOfWeek,@project,@startTime,@endTime)";
+
+            string query2 = insert2 + values2;
+
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                foreach (ITimeSheetItem item in items)
+                {
                     using (SqlCommand cmd2 = new SqlCommand(query2, conn))
                     {
                         cmd2.Parameters.Add("@timesheetId", SqlDbType.VarChar, 50).Value = timesheetIdentity;
@@ -115,7 +132,7 @@ namespace persistancelayer
                         conn.Close();
                     }
                 }
-            }            
+            }
         }
 
 

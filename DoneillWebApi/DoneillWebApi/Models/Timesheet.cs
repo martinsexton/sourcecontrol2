@@ -11,20 +11,12 @@ namespace DoneillWebApi.Models
         public int identifier { get; set; }
         public string engineerName { get; set; }
         public DateTime weekEndDate { get; set; }
-        public TimesheetItem[] items = new TimesheetItem[5];
+        public TimesheetItem[] mondayItems { get; set; }
+        public TimesheetItem[] tuesdayItems { get; set; }
+        public TimesheetItem[] wednesdayItems { get; set; }
+        public TimesheetItem[] thursdayItems { get; set; }
+        public TimesheetItem[] fridayItems { get; set; }
 
-
-        public List<ITimeSheetItem> getItems()
-        {
-            List<ITimeSheetItem> items2 = new List<ITimeSheetItem>();
-            items2.Add(items[0]);
-            items2.Add(items[1]);
-            items2.Add(items[2]);
-            items2.Add(items[3]);
-            items2.Add(items[4]);
-
-            return items2;
-        }
 
         public string getEngineerName()
         {
@@ -46,6 +38,61 @@ namespace DoneillWebApi.Models
         public int getIdentifier()
         {
             return identifier;
+        }
+
+        public List<ITimeSheetItem> getMondayItems()
+        {
+            List<ITimeSheetItem> items = new List<ITimeSheetItem>();
+            for (int i = 0; i < mondayItems.Length; i++)
+            {
+                items.Add(mondayItems[i]);
+            }
+
+            return items;
+        }
+
+        public List<ITimeSheetItem> getTuesdayItems()
+        {
+            List<ITimeSheetItem> items = new List<ITimeSheetItem>();
+            for (int i = 0; i < tuesdayItems.Length; i++)
+            {
+                items.Add(tuesdayItems[i]);
+            }
+
+            return items;
+        }
+
+        public List<ITimeSheetItem> getWednesdayItems()
+        {
+            List<ITimeSheetItem> items = new List<ITimeSheetItem>();
+            for (int i = 0; i < wednesdayItems.Length; i++)
+            {
+                items.Add(wednesdayItems[i]);
+            }
+
+            return items;
+        }
+
+        public List<ITimeSheetItem> getThursdayItems()
+        {
+            List<ITimeSheetItem> items = new List<ITimeSheetItem>();
+            for (int i = 0; i < thursdayItems.Length; i++)
+            {
+                items.Add(thursdayItems[i]);
+            }
+
+            return items;
+        }
+
+        public List<ITimeSheetItem> getFridayItems()
+        {
+            List<ITimeSheetItem> items = new List<ITimeSheetItem>();
+            for (int i = 0; i < fridayItems.Length; i++)
+            {
+                items.Add(fridayItems[i]);
+            }
+
+            return items;
         }
     }
 }
