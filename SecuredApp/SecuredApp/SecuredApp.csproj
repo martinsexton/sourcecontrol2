@@ -152,6 +152,8 @@
     <Content Include="Content\Images\cable2.jpg" />
     <Content Include="Content\Images\fri.png" />
     <Content Include="Content\Images\mon.png" />
+    <Content Include="Content\Images\sat.png" />
+    <Content Include="Content\Images\sun.png" />
     <Content Include="Content\Images\thurs.png" />
     <Content Include="Content\Images\tue.png" />
     <Content Include="Content\Images\wed.png" />

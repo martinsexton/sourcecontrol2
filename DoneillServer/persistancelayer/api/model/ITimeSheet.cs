@@ -13,6 +13,8 @@ namespace persistancelayer.api.model
         List<ITimeSheetItem> getWednesdayItems();
         List<ITimeSheetItem> getThursdayItems();
         List<ITimeSheetItem> getFridayItems();
+        List<ITimeSheetItem> getSaturdayItems();
+        List<ITimeSheetItem> getSundayItems();
         String getEngineerName();
         DateTime getWeekEndDate();
         int getIdentifier();

@@ -53,5 +53,16 @@ namespace persistancelayer.impl.model
         {
             throw new NotImplementedException();
         }
+
+
+        public List<ITimeSheetItem> getSaturdayItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ITimeSheetItem> getSundayItems()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

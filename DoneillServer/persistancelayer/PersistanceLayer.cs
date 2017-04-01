@@ -106,6 +106,8 @@ namespace persistancelayer
             saveWeekDayDetails(t.getWednesdayItems(), timesheetIdentity);
             saveWeekDayDetails(t.getThursdayItems(), timesheetIdentity);
             saveWeekDayDetails(t.getFridayItems(), timesheetIdentity);
+            saveWeekDayDetails(t.getSaturdayItems(), timesheetIdentity);
+            saveWeekDayDetails(t.getSundayItems(), timesheetIdentity);
         }
 
         private void saveWeekDayDetails(List<ITimeSheetItem> items, int timesheetIdentity)

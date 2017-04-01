@@ -16,6 +16,8 @@ namespace DoneillWebApi.Models
         public TimesheetItem[] wednesdayItems { get; set; }
         public TimesheetItem[] thursdayItems { get; set; }
         public TimesheetItem[] fridayItems { get; set; }
+        public TimesheetItem[] saturdayItems { get; set; }
+        public TimesheetItem[] sundayItems { get; set; }
 
 
         public string getEngineerName()
@@ -90,6 +92,29 @@ namespace DoneillWebApi.Models
             for (int i = 0; i < fridayItems.Length; i++)
             {
                 items.Add(fridayItems[i]);
+            }
+
+            return items;
+        }
+
+
+        public List<ITimeSheetItem> getSaturdayItems()
+        {
+            List<ITimeSheetItem> items = new List<ITimeSheetItem>();
+            for (int i = 0; i < saturdayItems.Length; i++)
+            {
+                items.Add(saturdayItems[i]);
+            }
+
+            return items;
+        }
+
+        public List<ITimeSheetItem> getSundayItems()
+        {
+            List<ITimeSheetItem> items = new List<ITimeSheetItem>();
+            for (int i = 0; i < sundayItems.Length; i++)
+            {
+                items.Add(sundayItems[i]);
             }
 
             return items;
