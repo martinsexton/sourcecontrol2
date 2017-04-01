@@ -9,6 +9,7 @@ namespace DoneillWebApi.Models
     public class Project : IProject
     {
         public int identifier { get; set; }
+        public int Code { get; set; }
         public string Name { get; set; }
         public bool isActive { get; set; }
         public DateTime StartDate { get; set; }
@@ -44,6 +45,12 @@ namespace DoneillWebApi.Models
         bool IProject.getIsActive()
         {
             return isActive;
+        }
+
+
+        public int getCode()
+        {
+            return Code;
         }
     }
 }

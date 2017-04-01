@@ -32,11 +32,11 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div ng-show="displayMonDetails">
-                        <h3>Monday</h3>
+                        <p class="h4">Monday</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div ng-repeat="md in mondayDetails">
-                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
+                                    <p class="text-warning"><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
                         </div>

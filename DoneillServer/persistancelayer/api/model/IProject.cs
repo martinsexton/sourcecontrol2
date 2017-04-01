@@ -14,5 +14,6 @@ namespace persistancelayer.api.model
         bool getIsActive();
         DateTime getStartDate();
         int getIdentifier();
+        int getCode();
     }
 }

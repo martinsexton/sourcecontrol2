@@ -17,8 +17,8 @@ namespace persistancelayer
 
         public void CreateProject(IProject p)
         {
-            string insert = "INSERT INTO dbo.Project(name,start_date,contact_number,details) ";
-            string values = "VALUES(@name,@startdate,@contactnumber,@details)";
+            string insert = "INSERT INTO dbo.Project(name,start_date,contact_number,details,code) ";
+            string values = "VALUES(@name,@startdate,@contactnumber,@details,NEXT VALUE FOR dbo.Project_Code)";
             string query = insert + values;
 
             using (var conn = new SqlConnection(CONNECTION_STRING))
@@ -52,6 +52,7 @@ namespace persistancelayer
                         ,p.contact_number
                         ,p.details
                         ,p.is_active_ind
+                        ,p.code
                     FROM Project AS p where p.is_active_ind = 1;";
 
                 conn.Open();
@@ -67,6 +68,7 @@ namespace persistancelayer
                         p.ContactNumber = reader.GetString(3);
                         p.Details = reader.GetString(4);
                         p.isActive = reader.GetBoolean(5);
+                        p.Code = reader.GetInt32(6);
 
                         projects.Add(p);
                     }

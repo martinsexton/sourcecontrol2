@@ -29,6 +29,7 @@ namespace DoneillWebApi.Controllers
                 np.ContactNumber = p.getContactNumber();
                 np.Details = p.getDetails();
                 np.isActive = p.getIsActive();
+                np.Code = p.getCode();
 
                 projectsForDisplay.Add(np);
             }
