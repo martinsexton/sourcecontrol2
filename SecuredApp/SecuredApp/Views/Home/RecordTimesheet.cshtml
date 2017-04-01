@@ -12,7 +12,7 @@
                 <img ng-src="~/Content/Images/sun.png" ng-click="showSun()" />
             </div>
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-xs-6">
                     <md-input-container>
                         <label>Engineer Name</label>
                         <input name="engineerName" ng-model="timesheet.engineerName" required>
@@ -22,39 +22,34 @@
                         </div>
                     </md-input-container>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-6">
                     <md-input-container>
                         <label>Week Ending</label>
                         <input type="date" class="form-control" id="weekEndDate" aria-describedby="weekEndDateHelp" ng-model="timesheet.weekEndDate" required>
                     </md-input-container>
-                </div>
-                <div class="col-xs-4" ng-show="showsavebutton">
-                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div ng-show="displayMonDetails">
                         <h3>Monday</h3>
-                        <div ng-repeat="md in mondayDetails">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="well well-sm">
-                                        <small class="form-text text-muted">Project Name: {{md.ProjectName}}</small>
-                                        <br />
-                                        <small class="form-text text-muted">Hours Worked: {{md.dayEndTime - md.dayStartTime}}</small>
-                                        <br />
-                                        <br />
-                                    </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-repeat="md in mondayDetails">
+                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
-                            <md-divider></md-divider>
+                        </div>
+                        <div class="row" style="padding-bottom:20px">
+                            <div class="col-xs-12" ng-show="mondayTotalHours>0">
+                                <p><strong>Total Hours: {{mondayTotalHours}}</strong></p>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Projects</label>
-                                    <md-select ng-model="mondayDetails.ProjectName">
+                                    <md-select ng-model="recordedMonday.ProjectName" ng-required="displayMonDetails">
                                         <md-option ng-repeat="p in projects" ng-value="p.Name">
                                             {{p.Name}}
                                         </md-option>
@@ -64,19 +59,20 @@
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Start Time</label>
-                                    <input type="number" name="dayStartTime" ng-model="mondayDetails.dayStartTime" required>
+                                    <input type="number" name="mondayStartTime" ng-model="recordedMonday.dayStartTime" ng-required="displayMonDetails">
                                 </md-input-container>
                             </div>
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>End Time</label>
-                                    <input type="number" name="dayEndTime" ng-model="mondayDetails.dayEndTime" required>
+                                    <input type="number" name="mondayEndTime" ng-model="recordedMonday.dayEndTime" ng-required="displayMonDetails">
                                 </md-input-container>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary btn-sm" ng-click="recordMondayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="button" ng-disabled="timesheetForm.mondayStartTime.$invalid || timesheetForm.mondayEndTime.$invalid" class="btn btn-primary btn-sm" ng-click="recordMondayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
                             </div>
                         </div>
                     </div>
@@ -86,25 +82,23 @@
                 <div class="col-xs-12">
                     <div ng-show="displayTueDetails">
                         <h3>Tuesday</h3>
-                        <div ng-repeat="md in tuesdayDetails">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="well well-sm">
-                                        <small class="form-text text-muted">Project Name: {{md.ProjectName}}</small>
-                                        <br />
-                                        <small class="form-text text-muted">Hours Worked: {{md.dayEndTime - md.dayStartTime}}</small>
-                                        <br />
-                                        <br />
-                                    </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-repeat="md in tuesdayDetails">
+                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
-                            <md-divider></md-divider>
+                        </div>
+                        <div class="row" style="padding-bottom:20px">
+                            <div class="col-xs-12" ng-show="tuesdayTotalHours>0">
+                                <p><strong>Total Hours: {{tuesdayTotalHours}}</strong></p>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Projects</label>
-                                    <md-select ng-model="tuesdayDetails.ProjectName">
+                                    <md-select ng-model="recordedTuesday.ProjectName" ng-required="displayTueDetails">
                                         <md-option ng-repeat="p in projects" ng-value="p.Name">
                                             {{p.Name}}
                                         </md-option>
@@ -114,19 +108,20 @@
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Start Time</label>
-                                    <input type="number" name="dayStartTime" ng-model="tuesdayDetails.dayStartTime" required>
+                                    <input type="number" name="tuesdayStartTime" ng-model="recordedTuesday.dayStartTime" ng-required="displayTueDetails">
                                 </md-input-container>
                             </div>
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>End Time</label>
-                                    <input type="number" name="dayEndTime" ng-model="tuesdayDetails.dayEndTime" required>
+                                    <input type="number" name="tuesdayEndTime" ng-model="recordedTuesday.dayEndTime" ng-required="displayTueDetails">
                                 </md-input-container>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary btn-sm" ng-click="recordTuesdayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="button" ng-disabled="timesheetForm.tuesdayStartTime.$invalid || timesheetForm.tuesdayEndTime.$invalid" class="btn btn-primary btn-sm" ng-click="recordTuesdayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
                             </div>
                         </div>
                     </div>
@@ -136,25 +131,23 @@
                 <div class="col-xs-12">
                     <div ng-show="displayWedDetails">
                         <h3>Wednesday</h3>
-                        <div ng-repeat="md in wednesdayDetails">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="well well-sm">
-                                        <small class="form-text text-muted">Project Name: {{md.ProjectName}}</small>
-                                        <br />
-                                        <small class="form-text text-muted">Hours Worked: {{md.dayEndTime - md.dayStartTime}}</small>
-                                        <br />
-                                        <br />
-                                    </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-repeat="md in wednesdayDetails">
+                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
-                            <md-divider></md-divider>
+                        </div>
+                        <div class="row" style="padding-bottom:20px">
+                            <div class="col-xs-12" ng-show="wednesdayTotalHours>0">
+                                <p><strong>Total Hours: {{wednesdayTotalHours}}</strong></p>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Projects</label>
-                                    <md-select ng-model="wednesdayDetails.ProjectName">
+                                    <md-select ng-model="recordedWednesday.ProjectName" ng-required="displayWedDetails">
                                         <md-option ng-repeat="p in projects" ng-value="p.Name">
                                             {{p.Name}}
                                         </md-option>
@@ -164,19 +157,20 @@
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Start Time</label>
-                                    <input type="number" name="dayStartTime" ng-model="wednesdayDetails.dayStartTime" required>
+                                    <input type="number" name="wednesdayStartTime" ng-model="recordedWednesday.dayStartTime" ng-required="displayWedDetails">
                                 </md-input-container>
                             </div>
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>End Time</label>
-                                    <input type="number" name="dayEndTime" ng-model="wednesdayDetails.dayEndTime" required>
+                                    <input type="number" name="wednesdayEndTime" ng-model="recordedWednesday.dayEndTime" ng-required="displayWedDetails">
                                 </md-input-container>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary btn-sm" ng-click="recordWednesdayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="button" ng-disabled="timesheetForm.wednesdayStartTime.$invalid || timesheetForm.wednesdayEndTime.$invalid" class="btn btn-primary btn-sm" ng-click="recordWednesdayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
                             </div>
                         </div>
                     </div>
@@ -186,25 +180,23 @@
                 <div class="col-xs-12">
                     <div ng-show="displayThursDetails">
                         <h3>Thursday</h3>
-                        <div ng-repeat="md in thursdayDetails">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="well well-sm">
-                                        <small class="form-text text-muted">Project Name: {{md.ProjectName}}</small>
-                                        <br />
-                                        <small class="form-text text-muted">Hours Worked: {{md.dayEndTime - md.dayStartTime}}</small>
-                                        <br />
-                                        <br />
-                                    </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-repeat="md in thursdayDetails">
+                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
-                            <md-divider></md-divider>
+                        </div>
+                        <div class="row" style="padding-bottom:20px">
+                            <div class="col-xs-12" ng-show="thursdayTotalHours>0">
+                                <p><strong>Total Hours: {{thursdayTotalHours}}</strong></p>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Projects</label>
-                                    <md-select ng-model="thursdayDetails.ProjectName">
+                                    <md-select ng-model="recordedThursday.ProjectName" ng-required="displayThursDetails">
                                         <md-option ng-repeat="p in projects" ng-value="p.Name">
                                             {{p.Name}}
                                         </md-option>
@@ -214,19 +206,20 @@
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Start Time</label>
-                                    <input type="number" name="dayStartTime" ng-model="thursdayDetails.dayStartTime" required>
+                                    <input type="number" name="thursdayStartTime" ng-model="recordedThursday.dayStartTime" ng-required="displayThursDetails">
                                 </md-input-container>
                             </div>
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>End Time</label>
-                                    <input type="number" name="dayEndTime" ng-model="thursdayDetails.dayEndTime" required>
+                                    <input type="number" name="thursdayEndTime" ng-model="recordedThursday.dayEndTime" ng-required="displayThursDetails">
                                 </md-input-container>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary btn-sm" ng-click="recordThursdayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="button" ng-disabled="timesheetForm.thursdayStartTime.$invalid || timesheetForm.thursdayEndTime.$invalid" class="btn btn-primary btn-sm" ng-click="recordThursdayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
                             </div>
                         </div>
                     </div>
@@ -236,25 +229,23 @@
                 <div class="col-xs-12">
                     <div ng-show="displayFriDetails">
                         <h3>Friday</h3>
-                        <div ng-repeat="md in fridayDetails">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="well well-sm">
-                                        <small class="form-text text-muted">Project Name: {{md.ProjectName}}</small>
-                                        <br />
-                                        <small class="form-text text-muted">Hours Worked: {{md.dayEndTime - md.dayStartTime}}</small>
-                                        <br />
-                                        <br />
-                                    </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-repeat="md in fridayDetails">
+                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
-                            <md-divider></md-divider>
+                        </div>
+                        <div class="row" style="padding-bottom:20px">
+                            <div class="col-xs-12" ng-show="fridayTotalHours>0">
+                                <p><strong>Total Hours: {{fridayTotalHours}}</strong></p>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Projects</label>
-                                    <md-select ng-model="fridayDetails.ProjectName">
+                                    <md-select ng-model="recordedFriday.ProjectName" ng-required="displayFriDetails">
                                         <md-option ng-repeat="p in projects" ng-value="p.Name">
                                             {{p.Name}}
                                         </md-option>
@@ -264,19 +255,20 @@
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Start Time</label>
-                                    <input type="number" name="dayStartTime" ng-model="fridayDetails.dayStartTime" required>
+                                    <input type="number" name="fridayStartTime" ng-model="recordedFriday.dayStartTime" ng-required="displayFriDetails">
                                 </md-input-container>
                             </div>
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>End Time</label>
-                                    <input type="number" name="dayEndTime" ng-model="fridayDetails.dayEndTime" required>
+                                    <input type="number" name="fridayEndTime" ng-model="recordedFriday.dayEndTime" ng-required="displayFriDetails">
                                 </md-input-container>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary btn-sm" ng-click="recordFridayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="button" ng-disabled="timesheetForm.fridayStartTime.$invalid || timesheetForm.fridayEndTime.$invalid" class="btn btn-primary btn-sm" ng-click="recordFridayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
                             </div>
                         </div>
                     </div>
@@ -286,25 +278,23 @@
                 <div class="col-xs-12">
                     <div ng-show="displaySatDetails">
                         <h3>Saturday</h3>
-                        <div ng-repeat="md in saturdayDetails">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="well well-sm">
-                                        <small class="form-text text-muted">Project Name: {{md.ProjectName}}</small>
-                                        <br />
-                                        <small class="form-text text-muted">Hours Worked: {{md.dayEndTime - md.dayStartTime}}</small>
-                                        <br />
-                                        <br />
-                                    </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-repeat="md in saturdayDetails">
+                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
-                            <md-divider></md-divider>
+                        </div>
+                        <div class="row" style="padding-bottom:20px">
+                            <div class="col-xs-12" ng-show="saturdayTotalHours>0">
+                                <p><strong>Total Hours: {{saturdayTotalHours}}</strong></p>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Projects</label>
-                                    <md-select ng-model="saturdayDetails.ProjectName">
+                                    <md-select ng-model="recordedSaturday.ProjectName" ng-required="displaySatDetails">
                                         <md-option ng-repeat="p in projects" ng-value="p.Name">
                                             {{p.Name}}
                                         </md-option>
@@ -314,19 +304,20 @@
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Start Time</label>
-                                    <input type="number" name="dayStartTime" ng-model="saturdayDetails.dayStartTime" required>
+                                    <input type="number" name="saturdayStartTime" ng-model="recordedSaturday.dayStartTime" ng-required="displaySatDetails">
                                 </md-input-container>
                             </div>
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>End Time</label>
-                                    <input type="number" name="dayEndTime" ng-model="saturdayDetails.dayEndTime" required>
+                                    <input type="number" name="saturdayEndTime" ng-model="recordedSaturday.dayEndTime" ng-required="displaySatDetails">
                                 </md-input-container>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary btn-sm" ng-click="recordSaturdayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="button" ng-disabled="timesheetForm.saturdayStartTime.$invalid || timesheetForm.saturdayEndTime.$invalid" class="btn btn-primary btn-sm" ng-click="recordSaturdayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
                             </div>
                         </div>
                     </div>
@@ -336,25 +327,23 @@
                 <div class="col-xs-12">
                     <div ng-show="displaySunDetails">
                         <h3>Sunday</h3>
-                        <div ng-repeat="md in sundayDetails">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="well well-sm">
-                                        <small class="form-text text-muted">Project Name: {{md.ProjectName}}</small>
-                                        <br />
-                                        <small class="form-text text-muted">Hours Worked: {{md.dayEndTime - md.dayStartTime}}</small>
-                                        <br />
-                                        <br />
-                                    </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div ng-repeat="md in sundayDetails">
+                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
-                            <md-divider></md-divider>
+                        </div>
+                        <div class="row" style="padding-bottom:20px">
+                            <div class="col-xs-12" ng-show="sundayTotalHours>0">
+                                <p><strong>Total Hours: {{sundayTotalHours}}</strong></p>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Projects</label>
-                                    <md-select ng-model="sundayDetails.ProjectName">
+                                    <md-select ng-model="recordedSunday.ProjectName" ng-required="displaySunDetails">
                                         <md-option ng-repeat="p in projects" ng-value="p.Name">
                                             {{p.Name}}
                                         </md-option>
@@ -364,19 +353,20 @@
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>Start Time</label>
-                                    <input type="number" name="dayStartTime" ng-model="sundayDetails.dayStartTime" required>
+                                    <input type="number" name="sundayStartTime" ng-model="recordedSunday.dayStartTime" ng-required="displaySunDetails">
                                 </md-input-container>
                             </div>
                             <div class="col-xs-4">
                                 <md-input-container>
                                     <label>End Time</label>
-                                    <input type="number" name="dayEndTime" ng-model="sundayDetails.dayEndTime" required>
+                                    <input type="number" name="sundayEndTime" ng-model="recordedSunday.dayEndTime" ng-required="displaySunDetails">
                                 </md-input-container>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary btn-sm" ng-click="recordSundayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="button" ng-disabled="timesheetForm.sundayStartTime.$invalid || timesheetForm.sundayEndTime.$invalid" class="btn btn-primary btn-sm" ng-click="recordSundayDetails()"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
                             </div>
                         </div>
                     </div>

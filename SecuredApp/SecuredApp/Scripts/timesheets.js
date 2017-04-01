@@ -46,17 +46,28 @@ timeApp.service('timesheetService', ['$http', function ($http) {
 timeApp.controller('recordTimesheetController', ['$scope', '$mdToast', '$http', 'projectService', function ($scope, $mdToast, $http, projectService) {
     $scope.showdetails = false;
     $scope.showsavebutton = false;
-    $scope.recordedDays = [];
-    $scope.recordedDay = { ProjectName: "", dayStartTime: "", dayEndTime: "" };
     $scope.days = ["Mon", "Tue", "Wed", "Thurs", "Fri"];
 
     $scope.mondayDetails = [];
+    $scope.mondayTotalHours = 0;
+
     $scope.tuesdayDetails = [];
+    $scope.tuesdayTotalHours = 0;
+
     $scope.wednesdayDetails = [];
+    $scope.wednesdayTotalHours = 0;
+
     $scope.thursdayDetails = [];
+    $scope.thursdayTotalHours = 0;
+
     $scope.fridayDetails = [];
+    $scope.fridayTotalHours = 0;
+
     $scope.saturdayDetails = [];
+    $scope.saturdayTotalHours = 0;
+
     $scope.sundayDetails = [];
+    $scope.sundayTotalHours = 0;
 
     $scope.timesheet = { engineerName: "", weekEndDate: "", mondayItems: $scope.mondayDetails, tuesdayItems : $scope.tuesdayDetails, wednesdayItems : $scope.wednesdayDetails, thursdayItems : $scope.thursdayDetails, fridayItems : $scope.fridayDetails, saturdayItems: $scope.saturdayDetails, sundayItems : $scope.sundayDetails }
 
@@ -68,43 +79,54 @@ timeApp.controller('recordTimesheetController', ['$scope', '$mdToast', '$http', 
     $scope.displaySatDetails = false;
     $scope.displaySunDetails = false;
 
-    $scope.recordDay = function () {
-        $scope.showdetails = true;
-        $scope.recordedDays.push({ Day: $scope.recordedDay.Day, ProjectName: $scope.recordedDay.ProjectName, dayStartTime: $scope.recordedDay.dayStartTime, dayEndTime: $scope.recordedDay.dayEndTime })
-        if ($scope.recordedDays.length == 5) {
-            $scope.showsavebutton = true;
-        }
-        //var index = $scope.days.indexOf($scope.recordedDay.Day);
-        //$scope.days.splice(index, 1);
-    }
-
     $scope.recordMondayDetails = function () {
         $scope.showsavebutton = true;
-        $scope.mondayDetails.push({ Day: "Monday", ProjectName: $scope.mondayDetails.ProjectName, dayStartTime: $scope.mondayDetails.dayStartTime, dayEndTime: $scope.mondayDetails.dayEndTime })
+        $difference = $scope.recordedMonday.dayEndTime - $scope.recordedMonday.dayStartTime;
+        $scope.mondayTotalHours = $scope.mondayTotalHours + $difference;
+
+        $scope.mondayDetails.push({ Day: "Monday", ProjectName: $scope.recordedMonday.ProjectName, dayStartTime: $scope.recordedMonday.dayStartTime, dayEndTime: $scope.recordedMonday.dayEndTime })
     }
     $scope.recordTuesdayDetails = function () {
         $scope.showsavebutton = true;
-        $scope.tuesdayDetails.push({ Day: "Tuesday", ProjectName: $scope.tuesdayDetails.ProjectName, dayStartTime: $scope.tuesdayDetails.dayStartTime, dayEndTime: $scope.tuesdayDetails.dayEndTime })
+        $difference = $scope.recordedTuesday.dayEndTime - $scope.recordedTuesday.dayStartTime;
+        $scope.tuesdayTotalHours = $scope.tuesdayTotalHours + $difference;
+
+        $scope.tuesdayDetails.push({ Day: "Tuesday", ProjectName: $scope.recordedTuesday.ProjectName, dayStartTime: $scope.recordedTuesday.dayStartTime, dayEndTime: $scope.recordedTuesday.dayEndTime })
     }
     $scope.recordWednesdayDetails = function () {
         $scope.showsavebutton = true;
-        $scope.wednesdayDetails.push({ Day: "Wednesday", ProjectName: $scope.wednesdayDetails.ProjectName, dayStartTime: $scope.wednesdayDetails.dayStartTime, dayEndTime: $scope.wednesdayDetails.dayEndTime })
+        $difference = $scope.recordedWednesday.dayEndTime - $scope.recordedWednesday.dayStartTime;
+        $scope.wednesdayTotalHours = $scope.wednesdayTotalHours + $difference;
+
+        $scope.wednesdayDetails.push({ Day: "Wednesday", ProjectName: $scope.recordedWednesday.ProjectName, dayStartTime: $scope.recordedWednesday.dayStartTime, dayEndTime: $scope.recordedWednesday.dayEndTime })
     }
     $scope.recordThursdayDetails = function () {
         $scope.showsavebutton = true;
-        $scope.thursdayDetails.push({ Day: "Thursday", ProjectName: $scope.thursdayDetails.ProjectName, dayStartTime: $scope.thursdayDetails.dayStartTime, dayEndTime: $scope.thursdayDetails.dayEndTime })
+        $difference = $scope.recordedThursday.dayEndTime - $scope.recordedThursday.dayStartTime;
+        $scope.thursdayTotalHours = $scope.thursdayTotalHours + $difference;
+
+        $scope.thursdayDetails.push({ Day: "Thursday", ProjectName: $scope.recordedThursday.ProjectName, dayStartTime: $scope.recordedThursday.dayStartTime, dayEndTime: $scope.recordedThursday.dayEndTime })
     }
     $scope.recordFridayDetails = function () {
         $scope.showsavebutton = true;
-        $scope.fridayDetails.push({ Day: "Friday", ProjectName: $scope.fridayDetails.ProjectName, dayStartTime: $scope.fridayDetails.dayStartTime, dayEndTime: $scope.fridayDetails.dayEndTime })
+        $difference = $scope.recordedFriday.dayEndTime - $scope.recordedFriday.dayStartTime;
+        $scope.fridayTotalHours = $scope.fridayTotalHours + $difference;
+
+        $scope.fridayDetails.push({ Day: "Friday", ProjectName: $scope.recordedFriday.ProjectName, dayStartTime: $scope.recordedFriday.dayStartTime, dayEndTime: $scope.recordedFriday.dayEndTime })
     }
     $scope.recordSaturdayDetails = function () {
         $scope.showsavebutton = true;
-        $scope.saturdayDetails.push({ Day: "Saturday", ProjectName: $scope.saturdayDetails.ProjectName, dayStartTime: $scope.saturdayDetails.dayStartTime, dayEndTime: $scope.saturdayDetails.dayEndTime })
+        $difference = $scope.recordedSaturday.dayEndTime - $scope.recordedSaturday.dayStartTime;
+        $scope.saturdayTotalHours = $scope.saturdayTotalHours + $difference;
+
+        $scope.saturdayDetails.push({ Day: "Saturday", ProjectName: $scope.recordedSaturday.ProjectName, dayStartTime: $scope.recordedSaturday.dayStartTime, dayEndTime: $scope.recordedSaturday.dayEndTime })
     }
     $scope.recordSundayDetails = function () {
         $scope.showsavebutton = true;
-        $scope.sundayDetails.push({ Day: "Sunday", ProjectName: $scope.sundayDetails.ProjectName, dayStartTime: $scope.sundayDetails.dayStartTime, dayEndTime: $scope.sundayDetails.dayEndTime })
+        $difference = $scope.recordedSunday.dayEndTime - $scope.recordedSunday.dayStartTime;
+        $scope.sundaydayTotalHours = $scope.sundaydayTotalHours + $difference;
+
+        $scope.sundayDetails.push({ Day: "Sunday", ProjectName: $scope.recordedSunday.ProjectName, dayStartTime: $scope.recordedSunday.dayStartTime, dayEndTime: $scope.recordedSunday.dayEndTime })
     }
 
     $scope.showMon = function () {
@@ -182,6 +204,12 @@ timeApp.controller('recordTimesheetController', ['$scope', '$mdToast', '$http', 
         // SEND THE FILES.
         $http(request)
             .success(function (d) {
+                $mdToast.show(
+                    $mdToast.simple('Successfully saved Timesheet!')
+                    .position('left bottom')
+                    .hideDelay(2000)
+                );
+
                 $scope.timesheet.engineerName = "";
                 $scope.timesheet.weekEndDate = "";
 
@@ -201,11 +229,33 @@ timeApp.controller('recordTimesheetController', ['$scope', '$mdToast', '$http', 
                 $scope.saturdayDetails.length = 0;
                 $scope.sundayDetails.length = 0;
 
-                $mdToast.show(
-                    $mdToast.simple('Successfully saved Timesheet!')
-                    .position('left bottom')
-                    .hideDelay(2000)
-                );
+                $scope.recordedMonday.ProjectName = "";
+                $scope.recordedMonday.dayEndTime = "";
+                $scope.recordedMonday.dayStartTime = "";
+
+                $scope.recordedTuesday.ProjectName = "";
+                $scope.recordedTuesday.dayEndTime = "";
+                $scope.recordedTuesday.dayStartTime = "";
+
+                $scope.recordedWednesday.ProjectName = "";
+                $scope.recordedWednesday.dayEndTime = "";
+                $scope.recordedWednesday.dayStartTime = "";
+
+                $scope.recordedThursday.ProjectName = "";
+                $scope.recordedThursday.dayEndTime = "";
+                $scope.recordedThursday.dayStartTime = "";
+
+                $scope.recordedFriday.ProjectName = "";
+                $scope.recordedFriday.dayEndTime = "";
+                $scope.recordedFriday.dayStartTime = "";
+
+                $scope.recordedSaturday.ProjectName = "";
+                $scope.recordedSaturday.dayEndTime = "";
+                $scope.recordedSaturday.dayStartTime = "";
+
+                $scope.recordedSunday.ProjectName = "";
+                $scope.recordedSunday.dayEndTime = "";
+                $scope.recordedSunday.dayStartTime = "";
             })
             .error(function () {
             });
