@@ -1,7 +1,7 @@
 ﻿<form ng-app="timeApp" name="timesheetForm" ng-controller="recordTimesheetController" ng-submit="saveTimesheet()" ng-cloak>
     <div class="container">
         <div class="panel panel-primary detailsbox">
-            <div class="panel-heading">Record Timesheets</div>
+            <div class="panel-heading">Record Timesheets For @User.Identity.Name</div>
             <div class="col-xs-12 text-center">
                 <img ng-src="~/Content/Images/mon.png" ng-click="showMon()" />
                 <img ng-src="~/Content/Images/tue.png" ng-click="showTue()" />
@@ -35,8 +35,8 @@
                         <p class="h4">Monday</p>
                         <div class="row">
                             <div class="col-xs-12">
-                                <div ng-repeat="md in mondayDetails">
-                                    <p class="text-warning"><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
+                                <div class="col-xs-12" ng-repeat="md in mondayDetails">
+                                    <p class="text-muted"><span class="glyphicon glyphicon-trash" ng-click="removeMondayDetails(md)"></span><em><small> Worked on {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
                         </div>
@@ -81,11 +81,11 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div ng-show="displayTueDetails">
-                        <h3>Tuesday</h3>
+                        <p class="h4">Tuesday</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div ng-repeat="md in tuesdayDetails">
-                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
+                                    <p class="text-muted"><span class="glyphicon glyphicon-trash" ng-click="removeTuesdayDetails(md)"></span><em><small> Worked on {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
                         </div>
@@ -130,11 +130,11 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div ng-show="displayWedDetails">
-                        <h3>Wednesday</h3>
+                        <p class="h4">Wednesday</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div ng-repeat="md in wednesdayDetails">
-                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
+                                    <p class="text-muted"><span class="glyphicon glyphicon-trash" ng-click="removeWednesdayDetails(md)"></span><em><small> Worked on {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
                         </div>
@@ -179,11 +179,11 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div ng-show="displayThursDetails">
-                        <h3>Thursday</h3>
+                        <p class="h4">Thursday</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div ng-repeat="md in thursdayDetails">
-                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
+                                    <p class="text-muted"><span class="glyphicon glyphicon-trash" ng-click="removeThursdayDetails(md)"></span><em><small> Worked on {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
                         </div>
@@ -228,11 +228,11 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div ng-show="displayFriDetails">
-                        <h3>Friday</h3>
+                        <p class="h4">Friday</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div ng-repeat="md in fridayDetails">
-                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
+                                    <p class="text-muted"><span class="glyphicon glyphicon-trash" ng-click="removeFridayDetails(md)"></span><em><small> Worked on {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
                         </div>
@@ -277,11 +277,11 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div ng-show="displaySatDetails">
-                        <h3>Saturday</h3>
+                        <p class="h4">Saturday</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div ng-repeat="md in saturdayDetails">
-                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
+                                    <p class="text-muted"><span class="glyphicon glyphicon-trash" ng-click="removeSaturdayDetails(md)"></span><em><small> Worked on {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
                         </div>
@@ -326,11 +326,11 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div ng-show="displaySunDetails">
-                        <h3>Sunday</h3>
+                        <p class="h4">Sunday</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div ng-repeat="md in sundayDetails">
-                                    <p><em><small>Worked on project {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
+                                    <p class="text-muted"><span class="glyphicon glyphicon-trash" ng-click="removeSundayDetails(md)"></span><em><small> Worked on {{md.ProjectName}} for {{md.dayEndTime - md.dayStartTime}} hours</small></em></p>
                                 </div>
                             </div>
                         </div>

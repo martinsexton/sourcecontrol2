@@ -60,6 +60,13 @@ textarea {
   background-size: cover;
 }
 
+/*input.ng-invalid {
+    background-color: pink;
+}
+input.ng-valid {
+    background-color: lightgreen;
+}*/
+
 .testerid md-content {
   background-color: transparent !important; }
   .testerid md-content md-tabs {

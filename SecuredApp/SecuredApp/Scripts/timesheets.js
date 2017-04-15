@@ -128,6 +128,54 @@ timeApp.controller('recordTimesheetController', ['$scope', '$mdToast', '$http', 
 
         $scope.sundayDetails.push({ Day: "Sunday", ProjectName: $scope.recordedSunday.ProjectName, dayStartTime: $scope.recordedSunday.dayStartTime, dayEndTime: $scope.recordedSunday.dayEndTime })
     }
+    $scope.removeMondayDetails = function (item) {
+        $scope.mondayTotalHours = $scope.mondayTotalHours - (item.dayEndTime - item.dayStartTime);
+
+        var index = $scope.mondayDetails.indexOf(item);
+        $scope.mondayDetails.splice(index, 1);
+    }
+
+    $scope.removeTuesdayDetails = function (item) {
+        $scope.tuesdayTotalHours = $scope.tuesdayTotalHours - (item.dayEndTime - item.dayStartTime);
+
+        var index = $scope.tuesdayDetails.indexOf(item);
+        $scope.tuesdayDetails.splice(index, 1);
+    }
+
+    $scope.removeWednesdayDetails = function (item) {
+        $scope.wednesdayTotalHours = $scope.wednesdayTotalHours - (item.dayEndTime - item.dayStartTime);
+
+        var index = $scope.wednesdayDetails.indexOf(item);
+        $scope.wednesdayDetails.splice(index, 1);
+    }
+
+    $scope.removeThursdayDetails = function (item) {
+        $scope.thursdayTotalHours = $scope.thursdayTotalHours - (item.dayEndTime - item.dayStartTime);
+
+        var index = $scope.thursdayDetails.indexOf(item);
+        $scope.thursdayDetails.splice(index, 1);
+    }
+
+    $scope.removeFridayDetails = function (item) {
+        $scope.fridayTotalHours = $scope.fridayTotalHours - (item.dayEndTime - item.dayStartTime);
+
+        var index = $scope.fridayDetails.indexOf(item);
+        $scope.fridayDetails.splice(index, 1);
+    }
+
+    $scope.removeSaturdayDetails = function (item) {
+        $scope.saturdayTotalHours = $scope.saturdayTotalHours - (item.dayEndTime - item.dayStartTime);
+
+        var index = $scope.saturdayDetails.indexOf(item);
+        $scope.saturdayDetails.splice(index, 1);
+    }
+
+    $scope.removeSundayDetails = function (item) {
+        $scope.sundayTotalHours = $scope.sundayTotalHours - (item.dayEndTime - item.dayStartTime);
+
+        var index = $scope.sundayDetails.indexOf(item);
+        $scope.sundayDetails.splice(index, 1);
+    }
 
     $scope.showMon = function () {
         $scope.displayMonDetails = true;
