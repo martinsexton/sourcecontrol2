@@ -219,6 +219,7 @@
     <Content Include="Views\Home\RecordTimesheet.cshtml" />
     <Content Include="Views\Home\ListTimesheets.cshtml" />
     <Content Include="Views\Home\Employees.cshtml" />
+    <Content Include="Views\Home\SearchTimesheets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

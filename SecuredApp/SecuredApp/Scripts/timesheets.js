@@ -43,6 +43,19 @@ timeApp.service('timesheetService', ['$http', function ($http) {
     }
 }]);
 
+
+timeApp.controller('searchTimesheetController', ['$scope', '$http', 'timesheetService', function ($scope, $http, timesheetService) {
+    $scope.showdetails = false;
+
+    $scope.searchTimesheets = function () {
+        timesheetService.getTimesheets().then(function mySucces(response) {
+            $scope.timesheets = response.data;
+            $scope.showdetails = true;
+        }, function myError(response) {
+        })
+    }
+}]);
+
 timeApp.controller('recordTimesheetController', ['$scope', '$mdToast', '$http', 'projectService', function ($scope, $mdToast, $http, projectService) {
     $scope.showdetails = false;
     $scope.showsavebutton = false;

@@ -33,6 +33,11 @@ namespace SecuredApp.Controllers
             return View();
         }
 
+        public ActionResult SearchTimesheets()
+        {
+            return View();
+        }
+
         [Authorize(Roles = "engineer")]
         public ActionResult RecordTimesheet()
         {
