@@ -36,6 +36,29 @@ namespace DoneillWebApi.Controllers
             return timesheetsForDisplay;
         }
 
+        [HttpGet]
+        public List<Timesheet> Get(DateTime we)
+        {
+            IPersistanceLayer pl = new PersistanceLayer();
+            List<ITimeSheet> timeSheets = pl.RetrieveTimesheetsForDate(we);
+
+            List<Timesheet> timesheetsForDisplay = new List<Timesheet>();
+
+            foreach (ITimeSheet p in timeSheets)
+            {
+                Timesheet np = new Timesheet();
+
+                np.engineerName = p.getEngineerName();
+                np.weekEndDate = p.getWeekEndDate();
+                np.identifier = p.getIdentifier();
+
+
+                timesheetsForDisplay.Add(np);
+            }
+
+            return timesheetsForDisplay;
+        }
+
         // GET api/values/5
         [HttpGet]
         public List<TimesheetItem> Get(int id)

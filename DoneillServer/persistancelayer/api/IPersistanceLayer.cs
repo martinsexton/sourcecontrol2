@@ -18,5 +18,6 @@ namespace persistancelayer.api
         List<IEmployee> RetrieveEmployees();
         List<ITimeSheet> RetrieveTimesheets();
         List<ITimeSheetItem> RetrieveTimesheetItems(int timesheetId);
+        List<ITimeSheet> RetrieveTimesheetsForDate(DateTime weekEndDate);
     }
 }

@@ -31,6 +31,17 @@ timeApp.service('timesheetService', ['$http', function ($http) {
         });
     }
 
+    this.getTimesheetsForDate = function (weekEnding) {
+        return $http({
+            method: "GET",
+            params: {
+                we: weekEnding
+            },
+            url: "http://doneillwebapi.azurewebsites.net/api/timesheet",
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     this.getTimesheetItems = function (timesheet) {
         return $http({
             method: "GET",
@@ -48,7 +59,7 @@ timeApp.controller('searchTimesheetController', ['$scope', '$http', 'timesheetSe
     $scope.showdetails = false;
 
     $scope.searchTimesheets = function () {
-        timesheetService.getTimesheets().then(function mySucces(response) {
+        timesheetService.getTimesheetsForDate($scope.weekEndDate).then(function mySucces(response) {
             $scope.timesheets = response.data;
             $scope.showdetails = true;
         }, function myError(response) {

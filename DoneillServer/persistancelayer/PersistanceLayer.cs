@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -291,6 +292,46 @@ namespace persistancelayer
                 }
             }
             return employees;
+        }
+
+
+        public List<ITimeSheet> RetrieveTimesheetsForDate(DateTime weekEndDate)
+        {
+            List<ITimeSheet> timesheets = new List<ITimeSheet>();
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                var cmd = conn.CreateCommand();
+
+                cmd.CommandText = @"
+                    SELECT
+                        ts.Id
+                        ,ts.engineer_name
+                        ,ts.week_end_date
+                    FROM TimeSheet AS ts WHERE ts.week_end_date = @weekEndDate;";
+
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@weekEndDate";
+                param.Value = weekEndDate.AddHours(7).ToString("yyyy-MM-dd");
+
+                cmd.Parameters.Add(param);
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Timesheet ts = new Timesheet();
+                        ts.identifier = reader.GetInt32(0);
+                        ts.engineerName = reader.GetString(1);
+                        ts.weekEndDate = reader.GetDateTime(2);
+
+                        timesheets.Add(ts);
+                    }
+                }
+            }
+
+            return timesheets;
         }
     }
 }
