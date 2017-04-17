@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace persistancelayer
 {
@@ -81,11 +82,13 @@ namespace persistancelayer
 
         public void CreateTimesheet(ITimeSheet t)
         {
-            string insert = "INSERT INTO dbo.TimeSheet(engineer_name,week_end_date)  output INSERTED.ID ";
-            string values = "VALUES(@engineerName,@weekEndDate)";
+            string insert = "INSERT INTO dbo.TimeSheet(engineer_name,week_end_date,xml_export)  output INSERTED.ID ";
+            string values = "VALUES(@engineerName,@weekEndDate,@export)";
 
             string insert2 = "INSERT INTO dbo.TimeSheetItem(timesheet_id,day_of_week,project,start_time,end_time) ";
             string values2 = "VALUES(@timesheetId,@dayOfWeek,@project,@startTime,@endTime)";
+
+            string xml = buildXml(t);
 
             string query = insert + values;
             string query2 = insert2 + values2;
@@ -98,6 +101,7 @@ namespace persistancelayer
                 {
                     cmd.Parameters.Add("@engineerName", SqlDbType.VarChar, 50).Value = t.getEngineerName();
                     cmd.Parameters.Add("@weekEndDate", SqlDbType.DateTime).Value = t.getWeekEndDate();
+                    cmd.Parameters.Add("@export", SqlDbType.NVarChar, 2000).Value = xml;
 
                     conn.Open();
                     timesheetIdentity = (int)cmd.ExecuteScalar();
@@ -111,6 +115,32 @@ namespace persistancelayer
             saveWeekDayDetails(t.getFridayItems(), timesheetIdentity);
             saveWeekDayDetails(t.getSaturdayItems(), timesheetIdentity);
             saveWeekDayDetails(t.getSundayItems(), timesheetIdentity);
+        }
+
+        private string buildXml(ITimeSheet t)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            StringBuilder builder = new StringBuilder();
+
+            using (XmlWriter writer = XmlWriter.Create(builder, settings))
+            {
+                writer.WriteStartDocument();
+                writer.WriteStartElement("timesheet");
+                writer.WriteStartElement("engineername");
+                writer.WriteString(t.getEngineerName());
+                writer.WriteEndElement();
+                writer.WriteStartElement("weekending");
+                writer.WriteString(t.getWeekEndDate().ToString());
+                writer.WriteEndElement();
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+
+                writer.Flush();
+
+            }
+
+            return builder.ToString();
         }
 
         private void saveWeekDayDetails(List<ITimeSheetItem> items, int timesheetIdentity)
