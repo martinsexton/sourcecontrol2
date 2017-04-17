@@ -65,6 +65,17 @@ timeApp.controller('searchTimesheetController', ['$scope', '$http', 'timesheetSe
         }, function myError(response) {
         })
     }
+
+    $scope.showTimesheetDetails = function (timesheet) {
+        timesheetService.getTimesheetItems(timesheet).then(function mySucces(response) {
+            $scope.timesheetitems = response.data;
+            $scope.selectedtimesheet = timesheet;
+            if ($scope.timesheetitems.length > 0) {
+                $scope.showtsdetails = true;
+            }
+        }, function myError(response) {
+        })
+    }
 }]);
 
 timeApp.controller('recordTimesheetController', ['$scope', '$mdToast', '$http', 'projectService', function ($scope, $mdToast, $http, projectService) {

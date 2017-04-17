@@ -13,30 +13,44 @@
             </div>
         </div>
         <div class="row" ng-show="showdetails">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <td>
-                            <a href="#" ng-click="sortType = 'engineerName'; sortReverse = !sortReverse">
-                                Engineer Name
-                                <span ng-show="sortType == 'engineerName'" class="fa fa-caret-down"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="#" ng-click="sortType = 'weekEndDate'; sortReverse = !sortReverse">
-                                Week Ending
-                                <span ng-show="sortType == 'weekEndDate'" class="fa fa-caret-down"></span>
-                            </a>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="t in timesheets | orderBy:sortType:sortReverse" ng-click="showTimesheetDetails(t)">
-                        <td>{{ t.engineerName }}</td>
-                        <td>{{ t.weekEndDate}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="col-xs-6">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <td>
+                                <a href="#" ng-click="sortType = 'engineerName'; sortReverse = !sortReverse">
+                                    Engineer Name
+                                    <span ng-show="sortType == 'engineerName'" class="fa fa-caret-down"></span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#" ng-click="sortType = 'weekEndDate'; sortReverse = !sortReverse">
+                                    Week Ending
+                                    <span ng-show="sortType == 'weekEndDate'" class="fa fa-caret-down"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="t in timesheets | orderBy:sortType:sortReverse" ng-click="showTimesheetDetails(t)">
+                            <td>{{ t.engineerName }}</td>
+                            <td>{{ t.weekEndDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-6">
+                <div class="col-xs-12 panel panel-primary detailsbox" ng-show="showtsdetails">
+                    <div class="panel-heading">Details</div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item" ng-repeat="tsi in timesheetitems">{{tsi.Day + " Worked For " + tsi.ProjectName + " between " + tsi.dayStartTime + " and " + tsi.dayEndTime}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </form>
