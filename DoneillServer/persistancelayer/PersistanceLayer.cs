@@ -182,6 +182,7 @@ namespace persistancelayer
                         ts.Id
                         ,ts.engineer_name
                         ,ts.week_end_date
+                        ,ts.xml_export
                     FROM TimeSheet AS ts;";
 
                 conn.Open();
@@ -194,6 +195,7 @@ namespace persistancelayer
                         ts.identifier = reader.GetInt32(0);
                         ts.engineerName = reader.GetString(1);
                         ts.weekEndDate = reader.GetDateTime(2);
+                        ts.export = reader.GetString(3);
 
                         timesheets.Add(ts);
                     }
@@ -337,6 +339,7 @@ namespace persistancelayer
                         ts.Id
                         ,ts.engineer_name
                         ,ts.week_end_date
+                        ,ts.xml_export
                     FROM TimeSheet AS ts WHERE ts.week_end_date = @weekEndDate;";
 
                 SqlParameter param = new SqlParameter();
@@ -355,6 +358,7 @@ namespace persistancelayer
                         ts.identifier = reader.GetInt32(0);
                         ts.engineerName = reader.GetString(1);
                         ts.weekEndDate = reader.GetDateTime(2);
+                        ts.export = reader.GetString(3);
 
                         timesheets.Add(ts);
                     }

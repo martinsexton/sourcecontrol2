@@ -28,6 +28,7 @@ namespace DoneillWebApi.Controllers
                 np.engineerName = p.getEngineerName();
                 np.weekEndDate = p.getWeekEndDate();
                 np.identifier = p.getIdentifier();
+                np.export = p.getExport();
 
 
                 timesheetsForDisplay.Add(np);
@@ -51,7 +52,7 @@ namespace DoneillWebApi.Controllers
                 np.engineerName = p.getEngineerName();
                 np.weekEndDate = p.getWeekEndDate();
                 np.identifier = p.getIdentifier();
-
+                np.export = p.getExport();
 
                 timesheetsForDisplay.Add(np);
             }

@@ -11,6 +11,7 @@ namespace persistancelayer.impl.model
     {
         public int identifier { get; set; }
         public string engineerName { get; set; }
+        public string export { get; set; }
         public DateTime weekEndDate { get; set; }
 
         public string getEngineerName()
@@ -63,6 +64,12 @@ namespace persistancelayer.impl.model
         public List<ITimeSheetItem> getSundayItems()
         {
             throw new NotImplementedException();
+        }
+
+
+        public string getExport()
+        {
+            return export;
         }
     }
 }

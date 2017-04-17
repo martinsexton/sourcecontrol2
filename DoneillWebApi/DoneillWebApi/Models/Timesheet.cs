@@ -11,6 +11,7 @@ namespace DoneillWebApi.Models
         public int identifier { get; set; }
         public string engineerName { get; set; }
         public DateTime weekEndDate { get; set; }
+        public string export { get; set; }
         public TimesheetItem[] mondayItems { get; set; }
         public TimesheetItem[] tuesdayItems { get; set; }
         public TimesheetItem[] wednesdayItems { get; set; }
@@ -118,6 +119,11 @@ namespace DoneillWebApi.Models
             }
 
             return items;
+        }
+
+        public string getExport()
+        {
+            return export;
         }
     }
 }

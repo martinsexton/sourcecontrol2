@@ -41,7 +41,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-primary btn-sm">Export</button>
             </div>
             <div class="col-md-6 panel panel-primary detailsbox" ng-show="showtsdetails">
                 <div class="panel-heading">Details</div>
@@ -50,6 +49,8 @@
                         <div class="list-group">
                             <a href="#" class="list-group-item" ng-repeat="tsi in timesheetitems">{{tsi.Day + " Worked For " + tsi.ProjectName + " between " + tsi.dayStartTime + " and " + tsi.dayEndTime}}</a>
                         </div>
+                        <button class="btn btn-primary btn-sm" ng-click="displayExportDetails = !displayExportDetails">Export</button>
+                        <pre ng-show="displayExportDetails"><code>{{exportDetails}}</code></pre>
                     </div>
                 </div>
             </div>
