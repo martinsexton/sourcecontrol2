@@ -133,6 +133,31 @@ namespace persistancelayer
                 writer.WriteStartElement("weekending");
                 writer.WriteString(t.getWeekEndDate().ToString());
                 writer.WriteEndElement();
+                writer.WriteStartElement("timesheetitems");
+
+                foreach (ITimeSheetItem item in t.getMondayItems())
+                {
+                    writer.WriteStartElement("item");
+                    
+                    writer.WriteStartElement("day");
+                    writer.WriteString(item.getDay());
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("project");
+                    writer.WriteString(item.getProjectName());
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("starttime");
+                    writer.WriteString(item.getStartTime());
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("endtime");
+                    writer.WriteString(item.getEndTime());
+                    writer.WriteEndElement();
+
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
 
