@@ -43,8 +43,13 @@
                             <a href="#" class="list-group-item" ng-repeat="tsi in timesheetitems">{{tsi.Day + " Worked For " + tsi.ProjectName + " between " + tsi.dayStartTime + " and " + tsi.dayEndTime}}</a>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-sm" ng-click="displayExportDetails = !displayExportDetails">Export</button>
-                    <pre ng-show="displayExportDetails"><code>{{exportDetails}}</code></pre>
+                    <!--<button class="btn btn-primary btn-sm" ng-click="displayExportDetails = !displayExportDetails">Export</button>
+                    <pre ng-show="displayExportDetails"><code>{{exportDetails}}</code></pre>-->
+                    @{
+                        var url = Url.Action("CreateFile", "Home", new { exportDetails = "{{exportDetails}}" });
+                        url = HttpUtility.UrlDecode(url);
+                    }
+                    <a data-ng-href="@url">Export Details</a>
                 </div>
             </div>
         </div>

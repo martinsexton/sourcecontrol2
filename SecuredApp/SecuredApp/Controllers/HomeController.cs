@@ -3,8 +3,10 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -26,6 +28,15 @@ namespace SecuredApp.Controllers
         public ActionResult Employees()
         {
             return View();
+        }
+
+        [ValidateInput(false)]
+        public FileStreamResult CreateFile(string exportDetails)
+        {
+            var byteArray = Encoding.ASCII.GetBytes(exportDetails);
+            var stream = new MemoryStream(byteArray);
+
+            return File(stream, "text/plain", "export.xml");
         }
 
         public ActionResult ListTimesheets()

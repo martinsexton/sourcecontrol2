@@ -121,6 +121,8 @@ namespace persistancelayer
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
+            settings.OmitXmlDeclaration = true;
+
             StringBuilder builder = new StringBuilder();
 
             using (XmlWriter writer = XmlWriter.Create(builder, settings))
@@ -135,28 +137,14 @@ namespace persistancelayer
                 writer.WriteEndElement();
                 writer.WriteStartElement("timesheetitems");
 
-                foreach (ITimeSheetItem item in t.getMondayItems())
-                {
-                    writer.WriteStartElement("item");
-                    
-                    writer.WriteStartElement("day");
-                    writer.WriteString(item.getDay());
-                    writer.WriteEndElement();
+                includeDayDetails(writer, t.getMondayItems());
+                includeDayDetails(writer, t.getTuesdayItems());
+                includeDayDetails(writer, t.getWednesdayItems());
+                includeDayDetails(writer, t.getThursdayItems());
+                includeDayDetails(writer, t.getFridayItems());
+                includeDayDetails(writer, t.getSaturdayItems());
+                includeDayDetails(writer, t.getSundayItems());
 
-                    writer.WriteStartElement("project");
-                    writer.WriteString(item.getProjectName());
-                    writer.WriteEndElement();
-
-                    writer.WriteStartElement("starttime");
-                    writer.WriteString(item.getStartTime());
-                    writer.WriteEndElement();
-
-                    writer.WriteStartElement("endtime");
-                    writer.WriteString(item.getEndTime());
-                    writer.WriteEndElement();
-
-                    writer.WriteEndElement();
-                }
                 writer.WriteEndElement();
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
@@ -166,6 +154,32 @@ namespace persistancelayer
             }
 
             return builder.ToString();
+        }
+
+        private void includeDayDetails(XmlWriter writer, List<ITimeSheetItem> items)
+        {
+            foreach (ITimeSheetItem item in items)
+            {
+                writer.WriteStartElement("item");
+
+                writer.WriteStartElement("day");
+                writer.WriteString(item.getDay());
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("project");
+                writer.WriteString(item.getProjectName());
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("starttime");
+                writer.WriteString(item.getStartTime());
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("endtime");
+                writer.WriteString(item.getEndTime());
+                writer.WriteEndElement();
+
+                writer.WriteEndElement();
+            }
         }
 
         private void saveWeekDayDetails(List<ITimeSheetItem> items, int timesheetIdentity)
