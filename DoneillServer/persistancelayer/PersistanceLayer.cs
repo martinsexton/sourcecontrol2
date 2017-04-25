@@ -101,7 +101,7 @@ namespace persistancelayer
                 {
                     cmd.Parameters.Add("@engineerName", SqlDbType.VarChar, 50).Value = t.getEngineerName();
                     cmd.Parameters.Add("@weekEndDate", SqlDbType.DateTime).Value = t.getWeekEndDate();
-                    cmd.Parameters.Add("@export", SqlDbType.NVarChar, 2000).Value = xml;
+                    cmd.Parameters.Add("@export", SqlDbType.NVarChar, -1).Value = xml;
 
                     conn.Open();
                     timesheetIdentity = (int)cmd.ExecuteScalar();
