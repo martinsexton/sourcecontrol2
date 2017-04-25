@@ -52,7 +52,7 @@
                         <!--<button class="btn btn-primary btn-sm" ng-click="displayExportDetails = !displayExportDetails">Export</button>
                         <pre ng-show="displayExportDetails"><code>{{exportDetails}}</code></pre>-->
                         @{
-                            var url = Url.Action("CreateFile", "Home", new { exportDetails = "{{exportDetails}}" });
+                            var url = Url.Action("CreateFile", "Home", new { exportDetails = "{{tsidentifier}}" });
                             url = HttpUtility.UrlDecode(url);
                         }
                         <a data-ng-href="@url">Export Details</a>

@@ -406,5 +406,46 @@ namespace persistancelayer
 
             return timesheets;
         }
+
+
+        public ITimeSheet RetrieveTimesheetForIdentifier(string identifier)
+        {
+            Timesheet ts = null;
+
+            using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+                var cmd = conn.CreateCommand();
+
+                cmd.CommandText = @"
+                    SELECT
+                        ts.Id
+                        ,ts.engineer_name
+                        ,ts.week_end_date
+                        ,ts.xml_export
+                    FROM TimeSheet AS ts WHERE ts.Id = @identifier;";
+
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@identifier";
+                param.Value = identifier;
+
+                cmd.Parameters.Add(param);
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ts = new Timesheet();
+                        ts.identifier = reader.GetInt32(0);
+                        ts.engineerName = reader.GetString(1);
+                        ts.weekEndDate = reader.GetDateTime(2);
+                        ts.export = reader.GetString(3);
+                    }
+                }
+            }
+
+            return ts;
+        }
     }
 }

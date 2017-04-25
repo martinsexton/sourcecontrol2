@@ -37,6 +37,21 @@ namespace DoneillWebApi.Controllers
             return timesheetsForDisplay;
         }
 
+        public ITimeSheet Get(string identifier)
+        {
+            IPersistanceLayer pl = new PersistanceLayer();
+            ITimeSheet timeSheet = pl.RetrieveTimesheetForIdentifier(identifier);
+
+            Timesheet np = new Timesheet();
+
+            np.engineerName = timeSheet.getEngineerName();
+            np.weekEndDate = timeSheet.getWeekEndDate();
+            np.identifier = timeSheet.getIdentifier();
+            np.export = timeSheet.getExport();
+
+            return np;
+        }
+
         [HttpGet]
         public List<Timesheet> Get(DateTime we)
         {

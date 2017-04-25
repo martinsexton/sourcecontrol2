@@ -1,10 +1,14 @@
 ﻿using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
+using Newtonsoft.Json;
+using SecuredApp.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
@@ -33,7 +37,20 @@ namespace SecuredApp.Controllers
         [ValidateInput(false)]
         public FileStreamResult CreateFile(string exportDetails)
         {
-            var byteArray = Encoding.ASCII.GetBytes(exportDetails);
+            Timesheet data = null;
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://doneillwebapi.azurewebsites.net");
+                //client.BaseAddress = new Uri("http://localhost:49320");
+                MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                client.DefaultRequestHeaders.Accept.Add(contentType);
+
+                HttpResponseMessage response = client.GetAsync("/api/timesheet?identifier="+exportDetails).Result;
+                string stringData = response.Content.ReadAsStringAsync().Result;
+                data = JsonConvert.DeserializeObject<Timesheet>(stringData);
+            }
+            var byteArray = Encoding.ASCII.GetBytes(data.getExport());
             var stream = new MemoryStream(byteArray);
 
             return File(stream, "text/plain", "export.xml");

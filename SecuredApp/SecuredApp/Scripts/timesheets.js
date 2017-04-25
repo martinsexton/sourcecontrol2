@@ -5,6 +5,7 @@ timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetServ
     $scope.sortReverse = false;  // set the default sort order
     $scope.showtsdetails = false;
     $scope.exportDetails = "";
+    $scope.tsidentifier = "";
     $scope.displayExportDetails = false;
 
     timesheetService.getTimesheets().then(function mySucces(response) {
@@ -14,6 +15,8 @@ timeApp.controller('listTimesheetController', ['$scope', '$http', 'timesheetServ
 
     $scope.showTimesheetDetails = function (timesheet) {
         $scope.exportDetails = timesheet.export;
+        $scope.tsidentifier = timesheet.identifier;
+
         timesheetService.getTimesheetItems(timesheet).then(function mySucces(response) {
             $scope.timesheetitems = response.data;
             $scope.selectedtimesheet = timesheet;
@@ -61,6 +64,7 @@ timeApp.service('timesheetService', ['$http', function ($http) {
 timeApp.controller('searchTimesheetController', ['$scope', '$http', 'timesheetService', function ($scope, $http, timesheetService) {
     $scope.showdetails = false;
     $scope.exportDetails = "";
+    $scope.tsidentifier = "";
     $scope.displayExportDetails = false;
 
     $scope.searchTimesheets = function () {
@@ -73,6 +77,7 @@ timeApp.controller('searchTimesheetController', ['$scope', '$http', 'timesheetSe
 
     $scope.showTimesheetDetails = function (timesheet) {
         $scope.exportDetails = timesheet.export;
+        $scope.tsidentifier = timesheet.identifier;
         timesheetService.getTimesheetItems(timesheet).then(function mySucces(response) {
             $scope.timesheetitems = response.data;
             $scope.selectedtimesheet = timesheet;
