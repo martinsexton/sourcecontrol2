@@ -23,14 +23,7 @@ namespace DoneillWebApi.Controllers
 
             foreach (ITimeSheet p in timeSheets)
             {
-                Timesheet np = new Timesheet();
-
-                np.engineerName = p.getEngineerName();
-                np.weekEndDate = p.getWeekEndDate();
-                np.identifier = p.getIdentifier();
-                np.export = p.getExport();
-
-
+                Timesheet np = ConvertToTimesheet(p);
                 timesheetsForDisplay.Add(np);
             }
 
@@ -41,13 +34,7 @@ namespace DoneillWebApi.Controllers
         {
             IPersistanceLayer pl = new PersistanceLayer();
             ITimeSheet timeSheet = pl.RetrieveTimesheetForIdentifier(identifier);
-
-            Timesheet np = new Timesheet();
-
-            np.engineerName = timeSheet.getEngineerName();
-            np.weekEndDate = timeSheet.getWeekEndDate();
-            np.identifier = timeSheet.getIdentifier();
-            np.export = timeSheet.getExport();
+            Timesheet np = ConvertToTimesheet(timeSheet);
 
             return np;
         }
@@ -62,13 +49,7 @@ namespace DoneillWebApi.Controllers
 
             foreach (ITimeSheet p in timeSheets)
             {
-                Timesheet np = new Timesheet();
-
-                np.engineerName = p.getEngineerName();
-                np.weekEndDate = p.getWeekEndDate();
-                np.identifier = p.getIdentifier();
-                np.export = p.getExport();
-
+                Timesheet np = ConvertToTimesheet(p);
                 timesheetsForDisplay.Add(np);
             }
 
@@ -85,14 +66,7 @@ namespace DoneillWebApi.Controllers
 
             foreach (ITimeSheetItem tsi in timesheetItems)
             {
-                TimesheetItem np = new TimesheetItem();
-                np.Id = tsi.getIdentifier();
-                np.TimesheetId = tsi.getTimesheetIdentifier();
-                np.ProjectName = tsi.getProjectName();
-                np.Day = tsi.getDay();
-                np.dayStartTime = tsi.getStartTime();
-                np.dayEndTime = tsi.getEndTime();
-
+                TimesheetItem np = ConvertToTimesheetItem(tsi);
                 timesheetItemsForDisplay.Add(np);
             }
 
@@ -105,6 +79,31 @@ namespace DoneillWebApi.Controllers
         {
             IPersistanceLayer pl = new PersistanceLayer();
             pl.CreateTimesheet(value);
+        }
+
+        private Timesheet ConvertToTimesheet(ITimeSheet ts)
+        {
+            Timesheet np = new Timesheet();
+
+            np.engineerName = ts.getEngineerName();
+            np.weekEndDate = ts.getWeekEndDate();
+            np.identifier = ts.getIdentifier();
+            np.export = ts.getExport();
+
+            return np;
+        }
+
+        private TimesheetItem ConvertToTimesheetItem(ITimeSheetItem tsi)
+        {
+            TimesheetItem np = new TimesheetItem();
+            np.Id = tsi.getIdentifier();
+            np.TimesheetId = tsi.getTimesheetIdentifier();
+            np.ProjectName = tsi.getProjectName();
+            np.Day = tsi.getDay();
+            np.dayStartTime = tsi.getStartTime();
+            np.dayEndTime = tsi.getEndTime();
+
+            return np;
         }
 
         // PUT api/values/5
