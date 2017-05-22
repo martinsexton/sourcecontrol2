@@ -35,22 +35,33 @@ namespace SecuredApp.Controllers
         }
 
         [ValidateInput(false)]
-        public FileStreamResult CreateFile(string exportDetails)
+        public FileStreamResult CreateFile(string weekEnding)
         {
-            Timesheet data = null;
+            List<Timesheet> data = null;
+
+            String unescapedString = weekEnding.Substring(1, weekEnding.Length - 2);
 
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://doneillwebapi.azurewebsites.net");
-                //client.BaseAddress = new Uri("http://localhost:49320");
+                //client.BaseAddress = new Uri("http://doneillwebapi.azurewebsites.net");
+                client.BaseAddress = new Uri("http://localhost:49320");
                 MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
                 client.DefaultRequestHeaders.Accept.Add(contentType);
 
-                HttpResponseMessage response = client.GetAsync("/api/timesheet?identifier="+exportDetails).Result;
+                HttpResponseMessage response = client.GetAsync("/api/timesheet?we=" + unescapedString).Result;
                 string stringData = response.Content.ReadAsStringAsync().Result;
-                data = JsonConvert.DeserializeObject<Timesheet>(stringData);
+                data = JsonConvert.DeserializeObject<List<Timesheet>>(stringData);
             }
-            var byteArray = Encoding.ASCII.GetBytes(data.getExport());
+            StringBuilder responseXml = new StringBuilder();
+            responseXml.Append("<Timesheets>");
+
+            foreach (Timesheet t in data)
+            {
+                responseXml.Append(t.getExport());
+            }
+
+            responseXml.Append("</Timesheets>");
+            var byteArray = Encoding.ASCII.GetBytes(responseXml.ToString());
             var stream = new MemoryStream(byteArray);
 
             return File(stream, "text/plain", "export.xml");

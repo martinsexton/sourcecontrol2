@@ -41,6 +41,11 @@
                         </tr>
                     </tbody>
                 </table>
+                @{
+                    var url = Url.Action("CreateFile", "Home", new { weekEnding = "{{weekEndDate}}" });
+                    url = HttpUtility.UrlDecode(url);
+                }
+                <a data-ng-href="@url">Export Details</a>
             </div>
             <div class="col-md-6 panel panel-primary detailsbox" ng-show="showtsdetails">
                 <div class="panel-heading">Details</div>
@@ -51,11 +56,6 @@
                         </div>
                         <!--<button class="btn btn-primary btn-sm" ng-click="displayExportDetails = !displayExportDetails">Export</button>
                         <pre ng-show="displayExportDetails"><code>{{exportDetails}}</code></pre>-->
-                        @{
-                            var url = Url.Action("CreateFile", "Home", new { exportDetails = "{{tsidentifier}}" });
-                            url = HttpUtility.UrlDecode(url);
-                        }
-                        <a data-ng-href="@url">Export Details</a>
                     </div>
                 </div>
             </div>
