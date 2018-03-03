@@ -20,7 +20,15 @@ namespace CharliesApplication.Controllers
 
             if (!_repository.GetBabies().Any())
             {
-                _repository.InsertBaby(new Baby { FirstName = "Charlie", Surname = "Sexton", Sex = "Male", BirthDetails = new BirthDetails { Weight = 5, BirthDate = DateTime.Now, Hospital = "Rotunda" } });
+                Baby b1 = new Baby();
+                b1.FirstName = "Charlie";
+                b1.Surname = "Sexton";
+                b1.Sex = "Male";
+                b1.BirthDetails = new BirthDetails { Weight = 5, BirthDate = DateTime.Now, Hospital = "Rotunda" };
+                b1.Appointments.Add(new Appointment { Date = DateTime.Now, Description = "Doctors appointment" });
+                b1.Appointments.Add(new Appointment { Date = DateTime.Now, Description = "Baby Massage" });
+
+                _repository.InsertBaby(b1);
                 _repository.InsertBaby(new Baby { FirstName = "Holly", Surname = "Sexton", Sex = "Female" });
                 //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
                 _repository.Save();

@@ -37,6 +37,7 @@ namespace CharliesApplication.DataAccess
             return _context.Baby
                         .Where(b => b.Id == id)
                         .Include(b => b.BirthDetails)
+                        .Include(b => b.Appointments)
                         .FirstOrDefault();
         }
 
