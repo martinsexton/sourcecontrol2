@@ -25,8 +25,8 @@ namespace CharliesApplication.Controllers
                 b1.Surname = "Sexton";
                 b1.Sex = "Male";
                 b1.BirthDetails = new BirthDetails { Weight = 5, BirthDate = DateTime.Now, Hospital = "Rotunda" };
-                b1.Appointments.Add(new Appointment { Date = DateTime.Now, Description = "Doctors appointment" });
-                b1.Appointments.Add(new Appointment { Date = DateTime.Now, Description = "Baby Massage" });
+                b1.Appointments.Add(new Appointment { DueDate = DateTime.Now, Description = "Doctors appointment", Type = AppointmentType.Doctor });
+                b1.Appointments.Add(new Appointment { DueDate = DateTime.Now.AddDays(7), Description = "Doctors appointment", Type = AppointmentType.Doctor });
 
                 _repository.InsertBaby(b1);
                 _repository.InsertBaby(new Baby { FirstName = "Holly", Surname = "Sexton", Sex = "Female" });
