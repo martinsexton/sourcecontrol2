@@ -11,8 +11,8 @@ using System;
 namespace CharliesApplication.Migrations
 {
     [DbContext(typeof(BabyContext))]
-    [Migration("20180303131730_newproject")]
-    partial class newproject
+    [Migration("20180303134717_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,27 @@ namespace CharliesApplication.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CharliesApplication.Models.Appointment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long?>("BabyId")
+                        .IsRequired();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Outcome");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BabyId");
+
+                    b.ToTable("Appointment");
+                });
 
             modelBuilder.Entity("CharliesApplication.Models.Baby", b =>
                 {
@@ -52,6 +73,14 @@ namespace CharliesApplication.Migrations
                     b.HasKey("BabyId");
 
                     b.ToTable("BirthDetails");
+                });
+
+            modelBuilder.Entity("CharliesApplication.Models.Appointment", b =>
+                {
+                    b.HasOne("CharliesApplication.Models.Baby", "Baby")
+                        .WithMany("Appointments")
+                        .HasForeignKey("BabyId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CharliesApplication.Models.BirthDetails", b =>

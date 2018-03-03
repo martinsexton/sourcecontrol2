@@ -34,6 +34,12 @@ namespace CharliesApplication.DataAccess
               .WithOne(d => d.Baby).OnDelete
                 (DeleteBehavior.Cascade);
 
+            modelBuilder
+                .Entity<Appointment>()
+                .HasOne(p => p.Baby)
+                .WithMany(b => b.Appointments)
+                .IsRequired();
+
             base.OnModelCreating(modelBuilder);
         }
 

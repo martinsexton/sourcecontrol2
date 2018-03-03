@@ -17,5 +17,8 @@ namespace CharliesApplication.Models
         public string Sex { get; set; }
         public BirthDetails BirthDetails { get; set; }
         private DateTime CreatedDate { get; set; }
+
+        //Collections
+        public ICollection<Appointment> Appointments { get; private set; } = new HashSet<Appointment>();
     }
 }
