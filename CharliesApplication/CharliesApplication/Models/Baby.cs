@@ -20,5 +20,6 @@ namespace CharliesApplication.Models
 
         //Collections
         public ICollection<Appointment> Appointments { get; private set; } = new HashSet<Appointment>();
+        public ICollection<Activity> Activities { get; private set; } = new HashSet<Activity>();
     }
 }

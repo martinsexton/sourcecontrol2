@@ -40,6 +40,12 @@ namespace CharliesApplication.DataAccess
                 .WithMany(b => b.Appointments)
                 .IsRequired();
 
+            modelBuilder
+               .Entity<Activity>()
+               .HasOne(p => p.Baby)
+               .WithMany(b => b.Activities)
+               .IsRequired();
+
             base.OnModelCreating(modelBuilder);
         }
 

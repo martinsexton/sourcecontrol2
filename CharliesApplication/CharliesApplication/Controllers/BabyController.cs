@@ -27,6 +27,7 @@ namespace CharliesApplication.Controllers
                 b1.BirthDetails = new BirthDetails { Weight = 5, BirthDate = DateTime.Now, Hospital = "Rotunda" };
                 b1.Appointments.Add(new Appointment { DueDate = DateTime.Now, Description = "Doctors appointment", Type = AppointmentType.Doctor });
                 b1.Appointments.Add(new Appointment { DueDate = DateTime.Now.AddDays(7), Description = "Doctors appointment", Type = AppointmentType.Doctor });
+                b1.Activities.Add(new Activity { TimeStamp = DateTime.Now, Description = "Got him to do some Tummy Time", Type = ActivityType.TummyTime });
 
                 _repository.InsertBaby(b1);
                 _repository.InsertBaby(new Baby { FirstName = "Holly", Surname = "Sexton", Sex = "Female" });
@@ -39,24 +40,15 @@ namespace CharliesApplication.Controllers
         [HttpGet]
         public IEnumerable<Baby> Get()
         {
+            //TODO return this as HATEOS
             return _repository.GetBabies();
         }
 
-        // GET: api/Baby/5
-        //[HttpGet("{id}", Name = "Get")]
-        //public IActionResult Get(long id)
-        //{
-        //    var item = _repository.GetBabyById(id);
-
-        //    if (item == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return new ObjectResult(item);
-        //}
         [HttpGet("{id}", Name = "Get")]
         public JsonResult Get(long id)
         {
+            //Instead of returning all objects in graph, we could return HATEOS links 
+            //for all collections on a Baby object.
             var item = _repository.GetBabyById(id);
 
             if (item == null)
