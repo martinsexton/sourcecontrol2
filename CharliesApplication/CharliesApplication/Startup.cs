@@ -6,8 +6,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using CharliesApplication.Models;
+using CharliesApplication.DataAccess;
 
 namespace CharliesApplication
 {
@@ -23,7 +26,11 @@ namespace CharliesApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            //AddDbContext adds the DbContext as a scoped service, meaning an instance is created per web request
+            services.AddDbContext<BabyContext>(opt => opt.UseSqlServer(Configuration["Data:Baby:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
+            //Repository added with an instance per request scope. i.e. instance of repository created for each web request
+            services.AddScoped<IBabyRepository>(_ => new BabyRepository(_.GetService<BabyContext>()));
+            services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
