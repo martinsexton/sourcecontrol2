@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CharliesApplication.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CharliesApplication.DataAccess
 {
@@ -20,6 +21,7 @@ namespace CharliesApplication.DataAccess
         {
             return _context.Activity
             .Where(a => a.Id == id)
+            .Include(a => a.Baby)
             .FirstOrDefault();
         }
 
