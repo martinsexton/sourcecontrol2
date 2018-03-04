@@ -30,6 +30,8 @@ namespace CharliesApplication
             services.AddDbContext<BabyContext>(opt => opt.UseSqlServer(Configuration["Data:Baby:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             //Repository added with an instance per request scope. i.e. instance of repository created for each web request
             services.AddScoped<IBabyRepository>(_ => new BabyRepository(_.GetService<BabyContext>()));
+            services.AddScoped<IAppointmentRepository>(_ => new AppointmentRepository(_.GetService<BabyContext>()));
+            services.AddScoped<IActivityRepository>(_ => new ActivityRepository(_.GetService<BabyContext>()));
             services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 

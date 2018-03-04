@@ -49,6 +49,8 @@ namespace CharliesApplication.DataAccess
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<Appointment> Appointment { get; set; }
         public DbSet<Baby> Baby { get; set; }
+        public DbSet<Activity> Activity { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace CharliesApplication.Controllers
             return _repository.GetBabies();
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public JsonResult Get(long id)
         {
             //Instead of returning all objects in graph, we could return HATEOS links 
