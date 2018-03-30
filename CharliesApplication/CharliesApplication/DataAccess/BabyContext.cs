@@ -52,5 +52,6 @@ namespace CharliesApplication.DataAccess
         public DbSet<Appointment> Appointment { get; set; }
         public DbSet<Baby> Baby { get; set; }
         public DbSet<Activity> Activity { get; set; }
+        public DbSet<Project> Project { get; set; }
     }
 }

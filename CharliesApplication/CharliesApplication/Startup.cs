@@ -32,6 +32,7 @@ namespace CharliesApplication
             services.AddScoped<IBabyRepository>(_ => new BabyRepository(_.GetService<BabyContext>()));
             services.AddScoped<IAppointmentRepository>(_ => new AppointmentRepository(_.GetService<BabyContext>()));
             services.AddScoped<IActivityRepository>(_ => new ActivityRepository(_.GetService<BabyContext>()));
+            services.AddScoped<IProjectRepository>(_ => new ProjectRepository(_.GetService<BabyContext>()));
             services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 

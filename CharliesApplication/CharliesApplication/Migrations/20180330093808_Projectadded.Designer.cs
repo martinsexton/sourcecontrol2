@@ -12,9 +12,10 @@ using System;
 namespace CharliesApplication.Migrations
 {
     [DbContext(typeof(BabyContext))]
-    partial class BabyContextModelSnapshot : ModelSnapshot
+    [Migration("20180330093808_Projectadded")]
+    partial class Projectadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
