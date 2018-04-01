@@ -1,0 +1,20 @@
+<h1>Projects</h1>
+
+<p>This component demonstrates fetching list of projects from database.</p>
+
+<p *ngIf="!projects"><em>Loading...</em></p>
+
+<table class='table' *ngIf="projects">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let project of projects">
+      <td>{{ project.name }}</td>
+      <td>{{ project.details }}</td>
+    </tr>
+  </tbody>
+</table>
