@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
+import { ProjectService } from './projectservice';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { ProjectComponent } from './projects/projects.component';
       { path: 'projects', component: ProjectComponent }
     ])
   ],
-  providers: [],
+  providers: [ProjectService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
