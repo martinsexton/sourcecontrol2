@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import {
   ProjectService
-} from '../projectservice';
+} from '../project.service';
 
 @Component({
   selector: 'projects',
