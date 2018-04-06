@@ -63,7 +63,7 @@ namespace doneillspa.Controllers
             //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
             _repository.Save();
 
-            return CreatedAtRoute("Get", new { id = project.Id }, project);
+            return Ok();
         }
 
         [HttpPut("{id}")]
