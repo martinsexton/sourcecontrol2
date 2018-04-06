@@ -29,10 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projects\projects.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.service.ts" />
   </ItemGroup>
