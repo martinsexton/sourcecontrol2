@@ -14,6 +14,7 @@ import {
 export class ProjectComponent {
   public projects: Project[];
   newProject: Project = new Project('', '', true);
+  projectSaved: boolean = false;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
     this._projectService.getProjects().subscribe(result => {
@@ -25,6 +26,7 @@ export class ProjectComponent {
     this._projectService.saveProject(this.newProject).subscribe(
       res => {
         console.log(res);
+        this.projectSaved = true;
         //Update the collection of projects with newly created one
         this.projects.push(new Project(this.newProject.name, this.newProject.details, this.newProject.isactive));
         //clear down the new project model

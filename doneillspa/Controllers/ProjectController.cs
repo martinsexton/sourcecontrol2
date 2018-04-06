@@ -18,18 +18,18 @@ namespace doneillspa.Controllers
         {
             _repository = repository;
 
-            if (!_repository.GetProjects().Any())
-            {
-                //Create Test Project
-                Project p = new Project();
-                p.Name = "Test Project";
-                p.IsActive = true;
-                p.Details = "UCC";
+            //if (!_repository.GetProjects().Any())
+            //{
+            //    //Create Test Project
+            //    Project p = new Project();
+            //    p.Name = "Test Project";
+            //    p.IsActive = true;
+            //    p.Details = "UCC";
 
-                _repository.InsertProject(p);
-                _repository.Save();
+            //    _repository.InsertProject(p);
+            //    _repository.Save();
 
-            }
+            //}
         }
 
         [HttpGet]
