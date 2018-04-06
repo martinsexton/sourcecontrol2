@@ -13,12 +13,10 @@ import {
 export class ProjectComponent {
   public projects: Project[];
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _appService: ProjectService) {
-    this.projects = this._appService.getProjects(); 
-
-    //http.get<Project[]>(baseUrl + 'api/project').subscribe(result => {
-    //  this.projects = result;
-    //}, error => console.error(error));
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
+    this._projectService.getProjects().subscribe(result => {
+      this.projects = result;
+    }, error => console.error(error));
   }
 }
 

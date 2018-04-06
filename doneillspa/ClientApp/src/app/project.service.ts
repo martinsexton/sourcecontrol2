@@ -11,13 +11,9 @@ export class ProjectService {
     this._baseurl = baseUrl;
   }
 
-  getProjects(): Project[] {
-    this._httpClient.get<Project[]>(this._baseurl + 'api/project').subscribe(result => {
-      this._projects = result;
-    }, error => console.error(error));
-
-    return this._projects;
-  } 
+  getProjects() {
+    return this._httpClient.get<Project[]>(this._baseurl + 'api/project');
+  }
 }
 
 interface Project {
