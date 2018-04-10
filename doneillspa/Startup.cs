@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using doneillspa.Models;
+using Microsoft.AspNetCore.Identity;
+using doneillspa.Data;
 
 namespace doneillspa
 {
@@ -22,8 +25,11 @@ namespace doneillspa
         {
             services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["Data:Baby:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             services.AddScoped<IProjectRepository>(_ => new ProjectRepository(_.GetService<ApplicationContext>()));
-
             services.AddMvc();
+
+            services.AddIdentity<ApplicationUser, IdentityRole<System.Guid>>()
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -46,6 +52,7 @@ namespace doneillspa
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -67,6 +74,8 @@ namespace doneillspa
                     //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
+
+            SeedData.Run(app.ApplicationServices).Wait();
         }
     }
 }
