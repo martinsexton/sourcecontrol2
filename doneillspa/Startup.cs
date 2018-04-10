@@ -75,7 +75,8 @@ namespace doneillspa
                 }
             });
 
-            SeedData.Run(app.ApplicationServices).Wait();
+            //Used to setup some default Identity users and roles
+            //SeedData.Run(app.ApplicationServices).Wait();
         }
     }
 }
