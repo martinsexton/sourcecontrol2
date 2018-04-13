@@ -46,23 +46,6 @@ namespace doneillspa
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            var _keyByteArray = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
-            var _signingKey = new SymmetricSecurityKey(_keyByteArray);
-            // Configure JwtIssuerOptions
-            services.Configure<JwtIssuerOptions>(options =>
-            {
-                options.Issuer = Configuration["Jwt:Issuer"];
-                options.Audience = Configuration["Jwt:Audience"];
-                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
-            });
-
-
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess)
-            //    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​).RequireAuthenticatedUser().Build());
-            //});
-
             services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("ApiUser", new AuthorizationPolicyBuilder()
@@ -71,24 +54,8 @@ namespace doneillspa
                     .RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess).Build());
             });
 
-            var _keyByteArray2 = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
-            var _signingKey2 = new SymmetricSecurityKey(_keyByteArray);
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //  .AddJwtBearer(options =>
-            //  {
-            //      options.TokenValidationParameters = new TokenValidationParameters
-            //      {
-            //          ValidateIssuer = true,
-            //          ValidateAudience = true,
-            //          ValidateLifetime = true,
-            //          ValidateIssuerSigningKey = true,
-            //          ValidIssuer = Configuration["Jwt:Issuer"],
-            //          ValidAudience = Configuration["Jwt:Audience"],
-            //          IssuerSigningKey = _signingKey2
-            //      };
-            //  });
-
+            var _signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]));
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -97,7 +64,7 @@ namespace doneillspa
            {
                options.TokenValidationParameters = new TokenValidationParameters()
                {
-                   IssuerSigningKey = _signingKey2,
+                   IssuerSigningKey = _signingKey,
                    ValidAudience = Configuration["Jwt:Audience"],
                    ValidIssuer = Configuration["Jwt:Issuer"],
                    ValidateIssuerSigningKey = true,

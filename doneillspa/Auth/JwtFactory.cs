@@ -15,36 +15,32 @@ namespace doneillspa.Auth
 {
     public class JwtFactory : IJwtFactory
     {
-        private readonly JwtIssuerOptions _jwtOptions;
+        //private readonly JwtIssuerOptions _jwtOptions;
         private readonly IConfiguration _configuration;
 
 
-         public JwtFactory(IOptions<JwtIssuerOptions> jwtOptions, IConfiguration configuration)
+         public JwtFactory(IConfiguration configuration)
          { 
-             _jwtOptions = jwtOptions.Value;
-            _configuration = configuration;
-             ThrowIfInvalidOptions(_jwtOptions); 
+            _configuration = configuration; 
          } 
 
  
-         public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
+         public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity, TimeSpan expires)
          {
-            var requestAt = DateTime.Now;
-            var expiresIn = requestAt.Add(TimeSpan.FromMinutes(30));
+            var expiresIn = DateTime.Now.Add(expires);
 
             var claims = new[]
           {
                    new Claim(JwtRegisteredClaimNames.Sub, userName),
-                    new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
-                    new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64),
                     identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol),
                     identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Id)
                 };
             //Temo Add Claims
             identity.AddClaims(claims);
 
-            var _keyByteArray = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
-            var _signingKey = new SymmetricSecurityKey(_keyByteArray);
+            var _signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
             var handler = new JwtSecurityTokenHandler();
 
@@ -59,21 +55,7 @@ namespace doneillspa.Auth
                 NotBefore = DateTime.Now.Subtract(TimeSpan.FromMinutes(30))
             });
 
-            // Create the JWT security token and encode it. 
-            //var jwt = new JwtSecurityToken(
-            //     issuer: _jwtOptions.Issuer,
-            //     audience: _jwtOptions.Audience,
-            //     claims: claims,
-            //     notBefore: _jwtOptions.NotBefore,
-            //     expires: _jwtOptions.Expiration,
-            //     signingCredentials: new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256));
-
-
-            var encodedJwt = handler.WriteToken(securityToken);
-
-
-
-             return encodedJwt; 
+            return handler.WriteToken(securityToken);
          } 
  
  
@@ -92,30 +74,6 @@ namespace doneillspa.Auth
            => (long) Math.Round((date.ToUniversalTime() - 
                                 new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)) 
                                .TotalSeconds); 
- 
- 
-         private static void ThrowIfInvalidOptions(JwtIssuerOptions options)
-         { 
-             if (options == null) throw new ArgumentNullException(nameof(options)); 
- 
- 
-             if (options.ValidFor <= TimeSpan.Zero) 
-             { 
-                 throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(JwtIssuerOptions.ValidFor)); 
-             } 
- 
- 
-             if (options.SigningCredentials == null) 
-             { 
-                 throw new ArgumentNullException(nameof(JwtIssuerOptions.SigningCredentials)); 
-             } 
- 
- 
-             if (options.JtiGenerator == null) 
-             { 
-                 throw new ArgumentNullException(nameof(JwtIssuerOptions.JtiGenerator)); 
-             } 
-         } 
 
     }
 }

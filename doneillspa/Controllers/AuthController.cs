@@ -20,14 +20,12 @@ namespace doneillspa.Controllers
          private readonly UserManager<ApplicationUser> _userManager; 
          private readonly IJwtFactory _jwtFactory; 
          private readonly JsonSerializerSettings _serializerSettings; 
-         private readonly JwtIssuerOptions _jwtOptions; 
  
  
-         public AuthController(UserManager<ApplicationUser> userManager, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
+         public AuthController(UserManager<ApplicationUser> userManager, IJwtFactory jwtFactory)
          { 
              _userManager = userManager; 
              _jwtFactory = jwtFactory; 
-             _jwtOptions = jwtOptions.Value; 
  
  
              _serializerSettings = new JsonSerializerSettings 
@@ -51,15 +49,16 @@ namespace doneillspa.Controllers
              if (identity == null) 
              { 
                  return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState)); 
-             } 
- 
- 
-             // Serialize and return the response 
-             var response = new
+             }
+
+            var expiresIn = TimeSpan.FromMinutes(5);
+
+            // Serialize and return the response 
+            var response = new
              { 
                  id=identity.Claims.Single(c=>c.Type=="id").Value, 
-                 auth_token = await _jwtFactory.GenerateEncodedToken(credentials.Username, identity), 
-                 expires_in = (int) _jwtOptions.ValidFor.TotalSeconds
+                 auth_token = await _jwtFactory.GenerateEncodedToken(credentials.Username, identity, expiresIn), 
+                 expires_in = (int) expiresIn.TotalSeconds
              }; 
  
  

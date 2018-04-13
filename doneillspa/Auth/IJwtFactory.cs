@@ -8,7 +8,7 @@ namespace doneillspa.Auth
 {
     public interface IJwtFactory
     {
-        Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity); 
+        Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity, TimeSpan expires); 
         ClaimsIdentity GenerateClaimsIdentity(string userName, Guid id);
 
     }
