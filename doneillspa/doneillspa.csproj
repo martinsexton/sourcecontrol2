@@ -31,14 +31,42 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\account\account.module.ts" />
+    <None Remove="ClientApp\src\app\account\account.routing.ts" />
+    <None Remove="ClientApp\src\app\account\login-form\login-form.component.ts" />
+    <None Remove="ClientApp\src\app\account\registration-form\registration-form.component.ts" />
+    <None Remove="ClientApp\src\app\app.routing.ts" />
+    <None Remove="ClientApp\src\app\directives\email.validator.directive.ts" />
+    <None Remove="ClientApp\src\app\directives\focus.directive.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projects\projects.component.ts" />
+    <None Remove="ClientApp\src\app\shared\models\credentials.interface.ts" />
+    <None Remove="ClientApp\src\app\shared\models\user.registration.interface.ts" />
+    <None Remove="ClientApp\src\app\shared\modules\shared.module.ts" />
+    <None Remove="ClientApp\src\app\shared\services\base.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\user.service.ts" />
+    <None Remove="ClientApp\src\app\shared\utils\config.service.ts" />
+    <None Remove="ClientApp\src\app\spinner\spinner.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\account\account.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\account\account.routing.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\account\login-form\login-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\account\registration-form\registration-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\app.routing.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\directives\email.validator.directive.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\directives\focus.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\credentials.interface.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\user.registration.interface.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\modules\shared.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\base.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\user.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\utils\config.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\spinner\spinner.component.ts" />
   </ItemGroup>
 
 	<ItemGroup>
