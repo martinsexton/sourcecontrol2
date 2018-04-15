@@ -5,20 +5,18 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { routing } from './app.routing';
 
-/* Account Imports */
-//import { AccountModule } from './account/account.module';
-
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
+import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 
 /* Import Services */
 import { ProjectService } from './project.service';
 import { ConfigService } from './shared/utils/config.service';
+import { MsUserService } from './shared/services/msuser.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +25,7 @@ import { ConfigService } from './shared/utils/config.service';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
+    RegistrationFormComponent,
     ProjectComponent
   ],
   imports: [
@@ -35,7 +34,7 @@ import { ConfigService } from './shared/utils/config.service';
     FormsModule,
     routing
   ],
-  providers: [ProjectService],
+  providers: [ProjectService, MsUserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
