@@ -37,19 +37,19 @@ namespace doneillspa.Controllers
  
          // POST api/auth/login 
          [HttpPost("login")] 
-         public async Task<IActionResult> Post([FromBody]RegistrationDetails credentials)
+         public async Task<JsonResult> Post([FromBody]RegistrationDetails credentials)
          { 
-             if (!ModelState.IsValid) 
-             { 
-                 return BadRequest(ModelState); 
-             } 
+             //if (!ModelState.IsValid) 
+             //{ 
+             //    return BadRequest(ModelState); 
+             //} 
  
  
              var identity = await GetClaimsIdentity(credentials.Username, credentials.Password); 
-             if (identity == null) 
-             { 
-                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState)); 
-             }
+             //if (identity == null) 
+             //{ 
+             //    return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState)); 
+             //}
 
             var expiresIn = TimeSpan.FromMinutes(5);
 
@@ -59,11 +59,11 @@ namespace doneillspa.Controllers
                  id=identity.Claims.Single(c=>c.Type=="id").Value, 
                  auth_token = await _jwtFactory.GenerateEncodedToken(credentials.Username, identity, expiresIn), 
                  expires_in = (int) expiresIn.TotalSeconds
-             }; 
- 
- 
-             var json = JsonConvert.SerializeObject(response, _serializerSettings); 
-             return new OkObjectResult(json); 
+             };
+
+
+            JsonResult result = new JsonResult(response);
+            return result;
          } 
  
  

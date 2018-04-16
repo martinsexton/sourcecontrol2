@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Credentials } from '../../shared/models/credentials.interface';
 import { MsUserService } from '../../shared/services/msuser.service';
+import { LoginResponse } from '../../shared/models/loginresponse.interface';
 
 @Component({
   selector: 'app-login-form',
@@ -45,20 +46,20 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
 
   login({ value, valid }: { value: Credentials, valid: boolean }) {
-    //this.submitted = true;
-    //this.isRequesting = true;
-    //this.errors = '';
-    //if (valid) {
-    //  this.userService.login(value.email, value.password)
-    //    .finally(() => this.isRequesting = false)
-    //    .subscribe(
-    //    result => {
-    //      if (result) {
-    //        this.router.navigate(['/dashboard/home']);
-    //      }
-    //    },
-    //    error => this.errors = error);
+    this.submitted = true;
+    this.isRequesting = true;
+    this.errors = '';
+    if (valid) {
+      this.userService.login(value.email, value.password)
+        .subscribe(
+        result => {
+          if (result) {
+            localStorage.setItem('auth_token', result.auth_token);
+            this.router.navigate(['/projects']);
+          }
+        },
+        error => this.errors = error);
 
-    //}
+    }
   }
-} 
+}

@@ -41,6 +41,7 @@
     <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projects\projects.component.ts" />
     <None Remove="ClientApp\src\app\shared\models\credentials.interface.ts" />
+    <None Remove="ClientApp\src\app\shared\models\loginresponse.interface.ts" />
     <None Remove="ClientApp\src\app\shared\models\user.registration.interface.ts" />
     <None Remove="ClientApp\src\app\shared\modules\shared.module.ts" />
     <None Remove="ClientApp\src\app\shared\services\base.service.ts" />
@@ -62,6 +63,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\credentials.interface.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\loginresponse.interface.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\user.registration.interface.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\modules\shared.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\base.service.ts" />
