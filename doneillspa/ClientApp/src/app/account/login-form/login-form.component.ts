@@ -54,11 +54,16 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         .subscribe(
         result => {
           if (result) {
-            localStorage.setItem('auth_token', result.auth_token);
-            this.router.navigate(['/projects']);
+            if (result.error) {
+              this.errors = result.error;
+            }
+            else {
+              localStorage.setItem('auth_token', result.auth_token);
+              this.router.navigate(['/projects']);
+            }
           }
-        },
-        error => this.errors = error);
+        });
+        //error => this.errors = error);
 
     }
   }

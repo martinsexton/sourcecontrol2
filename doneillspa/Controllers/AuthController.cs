@@ -38,31 +38,38 @@ namespace doneillspa.Controllers
          // POST api/auth/login 
          [HttpPost("login")] 
          public async Task<JsonResult> Post([FromBody]RegistrationDetails credentials)
-         { 
-             //if (!ModelState.IsValid) 
-             //{ 
-             //    return BadRequest(ModelState); 
-             //} 
- 
- 
-             var identity = await GetClaimsIdentity(credentials.Username, credentials.Password); 
-             //if (identity == null) 
-             //{ 
-             //    return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState)); 
-             //}
-
+         {
+            JsonResult result;
             var expiresIn = TimeSpan.FromMinutes(5);
 
-            // Serialize and return the response 
-            var response = new
-             { 
-                 id=identity.Claims.Single(c=>c.Type=="id").Value, 
-                 auth_token = await _jwtFactory.GenerateEncodedToken(credentials.Username, identity, expiresIn), 
-                 expires_in = (int) expiresIn.TotalSeconds
-             };
+            var identity = await GetClaimsIdentity(credentials.Username, credentials.Password); 
+             if (identity == null) 
+             {
+                // Serialize and return the response 
+                var errorResponse = new
+                {
+                    id = string.Empty,
+                    auth_token = string.Empty,
+                    expires_in = (int)expiresIn.TotalSeconds,
+                    error = "Invalid username or password"
+                };
+                result = new JsonResult(errorResponse);
+            }
+            else
+            {
+                // Serialize and return the response 
+                var response = new
+                {
+                    id = identity.Claims.Single(c => c.Type == "id").Value,
+                    auth_token = await _jwtFactory.GenerateEncodedToken(credentials.Username, identity, expiresIn),
+                    expires_in = (int)expiresIn.TotalSeconds
+                };
 
 
-            JsonResult result = new JsonResult(response);
+                result = new JsonResult(response);
+            }
+
+
             return result;
          } 
  
