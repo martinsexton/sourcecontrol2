@@ -16,9 +16,10 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'register', component: RegistrationFormComponent },
   { path: 'login', component: LoginFormComponent },
-  { path: 'counter', component: CounterComponent },
-  { path: 'fetch-data', component: FetchDataComponent },
-  { path: 'projects', component: ProjectComponent }
+  { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
+  { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
+  {
+    path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] }
 ];
 
 

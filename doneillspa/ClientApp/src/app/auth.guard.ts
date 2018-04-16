@@ -7,18 +7,12 @@ import { MsUserService } from './shared/services/msuser.service';
 export class AuthGuard implements CanActivate {
   constructor(private user: MsUserService, private router: Router) { }
 
-
   canActivate() {
 
-
     if (!this.user.isLoggedIn()) {
-      this.router.navigate(['/account/login']);
+      this.router.navigate(['/login']);
       return false;
-
     }
-
-
     return true;
-
   }
 } 

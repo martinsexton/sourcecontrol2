@@ -21,6 +21,7 @@ import { myFocus } from './directives/focus.directive';
 import { ProjectService } from './project.service';
 import { ConfigService } from './shared/utils/config.service';
 import { MsUserService } from './shared/services/msuser.service';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { MsUserService } from './shared/services/msuser.service';
     FormsModule,
     routing
   ],
-  providers: [ProjectService, MsUserService],
+  providers: [ProjectService, MsUserService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
