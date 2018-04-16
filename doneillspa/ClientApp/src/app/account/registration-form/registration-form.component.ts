@@ -25,25 +25,14 @@ export class RegistrationFormComponent implements OnInit {
     this.submitted = true;
     this.errors = '';
     if (valid) {
-      this.userService.register(value.email, value.password, value.firstName, value.lastName, value.username)
+      this.userService.register(value.email, value.password, value.username)
         .subscribe(
         result => {
           if (result) {
-            this.router.navigate(['/login'], { queryParams: { brandNew: true, email: value.email } });
-            //console.log("Successfully registreed user");
+            this.router.navigate(['/login'], { queryParams: { brandNew: true, username: value.username } });
           }
         },
         errors => this.errors = errors);
-
-      //this.userService.register(value.email, value.password, value.firstName, value.lastName, value.location)
-      //  .finally(() => this.isRequesting = false)
-      //  .subscribe(
-      //    result => {
-      //      if (result) {
-      //        this.router.navigate(['/login'], { queryParams: { brandNew: true, email: value.email } });
-      //      }
-      //    },
-      //    errors => this.errors = errors);
     }
 
   }

@@ -14,6 +14,9 @@ import { ProjectComponent } from './projects/projects.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
 
+import { EmailValidator } from './directives/email.validator.directive';
+import { myFocus } from './directives/focus.directive';
+
 /* Import Services */
 import { ProjectService } from './project.service';
 import { ConfigService } from './shared/utils/config.service';
@@ -28,7 +31,9 @@ import { MsUserService } from './shared/services/msuser.service';
     FetchDataComponent,
     RegistrationFormComponent,
     LoginFormComponent,
-    ProjectComponent
+    ProjectComponent,
+    EmailValidator,
+    myFocus
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

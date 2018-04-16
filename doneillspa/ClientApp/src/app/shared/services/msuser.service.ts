@@ -23,8 +23,8 @@ export class MsUserService {
     this._baseurl = baseUrl;
   }
 
-  register(email: string, password: string, firstName: string, lastName: string, username: string): Observable<UserRegistration>{
-    let body = JSON.stringify({ email, password, firstName, lastName, username });
+  register(email: string, password: string, username: string): Observable<UserRegistration>{
+    let body = JSON.stringify({ email, password, username });
 
 
     return this._httpClient.post(this._baseurl + 'api/account', body,
@@ -53,9 +53,9 @@ export class MsUserService {
 
 
   logout() {
-    //localStorage.removeItem('auth_token');
-    //this.loggedIn = false;
-    //this._authNavStatusSource.next(false);
+    localStorage.removeItem('auth_token');
+    this.loggedIn = false;
+    this._authNavStatusSource.next(false);
 
   }
 
