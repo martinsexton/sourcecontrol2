@@ -29,8 +29,8 @@ export class RegistrationFormComponent implements OnInit {
         .subscribe(
         result => {
           if (result) {
-            //this.router.navigate(['/login'], { queryParams: { brandNew: true, email: value.email } });
-            console.log("Successfully registreed user");
+            this.router.navigate(['/login'], { queryParams: { brandNew: true, email: value.email } });
+            //console.log("Successfully registreed user");
           }
         },
         errors => this.errors = errors);

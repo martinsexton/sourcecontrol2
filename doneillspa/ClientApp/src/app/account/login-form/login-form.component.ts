@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Credentials } from '../../shared/models/credentials.interface';
-import { UserService } from '../../shared/services/user.service';
+import { MsUserService } from '../../shared/services/msuser.service';
 
 @Component({
   selector: 'app-login-form',
@@ -22,7 +22,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   credentials: Credentials = { email: '', password: '' };
 
 
-  constructor(private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private userService: MsUserService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
 
   ngOnInit() {
@@ -45,20 +45,20 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
 
   login({ value, valid }: { value: Credentials, valid: boolean }) {
-    this.submitted = true;
-    this.isRequesting = true;
-    this.errors = '';
-    if (valid) {
-      this.userService.login(value.email, value.password)
-        .finally(() => this.isRequesting = false)
-        .subscribe(
-        result => {
-          if (result) {
-            this.router.navigate(['/dashboard/home']);
-          }
-        },
-        error => this.errors = error);
+    //this.submitted = true;
+    //this.isRequesting = true;
+    //this.errors = '';
+    //if (valid) {
+    //  this.userService.login(value.email, value.password)
+    //    .finally(() => this.isRequesting = false)
+    //    .subscribe(
+    //    result => {
+    //      if (result) {
+    //        this.router.navigate(['/dashboard/home']);
+    //      }
+    //    },
+    //    error => this.errors = error);
 
-    }
+    //}
   }
 } 

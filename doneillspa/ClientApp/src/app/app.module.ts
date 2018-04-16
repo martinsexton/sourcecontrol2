@@ -12,6 +12,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
+import { LoginFormComponent } from './account/login-form/login-form.component';
 
 /* Import Services */
 import { ProjectService } from './project.service';
@@ -26,6 +27,7 @@ import { MsUserService } from './shared/services/msuser.service';
     CounterComponent,
     FetchDataComponent,
     RegistrationFormComponent,
+    LoginFormComponent,
     ProjectComponent
   ],
   imports: [

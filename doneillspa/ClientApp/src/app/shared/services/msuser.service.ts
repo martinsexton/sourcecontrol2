@@ -11,6 +11,7 @@ import { RequestOptions } from '@angular/http';
 @Injectable()
 export class MsUserService {
   _baseurl: String;
+  private loggedIn = false;
 
   constructor(private _httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this._baseurl = baseUrl;
@@ -26,6 +27,41 @@ export class MsUserService {
         .set('Content-Type', 'application/json')
       })
       .catch(this.handleError);
+  }
+
+  login(userName, password) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+
+    //return this.http
+    //  .post(
+    //  this.baseUrl + '/auth/login',
+    //  JSON.stringify({ userName, password }), { headers }
+    //  )
+    //  .map(res => res.json())
+    //  .map(res => {
+    //    localStorage.setItem('auth_token', res.auth_token);
+    //    this.loggedIn = true;
+    //    this._authNavStatusSource.next(true);
+    //    return true;
+
+    //  })
+    //  .catch(this.handleError);
+
+  }
+
+
+  logout() {
+    //localStorage.removeItem('auth_token');
+    //this.loggedIn = false;
+    //this._authNavStatusSource.next(false);
+
+  }
+
+
+  isLoggedIn() {
+    return this.loggedIn;
   }
 
   protected handleError(error: any) {
