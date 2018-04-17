@@ -23,8 +23,8 @@ export class MsUserService {
     this._baseurl = baseUrl;
   }
 
-  register(email: string, password: string, username: string): Observable<UserRegistration>{
-    let body = JSON.stringify({ email, password, username });
+  register(email: string, password: string, username: string, role:string): Observable<UserRegistration>{
+    let body = JSON.stringify({ email, password, username, role });
 
 
     return this._httpClient.post(this._baseurl + 'api/account', body,

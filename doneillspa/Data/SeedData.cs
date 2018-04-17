@@ -10,7 +10,7 @@ namespace doneillspa.Data
 {
     public class SeedData
     {
-        private const string _adminRoleName = "administrator";
+        private const string _adminRoleName = "Administrator";
         private const string _engineerRoleName = "Engineer";
         private const string _apprenticeRoleName = "Apprentice";
 
@@ -42,7 +42,7 @@ namespace doneillspa.Data
         public async Task Initialize()
         {
             await EnsureRoles();
-            await EnsureDefaultUser();
+            //await EnsureDefaultUser();
         }
 
         protected async Task EnsureRoles()
