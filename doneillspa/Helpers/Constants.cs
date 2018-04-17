@@ -17,8 +17,10 @@ namespace doneillspa.Helpers
  
              public static class JwtClaims
              { 
-                 public const string ApiAccess = "api_access"; 
-             } 
+                public const string Administrator = "Administrator";
+                public const string Engineer = "Engineer";
+                public const string Apprentice = "Apprentice";
+            } 
          } 
 
     }

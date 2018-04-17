@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace doneillspa.Controllers
 {
+    //Secure this Web API so that only a token provided with the roles satisfing the Policy called employee will have access
+    [Authorize(AuthenticationSchemes = "Bearer", Policy = "AuthenticatedUser")]
     [Produces("application/json")]
     [Route("api/project")]
     public class ProjectController : Controller

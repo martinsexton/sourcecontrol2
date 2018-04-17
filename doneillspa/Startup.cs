@@ -48,10 +48,9 @@ namespace doneillspa
 
             services.AddAuthorization(auth =>
             {
-                auth.AddPolicy("ApiUser", new AuthorizationPolicyBuilder()
+                auth.AddPolicy("AuthenticatedUser", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                    .RequireAuthenticatedUser()
-                    .RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess).Build());
+                    .RequireAuthenticatedUser().Build());
             });
 
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Component, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../app/project';
 
 @Injectable()
@@ -13,7 +13,14 @@ export class ProjectService {
   }
 
   getProjects() {
-    return this._httpClient.get<Project[]>(this._baseurl + 'api/project');
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Project[]>(this._baseurl + 'api/project',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      });
   }
 
   saveProject(project: Project) {

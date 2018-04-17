@@ -29,17 +29,6 @@ namespace doneillspa.Auth
          {
             var expiresIn = DateTime.Now.Add(expires);
 
-            var claims = new[]
-          {
-                   new Claim(JwtRegisteredClaimNames.Sub, userName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64),
-                    identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol),
-                    identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Id)
-                };
-            //Temo Add Claims
-            identity.AddClaims(claims);
-
             var _signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
             var handler = new JwtSecurityTokenHandler();
@@ -64,7 +53,7 @@ namespace doneillspa.Auth
              return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[] 
              { 
                  new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Id, id.ToString()), 
-                 new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol, Helpers.Constants.Strings.JwtClaims.ApiAccess)
+                 new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol, Helpers.Constants.Strings.JwtClaims.Administrator)
              }); 
          } 
  
