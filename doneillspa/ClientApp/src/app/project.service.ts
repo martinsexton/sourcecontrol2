@@ -24,7 +24,13 @@ export class ProjectService {
   }
 
   saveProject(project: Project) {
-    return this._httpClient.post(this._baseurl + 'api/project', project); 
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.post(this._baseurl + 'api/project', project, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    }); 
   }
 }
 
