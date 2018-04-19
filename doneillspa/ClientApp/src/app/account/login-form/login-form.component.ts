@@ -6,6 +6,8 @@ import { Credentials } from '../../shared/models/credentials.interface';
 import { MsUserService } from '../../shared/services/msuser.service';
 import { LoginResponse } from '../../shared/models/loginresponse.interface';
 
+declare var $: any;
+
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html'
@@ -23,11 +25,11 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   credentials: Credentials = { username: '', password: '' };
 
 
-  constructor(private userService: MsUserService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private userService: MsUserService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
 
   ngOnInit() {
-
+    $("#myLoginModal").modal('show');
 
     // subscribe to router event 
     this.subscription = this.activatedRoute.queryParams.subscribe(
@@ -58,6 +60,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               this.errors = result.error;
             }
             else {
+              $("#myLoginModal").modal('hide');
               localStorage.setItem('auth_token', result.auth_token);
               this.router.navigate(['/projects']);
             }

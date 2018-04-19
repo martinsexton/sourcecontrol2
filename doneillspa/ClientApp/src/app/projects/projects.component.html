@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let project of projects" (click)="displaySelectedProject(project)">
+        <tr *ngFor="let project of projects" (click)="displaySelectedProject(project)" data-toggle="tooltip" data-placement="right" title="Click For Details">
           <td>{{ project.name }}</td>
           <td>{{ project.details }}</td>
         </tr>
