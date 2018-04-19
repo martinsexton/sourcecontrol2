@@ -6,6 +6,8 @@ import {
   ProjectService
 } from '../project.service';
 
+declare var $: any;
+
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html'
@@ -24,13 +26,19 @@ export class ProjectComponent {
     }, error => console.error(error));
   }
 
-  testMethod(project) {
+  displaySelectedProject(project) {
     console.log("testMethod Clicked: " + project.name);
     this.selectedProject = project;
+    $("#myModal").modal('show');
   }
 
   toggleDisplayAddProjectForm() {
     this.displayAddProject = !this.displayAddProject;
+    if (this.displayAddProject) {
+      $("#myNewProjectModal").modal('show');
+    } else {
+      $("#myNewProjectModal").modal('hide');
+    }
   }
 
   getProjectButtonStyle() {
@@ -52,6 +60,7 @@ export class ProjectComponent {
         //clear down the new project model
         this.newProject = new Project('', '', true);
         this.displayAddProject = false;
+        $("#myNewProjectModal").modal('hide');
       },
       (err: HttpErrorResponse) => {
         console.log(err.error);
