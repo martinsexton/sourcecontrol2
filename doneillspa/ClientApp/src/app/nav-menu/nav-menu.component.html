@@ -1,5 +1,5 @@
 <div class='main-nav'>
-    <div class='navbar navbar-inverse'>
+    <div class='navbar navbar-default'>
         <div class='navbar-header'>
             <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse' [attr.aria-expanded]='isExpanded' (click)='toggle()'>
                 <span class='sr-only'>Toggle navigation</span>
@@ -17,27 +17,18 @@
                 <span class='glyphicon glyphicon-home'></span> Home
               </a>
             </li>
-            <!--<li [routerLinkActive]='["link-active"]'>
-              <a [routerLink]='["/counter"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-education'></span> Counter
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]'>
-              <a [routerLink]='["/fetch-data"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-th-list'></span> Fetch data
-              </a>
-            </li>-->
             <li [routerLinkActive]='["link-active"]'>
               <a [routerLink]='["/projects"]' (click)='collapse()'>
                 <span class='glyphicon glyphicon-th-list'></span> List Projects
               </a>
             </li>
-            <li [routerLinkActive]='["link-active"]'>
-              <a [routerLink]='["/register"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-th-list'></span> Register
-              </a>
-            </li>
+          </ul>
+          <ul class="nav navbar-nav">
+            <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/register"]'><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/login"]'><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li *ngIf='isUserLoggedIn()'><a href='#' (click)='logOut()'><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
           </ul>
         </div>
     </div>
 </div>
+

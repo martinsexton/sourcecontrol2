@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MsUserService } from '../shared/services/msuser.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -6,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
+  constructor(private userService: MsUserService) { }
+
   isExpanded = false;
 
   collapse() {
@@ -14,5 +17,13 @@ export class NavMenuComponent {
 
   toggle() {
     this.isExpanded = !this.isExpanded;
+  }
+
+  isUserLoggedIn() {
+    return this.userService.isLoggedIn();
+  }
+
+  logOut() {
+    this.userService.logout();
   }
 }
