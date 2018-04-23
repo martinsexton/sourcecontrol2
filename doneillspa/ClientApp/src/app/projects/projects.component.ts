@@ -18,7 +18,7 @@ export class ProjectComponent {
   newProject: Project = new Project('', '', true);
   projectSaved: boolean = false;
   displayAddProject = false;
-  selectedProject: Project = null;
+  selectedProject: Project = new Project('', '', true);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
     this._projectService.getProjects().subscribe(result => {
