@@ -11,5 +11,6 @@ namespace doneillspa.Models
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public string Details { get; set; }
+        public DateTime StartDate { get; set; }
     }
 }
