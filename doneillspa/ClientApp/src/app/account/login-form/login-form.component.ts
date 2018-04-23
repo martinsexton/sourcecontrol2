@@ -70,4 +70,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
     }
   }
+
+  navigateHome() {
+    this.router.navigate(['/']);
+  }
 }

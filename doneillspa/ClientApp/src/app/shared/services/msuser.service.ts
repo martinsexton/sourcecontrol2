@@ -44,8 +44,10 @@ export class MsUserService {
       })
       .map(res => res)
       .map(res => {
-        this.loggedIn = true;
-        this._authNavStatusSource.next(true);
+        if (!res.error) {
+          this.loggedIn = true;
+          this._authNavStatusSource.next(true);
+        }
         return res;
       })
       .catch(this.handleError);
