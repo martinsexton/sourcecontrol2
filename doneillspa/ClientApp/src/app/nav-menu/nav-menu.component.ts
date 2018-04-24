@@ -19,6 +19,10 @@ export class NavMenuComponent {
     this.isExpanded = !this.isExpanded;
   }
 
+  isAdministrator() {
+    return this.userService.isAdministrator();
+  }
+
   isUserLoggedIn() {
     return this.userService.isLoggedIn();
   }

@@ -17,7 +17,7 @@
                 <span class='glyphicon glyphicon-home'></span> Home
               </a>
             </li>
-            <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn()'>
+            <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isAdministrator()'>
               <a [routerLink]='["/projects"]' (click)='collapse()'>
                 <span class='glyphicon glyphicon-th-list'></span> List Projects
               </a>

@@ -48,13 +48,20 @@ namespace doneillspa.Auth
          } 
  
  
-         public ClaimsIdentity GenerateClaimsIdentity(string userName, Guid id)
-         { 
-             return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[] 
+         public ClaimsIdentity GenerateClaimsIdentity(string userName, Guid id, IList<string> roles)
+         {
+            ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[] 
              { 
                  new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Id, id.ToString()), 
-                 new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol, Helpers.Constants.Strings.JwtClaims.Administrator)
-             }); 
+             });
+
+            //Add roles for the user
+            foreach(string role in roles)
+            {
+                identity.AddClaim(new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol, role));
+            }
+
+            return identity;
          } 
  
  

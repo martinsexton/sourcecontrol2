@@ -61,6 +61,10 @@ export class MsUserService {
 
   }
 
+  isAdministrator() {
+    return localStorage.getItem('role') == 'Administrator';
+  }
+
 
   isLoggedIn() {
     return this.loggedIn;
