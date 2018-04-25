@@ -22,6 +22,11 @@
                 <span class='glyphicon glyphicon-th-list'></span> List Projects
               </a>
             </li>
+            <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isWorker()'>
+              <a [routerLink]='["/timesheets"]' (click)='collapse()'>
+                <span class='glyphicon glyphicon-th-list'></span>Timesheets
+              </a>
+            </li>
           </ul>
           <ul class="nav navbar-nav">
             <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/register"]'><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>

@@ -23,6 +23,10 @@ export class NavMenuComponent {
     return this.userService.isAdministrator();
   }
 
+  isWorker() {
+    return this.isUserLoggedIn && !this.userService.isAdministrator();
+  }
+
   isUserLoggedIn() {
     return this.userService.isLoggedIn();
   }

@@ -44,6 +44,7 @@
     <None Remove="ClientApp\src\app\shared\models\user.registration.interface.ts" />
     <None Remove="ClientApp\src\app\shared\services\msuser.service.ts" />
     <None Remove="ClientApp\src\app\shared\utils\config.service.ts" />
+    <None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,6 +62,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\user.registration.interface.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\msuser.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\utils\config.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\timesheets\timesheets.component.ts" />
   </ItemGroup>
 
 	<ItemGroup>
