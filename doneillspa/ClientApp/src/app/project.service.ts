@@ -43,4 +43,15 @@ export class ProjectService {
         .set('Authorization', 'Bearer ' + authToken)
     }); 
   }
+
+  getTimesheets() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/timesheet',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      });
+  }
 }

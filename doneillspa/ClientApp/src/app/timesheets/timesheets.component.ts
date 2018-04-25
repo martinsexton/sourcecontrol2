@@ -12,10 +12,13 @@ import {
 })
 
 export class TimesheetComponent {
+  public timesheets: Timesheet[];
   newTimesheet: Timesheet = new Timesheet('', new Date());
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
-
+    this._projectService.getTimesheets().subscribe(result => {
+      this.timesheets = result;
+    }, error => console.error(error));
   }
 
   saveTimesheet() {
