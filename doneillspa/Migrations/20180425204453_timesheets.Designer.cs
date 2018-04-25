@@ -11,9 +11,10 @@ using System;
 namespace doneillspa.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20180425204453_timesheets")]
+    partial class timesheets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,8 +110,6 @@ namespace doneillspa.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Date");
-
-                    b.Property<string>("Project");
 
                     b.Property<long?>("TimesheetId");
 

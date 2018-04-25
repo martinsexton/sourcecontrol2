@@ -15,6 +15,17 @@ namespace doneillspa.DataAccess
         {
 
         }
+
         public DbSet<Project> Project { get; set; }
+        public DbSet<Timesheet> Timesheet { get; set; }
+        public DbSet<TimesheetEntry> TimesheetEntry { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Timesheet>()
+                .HasMany(t => t.TimesheetEntries);
+        }
     }
 }

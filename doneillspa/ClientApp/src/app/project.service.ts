@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Project } from '../app/project';
+import { Timesheet } from '../app/timesheet';
 
 @Injectable()
 export class ProjectService {
@@ -32,11 +33,14 @@ export class ProjectService {
         .set('Authorization', 'Bearer ' + authToken)
     }); 
   }
-}
 
-//interface Project {
-//  name: string;
-//  id: number;
-//  isActive: boolean;
-//  details: string;
-//}
+  saveTimesheet(timesheet: Timesheet) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.post(this._baseurl + 'api/timesheet', timesheet, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    }); 
+  }
+}

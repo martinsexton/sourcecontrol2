@@ -63,6 +63,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               $("#myLoginModal").modal('hide');
               localStorage.setItem('auth_token', result.auth_token);
               localStorage.setItem('role', result.role);
+              localStorage.setItem('client_id', result.id);
               this.router.navigate(['/']);
             }
           }

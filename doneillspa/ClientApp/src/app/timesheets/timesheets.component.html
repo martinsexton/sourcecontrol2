@@ -5,6 +5,18 @@
     <title>Timesheets Section</title>
 </head>
 <body>
-
+  <div>
+    <form>
+      <div class="form-group">
+        <label for="weekStarting">Week Starting</label>
+        <input type="date" [(ngModel)]="newTimesheet.weekStarting" name="weekStarting" class="form-control" id="weekStarting">
+      </div>
+      <div class="form-group">
+        <label for="owner">Owner</label>
+        <input type="text" [(ngModel)]="newTimesheet.owner" name="owner" class="form-control" id="owner">
+      </div>
+      <button (click)="saveTimesheet()" class="btn btn-primary">Save Timesheet</button>
+    </form>
+  </div>
 </body>
 </html>
