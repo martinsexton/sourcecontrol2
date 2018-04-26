@@ -13,7 +13,7 @@ import {
 
 export class TimesheetComponent {
   public timesheets: Timesheet[];
-  newTimesheet: Timesheet = new Timesheet('', new Date());
+  newTimesheet: Timesheet = new Timesheet(localStorage.getItem('client_id'), new Date());
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
     this._projectService.getTimesheets().subscribe(result => {
@@ -25,6 +25,7 @@ export class TimesheetComponent {
     this._projectService.saveTimesheet(this.newTimesheet).subscribe(
       res => {
         console.log(res);
+        this.timesheets.push(this.newTimesheet);
       },
       (err: HttpErrorResponse) => {
         console.log(err.error);

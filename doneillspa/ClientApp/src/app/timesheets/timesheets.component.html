@@ -1,39 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Timesheets Section</title>
+  <meta charset="utf-8" />
+  <title>Timesheets Section</title>
 </head>
 <body>
-  <div class="col-md-12">
-    <h3>Existing Timesheets</h3>
-    <table class='table table-striped table-sm'>
-      <thead class="thead">
-        <tr>
-          <th>Owner</th>
-          <th>Week Starting</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let ts of timesheets">
-          <td>{{ ts.owner }}</td>
-          <td>{{ ts.weekStarting }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div>
-    <form>
-      <div class="form-group">
-        <label for="weekStarting">Week Starting</label>
-        <input type="date" [(ngModel)]="newTimesheet.weekStarting" name="weekStarting" class="form-control" id="weekStarting">
-      </div>
-      <div class="form-group">
-        <label for="owner">Owner</label>
-        <input type="text" [(ngModel)]="newTimesheet.owner" name="owner" class="form-control" id="owner">
-      </div>
-      <button (click)="saveTimesheet()" class="btn btn-primary">Save Timesheet</button>
-    </form>
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Existing Timesheets</h3>
+      <table class='table table-striped table-sm'>
+        <thead class="thead">
+          <tr>
+            <th>Owner</th>
+            <th>Week Starting</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ts of timesheets">
+            <td>{{ ts.owner }}</td>
+            <td>{{ ts.weekStarting | date : "fullDate"}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-6">
+      <form>
+        <div class="form-group">
+          <label for="weekStarting">Week Starting</label>
+          <input type="date" [(ngModel)]="newTimesheet.weekStarting" name="weekStarting" class="form-control" id="weekStarting">
+        </div>
+        <button (click)="saveTimesheet()" class="btn btn-primary">New Timesheet</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>
