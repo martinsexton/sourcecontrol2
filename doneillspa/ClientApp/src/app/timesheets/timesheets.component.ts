@@ -30,11 +30,56 @@ export class TimesheetComponent {
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
     this.currentDate = new Date();
+    this.refreshCalendarTabs();
 
+    //let day = this.currentDate.getDay();
+
+    //var monday = new Date();
+    //monday.setDate(monday.getDate() - (day - 1))
+    //this.monday = new DayOfWeek("Mon", monday);
+
+    //var tuesday = new Date();
+    //tuesday.setDate(monday.getDate() + 1);
+    //this.tues = new DayOfWeek("Tue", tuesday);
+
+    //var wednesday = new Date();
+    //wednesday.setDate(tuesday.getDate() + 1);
+    //this.wed = new DayOfWeek("Wed", wednesday);
+
+    //var thursday = new Date();
+    //thursday.setDate(wednesday.getDate() + 1);
+    //this.thurs = new DayOfWeek("Thurs", thursday);
+
+    //var friday = new Date();
+    //friday.setDate(thursday.getDate() + 1);
+    //this.fri = new DayOfWeek("Fri", friday);
+
+    //var saturday = new Date();
+    //saturday.setDate(friday.getDate() + 1);
+    //this.sat = new DayOfWeek("Sat", saturday);
+
+    this._projectService.getTimesheets().subscribe(result => {
+      this.timesheets = result;
+    }, error => console.error(error));
+  }
+
+  previousWeek() {
+    //move back one week
+    this.currentDate.setDate(this.currentDate.getDate() - 7);
+    this.refreshCalendarTabs();
+  }
+
+  nextWeek() {
+    //move forward one week
+    this.currentDate.setDate(this.currentDate.getDate() + 7);
+    this.refreshCalendarTabs();
+  }
+
+  refreshCalendarTabs() {
     let day = this.currentDate.getDay();
 
     var monday = new Date();
-    monday.setDate(monday.getDate() - (day - 1))
+    monday.setDate(this.currentDate.getDate() - (day - 1))
     this.monday = new DayOfWeek("Mon", monday);
 
     var tuesday = new Date();
@@ -56,10 +101,6 @@ export class TimesheetComponent {
     var saturday = new Date();
     saturday.setDate(friday.getDate() + 1);
     this.sat = new DayOfWeek("Sat", saturday);
-
-    this._projectService.getTimesheets().subscribe(result => {
-      this.timesheets = result;
-    }, error => console.error(error));
   }
 
   toggleDisplayAddTimesheet() {

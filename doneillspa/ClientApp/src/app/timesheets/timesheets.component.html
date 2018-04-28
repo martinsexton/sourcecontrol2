@@ -1,3 +1,17 @@
+<div class="row">
+  <!--<nav aria-label="...">
+    <ul class="pager">
+      <li (click)="previousWeek()"><a><span aria-hidden="true">&larr;</span>Previous</a></li>
+      <li (click)="nextWeek()">Next<span aria-hidden="true">&rarr;</span></li>
+    </ul>
+  </nav>-->
+  <nav aria-label="...">
+    <ul class="pager">
+      <li><a (click)="previousWeek()">Previous</a></li>
+      <li><a (click)="nextWeek()">Next</a></li>
+    </ul>
+  </nav>
+</div>
 <div class="row" *ngIf="monday">
   <ul class="nav nav-tabs">
     <li role="presentation" class="active" data-toggle="tooltip" data-placement="top" title="{{monday.date}}"><a href="#">{{monday.nameOfDay}}</a></li>
