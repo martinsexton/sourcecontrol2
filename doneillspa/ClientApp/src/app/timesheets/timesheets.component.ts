@@ -18,8 +18,18 @@ declare var $: any;
 export class TimesheetComponent {
   public timesheets: Timesheet[];
   public projects: Project[];
-  public entries: Array<TimesheetEntry> = new Array();
 
+  //Default to Monday
+  public selectedDay = "Mon";
+
+  public monEntries: Array<TimesheetEntry> = new Array();
+  public tueEntries: Array<TimesheetEntry> = new Array();
+  public wedEntries: Array<TimesheetEntry> = new Array();
+  public thursEntries: Array<TimesheetEntry> = new Array();
+  public friEntries: Array<TimesheetEntry> = new Array();
+  public satEntries: Array<TimesheetEntry> = new Array();
+
+  newTimesheet: Timesheet = new Timesheet(localStorage.getItem('client_id'), new Date());
   public newEntry: TimesheetEntry = new TimesheetEntry("", "", "", "");
 
   currentDate: Date;
@@ -32,8 +42,7 @@ export class TimesheetComponent {
   sat: DayOfWeek;
 
   displayAddTimesheet = false;
-  newTimesheet: Timesheet = new Timesheet(localStorage.getItem('client_id'), new Date());
-
+  
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
     this.currentDate = new Date();
     this.refreshCalendarTabs();
@@ -97,8 +106,71 @@ export class TimesheetComponent {
   }
 
   addTimesheetEntry() {
-    this.entries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+    if (this.selectedDay == "Mon") {
+      this.monEntries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+    }
+    else if (this.selectedDay == "Tue") {
+      this.tueEntries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+    }
+    else if (this.selectedDay == "Wed") {
+      this.wedEntries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+    }
+    else if (this.selectedDay == "Thurs") {
+      this.thursEntries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+    }
+    else if (this.selectedDay == "Fri") {
+      this.friEntries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+    }
+    else {
+      this.satEntries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+    }
+
     $("#myNewTimesheetModal").modal('hide');
+  }
+
+  paintMonTab() {
+    this.selectedDay = "Mon";
+  }
+
+  paintTueTab() {
+    this.selectedDay = "Tue";
+  }
+
+  paintWedTab() {
+    this.selectedDay = "Wed";
+  }
+
+  paintThursTab() {
+    this.selectedDay = "Thurs";
+  }
+
+  paintFriTab() {
+    this.selectedDay = "Fri";
+  }
+
+  paintSatTab() {
+    this.selectedDay = "Sat";
+  }
+
+  retrieveTimesheetsForTab(): Array<TimesheetEntry> {
+    if (this.selectedDay == "Mon") {
+      return this.monEntries;
+    }
+    else if (this.selectedDay == "Tue") {
+      return this.tueEntries;
+    }
+    else if (this.selectedDay == "Wed") {
+      return this.wedEntries;
+    }
+    else if (this.selectedDay == "Thurs") {
+      return this.thursEntries;
+    }
+    else if (this.selectedDay == "Fri") {
+      return this.friEntries;
+    }
+    else {
+      return this.satEntries;
+    }
   }
 
   saveTimesheet() {
