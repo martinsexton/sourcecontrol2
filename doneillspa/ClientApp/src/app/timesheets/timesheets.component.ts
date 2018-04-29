@@ -20,7 +20,7 @@ export class TimesheetComponent {
   public projects: Project[];
   public entries: Array<TimesheetEntry> = new Array();
 
-  public newEntry: TimesheetEntry = new TimesheetEntry("", new Date(), new Date());
+  public newEntry: TimesheetEntry = new TimesheetEntry("", "", "", "");
 
   currentDate: Date;
 
@@ -97,7 +97,7 @@ export class TimesheetComponent {
   }
 
   addTimesheetEntry() {
-    this.entries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime));
+    this.entries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
     $("#myNewTimesheetModal").modal('hide');
   }
 
