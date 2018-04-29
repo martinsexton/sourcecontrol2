@@ -45,6 +45,7 @@
     <None Remove="ClientApp\src\app\shared\services\msuser.service.ts" />
     <None Remove="ClientApp\src\app\shared\utils\config.service.ts" />
     <None Remove="ClientApp\src\app\Timesheet.ts" />
+    <None Remove="ClientApp\src\app\timesheetentry.ts" />
     <None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
   </ItemGroup>
 
@@ -64,6 +65,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\msuser.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\utils\config.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheet.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\timesheetentry.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheets\timesheets.component.ts" />
   </ItemGroup>
 

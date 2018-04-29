@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
+import { TimesheetEntry } from '../timesheetentry';
+import { Project } from '../project';
 
 import {
   ProjectService
@@ -15,6 +17,10 @@ declare var $: any;
 
 export class TimesheetComponent {
   public timesheets: Timesheet[];
+  public projects: Project[];
+  public entries: Array<TimesheetEntry> = new Array();
+
+  public newEntry: TimesheetEntry = new TimesheetEntry("", new Date(), new Date());
 
   currentDate: Date;
 
@@ -32,31 +38,9 @@ export class TimesheetComponent {
     this.currentDate = new Date();
     this.refreshCalendarTabs();
 
-    //let day = this.currentDate.getDay();
-
-    //var monday = new Date();
-    //monday.setDate(monday.getDate() - (day - 1))
-    //this.monday = new DayOfWeek("Mon", monday);
-
-    //var tuesday = new Date();
-    //tuesday.setDate(monday.getDate() + 1);
-    //this.tues = new DayOfWeek("Tue", tuesday);
-
-    //var wednesday = new Date();
-    //wednesday.setDate(tuesday.getDate() + 1);
-    //this.wed = new DayOfWeek("Wed", wednesday);
-
-    //var thursday = new Date();
-    //thursday.setDate(wednesday.getDate() + 1);
-    //this.thurs = new DayOfWeek("Thurs", thursday);
-
-    //var friday = new Date();
-    //friday.setDate(thursday.getDate() + 1);
-    //this.fri = new DayOfWeek("Fri", friday);
-
-    //var saturday = new Date();
-    //saturday.setDate(friday.getDate() + 1);
-    //this.sat = new DayOfWeek("Sat", saturday);
+    this._projectService.getProjects().subscribe(result => {
+      this.projects = result;
+    }, error => console.error(error));
 
     this._projectService.getTimesheets().subscribe(result => {
       this.timesheets = result;
@@ -110,6 +94,11 @@ export class TimesheetComponent {
     } else {
       $("#myNewTimesheetModal").modal('hide');
     }
+  }
+
+  addTimesheetEntry() {
+    this.entries.push(new TimesheetEntry(this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime));
+    $("#myNewTimesheetModal").modal('hide');
   }
 
   saveTimesheet() {
