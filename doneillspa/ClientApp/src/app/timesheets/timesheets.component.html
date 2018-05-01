@@ -31,6 +31,7 @@
         <th>Start</th>
         <th>End</th>
         <th>Equipment</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -46,6 +47,7 @@
 </div>
 <div class="row" *ngIf="displayListOfEntries()">
   <button type="button" class="btn btn-primary" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
+  <button type="button" class="btn btn-primary" (click)="saveTimesheet()">Save Worksheet</button>
 </div>
 <!-- New Timesheet Details Modal -->
 <div class="modal fade" id="myNewTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
