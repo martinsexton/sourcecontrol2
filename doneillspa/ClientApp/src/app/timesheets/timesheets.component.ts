@@ -42,7 +42,7 @@ export class TimesheetComponent {
   sat: DayOfWeek;
 
   displayAddTimesheet = false;
-  
+
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
     this.currentDate = new Date();
     this.refreshCalendarTabs();
@@ -102,6 +102,36 @@ export class TimesheetComponent {
       $("#myNewTimesheetModal").modal('show');
     } else {
       $("#myNewTimesheetModal").modal('hide');
+    }
+  }
+
+  removeTimesheetEntry(ts) {
+    if (this.selectedDay == "Mon") {
+      this.removeFromArrayList(this.monEntries, ts);
+    }
+    else if (this.selectedDay == "Tue") {
+      this.removeFromArrayList(this.tueEntries, ts);
+    }
+    else if (this.selectedDay == "Wed") {
+      this.removeFromArrayList(this.wedEntries, ts);
+    }
+    else if (this.selectedDay == "Thurs") {
+      this.removeFromArrayList(this.thursEntries, ts);
+    }
+    else if (this.selectedDay == "Fri") {
+      this.removeFromArrayList(this.friEntries, ts);
+    }
+    else {
+      this.removeFromArrayList(this.satEntries, ts);
+    }
+  }
+
+  removeFromArrayList(array: TimesheetEntry[], ts: TimesheetEntry) {
+    for (let item of array) {
+      if (item.project == ts.project && item.startTime == ts.startTime && item.endTime == ts.endTime) {
+        array.splice(array.indexOf(item), 1);
+        break;
+      }
     }
   }
 
@@ -171,6 +201,10 @@ export class TimesheetComponent {
     else {
       return this.satEntries;
     }
+  }
+
+  displayListOfEntries(): boolean {
+    return this.retrieveTimesheetsForTab().length > 0;
   }
 
   saveTimesheet() {
