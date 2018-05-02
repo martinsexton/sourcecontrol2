@@ -16,6 +16,14 @@ namespace doneillspa.DataAccess
             _context = context;
         }
 
+        public Timesheet GetTimesheetByUserAndDate(Guid userId, DateTime weekStarting)
+        {
+            return _context.Timesheet
+                        .Where(b => b.Owner == userId && b.WeekStarting == weekStarting)
+                        .Include(b => b.TimesheetEntries)
+                        .FirstOrDefault();
+        }
+
         public IEnumerable<Timesheet> GetTimesheets()
         {
             return _context.Timesheet.ToList();

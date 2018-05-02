@@ -12,6 +12,7 @@ namespace doneillspa.DataAccess
         void UpdateTimesheet(Timesheet b);
         IEnumerable<Timesheet> GetTimesheets();
         Timesheet GetTimsheetById(long id);
+        Timesheet GetTimesheetByUserAndDate(Guid userId, DateTime weekStarting);
         void Save();
     }
 }
