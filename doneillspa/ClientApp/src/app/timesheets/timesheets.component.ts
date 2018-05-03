@@ -16,7 +16,7 @@ declare var $: any;
 })
 
 export class TimesheetComponent {
-  public timesheets: Timesheet[];
+  public timesheets: Timesheet[];;
   public projects: Project[];
 
   //Default to Monday
@@ -47,7 +47,9 @@ export class TimesheetComponent {
     this.currentDate = new Date();
 
     var startOfWeek = new Date();
+
     startOfWeek.setDate(this.currentDate.getDate() - (this.currentDate.getDay() - 1))
+
 
     //Setting up default timesheet and timesheet entries
     this.newTimesheet = new Timesheet(localStorage.getItem('client_id'), startOfWeek);
@@ -59,10 +61,26 @@ export class TimesheetComponent {
       this.projects = result;
     }, error => console.error(error));
 
-    this._projectService.getTimesheets().subscribe(result => {
+    this._projectService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth()+1), startOfWeek.getDate()).subscribe(result => {
       this.timesheets = result;
+      //Populate calendar if we find timesheets for this week
+      this.populateWeeklyCalendar(this.timesheets);
     }, error => console.error(error));
   }
+
+  populateWeeklyCalendar(array: Timesheet[]) {
+    for (let ts of array) {
+      if (ts.owner == localStorage.getItem("client_id")) {
+        for (let item of ts.timesheetEntries) {
+          if (item.day == "Mon") {
+            this.monEntries.push(item);
+          }
+        }
+        break;
+      }
+    }
+  }
+
 
   previousWeek() {
     //move back one week
@@ -145,22 +163,22 @@ export class TimesheetComponent {
 
   addTimesheetEntry() {
     if (this.selectedDay == "Mon") {
-      this.monEntries.push(new TimesheetEntry("Mon", this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+      this.monEntries.push(new TimesheetEntry(this.newEntry.project, "Mon", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
     }
     else if (this.selectedDay == "Tue") {
-      this.tueEntries.push(new TimesheetEntry("Tue", this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+      this.tueEntries.push(new TimesheetEntry(this.newEntry.project, "Tue", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
     }
     else if (this.selectedDay == "Wed") {
-      this.wedEntries.push(new TimesheetEntry("Wed", this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+      this.wedEntries.push(new TimesheetEntry(this.newEntry.project, "Wed", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
     }
     else if (this.selectedDay == "Thurs") {
-      this.thursEntries.push(new TimesheetEntry("Thurs", this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+      this.thursEntries.push(new TimesheetEntry(this.newEntry.project, "Thurs", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
     }
     else if (this.selectedDay == "Fri") {
-      this.friEntries.push(new TimesheetEntry("Fri", this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+      this.friEntries.push(new TimesheetEntry(this.newEntry.project, "Fri", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
     }
     else {
-      this.satEntries.push(new TimesheetEntry("Sat", this.newEntry.project, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+      this.satEntries.push(new TimesheetEntry(this.newEntry.project, "Sat", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
     }
 
     $("#myNewTimesheetModal").modal('hide');

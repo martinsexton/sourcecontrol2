@@ -61,7 +61,7 @@
         <form>
           <div class="form-group">
             <label for="project">Project</label>
-            <select class="form-control form-control-sm" id="role" name="role" [(ngModel)]="newEntry.project">
+            <select class="form-control form-control-sm" id="project" name="project" [(ngModel)]="newEntry.project">
               <option *ngFor="let project of projects" selected>{{project.name}}</option>
             </select>
           </div>

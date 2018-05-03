@@ -16,23 +16,25 @@ namespace doneillspa.DataAccess
             _context = context;
         }
 
-        public Timesheet GetTimesheetByUserAndDate(Guid userId, DateTime weekStarting)
-        {
-            return _context.Timesheet
-                        .Where(b => b.Owner == userId && b.WeekStarting == weekStarting)
-                        .Include(b => b.TimesheetEntries)
-                        .FirstOrDefault();
-        }
-
         public IEnumerable<Timesheet> GetTimesheets()
         {
             return _context.Timesheet.ToList();
+        }
+
+        public IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting)
+        {
+            return _context.Timesheet
+                        .Where(b => b.WeekStarting.Date == weekStarting.Date)
+                        .Include(b => b.TimesheetEntries)
+                        .ToList();
+
         }
 
         public Timesheet GetTimsheetById(long id)
         {
             return _context.Timesheet
                         .Where(b => b.Id == id)
+                        .Include(b => b.TimesheetEntries)
                         .FirstOrDefault();
         }
 
