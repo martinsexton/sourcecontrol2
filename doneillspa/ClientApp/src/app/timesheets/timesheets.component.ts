@@ -75,6 +75,21 @@ export class TimesheetComponent {
           if (item.day == "Mon") {
             this.monEntries.push(item);
           }
+          else if (item.day == "Tue") {
+            this.tueEntries.push(item);
+          }
+          else if (item.day == "Wed") {
+            this.wedEntries.push(item);
+          }
+          else if (item.day == "Thurs") {
+            this.thursEntries.push(item);
+          }
+          else if (item.day == "Fri") {
+            this.friEntries.push(item);
+          }
+          else {
+            this.satEntries.push(item);
+          }
         }
         break;
       }
