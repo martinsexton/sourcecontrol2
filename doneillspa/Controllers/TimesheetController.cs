@@ -68,7 +68,8 @@ namespace doneillspa.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut()]
+        [Route("api/timesheet/{id}")]
         public IActionResult Put(long id, [FromBody]Timesheet t)
         {
             if (t == null || t.Id != id)
