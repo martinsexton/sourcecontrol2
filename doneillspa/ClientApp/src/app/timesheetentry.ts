@@ -1,5 +1,5 @@
 export class TimesheetEntry {
-
+  public id: number;
   constructor(
     public project: string,
     public day:string,

@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../app/project';
 import { Timesheet } from '../app/timesheet';
+import { TimesheetEntry } from './timesheetentry';
 
 @Injectable()
 export class ProjectService {
@@ -48,6 +49,16 @@ export class ProjectService {
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.put(this._baseurl + 'api/timesheet', timesheet, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    });
+  }
+
+  deleteTimesheetEntry(tse: TimesheetEntry) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.delete(this._baseurl + 'api/timesheetentry/'+tse.id, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)

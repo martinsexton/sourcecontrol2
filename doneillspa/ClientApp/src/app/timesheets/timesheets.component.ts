@@ -152,24 +152,35 @@ export class TimesheetComponent {
   }
 
   removeTimesheetEntry(ts) {
-    if (this.selectedDay == "Mon") {
-      this.removeFromArrayList(this.monEntries, ts);
-    }
-    else if (this.selectedDay == "Tue") {
-      this.removeFromArrayList(this.tueEntries, ts);
-    }
-    else if (this.selectedDay == "Wed") {
-      this.removeFromArrayList(this.wedEntries, ts);
-    }
-    else if (this.selectedDay == "Thurs") {
-      this.removeFromArrayList(this.thursEntries, ts);
-    }
-    else if (this.selectedDay == "Fri") {
-      this.removeFromArrayList(this.friEntries, ts);
-    }
-    else {
-      this.removeFromArrayList(this.satEntries, ts);
-    }
+    this._projectService.deleteTimesheetEntry(ts).subscribe(
+      res => {
+        console.log(res);
+        if (this.selectedDay == "Mon") {
+          this.removeFromArrayList(this.monEntries, ts);
+        }
+        else if (this.selectedDay == "Tue") {
+          this.removeFromArrayList(this.tueEntries, ts);
+        }
+        else if (this.selectedDay == "Wed") {
+          this.removeFromArrayList(this.wedEntries, ts);
+        }
+        else if (this.selectedDay == "Thurs") {
+          this.removeFromArrayList(this.thursEntries, ts);
+        }
+        else if (this.selectedDay == "Fri") {
+          this.removeFromArrayList(this.friEntries, ts);
+        }
+        else {
+          this.removeFromArrayList(this.satEntries, ts);
+        }
+      },
+      (err: HttpErrorResponse) => {
+        console.log(err.error);
+        console.log(err.name);
+        console.log(err.message);
+        console.log(err.status);
+      }
+    );
   }
 
   removeFromArrayList(array: TimesheetEntry[], ts: TimesheetEntry) {
