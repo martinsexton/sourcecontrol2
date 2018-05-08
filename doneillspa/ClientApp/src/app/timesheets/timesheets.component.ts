@@ -182,8 +182,9 @@ export class TimesheetComponent {
   }
 
   addTimesheetEntry() {
+    let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.project, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment);
     if (this.timesheetExists) {
-      this.newTimesheet.timesheetEntries.push(new TimesheetEntry(this.newEntry.project, "Mon", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+      this.newTimesheet.timesheetEntries.push(entry);
 
       this._projectService.updateTimesheet(this.newTimesheet).subscribe(
         res => {
