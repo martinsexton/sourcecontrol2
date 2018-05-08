@@ -18,6 +18,7 @@ declare var $: any;
 export class TimesheetComponent {
   public timesheets: Timesheet[];;
   public projects: Project[];
+  public timesheetExists = false;
 
   //Default to Monday
   public selectedDay = "Mon";
@@ -47,12 +48,11 @@ export class TimesheetComponent {
     this.currentDate = new Date();
 
     var startOfWeek = new Date();
-
     startOfWeek.setDate(this.currentDate.getDate() - (this.currentDate.getDay() - 1))
 
 
     //Setting up default timesheet and timesheet entries
-    this.newTimesheet = new Timesheet(localStorage.getItem('client_id'), startOfWeek);
+    this.newTimesheet = new Timesheet(0,localStorage.getItem('client_id'), startOfWeek);
     this.newEntry = new TimesheetEntry("", "", "", "", "");
 
     this.refreshCalendarTabs();
@@ -63,6 +63,9 @@ export class TimesheetComponent {
 
     this._projectService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth()+1), startOfWeek.getDate()).subscribe(result => {
       this.timesheets = result;
+      if (this.timesheets.length > 0) {
+        this.timesheetExists = true;
+      }
       //Populate calendar if we find timesheets for this week
       this.populateWeeklyCalendar(this.timesheets);
     }, error => console.error(error));
@@ -71,6 +74,8 @@ export class TimesheetComponent {
   populateWeeklyCalendar(array: Timesheet[]) {
     for (let ts of array) {
       if (ts.owner == localStorage.getItem("client_id")) {
+        this.newTimesheet.id = ts.id;
+
         for (let item of ts.timesheetEntries) {
           if (item.day == "Mon") {
             this.monEntries.push(item);
@@ -177,6 +182,21 @@ export class TimesheetComponent {
   }
 
   addTimesheetEntry() {
+    if (this.timesheetExists) {
+      this.newTimesheet.timesheetEntries.push(new TimesheetEntry(this.newEntry.project, "Mon", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
+
+      this._projectService.updateTimesheet(this.newTimesheet).subscribe(
+        res => {
+          console.log(res);
+        },
+        (err: HttpErrorResponse) => {
+          console.log(err.error);
+          console.log(err.name);
+          console.log(err.message);
+          console.log(err.status);
+        }
+      );
+    }
     if (this.selectedDay == "Mon") {
       this.monEntries.push(new TimesheetEntry(this.newEntry.project, "Mon", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.equipment));
     }
@@ -265,6 +285,7 @@ export class TimesheetComponent {
     this._projectService.saveTimesheet(this.newTimesheet).subscribe(
       res => {
         console.log(res);
+        this.newTimesheet.id = res as number;
         this.timesheets.push(this.newTimesheet);
         $("#myNewTimesheetModal").modal('hide');
       },

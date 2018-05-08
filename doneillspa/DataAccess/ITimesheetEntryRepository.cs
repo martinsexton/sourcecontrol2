@@ -9,6 +9,7 @@ namespace doneillspa.DataAccess
     public interface ITimesheetEntryRepository
     {
         TimesheetEntry GetTimsheetEntryById(long id);
+        void InsertTimesheetEntry(TimesheetEntry tse);
         void DeleteTimesheetEntry(TimesheetEntry tse);
         void Save();
     }

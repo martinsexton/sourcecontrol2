@@ -60,18 +60,16 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            _repository.InsertTimesheet(timesheet);
-            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
-            _repository.Save();
+            long id = _repository.InsertTimesheet(timesheet);
 
-            return Ok();
+            return Ok(id);
         }
 
         [HttpPut()]
-        [Route("api/timesheet/{id}")]
-        public IActionResult Put(long id, [FromBody]Timesheet t)
+        [Route("api/timesheet")]
+        public IActionResult Put([FromBody]Timesheet t)
         {
-            if (t == null || t.Id != id)
+            if (t == null || t.Id == 0)
             {
                 return BadRequest();
             }
@@ -86,9 +84,15 @@ namespace doneillspa.Controllers
             existingTimesheet.Owner = t.Owner;
             existingTimesheet.WeekStarting = t.WeekStarting;
 
+            foreach (TimesheetEntry tse in t.TimesheetEntries)
+            {
+                if (!existingTimesheet.TimesheetEntries.Contains(tse))
+                {
+                    existingTimesheet.TimesheetEntries.Add(tse);
+                }
+            }
+
             _repository.UpdateTimesheet(existingTimesheet);
-            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
-            _repository.Save();
 
             return new NoContentResult();
         }

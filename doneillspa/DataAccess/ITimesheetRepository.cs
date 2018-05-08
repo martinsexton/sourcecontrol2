@@ -8,11 +8,11 @@ namespace doneillspa.DataAccess
 {
     public interface ITimesheetRepository
     {
-        void InsertTimesheet(Timesheet b);
+        long InsertTimesheet(Timesheet b);
         void UpdateTimesheet(Timesheet b);
         IEnumerable<Timesheet> GetTimesheets();
         Timesheet GetTimsheetById(long id);
         IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting);
-        void Save();
+        //void Save();
     }
 }

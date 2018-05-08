@@ -38,19 +38,22 @@ namespace doneillspa.DataAccess
                         .FirstOrDefault();
         }
 
-        public void InsertTimesheet(Timesheet t)
+        public long InsertTimesheet(Timesheet t)
         {
             _context.Timesheet.Add(t);
+            _context.SaveChanges();
+            return t.Id;
         }
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
+        //public void Save()
+        //{
+        //    _context.SaveChanges();
+        //}
 
         public void UpdateTimesheet(Timesheet b)
         {
             _context.Entry(b).State = EntityState.Modified;
+            _context.SaveChanges();
         }
     }
 }

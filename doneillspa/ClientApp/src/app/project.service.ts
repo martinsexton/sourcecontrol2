@@ -44,6 +44,16 @@ export class ProjectService {
     }); 
   }
 
+  updateTimesheet(timesheet: Timesheet) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.put(this._baseurl + 'api/timesheet', timesheet, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    });
+  }
+
   getTimesheets() {
     let authToken = localStorage.getItem('auth_token');
 

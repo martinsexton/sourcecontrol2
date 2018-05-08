@@ -28,6 +28,11 @@ namespace doneillspa.DataAccess
                         .FirstOrDefault();
         }
 
+        public void InsertTimesheetEntry(TimesheetEntry tse)
+        {
+            _context.TimesheetEntry.Add(tse);
+        }
+
         public void Save()
         {
             _context.SaveChanges();
