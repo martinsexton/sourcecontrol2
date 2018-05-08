@@ -255,6 +255,16 @@ export class TimesheetComponent {
     this.selectedDay = "Sat";
   }
 
+  calculateDuration(entry : TimesheetEntry) : number {
+    var start = new Date("2018-01-01 " + entry.startTime);
+    var end = new Date("2018-01-01 " + entry.endTime);
+
+    var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+    var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+    return elapsedTimeInMins;
+  }
+
   retrieveTimesheetsForTab(): Array<TimesheetEntry> {
     if (this.selectedDay == "Mon") {
       return this.monEntries;

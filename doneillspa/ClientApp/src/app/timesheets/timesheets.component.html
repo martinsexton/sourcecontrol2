@@ -31,15 +31,17 @@
         <th>Start</th>
         <th>End</th>
         <th>Equipment</th>
+        <th>Duration</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let entry of retrieveTimesheetsForTab()">
         <td>{{ entry.project }}</td>
-        <td>{{ entry.startTime}}</td>
-        <td>{{ entry.endTime}}</td>
-        <td>{{ entry.equipment}}</td>
+        <td>{{ entry.startTime }}</td>
+        <td>{{ entry.endTime }}</td>
+        <td>{{ entry.equipment }}</td>
+        <td>{{ calculateDuration(entry) }}</td>
         <td><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeTimesheetEntry(entry)"></span></td>
       </tr>
     </tbody>

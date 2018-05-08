@@ -7,8 +7,4 @@ export class TimesheetEntry {
     public endTime: string,
     public equipment:string
   ) { }
-
-  duration(): number {
-    return 1;
-  }
 }
