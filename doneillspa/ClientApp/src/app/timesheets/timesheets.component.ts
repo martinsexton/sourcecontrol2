@@ -255,6 +255,15 @@ export class TimesheetComponent {
     this.selectedDay = "Sat";
   }
 
+  calculateTotalDuration() {
+    let totalDuration: number = 0;
+
+    for (let tse of this.retrieveTimesheetsForTab()) {
+      totalDuration = totalDuration + this.calculateDuration(tse);
+    }
+    return totalDuration;
+  }
+
   calculateDuration(entry : TimesheetEntry) : number {
     var start = new Date("2018-01-01 " + entry.startTime);
     var end = new Date("2018-01-01 " + entry.endTime);

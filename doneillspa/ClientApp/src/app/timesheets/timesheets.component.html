@@ -41,10 +41,19 @@
         <td>{{ entry.startTime }}</td>
         <td>{{ entry.endTime }}</td>
         <td>{{ entry.equipment }}</td>
-        <td>{{ calculateDuration(entry) }}</td>
+        <td>{{ calculateDuration(entry) }} mins</td>
         <td><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeTimesheetEntry(entry)"></span></td>
       </tr>
     </tbody>
+    <tfoot>
+      <tr>
+        <td><p class="text-primary">Total Duration</p></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><span class="badge">{{ calculateTotalDuration() }} mins</span></td>
+      </tr>
+    </tfoot>
   </table>
 </div>
 <div class="row" *ngIf="displayListOfEntries()">
