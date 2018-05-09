@@ -37,6 +37,7 @@ namespace doneillspa
             services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
+            services.AddCors();
 
             services.AddIdentity<ApplicationUser, IdentityRole<System.Guid>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
@@ -86,6 +87,9 @@ namespace doneillspa
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCors(builder =>
+                builder.WithOrigins("http://doneillspa.azurewebsites.net"));
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
