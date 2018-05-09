@@ -12,6 +12,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
 import { TimesheetComponent } from './timesheets/timesheets.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
 
@@ -35,6 +36,7 @@ import { AuthGuard } from './auth.guard';
     LoginFormComponent,
     ProjectComponent,
     TimesheetComponent,
+    DashboardComponent,
     EmailValidator,
     myFocus
   ],
