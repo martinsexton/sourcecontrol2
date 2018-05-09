@@ -16,5 +16,13 @@ declare var $: any;
 })
 
 export class DashboardComponent {
+  public timesheets: Timesheet[];
 
+
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
+    //Retrieve Timesheets For display
+    this._projectService.getTimesheets().subscribe(result => {
+      this.timesheets = result;
+    }, error => console.error(error));
+  }
 }

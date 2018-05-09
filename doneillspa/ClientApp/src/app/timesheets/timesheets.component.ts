@@ -16,7 +16,7 @@ declare var $: any;
 })
 
 export class TimesheetComponent {
-  public timesheets: Timesheet[];;
+  public timesheets: Timesheet[];
   public projects: Project[];
   public timesheetExists = false;
 
