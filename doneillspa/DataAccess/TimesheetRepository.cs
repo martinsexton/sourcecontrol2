@@ -18,7 +18,9 @@ namespace doneillspa.DataAccess
 
         public IEnumerable<Timesheet> GetTimesheets()
         {
-            return _context.Timesheet.ToList();
+            return _context.Timesheet
+                .Include(b => b.TimesheetEntries)
+                .ToList();
         }
 
         public IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting)

@@ -32,7 +32,7 @@ export class ProjectService {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    }); 
+    });
   }
 
   saveTimesheet(timesheet: Timesheet) {
@@ -42,7 +42,7 @@ export class ProjectService {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    }); 
+    });
   }
 
   updateTimesheet(timesheet: Timesheet) {
@@ -58,11 +58,22 @@ export class ProjectService {
   deleteTimesheetEntry(tse: TimesheetEntry) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.delete(this._baseurl + 'api/timesheetentry/'+tse.id, {
+    return this._httpClient.delete(this._baseurl + 'api/timesheetentry/' + tse.id, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
     });
+  }
+
+  getUserName(id) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<string>(this._baseurl + 'api/user/' + id,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      });
   }
 
   getTimesheets() {
@@ -76,13 +87,13 @@ export class ProjectService {
       });
   }
 
-  getTimesheet(year : number, month : number, day : number) {
+  getTimesheet(year: number, month: number, day: number) {
     let authToken = localStorage.getItem('auth_token');
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/json');
     headers = headers.append('Authorization', 'Bearer ' + authToken);
 
-    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/timesheet/week/'+ year + '/' + month + '/' + day,
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/timesheet/week/' + year + '/' + month + '/' + day,
       {
         headers
       });

@@ -63,9 +63,6 @@ export class TimesheetComponent {
 
     this._projectService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth()+1), startOfWeek.getDate()).subscribe(result => {
       this.timesheets = result;
-      if (this.timesheets.length > 0) {
-        this.timesheetExists = true;
-      }
       //Populate calendar if we find timesheets for this week
       this.populateWeeklyCalendar(this.timesheets);
     }, error => console.error(error));
@@ -75,6 +72,7 @@ export class TimesheetComponent {
     for (let ts of array) {
       if (ts.owner == localStorage.getItem("client_id")) {
         this.newTimesheet.id = ts.id;
+        this.timesheetExists = true;
 
         for (let item of ts.timesheetEntries) {
           if (item.day == "Mon") {
