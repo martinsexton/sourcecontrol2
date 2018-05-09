@@ -19,17 +19,17 @@
             </li>
             <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isAdministrator()'>
               <a [routerLink]='["/projects"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-th-list'></span> List Projects
+                <span class='glyphicon glyphicon-folder-open'></span> List Projects
               </a>
             </li>
             <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isAdministrator()'>
               <a [routerLink]='["/dashboard"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-th-list'></span> Dashboard
+                <span class='glyphicon glyphicon-dashboard'></span> Dashboard
               </a>
             </li>
             <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isWorker()'>
               <a [routerLink]='["/timesheets"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-th-list'></span>Timesheets
+                <span class='glyphicon glyphicon-calendar'></span>Timesheets
               </a>
             </li>
           </ul>
