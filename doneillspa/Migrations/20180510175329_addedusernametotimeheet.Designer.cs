@@ -11,9 +11,10 @@ using System;
 namespace doneillspa.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20180510175329_addedusernametotimeheet")]
+    partial class addedusernametotimeheet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,9 +97,9 @@ namespace doneillspa.Migrations
 
                     b.Property<Guid>("Owner");
 
-                    b.Property<string>("Username");
-
                     b.Property<DateTime>("WeekStarting");
+
+                    b.Property<string>("username");
 
                     b.HasKey("Id");
 
