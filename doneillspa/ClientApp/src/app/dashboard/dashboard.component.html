@@ -9,7 +9,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let ts of timesheets" (click)="displaySelectedTimesheetDetails(ts)">
-          <td>{{ ts.owner }}</td>
+          <td>{{ ts.username }}</td>
           <td>{{ ts.weekStarting }}</td>
         </tr>
       </tbody>

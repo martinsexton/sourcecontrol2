@@ -52,7 +52,7 @@ export class TimesheetComponent {
 
 
     //Setting up default timesheet and timesheet entries
-    this.newTimesheet = new Timesheet(0,localStorage.getItem('client_id'), startOfWeek);
+    this.newTimesheet = new Timesheet(0, localStorage.getItem('username'),localStorage.getItem('client_id'), startOfWeek);
     this.newEntry = new TimesheetEntry("", "", "", "", "");
 
     this.refreshCalendarTabs();
@@ -314,6 +314,7 @@ export class TimesheetComponent {
     this._projectService.saveTimesheet(this.newTimesheet).subscribe(
       res => {
         console.log(res);
+        this.timesheetExists = true;
         this.newTimesheet.id = res as number;
         this.timesheets.push(this.newTimesheet);
         $("#myNewTimesheetModal").modal('hide');

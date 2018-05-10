@@ -11,6 +11,7 @@ namespace doneillspa.Models
         private readonly UserManager<ApplicationUser> _userManager;
 
         public long Id { get; set; }
+        public string Username { get; set; }
         public DateTime WeekStarting { get; set; }
         public Guid Owner { get; set; }
 
