@@ -38,6 +38,7 @@
     <None Remove="ClientApp\src\app\dashboard\dashboard.component.ts" />
     <None Remove="ClientApp\src\app\directives\email.validator.directive.ts" />
     <None Remove="ClientApp\src\app\directives\focus.directive.ts" />
+    <None Remove="ClientApp\src\app\directives\password.validator.directive.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projects\projects.component.ts" />
     <None Remove="ClientApp\src\app\shared\models\credentials.interface.ts" />
@@ -58,6 +59,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\dashboard\dashboard.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\email.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\focus.directive.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\directives\password.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.service.ts" />

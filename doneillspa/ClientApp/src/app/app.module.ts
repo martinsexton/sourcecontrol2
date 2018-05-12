@@ -17,6 +17,7 @@ import { RegistrationFormComponent } from './account/registration-form/registrat
 import { LoginFormComponent } from './account/login-form/login-form.component';
 
 import { EmailValidator } from './directives/email.validator.directive';
+import { PasswordValidator } from './directives/password.validator.directive';
 import { myFocus } from './directives/focus.directive';
 
 /* Import Services */
@@ -38,6 +39,7 @@ import { AuthGuard } from './auth.guard';
     TimesheetComponent,
     DashboardComponent,
     EmailValidator,
+    PasswordValidator,
     myFocus
   ],
   imports: [
