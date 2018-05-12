@@ -4,7 +4,7 @@ import { NG_VALIDATORS, FormControl } from '@angular/forms';
 
 function validatePasswordFactory() {
   return (c: FormControl) => {
-    let EMAIL_REGEXP = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i;
+    let EMAIL_REGEXP = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+]).{8,}$/i;
 
 
     return EMAIL_REGEXP.test(c.value) ? null : {
