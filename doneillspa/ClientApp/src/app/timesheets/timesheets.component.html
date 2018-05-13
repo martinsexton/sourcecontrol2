@@ -6,7 +6,7 @@
     </ul>
   </nav>
 </div>
-<div class="row" *ngIf="monday">
+<div class="row">
   <ul class="nav nav-tabs">
     <li role="presentation" [ngClass]="{'active': selectedDay=='Mon'}" data-toggle="tooltip" data-placement="top" title="{{monday.date}}"><a (click)="paintMonTab()">{{monday.nameOfDay}}</a></li>
     <li role="presentation" [ngClass]="{'active': selectedDay=='Tue'}" data-toggle="tooltip" data-placement="top" title="{{tues.date}}"><a (click)="paintTueTab()">{{tues.nameOfDay}}</a></li>
@@ -16,14 +16,19 @@
     <li role="presentation" [ngClass]="{'active': selectedDay=='Sat'}" data-toggle="tooltip" data-placement="top" title="{{sat.date}}"><a (click)="paintSatTab()">{{sat.nameOfDay}}</a></li>
   </ul>
 </div>
-<div class="row" *ngIf="!displayListOfEntries()">
+<div class="row">
+  <div class="text-center">
+    <img src="assets/images/loading3.gif" *ngIf="loading" />
+  </div>
+</div>
+<div class="row" *ngIf="!displayListOfEntries() && !loading">
   <div class="jumbotron" >
     <h3>Timesheets Missing!</h3>
     <p>Please supply time sheet entries for {{selectedDay}}</p>
     <p><a class="btn btn-primary btn-sm" (click)="toggleDisplayAddTimesheet()" role="button">Add Entry</a></p>
   </div>
 </div>
-<div class="row" *ngIf="displayListOfEntries()">
+<div class="row" *ngIf="displayListOfEntries() && !loading">
   <table class='table table-striped table-sm'>
     <thead class="thead">
       <tr>

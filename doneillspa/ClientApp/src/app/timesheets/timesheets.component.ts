@@ -19,6 +19,7 @@ export class TimesheetComponent {
   public timesheets: Timesheet[];
   public projects: Project[];
   public timesheetExists = false;
+  public loading = true;
 
   //Default to Monday
   public selectedDay = "Mon";
@@ -62,6 +63,7 @@ export class TimesheetComponent {
     }, error => console.error(error));
 
     this._projectService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth()+1), startOfWeek.getDate()).subscribe(result => {
+      this.loading = false;
       this.timesheets = result;
       //Populate calendar if we find timesheets for this week
       this.populateWeeklyCalendar(this.timesheets);
