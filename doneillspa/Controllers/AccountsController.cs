@@ -30,8 +30,10 @@ namespace doneillspa.Controllers
             var newUser = new ApplicationUser()
             {
                 Id = Guid.NewGuid(),
+                FirstName = details.FirstName,
+                Surname = details.Surname,
                 Email = details.Email,
-                UserName = details.Username
+                UserName = details.FirstName.ToUpper() + details.Surname.ToUpper()
             };
 
             //Password supplied must have non numeric, uppercase and digits in them in order to be saved

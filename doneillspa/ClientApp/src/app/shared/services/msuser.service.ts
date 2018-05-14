@@ -23,8 +23,8 @@ export class MsUserService {
     this._baseurl = baseUrl;
   }
 
-  register(email: string, password: string, username: string, role:string): Observable<UserRegistration>{
-    let body = JSON.stringify({ email, password, username, role });
+  register(email: string, password: string, firstname :string, surname:string, role:string): Observable<UserRegistration>{
+    let body = JSON.stringify({ email, password, firstname, surname, role });
 
 
     return this._httpClient.post(this._baseurl + 'api/account', body,
@@ -35,9 +35,9 @@ export class MsUserService {
       .catch(this.handleError);
   }
 
-  login(userName, password): Observable<LoginResponse>{
+  login(firstname, surname, password): Observable<LoginResponse>{
 
-    return this._httpClient.post<LoginResponse>(this._baseurl + 'api/auth/login', JSON.stringify({ userName, password }),
+    return this._httpClient.post<LoginResponse>(this._baseurl + 'api/auth/login', JSON.stringify({ firstname, surname, password }),
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

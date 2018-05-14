@@ -12,8 +12,12 @@
         </div>
         <form #f="ngForm" novalidate (ngSubmit)="login(f)">
           <div class="form-group">
-            <label for="username">Username</label>
-            <input id="username" type="text" required name="username" [ngModel]="credentials.username" #email="ngModel" class="form-control" placeholder="Username">
+            <label for="firstname">First Name</label>
+            <input id="firstname" type="text" required name="firstname" [ngModel]="credentials.firstname" #email="ngModel" class="form-control" placeholder="firstname">
+          </div>
+          <div class="form-group">
+            <label for="surname">Surname</label>
+            <input id="surname" type="text" required name="surname" [ngModel]="credentials.surname" #email="ngModel" class="form-control" placeholder="surname">
           </div>
           <div class="form-group">
             <label for="password">Password</label>

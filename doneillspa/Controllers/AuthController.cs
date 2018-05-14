@@ -42,7 +42,7 @@ namespace doneillspa.Controllers
             JsonResult result;
             var expiresIn = TimeSpan.FromMinutes(5);
 
-            var identity = await GetClaimsIdentity(credentials.Username, credentials.Password);
+            var identity = await GetClaimsIdentity(credentials.FirstName+credentials.Surname, credentials.Password);
             if (identity == null)
             {
                 // Serialize and return the response 
@@ -61,7 +61,7 @@ namespace doneillspa.Controllers
                 var response = new
                 {
                     id = identity.Claims.Single(c => c.Type == "id").Value,
-                    auth_token = await _jwtFactory.GenerateEncodedToken(credentials.Username, identity, expiresIn),
+                    auth_token = await _jwtFactory.GenerateEncodedToken(credentials.FirstName + credentials.Surname, identity, expiresIn),
                     expires_in = (int)expiresIn.TotalSeconds,
                     role = identity.Claims.Single(c => c.Type == "rol").Value
                 };
@@ -80,7 +80,7 @@ namespace doneillspa.Controllers
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password))
             {
                 // get the user to verifty 
-                ApplicationUser userToVerify = await _userManager.FindByNameAsync(userName);
+                ApplicationUser userToVerify = await _userManager.FindByNameAsync(userName.ToUpper());
 
                 if (userToVerify != null)
                 {

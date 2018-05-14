@@ -22,7 +22,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   errors: string;
   isRequesting: boolean;
   submitted: boolean = false;
-  credentials: Credentials = { username: '', password: '' };
+  credentials: Credentials = { firstname: '', surname: '', password: '' };
 
 
   constructor(private userService: MsUserService, private router: Router, private activatedRoute: ActivatedRoute) {}
@@ -35,7 +35,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     this.subscription = this.activatedRoute.queryParams.subscribe(
       (param: any) => {
         this.brandNew = param['brandNew'];
-        this.credentials.username = param['username'];
+        this.credentials.firstname = param['firstname'];
+        this.credentials.surname = param['surname'];
       });
   }
 
@@ -52,7 +53,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     this.isRequesting = true;
     this.errors = '';
     if (valid) {
-      this.userService.login(value.username, value.password)
+      this.userService.login(value.firstname, value.surname, value.password)
         .subscribe(
         result => {
           if (result) {
@@ -64,7 +65,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               localStorage.setItem('auth_token', result.auth_token);
               localStorage.setItem('role', result.role);
               localStorage.setItem('client_id', result.id);
-              localStorage.setItem('username', value.username);
+              localStorage.setItem('username', value.firstname + value.surname);
               this.router.navigate(['/']);
             }
           }
