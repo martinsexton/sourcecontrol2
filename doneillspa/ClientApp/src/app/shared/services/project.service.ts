@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../../project';
 import { Certificate } from '../../certificate';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ProjectService {
@@ -21,7 +22,8 @@ export class ProjectService {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      });
+      })
+      .catch(this.handleError);
   }
 
   saveProject(project: Project) {
@@ -31,7 +33,7 @@ export class ProjectService {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    });
+    }).catch(this.handleError);;
   }
 
   getUserName(id) {
@@ -55,5 +57,27 @@ export class ProjectService {
       {
         headers
       });
+  }
+
+  protected handleError(error: any) {
+    var applicationError = error.headers.get('Application-Error');
+
+    // either applicationError in header or model error in body 
+    if (applicationError) {
+      return Observable.throw(applicationError);
+    }
+    var modelStateErrors: string = '';
+    var serverError = error;
+
+    if (!serverError.type) {
+      for (var key in serverError) {
+        if (key == "message") {
+          modelStateErrors += serverError[key] + '\n';
+          break;
+        }
+      }
+    }
+    modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
+    return Observable.throw(modelStateErrors || 'Server error');
   }
 }

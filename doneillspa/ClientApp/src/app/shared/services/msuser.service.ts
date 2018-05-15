@@ -71,8 +71,6 @@ export class MsUserService {
   logout() {
     localStorage.removeItem('auth_token');
     this.loggedIn = false;
-    //this._authNavStatusSource.next(false);
-
   }
 
   isAdministrator() {
