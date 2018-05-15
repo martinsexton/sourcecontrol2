@@ -4,7 +4,7 @@ import { Project } from '../project';
 
 import {
   ProjectService
-} from '../project.service';
+} from '../shared/services/project.service';
 
 declare var $: any;
 

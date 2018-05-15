@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Project } from '../app/project';
-import { Timesheet } from '../app/timesheet';
-import { TimesheetEntry } from './timesheetentry';
-import { Certificate } from './certificate';
+import { Project } from '../../project';
+import { Timesheet } from '../../timesheet';
+import { TimesheetEntry } from '../../timesheetentry';
+import { Certificate } from '../../certificate';
 
 @Injectable()
 export class ProjectService {

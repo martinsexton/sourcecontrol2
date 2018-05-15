@@ -9,7 +9,7 @@ import { MsUserService } from '../shared/services/msuser.service';
 
 import {
   ProjectService
-} from '../project.service';
+} from '../shared/services/project.service';
 
 declare var $: any;
 

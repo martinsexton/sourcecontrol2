@@ -66,7 +66,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\directives\password.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\project.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\project.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\credentials.interface.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\loginresponse.interface.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\user.registration.interface.ts" />

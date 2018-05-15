@@ -21,7 +21,7 @@ import { PasswordValidator } from './directives/password.validator.directive';
 import { myFocus } from './directives/focus.directive';
 
 /* Import Services */
-import { ProjectService } from './project.service';
+import { ProjectService } from './shared/services/project.service';
 import { ConfigService } from './shared/utils/config.service';
 import { MsUserService } from './shared/services/msuser.service';
 import { AuthGuard } from './auth.guard';
