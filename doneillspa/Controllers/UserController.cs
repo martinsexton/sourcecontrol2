@@ -47,7 +47,7 @@ namespace doneillspa.Controllers
             Certification cert = new Certification();
             cert.CreatedDate = t.CreatedDate;
             cert.Description = t.Description;
-            cert.CreatedDate = t.CreatedDate;
+            cert.Expiry = t.Expiry;
             cert.User = user;
             cert.UserId = user.Id;
 
