@@ -86,8 +86,10 @@ export class DashboardComponent {
   }
 
   addCertificateEntry() {
-    let p = "test";
-    this._msuserService.addCertificate(this.selectedUser.id, this.newCertificate).subscribe(result => {
+    this._msuserService.addCertificate(this.selectedUser.id, this.newCertificate).subscribe(result =>
+    {
+      $("#myNewCertificateModal").modal('hide');
+      this.selectedUserCertifications.push(this.newCertificate);
     }, error => console.error(error));
   }
 }
