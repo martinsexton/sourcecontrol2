@@ -2,7 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
+import { Certificate } from '../certificate';
+import { ApplicationUser } from '../applicationuser';
 import { Project } from '../project';
+import { MsUserService } from '../shared/services/msuser.service';
 
 import {
   ProjectService
@@ -18,13 +21,29 @@ declare var $: any;
 export class DashboardComponent {
   public timesheets: Timesheet[];
   public selectedTimesheet: Timesheet;
-  public selectedTimesheetUser: string;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
+  public selectedUser: ApplicationUser;
+  public selectedUserCertifications: Certificate[];
+
+  public selectedTimesheetUser: string;
+  public users: ApplicationUser[];
+  public newCertificate: Certificate = new Certificate("",0, new Date(), new Date(), "", null);
+
+  displayAddCert = false;
+
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _msuserService : MsUserService) {
     //Retrieve Timesheets For display
     this._projectService.getTimesheets().subscribe(result => {
       this.timesheets = result;
     }, error => console.error(error));
+
+    this._projectService.getTimesheets().subscribe(result => {
+      this.timesheets = result;
+    }, error => console.error(error));
+
+    this._msuserService.getUsers().subscribe(result => {
+      this.users = result;
+    }, error => console.error(error))
   }
 
   calculateTotalDuration() {
@@ -46,7 +65,29 @@ export class DashboardComponent {
     return elapsedTimeInMins;
   }
 
+  toggleDisplayAddCertificate() {
+    this.displayAddCert = !this.displayAddCert;
+    if (this.displayAddCert) {
+      $("#myNewCertificateModal").modal('show');
+    } else {
+      $("#myNewCertificateModal").modal('hide');
+    }
+  }
+
   displaySelectedTimesheetDetails(timesheet) {
     this.selectedTimesheet = timesheet;
+  }
+
+  displaySelectedUserDetails(user) {
+    this.selectedUser = user;
+    this._projectService.getCertifications(user.id).subscribe(result => {
+      this.selectedUserCertifications = result;
+    }, error => console.error(error));
+  }
+
+  addCertificateEntry() {
+    let p = "test";
+    this._msuserService.addCertificate(this.selectedUser.id, this.newCertificate).subscribe(result => {
+    }, error => console.error(error));
   }
 }

@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../app/project';
 import { Timesheet } from '../app/timesheet';
 import { TimesheetEntry } from './timesheetentry';
+import { Certificate } from './certificate';
 
 @Injectable()
 export class ProjectService {
@@ -94,6 +95,18 @@ export class ProjectService {
     headers = headers.append('Authorization', 'Bearer ' + authToken);
 
     return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/timesheet/week/' + year + '/' + month + '/' + day,
+      {
+        headers
+      });
+  }
+
+  getCertifications(userId : string) {
+    let authToken = localStorage.getItem('auth_token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    headers = headers.append('Authorization', 'Bearer ' + authToken);
+
+    return this._httpClient.get<Certificate[]>(this._baseurl + 'api/certification/user/' + userId,
       {
         headers
       });

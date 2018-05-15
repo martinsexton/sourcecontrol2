@@ -11,9 +11,10 @@ using System;
 namespace doneillspa.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20180514145915_CertificationAdded")]
+    partial class CertificationAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,17 +81,15 @@ namespace doneillspa.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreatedDate");
+                    b.Property<Guid?>("ApplicationUserId");
 
-                    b.Property<string>("Description");
+                    b.Property<DateTime>("CreatedDate");
 
                     b.Property<DateTime>("Expiry");
 
-                    b.Property<Guid>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Certification");
                 });
@@ -260,10 +259,9 @@ namespace doneillspa.Migrations
 
             modelBuilder.Entity("doneillspa.Models.Certification", b =>
                 {
-                    b.HasOne("doneillspa.Models.ApplicationUser", "User")
+                    b.HasOne("doneillspa.Models.ApplicationUser")
                         .WithMany("Certifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("doneillspa.Models.TimesheetEntry", b =>

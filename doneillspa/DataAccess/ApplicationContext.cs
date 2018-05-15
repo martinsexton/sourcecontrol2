@@ -17,6 +17,7 @@ namespace doneillspa.DataAccess
         }
 
         public DbSet<Project> Project { get; set; }
+        public DbSet<Certification> Certification { get; set; }
         public DbSet<Timesheet> Timesheet { get; set; }
         public DbSet<TimesheetEntry> TimesheetEntry { get; set; }
 
@@ -26,6 +27,11 @@ namespace doneillspa.DataAccess
 
             modelBuilder.Entity<Timesheet>()
                 .HasMany(t => t.TimesheetEntries);
+
+            modelBuilder.Entity<Certification>()
+                .HasOne<ApplicationUser>(n => n.User)
+                .WithMany(a => a.Certifications)
+                .HasForeignKey(n => n.UserId);
         }
     }
 }
