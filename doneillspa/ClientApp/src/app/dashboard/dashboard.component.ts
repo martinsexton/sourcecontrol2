@@ -11,6 +11,10 @@ import {
   ProjectService
 } from '../shared/services/project.service';
 
+import {
+  TimesheetService
+} from '../shared/services/timesheet.service';
+
 declare var $: any;
 
 @Component({
@@ -31,13 +35,13 @@ export class DashboardComponent {
 
   displayAddCert = false;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _msuserService : MsUserService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _msuserService: MsUserService, private _timesheetService: TimesheetService) {
     //Retrieve Timesheets For display
-    this._projectService.getTimesheets().subscribe(result => {
+    this._timesheetService.getTimesheets().subscribe(result => {
       this.timesheets = result;
     }, error => console.error(error));
 
-    this._projectService.getTimesheets().subscribe(result => {
+    this._timesheetService.getTimesheets().subscribe(result => {
       this.timesheets = result;
     }, error => console.error(error));
 

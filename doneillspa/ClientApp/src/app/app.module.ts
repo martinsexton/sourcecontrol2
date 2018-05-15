@@ -22,6 +22,7 @@ import { myFocus } from './directives/focus.directive';
 
 /* Import Services */
 import { ProjectService } from './shared/services/project.service';
+import { TimesheetService } from './shared/services/timesheet.service';
 import { ConfigService } from './shared/utils/config.service';
 import { MsUserService } from './shared/services/msuser.service';
 import { AuthGuard } from './auth.guard';
@@ -48,7 +49,7 @@ import { AuthGuard } from './auth.guard';
     FormsModule,
     routing
   ],
-  providers: [ProjectService, MsUserService, AuthGuard],
+  providers: [ProjectService, TimesheetService, MsUserService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

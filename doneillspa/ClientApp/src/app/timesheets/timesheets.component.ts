@@ -8,6 +8,10 @@ import {
   ProjectService
 } from '../shared/services/project.service';
 
+import {
+  TimesheetService
+} from '../shared/services/timesheet.service';
+
 declare var $: any;
 
 @Component({
@@ -45,7 +49,7 @@ export class TimesheetComponent {
 
   displayAddTimesheet = false;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService : TimesheetService) {
     this.currentDate = new Date();
 
     var startOfWeek = new Date();
@@ -62,7 +66,7 @@ export class TimesheetComponent {
       this.projects = result;
     }, error => console.error(error));
 
-    this._projectService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth()+1), startOfWeek.getDate()).subscribe(result => {
+    this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth()+1), startOfWeek.getDate()).subscribe(result => {
       this.loading = false;
       this.timesheets = result;
       //Populate calendar if we find timesheets for this week
@@ -152,7 +156,7 @@ export class TimesheetComponent {
   }
 
   removeTimesheetEntry(ts) {
-    this._projectService.deleteTimesheetEntry(ts).subscribe(
+    this._timesheetService.deleteTimesheetEntry(ts).subscribe(
       res => {
         console.log(res);
         if (this.selectedDay == "Mon") {
@@ -197,7 +201,7 @@ export class TimesheetComponent {
     if (this.timesheetExists) {
       this.newTimesheet.timesheetEntries.push(entry);
 
-      this._projectService.updateTimesheet(this.newTimesheet).subscribe(
+      this._timesheetService.updateTimesheet(this.newTimesheet).subscribe(
         res => {
           console.log(res);
         },
@@ -313,7 +317,7 @@ export class TimesheetComponent {
     this.populateTimesheet(this.friEntries);
     this.populateTimesheet(this.satEntries);
     
-    this._projectService.saveTimesheet(this.newTimesheet).subscribe(
+    this._timesheetService.saveTimesheet(this.newTimesheet).subscribe(
       res => {
         console.log(res);
         this.timesheetExists = true;
