@@ -15,11 +15,6 @@ export class MsUserService {
   _baseurl: String;
   private loggedIn = false;
 
-  // Observable navItem source 
-  private _authNavStatusSource = new BehaviorSubject<boolean>(false);
-  // Observable navItem stream 
-  authNavStatus$ = this._authNavStatusSource.asObservable();
-
   constructor(private _httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this._baseurl = baseUrl;
   }
@@ -47,7 +42,6 @@ export class MsUserService {
       .map(res => {
         if (!res.error) {
           this.loggedIn = true;
-          this._authNavStatusSource.next(true);
         }
         return res;
       })
@@ -77,7 +71,7 @@ export class MsUserService {
   logout() {
     localStorage.removeItem('auth_token');
     this.loggedIn = false;
-    this._authNavStatusSource.next(false);
+    //this._authNavStatusSource.next(false);
 
   }
 
@@ -93,31 +87,23 @@ export class MsUserService {
   protected handleError(error: any) {
     var applicationError = error.headers.get('Application-Error');
 
-
     // either applicationError in header or model error in body 
     if (applicationError) {
       return Observable.throw(applicationError);
-
     }
-
-
     var modelStateErrors: string = '';
     var serverError = error;
 
-
     if (!serverError.type) {
       for (var key in serverError) {
-        if (serverError[key])
+        if (key == "message") {
           modelStateErrors += serverError[key] + '\n';
-
+          break;
+        }
       }
-
     }
-
-
     modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
     return Observable.throw(modelStateErrors || 'Server error');
-
   }
 
 }

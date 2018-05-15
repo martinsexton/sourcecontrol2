@@ -66,10 +66,8 @@ namespace doneillspa.Controllers
                     role = identity.Claims.Single(c => c.Type == "rol").Value
                 };
 
-
                 result = new JsonResult(response);
             }
-
 
             return result;
         }

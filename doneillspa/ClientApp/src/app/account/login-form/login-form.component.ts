@@ -17,7 +17,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
-
   brandNew: boolean;
   errors: string;
   isRequesting: boolean;
@@ -69,7 +68,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               this.router.navigate(['/']);
             }
           }
-        });
+        }, responseError => this.errors = responseError);
     }
   }
 
