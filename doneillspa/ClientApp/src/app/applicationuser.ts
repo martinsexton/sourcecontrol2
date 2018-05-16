@@ -7,6 +7,7 @@ export class ApplicationUser {
     public id: string,
     public firstName: string,
     public surname: string,
-    public email: string
+    public email: string,
+    public phoneNumber: string
   ) { }
 }

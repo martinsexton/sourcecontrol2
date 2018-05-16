@@ -33,6 +33,7 @@ namespace doneillspa.Controllers
                 FirstName = details.FirstName,
                 Surname = details.Surname,
                 Email = details.Email,
+                PhoneNumber = details.Phone,
                 UserName = details.FirstName.ToUpper() + details.Surname.ToUpper()
             };
 

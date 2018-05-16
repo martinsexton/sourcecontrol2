@@ -4,4 +4,5 @@ export interface UserRegistration {
   email: string;
   password: string;
   role: string;
+  phone: string;
 } 

@@ -25,6 +25,10 @@
             <small [hidden]="password.valid || (password.pristine && !submitted)" class="text-danger">Please enter a valid Password</small>
           </div>
           <div class="form-group">
+            <label for="phone">Phone</label>
+            <input id="phone" type="tel" required name="phone" class="form-control" ngModel #phone="ngModel">
+          </div>
+          <div class="form-group">
             <label for="role">Role In Organization</label>
             <select class="form-control form-control-sm" id="role" name="role" ngModel>
               <option selected>Administrator</option>
