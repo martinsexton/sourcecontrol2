@@ -47,27 +47,27 @@ export class ProjectService {
       });
   }
 
-  getCertifications(userId : string) {
-    let authToken = localStorage.getItem('auth_token');
-    let headers = new HttpHeaders();
-    headers = headers.append('Content-Type', 'application/json');
-    headers = headers.append('Authorization', 'Bearer ' + authToken);
+  //getCertifications(userId : string) {
+  //  let authToken = localStorage.getItem('auth_token');
+  //  let headers = new HttpHeaders();
+  //  headers = headers.append('Content-Type', 'application/json');
+  //  headers = headers.append('Authorization', 'Bearer ' + authToken);
 
-    return this._httpClient.get<Certificate[]>(this._baseurl + 'api/certification/user/' + userId,
-      {
-        headers
-      });
-  }
+  //  return this._httpClient.get<Certificate[]>(this._baseurl + 'api/certification/user/' + userId,
+  //    {
+  //      headers
+  //    });
+  //}
 
-  deleteCertification(crt: Certificate) {
-    let authToken = localStorage.getItem('auth_token');
+  //deleteCertification(crt: Certificate) {
+  //  let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.delete(this._baseurl + 'api/certification/' + crt.id, {
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', 'Bearer ' + authToken)
-    });
-  }
+  //  return this._httpClient.delete(this._baseurl + 'api/certification/' + crt.id, {
+  //    headers: new HttpHeaders()
+  //      .set('Content-Type', 'application/json')
+  //      .set('Authorization', 'Bearer ' + authToken)
+  //  });
+  //}
 
   protected handleError(error: any) {
     var applicationError = error.headers.get('Application-Error');

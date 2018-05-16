@@ -14,6 +14,7 @@ import {
 import {
   TimesheetService
 } from '../shared/services/timesheet.service';
+import { CertificateService } from '../shared/services/certificate.service';
 
 declare var $: any;
 
@@ -37,7 +38,7 @@ export class DashboardComponent {
 
   displayAddCert = false;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _msuserService: MsUserService, private _timesheetService: TimesheetService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _msuserService: MsUserService, private _timesheetService: TimesheetService, private _certificationService : CertificateService) {
     //Retrieve Timesheets For display
     this._timesheetService.getTimesheets().subscribe(result => {
       this.timesheets = result;
@@ -77,7 +78,7 @@ export class DashboardComponent {
   }
 
   deleteCertification(crt) {
-    this._projectService.deleteCertification(crt).subscribe(
+    this._certificationService.deleteCertification(crt).subscribe(
       res => {
         console.log(res);
         this.removeFromArrayList(crt);
@@ -132,7 +133,7 @@ export class DashboardComponent {
 
   displaySelectedUserDetails(user) {
     this.selectedUser = user;
-    this._projectService.getCertifications(user.id).subscribe(result => {
+    this._certificationService.getCertifications(user.id).subscribe(result => {
       this.selectedUserCertifications = result;
       this.getUserRole();
     }, error => console.error(error));
