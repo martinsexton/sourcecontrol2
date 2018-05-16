@@ -99,6 +99,7 @@
             <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'highlight': hasCertExpired(crt)}">
               <td>{{ crt.description }}</td>
               <td>{{ crt.expiry }}</td>
+              <td><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="deleteCertification(crt)"></span></td>
             </tr>
           </tbody>
         </table>

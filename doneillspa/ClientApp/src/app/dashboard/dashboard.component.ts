@@ -76,6 +76,30 @@ export class DashboardComponent {
     return elapsedTimeInMins;
   }
 
+  deleteCertification(crt) {
+    this._projectService.deleteCertification(crt).subscribe(
+      res => {
+        console.log(res);
+        this.removeFromArrayList(crt);
+      },
+      (err: HttpErrorResponse) => {
+        console.log(err.error);
+        console.log(err.name);
+        console.log(err.message);
+        console.log(err.status);
+      }
+    );
+  }
+
+  removeFromArrayList(crt: Certificate) {
+    for (let item of this.selectedUserCertifications) {
+      if (crt.id == item.id) {
+        this.selectedUserCertifications.splice(this.selectedUserCertifications.indexOf(item), 1);
+        break;
+      }
+    }
+  }
+
   hasCertExpired(cert: Certificate): boolean {
     var todaysDate: Date = new Date();
     var certExpiryDate: Date = new Date(cert.expiry);

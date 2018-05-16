@@ -9,5 +9,8 @@ namespace doneillspa.DataAccess
     public interface ICertificationRepository
     {
         IEnumerable<Certification> GetCertificationsByUserId(string userId);
+        Certification GetCertificationById(long id);
+        void DeleteCertification(Certification cert);
+        void Save();
     }
 }

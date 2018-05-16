@@ -24,5 +24,21 @@ namespace doneillspa.Controllers
         {
             return _repository.GetCertificationsByUserId(id);
         }
+
+        [HttpDelete]
+        [Route("api/certification/{id}")]
+        public JsonResult Delete(long id)
+        {
+            Certification certification = _repository.GetCertificationById(id);
+
+            if (certification != null)
+            {
+                _repository.DeleteCertification(certification);
+                _repository.Save();
+
+                return Json(Ok());
+            }
+            return Json(Ok());
+        }
     }
 }

@@ -59,6 +59,16 @@ export class ProjectService {
       });
   }
 
+  deleteCertification(crt: Certificate) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.delete(this._baseurl + 'api/certification/' + crt.id, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    });
+  }
+
   protected handleError(error: any) {
     var applicationError = error.headers.get('Application-Error');
 
