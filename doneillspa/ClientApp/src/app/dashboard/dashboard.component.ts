@@ -42,14 +42,16 @@ export class DashboardComponent {
     //Retrieve Timesheets For display
     this._timesheetService.getTimesheets().subscribe(result => {
       this.timesheets = result;
-    }, error => console.error(error));
-
-    this._timesheetService.getTimesheets().subscribe(result => {
-      this.timesheets = result;
+      if (this.timesheets.length > 0) {
+        this.selectedTimesheet = this.timesheets[0];
+      }
     }, error => console.error(error));
 
     this._msuserService.getUsers().subscribe(result => {
       this.users = result;
+      if (this.users.length > 0) {
+        this.selectedUser = this.users[0];
+      }
     }, error => console.error(error))
   }
 
