@@ -33,9 +33,19 @@ namespace doneillspa.Controllers
         public JsonResult Get(string id)
         {
             Task<ApplicationUser> user = GetUserById(id);
-            
+
             JsonResult result = new JsonResult(user.Result.UserName);
             return result;
+        }
+
+        [HttpGet]
+        [Route("api/user/roles/{id}")]
+        public IEnumerable<string> GetRoles(string id)
+        {
+            Task<ApplicationUser> user = GetUserById(id);
+            Task<IList<string>> roles = _userManager.GetRolesAsync(user.Result);
+
+            return roles.Result;
         }
 
         [HttpPut()]

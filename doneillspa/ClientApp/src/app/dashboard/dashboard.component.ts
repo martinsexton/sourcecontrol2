@@ -28,6 +28,7 @@ export class DashboardComponent {
 
   public selectedUser: ApplicationUser;
   public selectedUserCertifications: Certificate[];
+  public selectedUserRoles: string[];
 
   public selectedTimesheetUser: string;
   public users: ApplicationUser[];
@@ -50,6 +51,11 @@ export class DashboardComponent {
     }, error => console.error(error))
   }
 
+  getUserRole() {
+    this._msuserService.getUserRoles(this.selectedUser.id).subscribe(result => {
+      this.selectedUserRoles = result;
+    })
+  }
   calculateTotalDuration() {
     let totalDuration: number = 0;
 
@@ -86,6 +92,7 @@ export class DashboardComponent {
     this.selectedUser = user;
     this._projectService.getCertifications(user.id).subscribe(result => {
       this.selectedUserCertifications = result;
+      this.getUserRole();
     }, error => console.error(error));
   }
 

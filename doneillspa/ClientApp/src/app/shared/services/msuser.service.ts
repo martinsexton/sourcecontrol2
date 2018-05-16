@@ -59,6 +59,17 @@ export class MsUserService {
       });
   }
 
+  getUserRoles(id : string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<string[]>(this._baseurl + 'api/user/roles/'+id,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      });
+  }
+
   addCertificate(id:string, cert : Certificate) {
     return this._httpClient.put(this._baseurl + 'api/user/'+id, cert,
       {
