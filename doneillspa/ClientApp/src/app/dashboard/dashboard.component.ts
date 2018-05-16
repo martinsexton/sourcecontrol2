@@ -19,7 +19,8 @@ declare var $: any;
 
 @Component({
   selector: 'dashboard',
-  templateUrl: './dashboard.component.html'
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
 
 export class DashboardComponent {
@@ -28,7 +29,7 @@ export class DashboardComponent {
 
   public selectedUser: ApplicationUser;
   public selectedUserCertifications: Certificate[];
-  public selectedUserRoles: string[];
+  public selectedUserRole: string;
 
   public selectedTimesheetUser: string;
   public users: ApplicationUser[];
@@ -53,7 +54,7 @@ export class DashboardComponent {
 
   getUserRole() {
     this._msuserService.getUserRoles(this.selectedUser.id).subscribe(result => {
-      this.selectedUserRoles = result;
+      this.selectedUserRole = result[0];
     })
   }
   calculateTotalDuration() {
@@ -73,6 +74,23 @@ export class DashboardComponent {
     var elapsedTimeInMins = elapsedTimeInSec / 60;
 
     return elapsedTimeInMins;
+  }
+
+  hasCertExpired(cert: Certificate): boolean {
+    var todaysDate: Date = new Date();
+    var certExpiryDate: Date = new Date(cert.expiry);
+
+    var td = new Date();
+    td.setMonth(todaysDate.getMonth());
+    td.setDate(todaysDate.getDate());
+    td.setFullYear(todaysDate.getFullYear());
+
+    var cd = new Date();
+    cd.setMonth(certExpiryDate.getMonth());
+    cd.setDate(certExpiryDate.getDate());
+    cd.setFullYear(certExpiryDate.getFullYear());
+     
+    return (cd < td);
   }
 
   toggleDisplayAddCertificate() {

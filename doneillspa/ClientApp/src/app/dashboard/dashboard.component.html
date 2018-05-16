@@ -74,12 +74,11 @@
       <div class="panel panel-info">
         <div class="panel-heading">User Details</div>
         <div class="panel-body">
-          <div class="row">
-            {{selectedUser.email}}
-          </div>
-          <div class="row" *ngFor="let role of selectedUserRoles">
-            {{role}}
-          </div>
+          <p><span class='glyphicon glyphicon-envelope'></span> {{selectedUser.email}}</p>
+          <p><span class='glyphicon glyphicon-user'></span> {{selectedUserRole}}</p>
+          <!--<div class="row" *ngFor="let role of selectedUserRoles">
+            <p><span class='glyphicon glyphicon-user'></span> {{role}}</p>
+          </div>-->
         </div>
       </div>
     </div>
@@ -94,7 +93,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let crt of selectedUserCertifications">
+            <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'highlight': hasCertExpired(crt)}">
               <td>{{ crt.expiry }}</td>
               <td>{{ crt.description }}</td>
             </tr>
