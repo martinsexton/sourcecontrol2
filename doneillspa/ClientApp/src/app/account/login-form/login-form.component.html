@@ -12,15 +12,12 @@
         </div>
         <form #f="ngForm" novalidate (ngSubmit)="login(f)">
           <div class="form-group">
-            <label for="firstname">First Name</label>
-            <input id="firstname" type="text" required name="firstname" [ngModel]="credentials.firstname" #email="ngModel" class="form-control" placeholder="firstname">
+            <input id="firstname" type="text" required name="firstname" [ngModel]="credentials.firstname" #email="ngModel" class="form-control" placeholder="First Name">
           </div>
           <div class="form-group">
-            <label for="surname">Surname</label>
-            <input id="surname" type="text" required name="surname" [ngModel]="credentials.surname" #email="ngModel" class="form-control" placeholder="surname">
+            <input id="surname" type="text" required name="surname" [ngModel]="credentials.surname" #email="ngModel" class="form-control" placeholder="Surname">
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
             <input id="password" type="password" required name="password" validatePassword class="form-control" placeholder="Password" ngModel #password="ngModel">
             <small [hidden]="password.valid || (password.pristine && !submitted)" class="text-danger">Please enter a valid Password</small>
           </div>

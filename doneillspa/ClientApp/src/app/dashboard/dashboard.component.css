@@ -1,3 +1,8 @@
 tr.highlight td {
   background-color: lightpink;
 }
+
+.table tr.active td {
+  background-color: #123456 !important;
+  color: white;
+}

@@ -22,10 +22,44 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/user")]
-        public IEnumerable<ApplicationUser> Get()
+        public IEnumerable<ApplicationUserDto> Get()
         {
-            List<ApplicationUser> users = _userManager.Users.ToList();
-            return users;
+            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).ToList();
+
+            List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
+
+            foreach(ApplicationUser user in users)
+            {
+                Task<IList<string>> roles = _userManager.GetRolesAsync(user);
+
+                ApplicationUserDto dtouser = new ApplicationUserDto();
+                dtouser.Id = user.Id;
+                dtouser.FirstName = user.FirstName;
+                dtouser.Surname = user.Surname;
+                dtouser.PhoneNumber = user.PhoneNumber;
+                dtouser.Email = user.Email;
+                if(roles.Result.Count > 0)
+                {
+                    dtouser.Role = roles.Result.First();
+                }
+                if(user.Certifications.Count > 0)
+                {
+                    List<CertificationDto> certs = new List<CertificationDto>();
+                    foreach(Certification cert in user.Certifications)
+                    {
+                        CertificationDto dtocert = new CertificationDto();
+                        dtocert.CreatedDate = cert.CreatedDate;
+                        dtocert.Description = cert.Description;
+                        dtocert.Expiry = cert.Expiry;
+                        dtocert.Id = cert.Id;
+
+                        certs.Add(dtocert);
+                    }
+                    dtouser.Certifications = certs;
+                }
+                dtousers.Add(dtouser);
+            }
+            return dtousers;
         }
 
         [HttpGet]

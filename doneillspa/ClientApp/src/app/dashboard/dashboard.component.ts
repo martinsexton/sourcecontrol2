@@ -27,14 +27,15 @@ declare var $: any;
 export class DashboardComponent {
   public timesheets: Timesheet[];
   public selectedTimesheet: Timesheet;
+  public selectedTsRow: number;
+  public selectedUserRow: number;
 
   public selectedUser: ApplicationUser;
   public selectedUserCertifications: Certificate[];
-  public selectedUserRole: string;
 
   public selectedTimesheetUser: string;
   public users: ApplicationUser[];
-  public newCertificate: Certificate = new Certificate("",0, new Date(), new Date(), "", null);
+  public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
 
   displayAddCert = false;
 
@@ -51,15 +52,11 @@ export class DashboardComponent {
       this.users = result;
       if (this.users.length > 0) {
         this.selectedUser = this.users[0];
+        this.selectedUserCertifications = this.selectedUser.certifications;
       }
     }, error => console.error(error))
   }
 
-  getUserRole() {
-    this._msuserService.getUserRoles(this.selectedUser.id).subscribe(result => {
-      this.selectedUserRole = result[0];
-    })
-  }
   calculateTotalDuration() {
     let totalDuration: number = 0;
 
@@ -129,16 +126,15 @@ export class DashboardComponent {
     }
   }
 
-  displaySelectedTimesheetDetails(timesheet) {
+  displaySelectedTimesheetDetails(timesheet, index) {
     this.selectedTimesheet = timesheet;
+    this.selectedTsRow = index
   }
 
-  displaySelectedUserDetails(user) {
+  displaySelectedUserDetails(user, index) {
     this.selectedUser = user;
-    this._certificationService.getCertifications(user.id).subscribe(result => {
-      this.selectedUserCertifications = result;
-      this.getUserRole();
-    }, error => console.error(error));
+    this.selectedUserRow = index;
+    this.selectedUserCertifications = this.selectedUser.certifications;
   }
 
   addCertificateEntry() {

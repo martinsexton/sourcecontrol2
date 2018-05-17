@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let ts of timesheets" (click)="displaySelectedTimesheetDetails(ts)">
+        <tr *ngFor="let ts of timesheets ; let i = index" (click)="displaySelectedTimesheetDetails(ts,i)" [ngClass]="{'active': i == selectedTsRow}">
           <td>{{ ts.username }}</td>
           <td>{{ ts.weekStarting }}</td>
         </tr>
@@ -66,7 +66,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let u of users" (click)="displaySelectedUserDetails(u)">
+        <tr *ngFor="let u of users; let i = index" (click)="displaySelectedUserDetails(u, i)" [ngClass]="{'active': i == selectedUserRow}">
           <td>{{ u.firstName }}</td>
           <td>{{ u.surname }}</td>
           <td>{{ u.phoneNumber }}</td>
@@ -81,7 +81,7 @@
         <div class="panel-body">
           <p><span class='glyphicon glyphicon-envelope'></span> {{selectedUser.email}}</p>
           <p><span class='glyphicon glyphicon-phone'></span> {{selectedUser.phoneNumber}}</p>
-          <p><span class='glyphicon glyphicon-user'></span> {{selectedUserRole}}</p>
+          <p><span class='glyphicon glyphicon-user'></span> {{selectedUser.role}}</p>
         </div>
       </div>
     </div>
