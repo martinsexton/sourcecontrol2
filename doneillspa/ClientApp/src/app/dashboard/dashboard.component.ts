@@ -38,6 +38,7 @@ export class DashboardComponent {
   public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
 
   displayAddCert = false;
+  public loading = true;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _msuserService: MsUserService, private _timesheetService: TimesheetService, private _certificationService : CertificateService) {
     //Retrieve Timesheets For display
@@ -51,6 +52,7 @@ export class DashboardComponent {
 
     this._msuserService.getUsers().subscribe(result => {
       this.users = result;
+      this.loading = false;
       if (this.users.length > 0) {
         this.selectedUser = this.users[0];
         this.selectedUserRow = 0;

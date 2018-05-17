@@ -1,7 +1,10 @@
 <div class="row" *ngIf="timesheets">
   <h3>Work Sheets</h3>
   <div class="col-md-4">
-    <table class='table table-striped table-sm'>
+    <div class="text-center">
+      <img src="assets/images/loading3.gif" *ngIf="loading" />
+    </div>
+    <table class='table table-striped table-sm' *ngIf="!loading">
       <thead class="thead">
         <tr>
           <th>User</th>
@@ -16,7 +19,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-md-8" *ngIf="selectedTimesheet">
+  <div class="col-md-8" *ngIf="selectedTimesheet && !loading">
     <div class="panel panel-info">
       <div class="panel-heading">Week Breakdown</div>
       <table class='table table-striped table-sm'>
@@ -54,10 +57,13 @@
     </div>
   </div>
 </div>
-<div class="row" *ngIf="users">
+<div class="row">
   <h3>Users</h3>
   <div class="col-md-4">
-    <table class='table table-striped table-sm'>
+    <div class="text-center">
+      <img src="assets/images/loading3.gif" *ngIf="loading" />
+    </div>
+    <table class='table table-striped table-sm' *ngIf="!loading">
       <thead class="thead">
         <tr>
           <th>First Name</th>
@@ -74,7 +80,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-md-8" *ngIf="selectedUser">
+  <div class="col-md-8" *ngIf="selectedUser && !loading">
     <div class="row">
       <div class="panel panel-info">
         <div class="panel-heading">User Details</div>
