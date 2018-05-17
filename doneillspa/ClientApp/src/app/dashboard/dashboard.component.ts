@@ -45,6 +45,7 @@ export class DashboardComponent {
       this.timesheets = result;
       if (this.timesheets.length > 0) {
         this.selectedTimesheet = this.timesheets[0];
+        this.selectedTsRow = 0;
       }
     }, error => console.error(error));
 
@@ -52,6 +53,7 @@ export class DashboardComponent {
       this.users = result;
       if (this.users.length > 0) {
         this.selectedUser = this.users[0];
+        this.selectedUserRow = 0;
         this.selectedUserCertifications = this.selectedUser.certifications;
       }
     }, error => console.error(error))
