@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs/Rx';
 import { RequestOptions } from '@angular/http';
 import { LoginResponse } from '../models/loginresponse.interface';
 import { Certificate } from '../../certificate';
+import { IdentityRole } from '../../identityrole';
 
 @Injectable()
 export class MsUserService {
@@ -59,10 +60,10 @@ export class MsUserService {
       });
   }
 
-  getUserRoles(id : string) {
+  getUserRoles() {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<string[]>(this._baseurl + 'api/user/roles/'+id,
+    return this._httpClient.get<IdentityRole[]>(this._baseurl + 'api/user/roles',
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

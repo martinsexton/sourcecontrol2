@@ -14,10 +14,19 @@ namespace doneillspa.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
+        }
+
+        [HttpGet]
+        [Route("api/user/roles")]
+        public IEnumerable<IdentityRole<Guid>> GetRoles()
+        {
+            return _roleManager.Roles.AsEnumerable();
         }
 
         [HttpGet]
