@@ -56,7 +56,12 @@ export class DashboardComponent {
       if (this.users.length > 0) {
         this.selectedUser = this.users[0];
         this.selectedUserRow = 0;
-        this.selectedUserCertifications = this.selectedUser.certifications;
+        if (this.selectedUser.certifications) {
+          this.selectedUserCertifications = this.selectedUser.certifications;
+        }
+        else {
+          this.selectedUserCertifications = new Array<Certificate>();
+        }
       }
     }, error => console.error(error))
   }
@@ -138,7 +143,13 @@ export class DashboardComponent {
   displaySelectedUserDetails(user, index) {
     this.selectedUser = user;
     this.selectedUserRow = index;
-    this.selectedUserCertifications = this.selectedUser.certifications;
+    if (this.selectedUser.certifications) {
+      this.selectedUserCertifications = this.selectedUser.certifications;
+    }
+    else {
+      this.selectedUserCertifications = new Array<Certificate>();
+    }
+    
   }
 
   addCertificateEntry() {
@@ -146,6 +157,7 @@ export class DashboardComponent {
     {
       $("#myNewCertificateModal").modal('hide');
       this.selectedUserCertifications.push(this.newCertificate);
+      this.newCertificate = new Certificate(0, new Date(), new Date(), "")
     }, error => console.error(error));
   }
 }

@@ -41,6 +41,9 @@ export class RegistrationFormComponent implements OnInit {
         },
         errors => this.errors = errors);
     }
+  }
 
+  navigateHome() {
+    this.router.navigate(['/']);
   }
 } 
