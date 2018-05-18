@@ -5,6 +5,8 @@ import { UserRegistration } from '../../shared/models/user.registration.interfac
 import { MsUserService } from '../../shared/services/msuser.service';
 import { IdentityRole } from '../../identityrole';
 
+declare var $: any;
+
 @Component({
   selector: 'app-registration-form',
   templateUrl: './registration-form.component.html'
@@ -22,7 +24,7 @@ export class RegistrationFormComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    $("#myRegistrationModal").modal('show');
   }
 
   registerUser({ value, valid }: { value: UserRegistration, valid: boolean }) {
@@ -33,6 +35,7 @@ export class RegistrationFormComponent implements OnInit {
         .subscribe(
         result => {
           if (result) {
+            $("#myRegistrationModal").modal('hide');
             this.router.navigate(['/login'], { queryParams: { brandNew: true, firstname: value.firstname, surname: value.surname } });
           }
         },

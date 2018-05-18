@@ -1,10 +1,12 @@
-<div class="row">
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header bg-white">
-        <h4 class="card-title">Create your account</h4>
+<!-- Registration Modal -->
+<div class="modal fade" id="myRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)='navigateHome()' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Register</h4>
       </div>
-      <div class="card-block">
+      <div class="modal-body">
         <form #f="ngForm" novalidate (ngSubmit)="registerUser(f)">
           <div class="form-group">
             <label for="firstname">First Name</label>
@@ -44,4 +46,4 @@
       </div>
     </div>
   </div>
-  </div>
+</div>
