@@ -15,6 +15,7 @@ import { TimesheetComponent } from './timesheets/timesheets.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
+import { ProjectHealthComponent } from './projecthealth/projecthealth.component';
 
 import { EmailValidator } from './directives/email.validator.directive';
 import { PasswordValidator } from './directives/password.validator.directive';
@@ -36,6 +37,7 @@ import { AuthGuard } from './auth.guard';
     CounterComponent,
     FetchDataComponent,
     RegistrationFormComponent,
+    ProjectHealthComponent,
     LoginFormComponent,
     ProjectComponent,
     TimesheetComponent,

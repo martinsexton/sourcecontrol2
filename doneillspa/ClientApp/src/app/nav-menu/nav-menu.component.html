@@ -27,6 +27,11 @@
                 <span class='glyphicon glyphicon-dashboard'></span> Dashboard
               </a>
             </li>
+            <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isAdministrator()'>
+              <a [routerLink]='["/projecthealth"]' (click)='collapse()'>
+                <span class='glyphicon glyphicon-heart-empty'></span> Project Health
+              </a>
+            </li>
             <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isWorker()'>
               <a [routerLink]='["/timesheets"]' (click)='collapse()'>
                 <span class='glyphicon glyphicon-calendar'></span>Timesheets
