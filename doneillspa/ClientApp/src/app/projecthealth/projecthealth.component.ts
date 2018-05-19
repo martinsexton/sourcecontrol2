@@ -5,6 +5,7 @@ import { TimesheetService } from '../shared/services/timesheet.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Project } from '../project';
 import { Timesheet } from '../timesheet';
+import { ProjectEffortDto } from '../projecteffortdto';
 
 declare var $: any;
 
@@ -17,6 +18,7 @@ export class ProjectHealthComponent {
     scaleShowVerticalLines: false,
     responsive: true
   };
+  public loading = true;
   public timesheets: Timesheet[];
   public barChartLabels: string[] = [];
   public barChartType: string = 'bar';
@@ -29,25 +31,27 @@ export class ProjectHealthComponent {
   ];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService) {
-    this._projectService.getProjects().subscribe(result => {
-      this.projects = result;
-      if (this.projects) {
-        let data: number[] = [];
-        let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
-        let index: number = 0;
+    this._projectService.getProjectEffort().subscribe(result => {
+      this.loading = false;
+      let efforts: ProjectEffortDto[] = result;
 
-        for (let proj of this.projects) {
-          cloneLabels.push(proj.name);
-          data.push(Math.round(Math.random() * 100));
-          index = index + 1;
+        if (efforts) {
+          let data: number[] = [];
+          let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
+          let index: number = 0;
+
+          for (let effort of efforts) {
+            cloneLabels.push(effort.projectName);
+            data.push(effort.totalEffort);
+            index = index + 1;
+          }
+          this.barChartLabels = cloneLabels;
+
+          let clone = JSON.parse(JSON.stringify(this.barChartData));
+          clone[0].data = data;
+          this.barChartData = clone;
         }
-        this.barChartLabels = cloneLabels;
-        
-        let clone = JSON.parse(JSON.stringify(this.barChartData));
-        clone[0].data = data;
-        this.barChartData = clone;
-      }
-    }, error => console.error(error));
+      }, error => console.error(error));
   }
 
   // events
@@ -57,22 +61,5 @@ export class ProjectHealthComponent {
 
   public chartHovered(e: any): void {
     console.log(e);
-  }
-
-  public randomize(): void {
-    // Only Change 3 values
-    let data = [
-      Math.round(Math.random() * 100),
-      Math.round(Math.random() * 100),
-      Math.round(Math.random() * 100)];
-    let clone = JSON.parse(JSON.stringify(this.barChartData));
-    clone[0].data = data;
-    this.barChartData = clone;
-    /**
-     * (My guess), for Angular to recognize the change in the dataset
-     * it has to change the dataset variable directly,
-     * so one way around it, is to clone the data, change it and then
-     * assign it;
-     */
   }
 }

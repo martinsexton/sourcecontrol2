@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../../project';
 import { Certificate } from '../../certificate';
 import { Observable } from 'rxjs/Observable';
+import { ProjectEffortDto } from '../../projecteffortdto';
 
 @Injectable()
 export class ProjectService {
@@ -18,6 +19,18 @@ export class ProjectService {
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.get<Project[]>(this._baseurl + 'api/project',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .catch(this.handleError);
+  }
+
+  getProjectEffort() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<ProjectEffortDto[]>(this._baseurl + 'api/projecteffort',
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

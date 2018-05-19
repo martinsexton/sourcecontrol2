@@ -1,0 +1,86 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using doneillspa.DataAccess;
+using doneillspa.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace doneillspa.Controllers
+{
+    [Produces("application/json")]
+    public class ProjectEffortController : Controller
+    {
+        private readonly ITimesheetRepository _repository;
+
+        public ProjectEffortController(ITimesheetRepository repository)
+        {
+            _repository = repository;
+        }
+
+        [HttpGet]
+        [Route("api/projecteffort")]
+        public IEnumerable<ProjectEffortDto> Get()
+        {
+            Dictionary<string, ProjectEffortDto> effort = new Dictionary<string, ProjectEffortDto>();
+
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets();
+            foreach(Timesheet ts in timesheets.AsQueryable())
+            {
+                foreach(TimesheetEntry tse in ts.TimesheetEntries)
+                {
+                    if (!effort.ContainsKey(tse.Project))
+                    {
+                        ProjectEffortDto effortDto = new ProjectEffortDto();
+                        effortDto.ProjectName = tse.Project;
+                        effortDto.TotalEffort = CalculateDurationInMinutes(tse);
+                        effort.Add(tse.Project, effortDto);
+                    }
+                    else
+                    {
+                        foreach (KeyValuePair<string, ProjectEffortDto> effortDto in effort)
+                        {
+                            if (effortDto.Key.Equals(tse.Project))
+                            {
+                                ProjectEffortDto tmp = effortDto.Value;
+                                tmp.TotalEffort = tmp.TotalEffort + CalculateDurationInMinutes(tse);
+                            }
+                        }
+                    }
+                }
+            }
+            List<ProjectEffortDto> dtos = new List<ProjectEffortDto>();
+            foreach (KeyValuePair<string, ProjectEffortDto> effortDto in effort)
+            {
+                dtos.Add(effortDto.Value);
+            }
+
+            return dtos;
+        }
+
+        //Method to determine duration of tse
+        private int CalculateDurationInMinutes(TimesheetEntry tse)
+        {
+            string[] hrsmins = tse.StartTime.Split(':');
+            int startTimehrs = 0;
+            int startTimemins = 0;
+
+            Int32.TryParse(hrsmins[0], out startTimehrs);
+            Int32.TryParse(hrsmins[1], out startTimemins);
+
+            string[] endTimehrsmins = tse.EndTime.Split(':');
+            int endTimehrs = 0;
+            int endTimemins = 0;
+
+            Int32.TryParse(endTimehrsmins[0], out endTimehrs);
+            Int32.TryParse(endTimehrsmins[1], out endTimemins);
+
+            DateTime start = new DateTime(2018, 1, 1, startTimehrs, startTimemins, 0);
+            DateTime end = new DateTime(2018, 1, 1, endTimehrs, endTimemins, 0);
+
+            TimeSpan duration = end - start;
+
+            return duration.Hours;
+        }
+    }
+}
