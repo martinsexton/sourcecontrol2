@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ChartsModule } from 'ng2-charts';
 
 import { routing } from './app.routing';
 
@@ -50,7 +51,8 @@ import { AuthGuard } from './auth.guard';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    routing
+    routing,
+    ChartsModule
   ],
   providers: [ProjectService, TimesheetService, CertificateService, MsUserService, AuthGuard],
   bootstrap: [AppComponent]
