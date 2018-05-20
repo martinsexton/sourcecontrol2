@@ -9,18 +9,57 @@ using Microsoft.AspNetCore.Mvc;
 namespace doneillspa.Controllers
 {
     [Produces("application/json")]
-    public class ProjectEffortController : Controller
+    public class GraphController : Controller
     {
         private readonly ITimesheetRepository _repository;
 
-        public ProjectEffortController(ITimesheetRepository repository)
+        public GraphController(ITimesheetRepository repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
+        [Route("api/projectcost")]
+        public IEnumerable<ProjectCostDto> GetCosts()
+        {
+            Dictionary<string, ProjectCostDto> effort = new Dictionary<string, ProjectCostDto>();
+
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets();
+            foreach (Timesheet ts in timesheets.AsQueryable())
+            {
+                foreach (TimesheetEntry tse in ts.TimesheetEntries)
+                {
+                    if (!effort.ContainsKey(tse.Project))
+                    {
+                        ProjectCostDto effortDto = new ProjectCostDto();
+                        effortDto.ProjectName = tse.Project;
+                        effortDto.TotalCost = CalculateCosts(tse);
+                        effort.Add(tse.Project, effortDto);
+                    }
+                    else
+                    {
+                        foreach (KeyValuePair<string, ProjectCostDto> effortDto in effort)
+                        {
+                            if (effortDto.Key.Equals(tse.Project))
+                            {
+                                ProjectCostDto tmp = effortDto.Value;
+                                tmp.TotalCost = tmp.TotalCost + CalculateCosts(tse);
+                            }
+                        }
+                    }
+                }
+            }
+            List<ProjectCostDto> dtos = new List<ProjectCostDto>();
+            foreach (KeyValuePair<string, ProjectCostDto> effortDto in effort)
+            {
+                dtos.Add(effortDto.Value);
+            }
+
+            return dtos;
+        }
+        [HttpGet]
         [Route("api/projecteffort")]
-        public IEnumerable<ProjectEffortDto> Get()
+        public IEnumerable<ProjectEffortDto> GetEfforts()
         {
             Dictionary<string, ProjectEffortDto> effort = new Dictionary<string, ProjectEffortDto>();
 
@@ -33,7 +72,7 @@ namespace doneillspa.Controllers
                     {
                         ProjectEffortDto effortDto = new ProjectEffortDto();
                         effortDto.ProjectName = tse.Project;
-                        effortDto.TotalEffort = CalculateDurationInMinutes(tse);
+                        effortDto.TotalEffort = CalculateDurationInHours(tse);
                         effort.Add(tse.Project, effortDto);
                     }
                     else
@@ -43,7 +82,7 @@ namespace doneillspa.Controllers
                             if (effortDto.Key.Equals(tse.Project))
                             {
                                 ProjectEffortDto tmp = effortDto.Value;
-                                tmp.TotalEffort = tmp.TotalEffort + CalculateDurationInMinutes(tse);
+                                tmp.TotalEffort = tmp.TotalEffort + CalculateDurationInHours(tse);
                             }
                         }
                     }
@@ -58,8 +97,14 @@ namespace doneillspa.Controllers
             return dtos;
         }
 
+        private decimal CalculateCosts(TimesheetEntry tse)
+        {
+            int hrsWorked = CalculateDurationInHours(tse);
+            return hrsWorked * 32;
+        }
+
         //Method to determine duration of tse
-        private int CalculateDurationInMinutes(TimesheetEntry tse)
+        private int CalculateDurationInHours(TimesheetEntry tse)
         {
             string[] hrsmins = tse.StartTime.Split(':');
             int startTimehrs = 0;

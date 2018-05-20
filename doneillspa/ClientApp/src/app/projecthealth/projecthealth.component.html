@@ -10,3 +10,15 @@
             (chartClick)="chartClicked($event)"></canvas>
   </div>
 </div>
+<!-- Split button -->
+<div class="btn-group" *ngIf="!loading">
+  <button type="button" class="btn btn-primary">Select Graph</button>
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a (click)="displayEffortGraph()">Project Effort Graph</a></li>
+    <li><a (click)="displayCostsGraph()">Project Cost Graph</a></li>
+  </ul>
+</div>

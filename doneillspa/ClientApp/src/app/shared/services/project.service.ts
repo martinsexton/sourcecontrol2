@@ -5,6 +5,7 @@ import { Project } from '../../project';
 import { Certificate } from '../../certificate';
 import { Observable } from 'rxjs/Observable';
 import { ProjectEffortDto } from '../../projecteffortdto';
+import { ProjectCostDto } from '../../projectcost.dto';
 
 @Injectable()
 export class ProjectService {
@@ -31,6 +32,18 @@ export class ProjectService {
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.get<ProjectEffortDto[]>(this._baseurl + 'api/projecteffort',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .catch(this.handleError);
+  }
+
+  getProjectCost() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<ProjectCostDto[]>(this._baseurl + 'api/projectcost',
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

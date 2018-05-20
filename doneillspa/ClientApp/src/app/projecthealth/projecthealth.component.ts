@@ -6,6 +6,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Project } from '../project';
 import { Timesheet } from '../timesheet';
 import { ProjectEffortDto } from '../projecteffortdto';
+import { ProjectCostDto } from '../projectcost.dto';
 
 declare var $: any;
 
@@ -26,6 +27,9 @@ export class ProjectHealthComponent {
 
   public projects: Project[];
 
+  public efforts: ProjectEffortDto[];
+  public costs: ProjectCostDto[];
+
   public barChartData: any[] = [
     { data: [], label: 'Hours Worked' }
   ];
@@ -33,14 +37,14 @@ export class ProjectHealthComponent {
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService) {
     this._projectService.getProjectEffort().subscribe(result => {
       this.loading = false;
-      let efforts: ProjectEffortDto[] = result;
+      this.efforts = result;
 
-        if (efforts) {
+        if (this.efforts) {
           let data: number[] = [];
           let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
           let index: number = 0;
 
-          for (let effort of efforts) {
+          for (let effort of this.efforts) {
             cloneLabels.push(effort.projectName);
             data.push(effort.totalEffort);
             index = index + 1;
@@ -61,5 +65,91 @@ export class ProjectHealthComponent {
 
   public chartHovered(e: any): void {
     console.log(e);
+  }
+
+  public displayEffortGraph() {
+    if (!this.efforts) {
+      this._projectService.getProjectEffort().subscribe(result => {
+        this.efforts = result;
+
+        if (this.efforts) {
+          let data: number[] = [];
+          let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
+          let index: number = 0;
+
+          for (let effort of this.efforts) {
+            cloneLabels.push(effort.projectName);
+            data.push(effort.totalEffort);
+            index = index + 1;
+          }
+          this.barChartLabels = cloneLabels;
+
+          let clone = JSON.parse(JSON.stringify(this.barChartData));
+          clone[0].data = data;
+          clone[0].label = "Project Effort";
+          this.barChartData = clone;
+        }
+      }, error => console.error(error));
+    }
+    else {
+      let data: number[] = [];
+      let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
+      let index: number = 0;
+
+      for (let effort of this.efforts) {
+        cloneLabels.push(effort.projectName);
+        data.push(effort.totalEffort);
+        index = index + 1;
+      }
+      this.barChartLabels = cloneLabels;
+
+      let clone = JSON.parse(JSON.stringify(this.barChartData));
+      clone[0].data = data;
+      clone[0].label = "Project Effort";
+      this.barChartData = clone;
+    }
+  }
+
+  public displayCostsGraph() {
+    if (!this.costs) {
+      this._projectService.getProjectCost().subscribe(result => {
+        this.costs = result;
+
+        if (this.costs) {
+          let data: number[] = [];
+          let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
+          let index: number = 0;
+
+          for (let cost of this.costs) {
+            cloneLabels.push(cost.projectName);
+            data.push(cost.totalCost);
+            index = index + 1;
+          }
+          this.barChartLabels = cloneLabels;
+
+          let clone = JSON.parse(JSON.stringify(this.barChartData));
+          clone[0].data = data;
+          clone[0].label = "Project Costs";
+          this.barChartData = clone;
+        }
+      }, error => console.error(error));
+    }
+    else {
+      let data: number[] = [];
+      let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
+      let index: number = 0;
+
+      for (let cost of this.costs) {
+        cloneLabels.push(cost.projectName);
+        data.push(cost.totalCost);
+        index = index + 1;
+      }
+      this.barChartLabels = cloneLabels;
+
+      let clone = JSON.parse(JSON.stringify(this.barChartData));
+      clone[0].data = data;
+      clone[0].label = "Project Costs";
+      this.barChartData = clone;
+    }
   }
 }
