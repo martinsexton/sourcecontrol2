@@ -9,5 +9,6 @@ namespace doneillspa.Models
     {
         public string ProjectName { get; set; }
         public int TotalEffort { get; set; }
+        public decimal TotalCost { get; set; }
     }
 }

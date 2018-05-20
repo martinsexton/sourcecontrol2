@@ -43,7 +43,6 @@
     <None Remove="ClientApp\src\app\directives\password.validator.directive.ts" />
     <None Remove="ClientApp\src\app\identityrole.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
-    <None Remove="ClientApp\src\app\projectcost.dto.ts" />
     <None Remove="ClientApp\src\app\projecteffortdto.ts" />
     <None Remove="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
     <None Remove="ClientApp\src\app\projects\projects.component.ts" />
@@ -72,7 +71,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\directives\password.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\identityrole.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\projectcost.dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecteffortdto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />

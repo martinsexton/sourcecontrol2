@@ -5,7 +5,6 @@ import { Project } from '../../project';
 import { Certificate } from '../../certificate';
 import { Observable } from 'rxjs/Observable';
 import { ProjectEffortDto } from '../../projecteffortdto';
-import { ProjectCostDto } from '../../projectcost.dto';
 
 @Injectable()
 export class ProjectService {
@@ -40,18 +39,6 @@ export class ProjectService {
       .catch(this.handleError);
   }
 
-  getProjectCost() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<ProjectCostDto[]>(this._baseurl + 'api/projectcost',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      })
-      .catch(this.handleError);
-  }
-
   saveProject(project: Project) {
     let authToken = localStorage.getItem('auth_token');
 
@@ -72,28 +59,6 @@ export class ProjectService {
           .set('Authorization', 'Bearer ' + authToken)
       });
   }
-
-  //getCertifications(userId : string) {
-  //  let authToken = localStorage.getItem('auth_token');
-  //  let headers = new HttpHeaders();
-  //  headers = headers.append('Content-Type', 'application/json');
-  //  headers = headers.append('Authorization', 'Bearer ' + authToken);
-
-  //  return this._httpClient.get<Certificate[]>(this._baseurl + 'api/certification/user/' + userId,
-  //    {
-  //      headers
-  //    });
-  //}
-
-  //deleteCertification(crt: Certificate) {
-  //  let authToken = localStorage.getItem('auth_token');
-
-  //  return this._httpClient.delete(this._baseurl + 'api/certification/' + crt.id, {
-  //    headers: new HttpHeaders()
-  //      .set('Content-Type', 'application/json')
-  //      .set('Authorization', 'Bearer ' + authToken)
-  //  });
-  //}
 
   protected handleError(error: any) {
     var applicationError = error.headers.get('Application-Error');
