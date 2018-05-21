@@ -4,15 +4,15 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../../project';
 import { Timesheet } from '../../timesheet';
 import { TimesheetEntry } from '../../timesheetentry';
+import { HttpServiceBase } from './httpservicebase';
 
 @Injectable()
-export class TimesheetService {
+export class TimesheetService extends HttpServiceBase{
   _projects: Project[];
-  _baseurl: String;
 
 
-  constructor(private _httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this._baseurl = baseUrl;
+  constructor(_httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    super(_httpClient, baseUrl); 
   }
 
   saveTimesheet(timesheet: Timesheet) {

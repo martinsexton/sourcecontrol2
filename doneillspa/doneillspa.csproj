@@ -50,6 +50,7 @@
     <None Remove="ClientApp\src\app\shared\models\loginresponse.interface.ts" />
     <None Remove="ClientApp\src\app\shared\models\user.registration.interface.ts" />
     <None Remove="ClientApp\src\app\shared\services\certificate.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\httpservicebase.ts" />
     <None Remove="ClientApp\src\app\shared\services\msuser.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\timesheet.service.ts" />
     <None Remove="ClientApp\src\app\shared\utils\config.service.ts" />
@@ -75,6 +76,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\certificate.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\httpservicebase.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\project.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\credentials.interface.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\loginresponse.interface.ts" />

@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ApplicationUser } from '../../applicationuser';
 import { UserRegistration } from '../models/user.registration.interface';
+import 'rxjs/Rx';
 
 import { Observable } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/Rx';
@@ -10,14 +11,14 @@ import { RequestOptions } from '@angular/http';
 import { LoginResponse } from '../models/loginresponse.interface';
 import { Certificate } from '../../certificate';
 import { IdentityRole } from '../../identityrole';
+import { HttpServiceBase } from './httpservicebase';
 
 @Injectable()
-export class MsUserService {
-  _baseurl: String;
+export class MsUserService extends HttpServiceBase{
   private loggedIn = false;
 
-  constructor(private _httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this._baseurl = baseUrl;
+  constructor(_httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    super(_httpClient, baseUrl);
   }
 
   register(email: string, password: string, firstname :string, surname:string, role:string, phone:string): Observable<UserRegistration>{
@@ -57,7 +58,8 @@ export class MsUserService {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      });
+      })
+      .catch(this.handleError);
   }
 
   getUserRoles() {
@@ -71,11 +73,14 @@ export class MsUserService {
       });
   }
 
-  addCertificate(id:string, cert : Certificate) {
+  addCertificate(id: string, cert: Certificate) {
+    let authToken = localStorage.getItem('auth_token');
+
     return this._httpClient.put(this._baseurl + 'api/user/'+id, cert,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
       })
       .catch(this.handleError);
   }
@@ -89,31 +94,8 @@ export class MsUserService {
     return localStorage.getItem('role') == 'Administrator';
   }
 
-
   isLoggedIn() {
     return this.loggedIn;
-  }
-
-  protected handleError(error: any) {
-    var applicationError = error.headers.get('Application-Error');
-
-    // either applicationError in header or model error in body 
-    if (applicationError) {
-      return Observable.throw(applicationError);
-    }
-    var modelStateErrors: string = '';
-    var serverError = error;
-
-    if (!serverError.type) {
-      for (var key in serverError) {
-        if (key == "message") {
-          modelStateErrors += serverError[key] + '\n';
-          break;
-        }
-      }
-    }
-    modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
-    return Observable.throw(modelStateErrors || 'Server error');
   }
 
 }

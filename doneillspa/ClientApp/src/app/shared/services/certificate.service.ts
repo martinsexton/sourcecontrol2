@@ -4,13 +4,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../../project';
 import { Certificate } from '../../certificate';
 import { Observable } from 'rxjs/Observable';
+import { HttpServiceBase } from './httpservicebase';
 
 @Injectable()
-export class CertificateService {
-  _baseurl: String;
+export class CertificateService extends HttpServiceBase{
 
-  constructor(private _httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this._baseurl = baseUrl;
+  constructor(_httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    super(_httpClient, baseUrl); 
   }
 
   getCertifications(userId: string) {
