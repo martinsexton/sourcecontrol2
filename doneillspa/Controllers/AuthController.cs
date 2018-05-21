@@ -40,7 +40,7 @@ namespace doneillspa.Controllers
         public async Task<JsonResult> Post([FromBody]RegistrationDetails credentials)
         {
             JsonResult result;
-            var expiresIn = TimeSpan.FromMinutes(5);
+            var expiresIn = TimeSpan.FromDays(7);
 
             var identity = await GetClaimsIdentity(credentials.FirstName+credentials.Surname, credentials.Password);
             if (identity == null)

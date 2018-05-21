@@ -7,9 +7,11 @@ using doneillspa.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace doneillspa.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer", Policy = "AuthenticatedUser")]
     [Produces("application/json")]
     public class UserController : Controller
     {
