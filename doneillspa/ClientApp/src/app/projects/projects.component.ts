@@ -5,6 +5,7 @@ import { Project } from '../project';
 import {
   ProjectService
 } from '../shared/services/project.service';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -20,10 +21,13 @@ export class ProjectComponent {
   displayAddProject = false;
   selectedProject: Project = new Project('', '', true, new Date);
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router : Router) {
     this._projectService.getProjects().subscribe(result => {
       this.projects = result;
-    }, error => console.error(error));
+    }, error => {
+      console.error(error);
+      this._router.navigate(['/login'], { queryParams: { brandNew: false, firstname: '', surname: '' } });
+    });
   }
 
   displaySelectedProject(project) {

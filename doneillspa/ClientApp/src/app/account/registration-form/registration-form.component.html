@@ -32,8 +32,21 @@
           </div>
           <div class="form-group">
             <label for="role">Role In Organization</label>
+            <!--<select class="form-control form-control-sm" id="role" name="role" ngModel>
+            <option selected *ngFor="let role of roles">{{role.name}}</option>
+            </select>-->
             <select class="form-control form-control-sm" id="role" name="role" ngModel>
-              <option selected *ngFor="let role of roles">{{role.name}}</option>
+              <option>Administrator</option>
+              <option>Supervisor</option>
+              <option>ChargeHand</option>
+              <option>ElectR1</option>
+              <option>ElectR2</option>
+              <option>ElectR3</option>
+              <option>Temp</option>
+              <option>First Year Apprentice</option>
+              <option>Second Year Apprentice</option>
+              <option>Third Year Apprentice</option>
+              <option>Fourth Year Apprentice</option>
             </select>
           </div>
           <div class="form-group">

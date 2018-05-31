@@ -15,13 +15,8 @@ export class RegistrationFormComponent implements OnInit {
   errors: string;
   isRequesting: boolean;
   submitted: boolean = false;
-  public roles: IdentityRole[];
 
-  constructor(private userService: MsUserService, private router: Router) {
-    this.userService.getUserRoles().subscribe(result => {
-      this.roles = result;
-    }, error => console.error(error));
-  }
+  constructor(private userService: MsUserService, private router: Router) {}
 
   ngOnInit() {
     $("#myRegistrationModal").modal('show');
