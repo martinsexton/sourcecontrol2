@@ -12,6 +12,6 @@ namespace doneillspa.Models
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public string Project { get; set; }
-        public string Equipment { get; set; }
+        public string Details { get; set; }
     }
 }

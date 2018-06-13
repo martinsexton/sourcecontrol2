@@ -16,10 +16,10 @@ declare var $: any;
 
 export class ProjectComponent {
   public projects: Project[];
-  newProject: Project = new Project('', '', true, new Date);
+  newProject: Project = new Project('', '', '', true, new Date);
   projectSaved: boolean = false;
   displayAddProject = false;
-  selectedProject: Project = new Project('', '', true, new Date);
+  selectedProject: Project = new Project('', '', '', true, new Date);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router : Router) {
     this._projectService.getProjects().subscribe(result => {
@@ -60,9 +60,9 @@ export class ProjectComponent {
         console.log(res);
         this.projectSaved = true;
         //Update the collection of projects with newly created one
-        this.projects.push(new Project(this.newProject.name, this.newProject.details, this.newProject.isactive, this.newProject.startDate));
+        this.projects.push(new Project(this.newProject.client, this.newProject.name, this.newProject.details, this.newProject.isactive, this.newProject.startDate));
         //clear down the new project model
-        this.newProject = new Project('', '', true, new Date);
+        this.newProject = new Project('', '', '', true, new Date);
         this.displayAddProject = false;
         $("#myNewProjectModal").modal('hide');
       },

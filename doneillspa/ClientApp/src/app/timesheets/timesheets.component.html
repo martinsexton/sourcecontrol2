@@ -35,7 +35,7 @@
         <th>Project</th>
         <th>Start</th>
         <th>End</th>
-        <th>Equipment</th>
+        <th>Details</th>
         <th>Duration</th>
         <th></th>
       </tr>
@@ -45,7 +45,7 @@
         <td>{{ entry.project }}</td>
         <td>{{ entry.startTime }}</td>
         <td>{{ entry.endTime }}</td>
-        <td>{{ entry.equipment }}</td>
+        <td>{{ entry.details }}</td>
         <td>{{ calculateDuration(entry) }} mins</td>
         <td><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeTimesheetEntry(entry)"></span></td>
       </tr>
@@ -90,8 +90,8 @@
             <input type="time" [(ngModel)]="newEntry.endTime" name="endTime" class="form-control" id="endTime">
           </div>
           <div class="form-group">
-            <label for="equipment">Equipment</label>
-            <textarea [(ngModel)]="newEntry.equipment" name="endTime" class="form-control" id="equipment" rows="3"></textarea>
+            <label for="details">Details</label>
+            <textarea [(ngModel)]="newEntry.details" name="details" class="form-control" id="details" rows="3"></textarea>
           </div>
         </form>
       </div>
