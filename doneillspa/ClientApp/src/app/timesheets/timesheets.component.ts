@@ -24,6 +24,7 @@ export class TimesheetComponent {
   public projects: Project[];
   public timesheetExists = false;
   public loading = true;
+  public selectedDate: string = null;
 
   //Default to Monday
   public selectedDay = "Mon";
@@ -35,7 +36,8 @@ export class TimesheetComponent {
   public friEntries: Array<TimesheetEntry> = new Array();
   public satEntries: Array<TimesheetEntry> = new Array();
 
-  newTimesheet: Timesheet;
+  activeTimeSheet: Timesheet;
+
   public newEntry: TimesheetEntry;
 
   currentDate: Date;
@@ -56,33 +58,60 @@ export class TimesheetComponent {
     startOfWeek.setDate(this.currentDate.getDate() - (this.currentDate.getDay() - 1))
 
     //Setting up default timesheet and timesheet entries
-    this.newTimesheet = new Timesheet(0, localStorage.getItem('username'), localStorage.getItem('client_id'), startOfWeek);
+    this.activeTimeSheet = new Timesheet(0, localStorage.getItem('username'), localStorage.getItem('client_id'), startOfWeek);
+    this.newEntry = new TimesheetEntry("", "", "", "", "");
 
     this._projectService.getProjects().subscribe(result => {
       this.projects = result;
-
       if (this.projects) {
-        this.newEntry = new TimesheetEntry(this.projects[0].name, "", "", "", "");
-      }
-      else {
-        this.newEntry = new TimesheetEntry("", "", "", "", "");
+        this.newEntry.project = this.projects[0].name;
       }
     }, error => console.error(error));    
 
-    this.refreshCalendarTabs();
+    this.refreshCalendarTabs(this.currentDate);
 
     this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth()+1), startOfWeek.getDate()).subscribe(result => {
       this.loading = false;
       this.timesheets = result;
       //Populate calendar if we find timesheets for this week
-      this.populateWeeklyCalendar(this.timesheets);
+      this.populateWeeklyCalendar(this.timesheets, startOfWeek);
     }, error => console.error(error));
   }
 
-  populateWeeklyCalendar(array: Timesheet[]) {
+  setSelectedDate() {
+    let newDate = new Date(this.selectedDate);
+
+    var startOfWeek = new Date();
+    startOfWeek.setDate(newDate.getDate() - (newDate.getDay() - 1));
+    startOfWeek.setMonth(newDate.getMonth());
+
+    this.refreshCalendarTabs(newDate);
+
+    this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
+      this.loading = false;
+      this.timesheets = result;
+      //Populate calendar if we find timesheets for this week
+      this.populateWeeklyCalendar(this.timesheets, startOfWeek);
+    }, error => console.error(error));
+  }
+  populateWeeklyCalendar(array: Timesheet[], ws : Date) {
+    //Clear Arrays before loading
+    this.monEntries.length = 0;
+    this.tueEntries.length = 0;
+    this.wedEntries.length = 0;
+    this.thursEntries.length = 0;
+    this.friEntries.length = 0;
+    this.satEntries.length = 0;
+
+    //reset flag that determines if timesheet exists or not for the given date
+    this.timesheetExists = false;
+    this.activeTimeSheet.id = 0;
+    this.activeTimeSheet.weekStarting = ws;
+
     for (let ts of array) {
       if (ts.owner == localStorage.getItem("client_id")) {
-        this.newTimesheet.id = ts.id;
+        this.activeTimeSheet.weekStarting = ts.weekStarting;
+        this.activeTimeSheet.id = ts.id;
         this.timesheetExists = true;
 
         for (let item of ts.timesheetEntries) {
@@ -111,23 +140,11 @@ export class TimesheetComponent {
   }
 
 
-  previousWeek() {
-    //move back one week
-    this.currentDate.setDate(this.currentDate.getDate() - 7);
-    this.refreshCalendarTabs();
-  }
-
-  nextWeek() {
-    //move forward one week
-    this.currentDate.setDate(this.currentDate.getDate() + 7);
-    this.refreshCalendarTabs();
-  }
-
-  refreshCalendarTabs() {
-    let day = this.currentDate.getDay();
+  refreshCalendarTabs(baseDate : Date) {
+    let day = baseDate.getDay();
 
     var monday = new Date();
-    monday.setDate(this.currentDate.getDate() - (day - 1))
+    monday.setDate(baseDate.getDate() - (day - 1))
     this.monday = new DayOfWeek("Mon", monday);
 
     var tuesday = new Date();
@@ -204,9 +221,9 @@ export class TimesheetComponent {
   addTimesheetEntry() {
     let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.project, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details);
     if (this.timesheetExists) {
-      this.newTimesheet.timesheetEntries.push(entry);
+      this.activeTimeSheet.timesheetEntries.push(entry);
 
-      this._timesheetService.updateTimesheet(this.newTimesheet).subscribe(
+      this._timesheetService.updateTimesheet(this.activeTimeSheet).subscribe(
         res => {
           console.log(res);
         },
@@ -310,7 +327,7 @@ export class TimesheetComponent {
 
   populateTimesheet(entries: TimesheetEntry[]) {
     for (let item of entries) {
-      this.newTimesheet.timesheetEntries.push(item);
+      this.activeTimeSheet.timesheetEntries.push(item);
     }
   }
   saveTimesheet() {
@@ -322,12 +339,12 @@ export class TimesheetComponent {
     this.populateTimesheet(this.friEntries);
     this.populateTimesheet(this.satEntries);
     
-    this._timesheetService.saveTimesheet(this.newTimesheet).subscribe(
+    this._timesheetService.saveTimesheet(this.activeTimeSheet).subscribe(
       res => {
         console.log(res);
         this.timesheetExists = true;
-        this.newTimesheet.id = res as number;
-        this.timesheets.push(this.newTimesheet);
+        this.activeTimeSheet.id = res as number;
+        this.timesheets.push(this.activeTimeSheet);
         $("#myNewTimesheetModal").modal('hide');
       },
       (err: HttpErrorResponse) => {

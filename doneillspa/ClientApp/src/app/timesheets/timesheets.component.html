@@ -1,9 +1,19 @@
 <div class="row">
-  <nav aria-label="...">
+  <!--<nav aria-label="...">
     <ul class="pager">
       <li><a (click)="previousWeek()">Previous</a></li>
       <li><a (click)="nextWeek()">Next</a></li>
     </ul>
+  </nav>-->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="date" class="form-control" placeholder="Search" name="selectedDate" [(ngModel)]="selectedDate">
+        </div>
+        <button (click)="setSelectedDate()" class="btn btn-primary">Load Timesheets</button>
+      </form>
+    </div>
   </nav>
 </div>
 <div class="row">
