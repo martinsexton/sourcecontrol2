@@ -19,8 +19,8 @@
           <td>{{ project.name }}</td>
           <td>{{ project.details }}</td>
           <td>{{ project.startDate | date : "fullDate"}}</td>
-          <td><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="deleteProject(project)"></span></td>
-          <td><span class="glyphicon glyphicon-pencil" aria-hidden="true" (click)="displaySelectedProject(project)"></span></td>
+          <td *ngIf="project.id > 0"><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="deleteProject(project)"></span></td>
+          <td *ngIf="project.id > 0">><span class="glyphicon glyphicon-pencil" aria-hidden="true" (click)="displaySelectedProject(project)"></span></td>
         </tr>
       </tbody>
     </table>
@@ -39,26 +39,24 @@
         <h4 class="modal-title" id="myModalLabel">Project Details</h4>
       </div>
       <div class="modal-body">
-        <div class="row">
-          <div class="col-md-4"><strong>Client:</strong></div>
-          <div class="col-md-8"><p class=".text-muted">{{selectedProject.client}}</p></div>
-        </div>
-        <div class="row">
-          <div class="col-md-4"><strong>Name:</strong></div>
-          <div class="col-md-8"><p class=".text-muted">{{selectedProject.name}}</p></div>
-        </div>
-        <div class="row">
-          <div class="col-md-4"><strong>Details:</strong></div>
-          <div class="col-md-8"><p class=".text-muted">{{selectedProject.details}}</p></div>
-        </div>
-        <div class="row">
-          <div class="col-md-4"><strong>Start Date:</strong></div>
-          <div class="col-md-8"><p class=".text-muted">{{selectedProject.startDate | date : "fullDate"}}</p></div>
-        </div>
+        <form>
+          <div class="form-group">
+            <label for="client">Client</label>
+            <input type="text" [(ngModel)]="selectedProject.client" name="client" class="form-control" id="client">
+          </div>
+          <div class="form-group">
+            <label for="projectName">Project Name</label>
+            <input type="text" [(ngModel)]="selectedProject.name" name="projectName" class="form-control" id="projectName">
+          </div>
+          <div class="form-group">
+            <label for="projectDetails">Details</label>
+            <input type="text" [(ngModel)]="selectedProject.details" name="projectDetails" class="form-control" id="projectDescription">
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button (click)="updateProject()" class="btn btn-primary">Update Project</button>
       </div>
     </div>
   </div>

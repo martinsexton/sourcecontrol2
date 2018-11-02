@@ -54,10 +54,11 @@ export class ProjectComponent {
     }
   }
 
-  deleteProject(p) {
-    this._projectService.deleteProject(p).subscribe(
+  updateProject(){
+    this._projectService.updateProject(this.selectedProject).subscribe(
       res => {
         console.log(res);
+        $("#myModal").modal('hide');
       },
       (err: HttpErrorResponse) => {
         console.log(err.error);
@@ -66,6 +67,30 @@ export class ProjectComponent {
         console.log(err.status);
       }
     );
+  } 
+
+  deleteProject(p) {
+    this._projectService.deleteProject(p).subscribe(
+      res => {
+        console.log(res);
+        this.removeFromArrayList(p);
+      },
+      (err: HttpErrorResponse) => {
+        console.log(err.error);
+        console.log(err.name);
+        console.log(err.message);
+        console.log(err.status);
+      }
+    );
+  }
+
+  removeFromArrayList(p: Project) {
+    for (let item of this.projects) {
+      if (item.name == p.name && item.client == p.client && item.details == p.details) {
+        this.projects.splice(this.projects.indexOf(item), 1);
+        break;
+      }
+    }
   }
 
   saveProject() {

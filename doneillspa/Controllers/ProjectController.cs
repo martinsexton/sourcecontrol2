@@ -77,10 +77,10 @@ namespace doneillspa.Controllers
         }
 
         [HttpPut]
-        [Route("api/project/{id}")]
-        public IActionResult Put(long id, [FromBody]Project p)
+        [Route("api/project")]
+        public IActionResult Put([FromBody]Project p)
         {
-            if (p == null || p.Id != id)
+            if (p == null)
             {
                 return BadRequest();
             }
@@ -92,6 +92,7 @@ namespace doneillspa.Controllers
                 return NotFound();
             }
 
+            existingProject.Client = p.Client;
             existingProject.Name = p.Name;
             existingProject.Details = p.Details;
             existingProject.IsActive = p.IsActive;
