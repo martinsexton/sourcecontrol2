@@ -10,6 +10,7 @@ namespace doneillspa.DataAccess
     {
         void InsertProject(Project b);
         void UpdateProject(Project b);
+        void DeleteProject(Project b);
         IEnumerable<Project> GetProjects();
         Project GetProjectById(long id);
         void Save();

@@ -28,6 +28,11 @@ namespace doneillspa.DataAccess
             return _context.Project.ToList();
         }
 
+        public void DeleteProject(Project p)
+        {
+            _context.Entry(p).State = EntityState.Deleted;
+        }
+
         public void InsertProject(Project p)
         {
             _context.Project.Add(p);

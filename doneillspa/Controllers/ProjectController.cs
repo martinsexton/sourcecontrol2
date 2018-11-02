@@ -12,7 +12,7 @@ namespace doneillspa.Controllers
     //Secure this Web API so that only a token provided with the roles satisfing the Policy called employee will have access
     [Authorize(AuthenticationSchemes = "Bearer", Policy = "AuthenticatedUser")]
     [Produces("application/json")]
-    [Route("api/project")]
+    //[Route("api/project")]
     public class ProjectController : Controller
     {
         private readonly IProjectRepository _repository;
@@ -23,12 +23,14 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
+        [Route("api/project")]
         public IEnumerable<Project> Get()
         {
             return _repository.GetProjects();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("api/project/{id}")]
         public JsonResult Get(long id)
         {
             var item = _repository.GetProjectById(id);
@@ -41,7 +43,25 @@ namespace doneillspa.Controllers
             return result;
         }
 
+        [HttpDelete]
+        [Route("api/project/{id}")]
+        public JsonResult Delete(long id)
+        {
+            var existingProject = _repository.GetProjectById(id);
+
+            if (existingProject != null)
+            {
+                _repository.DeleteProject(existingProject);
+                _repository.Save();
+
+                return Json(Ok());
+            }
+
+            return Json(Ok());
+        }
+
         [HttpPost]
+        [Route("api/project")]
         public IActionResult Post([FromBody]Project project)
         {
             if (project == null)
@@ -56,7 +76,8 @@ namespace doneillspa.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("api/project/{id}")]
         public IActionResult Put(long id, [FromBody]Project p)
         {
             if (p == null || p.Id != id)

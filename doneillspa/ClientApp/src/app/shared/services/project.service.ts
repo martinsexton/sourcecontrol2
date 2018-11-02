@@ -59,4 +59,14 @@ export class ProjectService extends HttpServiceBase  {
           .set('Authorization', 'Bearer ' + authToken)
       });
   }
+
+  deleteProject(project: Project) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.delete(this._baseurl + 'api/project/' + project.id, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    });
+  }
 }
