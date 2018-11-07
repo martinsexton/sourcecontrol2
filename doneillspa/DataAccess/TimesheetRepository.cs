@@ -32,6 +32,14 @@ namespace doneillspa.DataAccess
 
         }
 
+        public IEnumerable<Timesheet> GetTimesheetsByUser(string user)
+        {
+            return _context.Timesheet
+                .Where(b => b.Username.ToUpper().Equals(user.ToUpper()))
+                .Include(b => b.TimesheetEntries)
+                .ToList();
+        }
+
         public Timesheet GetTimsheetById(long id)
         {
             return _context.Timesheet

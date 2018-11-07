@@ -13,6 +13,7 @@ namespace doneillspa.DataAccess
         IEnumerable<Timesheet> GetTimesheets();
         Timesheet GetTimsheetById(long id);
         IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting);
+        IEnumerable<Timesheet> GetTimesheetsByUser(string user);
         //void Save();
     }
 }

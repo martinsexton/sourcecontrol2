@@ -51,6 +51,13 @@ namespace doneillspa.Controllers
             return _repository.GetTimesheetsByDate(weekStarting);
         }
 
+        [HttpGet]
+        [Route("api/timesheet/name/{user}")]
+        public IEnumerable<Timesheet> Get(string user)
+        {
+            return _repository.GetTimesheetsByUser(user);
+        }
+
         [HttpPost]
         [Route("api/timesheet")]
         public IActionResult Post([FromBody]Timesheet timesheet)

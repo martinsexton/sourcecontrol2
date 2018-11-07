@@ -1,5 +1,16 @@
 <div class="row">
   <h3>Users</h3>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      Dropdown
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+      <li><a (click)="toggleDisplayAddCertificate()">Create Certificate</a></li>
+      <li role="separator" class="divider"></li>
+      <li><a (click)="retrieveTimeSheetsForCustomer()">Retrieve Timesheets</a></li>
+    </ul>
+  </div>
   <div class="row">
     <div class="text-center">
       <img src="assets/images/loading3.gif" *ngIf="loading" />
@@ -57,9 +68,22 @@
           </table>
         </div>
       </div>
-      <div class="row">
-        <p><a class="btn btn-primary btn-sm" (click)="toggleDisplayAddCertificate()" role="button">Add Certificate</a></p>
-      </div>
+    </div>
+    <div class="row" *ngIf="timesheets && !loading">
+      <table class='table table-striped table-sm' *ngIf="!loading">
+        <thead class="thead">
+          <tr>
+            <th>User</th>
+            <th>Week Starting</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ts of timesheets ; let i = index" (click)="displaySelectedTimesheetDetails(ts,i)" [ngClass]="{'active': i == selectedTsRow}">
+            <td>{{ ts.username }}</td>
+            <td>{{ ts.weekStarting }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

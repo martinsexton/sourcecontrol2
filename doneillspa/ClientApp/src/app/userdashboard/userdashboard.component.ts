@@ -4,10 +4,16 @@ import { Certificate } from '../certificate';
 import { ApplicationUser } from '../applicationuser';
 import { Project } from '../project';
 import { MsUserService } from '../shared/services/msuser.service';
+import { Timesheet } from '../timesheet';
+import { TimesheetEntry } from '../timesheetentry';
 
 import {
   ProjectService
 } from '../shared/services/project.service';
+
+import {
+  TimesheetService
+} from '../shared/services/timesheet.service';
 
 import { CertificateService } from '../shared/services/certificate.service';
 
@@ -23,13 +29,17 @@ export class UserDashboardComponent {
   public selectedUserRow: number;
   public selectedUserCertifications: Certificate[];
 
+  public timesheets: Timesheet[];
+  public selectedTimesheet: Timesheet;
+  public selectedTsRow: number;
+
   public users: ApplicationUser[];
   public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
 
   displayAddCert = false;
   public loading = true;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _msuserService: MsUserService, private _certificationService: CertificateService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _msuserService: MsUserService, private _certificationService: CertificateService) {
     this._msuserService.getUsers().subscribe(result => {
       this.users = result;
       this.loading = false;
@@ -96,6 +106,16 @@ export class UserDashboardComponent {
     }
   }
 
+  retrieveTimeSheetsForCustomer() {
+    this._timesheetService.getTimesheetForUser(this.selectedUser.firstName + this.selectedUser.surname).subscribe(result => {
+      this.timesheets = result;
+      if (this.timesheets.length > 0) {
+        this.selectedTimesheet = this.timesheets[0];
+        this.selectedTsRow = 0;
+      }
+    }, error => console.error(error));
+  }
+
   displaySelectedUserDetails(user, index) {
     this.selectedUser = user;
     this.selectedUserRow = index;
@@ -105,7 +125,7 @@ export class UserDashboardComponent {
     else {
       this.selectedUserCertifications = new Array<Certificate>();
     }
-
+    this.timesheets = null;
   }
 
   addCertificateEntry() {
