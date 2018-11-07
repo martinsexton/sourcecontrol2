@@ -20,7 +20,7 @@
           <td>{{ project.details }}</td>
           <td>{{ project.startDate | date : "fullDate"}}</td>
           <td *ngIf="project.id > 0"><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="deleteProject(project)"></span></td>
-          <td *ngIf="project.id > 0">><span class="glyphicon glyphicon-pencil" aria-hidden="true" (click)="displaySelectedProject(project)"></span></td>
+          <td *ngIf="project.id > 0"><span class="glyphicon glyphicon-pencil" aria-hidden="true" (click)="displaySelectedProject(project)"></span></td>
         </tr>
       </tbody>
     </table>
