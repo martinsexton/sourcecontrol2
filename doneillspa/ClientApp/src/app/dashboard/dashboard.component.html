@@ -12,6 +12,10 @@
           <input type="date" class="form-control" placeholder="Search" name="selectedDate" [(ngModel)]="selectedDate">
         </div>
         <button (click)="setSelectedDate()" class="btn btn-primary">Load WorkSheets</button>
+        <div class="form-group">
+          <input type="text" [(ngModel)]="filterusername" name="filterusername" id="filterusername" class="form-control" placeholder="User">
+        </div>
+        <button (click)="retrieveTimeSheetsForCustomer()" class="btn btn-primary">Filter By User</button>
       </form>
     </div>
   </nav>

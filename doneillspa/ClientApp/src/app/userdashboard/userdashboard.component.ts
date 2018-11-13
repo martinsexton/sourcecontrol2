@@ -29,9 +29,6 @@ export class UserDashboardComponent {
   public selectedUserRow: number;
   public selectedUserCertifications: Certificate[];
 
-  public timesheets: Timesheet[];
-  public selectedTimesheet: Timesheet;
-  public selectedTsRow: number;
   public filterName: string;
 
   public users: ApplicationUser[];
@@ -121,16 +118,6 @@ export class UserDashboardComponent {
     }
   }
 
-  retrieveTimeSheetsForCustomer() {
-    this._timesheetService.getTimesheetForUser(this.selectedUser.firstName + this.selectedUser.surname).subscribe(result => {
-      this.timesheets = result;
-      if (this.timesheets.length > 0) {
-        this.selectedTimesheet = this.timesheets[0];
-        this.selectedTsRow = 0;
-      }
-    }, error => console.error(error));
-  }
-
   displaySelectedUserDetails(user, index) {
     this.selectedUser = user;
     this.selectedUserRow = index;
@@ -140,7 +127,6 @@ export class UserDashboardComponent {
     else {
       this.selectedUserCertifications = new Array<Certificate>();
     }
-    this.timesheets = null;
   }
 
   addCertificateEntry() {

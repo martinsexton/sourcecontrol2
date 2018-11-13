@@ -28,6 +28,7 @@ export class DashboardComponent {
   public selectedUserRow: number;
   public selectedDate: string = null;
   public selectedTimesheetUser: string;
+  public filterusername: string;
 
   public loading = true;
 
@@ -35,6 +36,16 @@ export class DashboardComponent {
     this.loading = false;
     //Retrieve Default list of tui Timesheets For display
     this._timesheetService.getTimesheets().subscribe(result => {
+      this.timesheets = result;
+      if (this.timesheets.length > 0) {
+        this.selectedTimesheet = this.timesheets[0];
+        this.selectedTsRow = 0;
+      }
+    }, error => console.error(error));
+  }
+
+  retrieveTimeSheetsForCustomer() {
+    this._timesheetService.getTimesheetForUser(this.filterusername).subscribe(result => {
       this.timesheets = result;
       if (this.timesheets.length > 0) {
         this.selectedTimesheet = this.timesheets[0];

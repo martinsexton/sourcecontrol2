@@ -76,22 +76,6 @@
         </div>
       </div>
     </div>
-    <div class="row" *ngIf="timesheets && !loading">
-      <table class='table table-striped table-sm' *ngIf="!loading">
-        <thead class="thead">
-          <tr>
-            <th>User</th>
-            <th>Week Starting</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let ts of timesheets ; let i = index" (click)="displaySelectedTimesheetDetails(ts,i)" [ngClass]="{'active': i == selectedTsRow}">
-            <td>{{ ts.username }}</td>
-            <td>{{ ts.weekStarting }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </div>
 <!--  New Certificate Details Modal  -->
