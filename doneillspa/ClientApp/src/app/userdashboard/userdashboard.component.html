@@ -43,16 +43,6 @@
   </div>
   <div class="row" *ngIf="selectedUser && !loading">
     <div class="col-md-6">
-      <div class="panel panel-info">
-        <div class="panel-heading">User Details</div>
-        <div class="panel-body">
-          <p><span class='glyphicon glyphicon-envelope'></span> {{selectedUser.email}}</p>
-          <p><span class='glyphicon glyphicon-phone'></span> {{selectedUser.phoneNumber}}</p>
-          <p><span class='glyphicon glyphicon-user'></span> {{selectedUser.role}}</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
       <div class="row">
         <div class="panel panel-info" *ngIf="selectedUserCertifications.length>0">
           <div class="panel-heading">CertificationDetails</div>
