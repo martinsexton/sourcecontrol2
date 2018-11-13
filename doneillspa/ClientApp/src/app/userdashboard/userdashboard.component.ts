@@ -32,6 +32,7 @@ export class UserDashboardComponent {
   public filterName: string;
 
   public users: ApplicationUser[];
+  public filteredUsers: ApplicationUser[];
   public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
 
   displayAddCert = false;
@@ -55,17 +56,31 @@ export class UserDashboardComponent {
   }
 
   retrieveUser() {
-    this._msuserService.getUser(this.filterName).subscribe(result => {
-      //this.users = null;
-      this.selectedUser = result;
-      //this.selectedUserRow = 0;
+    this.filteredUsers = [];
+    for (let item of this.users) {
+      if ((item.firstName + item.surname) == this.filterName) {
+        this.filteredUsers.push(item);
+      }
+    }
+    if (this.filteredUsers) {
+      this.selectedUser = this.filteredUsers[0];
+
       if (this.selectedUser.certifications) {
         this.selectedUserCertifications = this.selectedUser.certifications;
       }
       else {
         this.selectedUserCertifications = new Array<Certificate>();
       }
-    }, error => console.error(error))
+    }
+  }
+
+  retrieveUsersToDisplay() {
+    if (this.filteredUsers) {
+      return this.filteredUsers;
+    }
+    else {
+      return this.users;
+    }
   }
 
   deleteCertification(crt) {
