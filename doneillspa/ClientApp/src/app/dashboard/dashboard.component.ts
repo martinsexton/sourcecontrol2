@@ -56,6 +56,10 @@ export class DashboardComponent {
       if (this.timesheets.length > 0) {
         this.selectedTimesheet = this.timesheets[0];
         this.selectedTsRow = 0;
+      } else {
+        //Clear the selected timesheet if no result found.
+        this.selectedTimesheet = null;
+        this.selectedTsRow = 0;
       }
     }, error => console.error(error));
   }

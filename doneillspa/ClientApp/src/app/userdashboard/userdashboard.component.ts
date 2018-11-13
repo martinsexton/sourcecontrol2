@@ -32,6 +32,7 @@ export class UserDashboardComponent {
   public timesheets: Timesheet[];
   public selectedTimesheet: Timesheet;
   public selectedTsRow: number;
+  public filterName: string;
 
   public users: ApplicationUser[];
   public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
@@ -52,6 +53,20 @@ export class UserDashboardComponent {
         else {
           this.selectedUserCertifications = new Array<Certificate>();
         }
+      }
+    }, error => console.error(error))
+  }
+
+  retrieveUser() {
+    this._msuserService.getUser(this.filterName).subscribe(result => {
+      //this.users = null;
+      this.selectedUser = result;
+      //this.selectedUserRow = 0;
+      if (this.selectedUser.certifications) {
+        this.selectedUserCertifications = this.selectedUser.certifications;
+      }
+      else {
+        this.selectedUserCertifications = new Array<Certificate>();
       }
     }, error => console.error(error))
   }

@@ -84,6 +84,55 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
+        [Route("api/user/name/{name}")]
+        public ApplicationUserDto GetByName(string name)
+        {
+            List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
+
+            List<ApplicationUser> users = _userManager.Users.Where(r => r.UserName.Equals(name)).
+                Include(r => r.Certifications).ToList();
+
+            foreach (ApplicationUser user in users)
+            {
+                Task<IList<string>> roles = _userManager.GetRolesAsync(user);
+
+                ApplicationUserDto dtouser = new ApplicationUserDto();
+                dtouser.Id = user.Id;
+                dtouser.FirstName = user.FirstName;
+                dtouser.Surname = user.Surname;
+                dtouser.PhoneNumber = user.PhoneNumber;
+                dtouser.Email = user.Email;
+                if (roles.Result.Count > 0)
+                {
+                    dtouser.Role = roles.Result.First();
+                }
+                if (user.Certifications.Count > 0)
+                {
+                    List<CertificationDto> certs = new List<CertificationDto>();
+                    foreach (Certification cert in user.Certifications)
+                    {
+                        CertificationDto dtocert = new CertificationDto();
+                        dtocert.CreatedDate = cert.CreatedDate;
+                        dtocert.Description = cert.Description;
+                        dtocert.Expiry = cert.Expiry;
+                        dtocert.Id = cert.Id;
+
+                        certs.Add(dtocert);
+                    }
+                    dtouser.Certifications = certs;
+                }
+                dtousers.Add(dtouser);
+            }
+            return dtousers.First();
+
+            ////Need to bring back the full user object not just the name below.
+            //Task<ApplicationUser> user = GetUserByName(name);
+
+            //JsonResult result = new JsonResult(user.Result.UserName);
+            //return result;
+        }
+
+        [HttpGet]
         [Route("api/user/roles/{id}")]
         public IEnumerable<string> GetRoles(string id)
         {
@@ -126,7 +175,17 @@ namespace doneillspa.Controllers
             {
                 return user;
             }
+            //User not found
+            return await Task.FromResult<ApplicationUser>(null);
+        }
 
+        private async Task<ApplicationUser> GetUserByName(string name)
+        {
+            ApplicationUser user = await _userManager.FindByNameAsync(name);
+            if (user != null)
+            {
+                return user;
+            }
             //User not found
             return await Task.FromResult<ApplicationUser>(null);
         }
