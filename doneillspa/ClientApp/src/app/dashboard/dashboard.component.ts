@@ -23,6 +23,7 @@ declare var $: any;
 
 export class DashboardComponent {
   public timesheets: Timesheet[];
+  public filteredTimesheets: Timesheet[];
   public selectedTimesheet: Timesheet;
   public selectedTsRow: number;
   public selectedUserRow: number;
@@ -45,13 +46,25 @@ export class DashboardComponent {
   }
 
   retrieveTimeSheetsForCustomer() {
-    this._timesheetService.getTimesheetForUser(this.filterusername).subscribe(result => {
-      this.timesheets = result;
-      if (this.timesheets.length > 0) {
-        this.selectedTimesheet = this.timesheets[0];
-        this.selectedTsRow = 0;
+    this.filteredTimesheets = [];
+    for (let item of this.timesheets) {
+      if (item.username == this.filterusername) {
+        this.filteredTimesheets.push(item);
       }
-    }, error => console.error(error));
+    }
+    if (this.filteredTimesheets) {
+      this.selectedTimesheet = this.filteredTimesheets[0];
+      this.selectedTsRow = 0;
+    }
+  }
+
+  retrieveTimesheetsForDisplay() {
+    if (this.filteredTimesheets) {
+      return this.filteredTimesheets;
+    }
+    else {
+      return this.timesheets;
+    }
   }
 
   setSelectedDate() {

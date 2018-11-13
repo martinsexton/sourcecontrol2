@@ -20,7 +20,7 @@
     </div>
   </nav>
 </div>
-<div class="row" *ngIf="timesheets">
+<div class="row" *ngIf="retrieveTimesheetsForDisplay()">
   <h3>Work Sheets</h3>
   <div class="col-md-4">
     <div class="text-center">
@@ -34,7 +34,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let ts of timesheets ; let i = index" (click)="displaySelectedTimesheetDetails(ts,i)" [ngClass]="{'active': i == selectedTsRow}">
+        <tr *ngFor="let ts of retrieveTimesheetsForDisplay() ; let i = index" (click)="displaySelectedTimesheetDetails(ts,i)" [ngClass]="{'active': i == selectedTsRow}">
           <td>{{ ts.username }}</td>
           <td>{{ ts.weekStarting }}</td>
         </tr>
