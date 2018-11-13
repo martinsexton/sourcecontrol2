@@ -88,14 +88,34 @@ namespace doneillspa.Controllers
                 return NotFound();
             }
 
-            existingTimesheet.Owner = t.Owner;
-            existingTimesheet.WeekStarting = t.WeekStarting;
+            //existingTimesheet.Owner = t.Owner;
+            //existingTimesheet.WeekStarting = t.WeekStarting;
+
+            ICollection<TimesheetEntry> entriesToAdd = new List<TimesheetEntry>();
 
             foreach (TimesheetEntry tse in t.TimesheetEntries)
             {
-                if (!existingTimesheet.TimesheetEntries.Contains(tse))
+                bool found = false;
+
+                foreach(TimesheetEntry etse in existingTimesheet.TimesheetEntries)
                 {
-                    existingTimesheet.TimesheetEntries.Add(tse);
+                    if (etse.Day.Equals(tse.Day) && etse.Project.Equals(tse.Project) && etse.StartTime.Equals(tse.StartTime) && etse.EndTime.Equals(tse.EndTime))
+                    {
+                        found = true;
+                    }
+                }
+
+                if (!found)
+                {
+                    entriesToAdd.Add(tse);
+                }
+            }
+
+            if(entriesToAdd.Count > 0)
+            {
+                foreach(TimesheetEntry entry in entriesToAdd)
+                {
+                    existingTimesheet.TimesheetEntries.Add(entry);
                 }
             }
 
