@@ -24,6 +24,7 @@ declare var $: any;
 export class DashboardComponent {
   public timesheets: Timesheet[];
   public filteredTimesheets: Timesheet[];
+  public users: string[];
   public selectedTimesheet: Timesheet;
   public selectedTsRow: number;
   public selectedUserRow: number;
@@ -39,16 +40,39 @@ export class DashboardComponent {
     this._timesheetService.getTimesheets().subscribe(result => {
       this.timesheets = result;
       if (this.timesheets.length > 0) {
+        this.refreshListOfUsers();
         this.selectedTimesheet = this.timesheets[0];
         this.selectedTsRow = 0;
       }
     }, error => console.error(error));
   }
 
-  retrieveTimeSheetsForCustomer() {
+  refreshListOfUsers() {
+
+    //Clear array before we start
+    if (this.users) {
+      this.users = null;
+    }
+
+    for (let ts of this.timesheets) {
+      if (!this.users) {
+        this.users = [];
+        this.users.push(ts.username);
+      }
+      else {
+        for (let n of this.users) {
+          if (n.toUpperCase() != ts.username.toUpperCase()) {
+            this.users.push(ts.username);
+          }
+        }
+      }
+    }
+  }
+
+  retrieveTimeSheetsForCustomer(name : string) {
     this.filteredTimesheets = [];
     for (let item of this.timesheets) {
-      if (item.username == this.filterusername) {
+      if (item.username.toUpperCase() == name.toUpperCase()) {
         this.filteredTimesheets.push(item);
       }
     }
@@ -77,7 +101,10 @@ export class DashboardComponent {
     //Retrieve Timesheets For display
     this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
       this.timesheets = result;
+      //Clear filters
+      this.filteredTimesheets = null;
       if (this.timesheets.length > 0) {
+        this.refreshListOfUsers();
         this.selectedTimesheet = this.timesheets[0];
         this.selectedTsRow = 0;
       } else {
