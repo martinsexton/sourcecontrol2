@@ -160,7 +160,7 @@ namespace doneillspa.Controllers
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             IdentityResult r = result.Result;
 
-            return new NoContentResult();
+            return Ok(cert.Id);
         }
 
         private ApplicationUser GetUserIncludingCerts(string id)

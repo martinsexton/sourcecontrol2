@@ -87,7 +87,15 @@ export class UserDashboardComponent {
     this._certificationService.deleteCertification(crt).subscribe(
       res => {
         console.log(res);
-        this.removeFromArrayList(crt);
+        this.removeFromArrayList(this.selectedUserCertifications, crt);
+        //Need to reflect the change in the user also.
+        for (let u of this.users) {
+          if ((u.firstName + u.surname) == (this.selectedUser.firstName + this.selectedUser.surname)) {
+            if (u.certifications) {
+              this.removeFromArrayList(u.certifications, crt);
+            }
+          }
+        }
       },
       (err: HttpErrorResponse) => {
         console.log(err.error);
@@ -98,10 +106,10 @@ export class UserDashboardComponent {
     );
   }
 
-  removeFromArrayList(crt: Certificate) {
-    for (let item of this.selectedUserCertifications) {
+  removeFromArrayList(list :Certificate[], crt: Certificate) {
+    for (let item of list) {
       if (crt.id == item.id) {
-        this.selectedUserCertifications.splice(this.selectedUserCertifications.indexOf(item), 1);
+        list.splice(list.indexOf(item), 1);
         break;
       }
     }
@@ -147,7 +155,19 @@ export class UserDashboardComponent {
   addCertificateEntry() {
     this._msuserService.addCertificate(this.selectedUser.id, this.newCertificate).subscribe(result => {
       $("#myNewCertificateModal").modal('hide');
+      //Update the identifier of the newly created cert so if we delete it, it will be deleted on database
+      this.newCertificate.id = result as number;
       this.selectedUserCertifications.push(this.newCertificate);
+      //Need to reflect the change in the user also.
+      for (let u of this.users) {
+        if ((u.firstName + u.surname) == (this.selectedUser.firstName + this.selectedUser.surname)) {
+          if (!u.certifications) {
+            //If array is null, then create empty on
+            u.certifications = [];
+          }
+          u.certifications.push(this.newCertificate);
+        }
+      }
       this.newCertificate = new Certificate(0, new Date(), new Date(), "")
     }, error => console.error(error));
   }
