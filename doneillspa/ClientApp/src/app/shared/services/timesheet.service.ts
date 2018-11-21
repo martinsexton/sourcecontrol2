@@ -26,15 +26,15 @@ export class TimesheetService extends HttpServiceBase{
     .catch(this.handleError);
   }
 
-  updateTimesheet(timesheet: Timesheet) {
+  addTimesheetEntry(timesheetId: number, entry: TimesheetEntry) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.put(this._baseurl + 'api/timesheet', timesheet, {
+    return this._httpClient.put(this._baseurl + 'api/timesheet/'+timesheetId, entry, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
     })
-    .catch(this.handleError);
+      .catch(this.handleError);
   }
 
   deleteTimesheetEntry(tse: TimesheetEntry) {

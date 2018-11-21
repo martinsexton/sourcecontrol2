@@ -73,55 +73,20 @@ namespace doneillspa.Controllers
         }
 
         [HttpPut()]
-        [Route("api/timesheet")]
-        public IActionResult Put([FromBody]Timesheet t)
+        [Route("api/timesheet/{id}")]
+        public IActionResult Put(int id, [FromBody]TimesheetEntry entry)
         {
-            if (t == null || t.Id == 0)
-            {
-                return BadRequest();
-            }
-
-            var existingTimesheet = _repository.GetTimsheetById(t.Id);
+            var existingTimesheet = _repository.GetTimsheetById(id);
 
             if (existingTimesheet == null)
             {
                 return NotFound();
             }
 
-            //existingTimesheet.Owner = t.Owner;
-            //existingTimesheet.WeekStarting = t.WeekStarting;
-
-            ICollection<TimesheetEntry> entriesToAdd = new List<TimesheetEntry>();
-
-            foreach (TimesheetEntry tse in t.TimesheetEntries)
-            {
-                bool found = false;
-
-                foreach(TimesheetEntry etse in existingTimesheet.TimesheetEntries)
-                {
-                    if (etse.Day.Equals(tse.Day) && etse.Project.Equals(tse.Project) && etse.StartTime.Equals(tse.StartTime) && etse.EndTime.Equals(tse.EndTime))
-                    {
-                        found = true;
-                    }
-                }
-
-                if (!found)
-                {
-                    entriesToAdd.Add(tse);
-                }
-            }
-
-            if(entriesToAdd.Count > 0)
-            {
-                foreach(TimesheetEntry entry in entriesToAdd)
-                {
-                    existingTimesheet.TimesheetEntries.Add(entry);
-                }
-            }
-
+            existingTimesheet.TimesheetEntries.Add(entry);
             _repository.UpdateTimesheet(existingTimesheet);
 
-            return new NoContentResult();
+            return Ok(entry.Id);
         }
     }
 }

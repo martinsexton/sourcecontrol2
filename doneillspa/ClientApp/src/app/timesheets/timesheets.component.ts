@@ -218,30 +218,31 @@ export class TimesheetComponent {
   addTimesheetEntry() {
     let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.project, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details);
     if (this.timesheetExists) {
-      this.activeTimeSheet.timesheetEntries.push(entry);
-
-      this._timesheetService.updateTimesheet(this.activeTimeSheet).subscribe(
+      this._timesheetService.addTimesheetEntry(this.activeTimeSheet.id, entry).subscribe(
         res => {
-          console.log(res);
+          //Update the entry with the primary key that has come back from server
+          entry.id = res as number;
+          this.activeTimeSheet.timesheetEntries.push(entry);
+
+          if (this.selectedDay == "Mon") {
+            this.monEntries.push(entry);
+          }
+          else if (this.selectedDay == "Tue") {
+            this.tueEntries.push(entry);
+          }
+          else if (this.selectedDay == "Wed") {
+            this.wedEntries.push(entry);
+          }
+          else if (this.selectedDay == "Thurs") {
+            this.thursEntries.push(entry);
+          }
+          else if (this.selectedDay == "Fri") {
+            this.friEntries.push(entry);
+          }
+          else {
+            this.satEntries.push(entry);
+          }
         },error => this.errors = error);
-    }
-    if (this.selectedDay == "Mon") {
-      this.monEntries.push(new TimesheetEntry(this.newEntry.project, "Mon", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details));
-    }
-    else if (this.selectedDay == "Tue") {
-      this.tueEntries.push(new TimesheetEntry(this.newEntry.project, "Tue", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details));
-    }
-    else if (this.selectedDay == "Wed") {
-      this.wedEntries.push(new TimesheetEntry(this.newEntry.project, "Wed", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details));
-    }
-    else if (this.selectedDay == "Thurs") {
-      this.thursEntries.push(new TimesheetEntry(this.newEntry.project, "Thurs", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details));
-    }
-    else if (this.selectedDay == "Fri") {
-      this.friEntries.push(new TimesheetEntry(this.newEntry.project, "Fri", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details));
-    }
-    else {
-      this.satEntries.push(new TimesheetEntry(this.newEntry.project, "Sat", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details));
     }
 
     $("#myNewTimesheetModal").modal('hide');
