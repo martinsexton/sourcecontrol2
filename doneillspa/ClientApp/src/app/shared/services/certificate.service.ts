@@ -22,7 +22,8 @@ export class CertificateService extends HttpServiceBase{
     return this._httpClient.get<Certificate[]>(this._baseurl + 'api/certification/user/' + userId,
       {
         headers
-      });
+      })
+      .catch(this.handleError);
   }
 
   deleteCertification(crt: Certificate) {
@@ -32,6 +33,7 @@ export class CertificateService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    });
+    })
+    .catch(this.handleError);
   }
 }

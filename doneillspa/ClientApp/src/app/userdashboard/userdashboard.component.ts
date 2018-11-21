@@ -28,6 +28,7 @@ export class UserDashboardComponent {
   public selectedUser: ApplicationUser;
   public selectedUserRow: number;
   public selectedUserCertifications: Certificate[];
+  public errors: string;
 
   public filterName: string;
 
@@ -52,7 +53,7 @@ export class UserDashboardComponent {
           this.selectedUserCertifications = new Array<Certificate>();
         }
       }
-    }, error => console.error(error))
+    }, error => this.errors = error)
   }
 
   retrieveUser() {
@@ -96,14 +97,7 @@ export class UserDashboardComponent {
             }
           }
         }
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
+      }, error => this.errors = error)
   }
 
   removeFromArrayList(list :Certificate[], crt: Certificate) {

@@ -39,7 +39,7 @@ namespace doneillspa.Controllers
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
 
-            foreach(ApplicationUser user in users)
+            foreach (ApplicationUser user in users)
             {
                 Task<IList<string>> roles = _userManager.GetRolesAsync(user);
 
@@ -49,14 +49,14 @@ namespace doneillspa.Controllers
                 dtouser.Surname = user.Surname;
                 dtouser.PhoneNumber = user.PhoneNumber;
                 dtouser.Email = user.Email;
-                if(roles.Result.Count > 0)
+                if (roles.Result.Count > 0)
                 {
                     dtouser.Role = roles.Result.First();
                 }
-                if(user.Certifications.Count > 0)
+                if (user.Certifications.Count > 0)
                 {
                     List<CertificationDto> certs = new List<CertificationDto>();
-                    foreach(Certification cert in user.Certifications)
+                    foreach (Certification cert in user.Certifications)
                     {
                         CertificationDto dtocert = new CertificationDto();
                         dtocert.CreatedDate = cert.CreatedDate;
