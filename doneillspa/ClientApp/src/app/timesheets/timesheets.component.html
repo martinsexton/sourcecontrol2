@@ -15,6 +15,9 @@
       </form>
     </div>
   </nav>
+  <div *ngIf="errors" class="alert alert-danger alert-dismissible">
+    <strong>{{ errors }}</strong>
+  </div>
 </div>
 <div class="row">
   <ul class="nav nav-tabs">

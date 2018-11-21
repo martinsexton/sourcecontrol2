@@ -25,6 +25,7 @@ export class TimesheetComponent {
   public timesheetExists = false;
   public loading = true;
   public selectedDate: string = null;
+  public errors: string;
 
   //Default to Monday
   public selectedDay = "Mon";
@@ -75,7 +76,10 @@ export class TimesheetComponent {
       this.timesheets = result;
       //Populate calendar if we find timesheets for this week
       this.populateWeeklyCalendar(this.timesheets, startOfWeek);
-    }, error => console.error(error));
+    }, error => {
+      this.errors = error
+      this.loading = false;
+    });
   }
 
   setSelectedDate() {
@@ -92,7 +96,7 @@ export class TimesheetComponent {
       this.timesheets = result;
       //Populate calendar if we find timesheets for this week
       this.populateWeeklyCalendar(this.timesheets, startOfWeek);
-    }, error => console.error(error));
+    }, error => this.errors = error);
   }
   populateWeeklyCalendar(array: Timesheet[], ws : Date) {
     //Clear Arrays before loading
@@ -199,14 +203,7 @@ export class TimesheetComponent {
         else {
           this.removeFromArrayList(this.satEntries, ts);
         }
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
+      }, error => this.errors = error);
   }
 
   removeFromArrayList(array: TimesheetEntry[], ts: TimesheetEntry) {
@@ -226,14 +223,7 @@ export class TimesheetComponent {
       this._timesheetService.updateTimesheet(this.activeTimeSheet).subscribe(
         res => {
           console.log(res);
-        },
-        (err: HttpErrorResponse) => {
-          console.log(err.error);
-          console.log(err.name);
-          console.log(err.message);
-          console.log(err.status);
-        }
-      );
+        },error => this.errors = error);
     }
     if (this.selectedDay == "Mon") {
       this.monEntries.push(new TimesheetEntry(this.newEntry.project, "Mon", this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details));
@@ -347,13 +337,7 @@ export class TimesheetComponent {
         this.timesheets.push(this.activeTimeSheet);
         $("#myNewTimesheetModal").modal('hide');
       },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
+      error => this.errors = error);
   }
 }
 

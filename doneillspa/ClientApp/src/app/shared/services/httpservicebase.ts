@@ -10,24 +10,13 @@ export class HttpServiceBase {
     this._baseurl = baseUrl;
   }
   protected handleError(error: any) {
-    var applicationError = error.headers.get('Application-Error');
-
-    // either applicationError in header or model error in body 
-    if (applicationError) {
-      return Observable.throw(applicationError);
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      return Observable.throw('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      return Observable.throw(`Backend returned code ${error.status}`);
     }
-    var modelStateErrors: string = '';
-    var serverError = error;
-
-    if (!serverError.type) {
-      for (var key in serverError) {
-        if (key == "message") {
-          modelStateErrors += serverError[key] + '\n';
-          break;
-        }
-      }
-    }
-    modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
-    return Observable.throw(modelStateErrors || 'Server error');
   }
 }

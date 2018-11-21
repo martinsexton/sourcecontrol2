@@ -22,7 +22,8 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    });
+    })
+    .catch(this.handleError);
   }
 
   updateTimesheet(timesheet: Timesheet) {
@@ -32,7 +33,8 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    });
+    })
+    .catch(this.handleError);
   }
 
   deleteTimesheetEntry(tse: TimesheetEntry) {
@@ -42,7 +44,8 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    });
+    })
+    .catch(this.handleError);
   }
 
   getTimesheets() {
@@ -53,7 +56,8 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      });
+      })
+      .catch(this.handleError);
   }
 
   getTimesheet(year: number, month: number, day: number) {
@@ -65,7 +69,8 @@ export class TimesheetService extends HttpServiceBase{
     return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/timesheet/week/' + year + '/' + month + '/' + day,
       {
         headers
-      });
+      })
+      .catch(this.handleError);
   }
 
   getTimesheetForUser(user:string) {

@@ -31,6 +31,7 @@ export class DashboardComponent {
   public selectedDate: string = null;
   public selectedTimesheetUser: string;
   public filterusername: string;
+  public errors: string;
 
   public loading = true;
 
@@ -44,7 +45,7 @@ export class DashboardComponent {
         this.selectedTimesheet = this.timesheets[0];
         this.selectedTsRow = 0;
       }
-    }, error => console.error(error));
+    }, error => this.errors = error);
   }
 
   refreshListOfUsers() {
@@ -112,7 +113,7 @@ export class DashboardComponent {
         this.selectedTimesheet = null;
         this.selectedTsRow = 0;
       }
-    }, error => console.error(error));
+    }, error => this.errors = error);
   }
 
   calculateTotalDuration() {
