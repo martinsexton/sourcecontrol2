@@ -139,4 +139,9 @@ export class DashboardComponent {
     this.selectedTimesheet = timesheet;
     this.selectedTsRow = index
   }
+
+  getTimesheetEntriesForTimesheet(index) {
+    let ts = this.timesheets[index];
+    return ts.timesheetEntries;
+  }
 }

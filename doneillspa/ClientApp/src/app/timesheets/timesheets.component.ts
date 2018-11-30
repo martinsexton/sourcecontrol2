@@ -242,7 +242,27 @@ export class TimesheetComponent {
           else {
             this.satEntries.push(entry);
           }
-        },error => this.errors = error);
+        }, error => this.errors = error);
+    }
+    else {
+      if (this.selectedDay == "Mon") {
+        this.monEntries.push(entry);
+      }
+      else if (this.selectedDay == "Tue") {
+        this.tueEntries.push(entry);
+      }
+      else if (this.selectedDay == "Wed") {
+        this.wedEntries.push(entry);
+      }
+      else if (this.selectedDay == "Thurs") {
+        this.thursEntries.push(entry);
+      }
+      else if (this.selectedDay == "Fri") {
+        this.friEntries.push(entry);
+      }
+      else {
+        this.satEntries.push(entry);
+      }
     }
 
     $("#myNewTimesheetModal").modal('hide');

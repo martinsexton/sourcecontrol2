@@ -1,11 +1,5 @@
-<div class="row">
-  <!--<nav aria-label="...">
-    <ul class="pager">
-      <li><a (click)="previousWeek()">Previous</a></li>
-      <li><a (click)="nextWeek()">Next</a></li>
-    </ul>
-  </nav>-->
-  <nav class="navbar navbar-default">
+<!--<div class="row">
+  <nav class="navbar navbar-light">
     <div class="container-fluid">
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group">
@@ -18,99 +12,113 @@
   <div *ngIf="errors" class="alert alert-danger alert-dismissible">
     <strong>{{ errors }}</strong>
   </div>
-</div>
-<div class="row">
+</div>-->
+<div class="container-fluid">
   <ul class="nav nav-tabs">
-    <li role="presentation" [ngClass]="{'active': selectedDay=='Mon'}" data-toggle="tooltip" data-placement="top" title="{{monday.date}}"><a (click)="paintMonTab()">{{monday.nameOfDay}}</a></li>
-    <li role="presentation" [ngClass]="{'active': selectedDay=='Tue'}" data-toggle="tooltip" data-placement="top" title="{{tues.date}}"><a (click)="paintTueTab()">{{tues.nameOfDay}}</a></li>
-    <li role="presentation" [ngClass]="{'active': selectedDay=='Wed'}" data-toggle="tooltip" data-placement="top" title="{{wed.date}}"><a (click)="paintWedTab()">{{wed.nameOfDay}}</a></li>
-    <li role="presentation" [ngClass]="{'active': selectedDay=='Thurs'}" data-toggle="tooltip" data-placement="top" title="{{thurs.date}}"><a (click)="paintThursTab()">{{thurs.nameOfDay}}</a></li>
-    <li role="presentation" [ngClass]="{'active': selectedDay=='Fri'}" data-toggle="tooltip" data-placement="top" title="{{fri.date}}"><a (click)="paintFriTab()">{{fri.nameOfDay}}</a></li>
-    <li role="presentation" [ngClass]="{'active': selectedDay=='Sat'}" data-toggle="tooltip" data-placement="top" title="{{sat.date}}"><a (click)="paintSatTab()">{{sat.nameOfDay}}</a></li>
+    <li class="nav-item" [ngClass]="{'active': selectedDay=='Mon'}">
+      <a class="nav-link" (click)="paintMonTab()">Mon</a>
+    </li>
+    <li class="nav-item" [ngClass]="{'active': selectedDay=='Tue'}">
+      <a class="nav-link" (click)="paintTueTab()">Tue</a>
+    </li>
+    <li class="nav-item" [ngClass]="{'active': selectedDay=='Wed'}">
+      <a class="nav-link" (click)="paintWedTab()">Wed</a>
+    </li>
+    <li class="nav-item" [ngClass]="{'active': selectedDay=='Thurs'}">
+      <a class="nav-link" (click)="paintThursTab()">Thurs</a>
+    </li>
+    <li class="nav-item" [ngClass]="{'active': selectedDay=='Fri'}">
+      <a class="nav-link" (click)="paintFriTab()">Fri</a>
+    </li>
+    <li class="nav-item" [ngClass]="{'active': selectedDay=='Sat'}">
+      <a class="nav-link" (click)="paintSatTab()">Sat</a>
+    </li>
   </ul>
-</div>
-<div class="row">
-  <div class="text-center">
-    <img src="assets/images/loading3.gif" *ngIf="loading" />
+  <div class="row">
+    <div class="text-center">
+      <img src="assets/images/loading3.gif" *ngIf="loading" />
+    </div>
   </div>
-</div>
-<div class="row" *ngIf="!displayListOfEntries() && !loading">
-  <div class="jumbotron" >
-    <h3>Timesheets Missing!</h3>
-    <p>Please supply time sheet entries for {{selectedDay}}</p>
-    <p><a class="btn btn-primary btn-sm" (click)="toggleDisplayAddTimesheet()" role="button">Add Entry</a></p>
+  <div class="row" *ngIf="!displayListOfEntries() && !loading">
+    <div>
+      <h3>Timesheets Missing!</h3>
+      <p>Please supply time sheet entries for {{selectedDay}}</p>
+      <p><a class="btn btn-primary btn-sm" (click)="toggleDisplayAddTimesheet()" role="button">Add Entry</a></p>
+    </div>
   </div>
-</div>
-<div class="row" *ngIf="displayListOfEntries() && !loading">
-  <table class='table table-striped table-sm'>
-    <thead class="thead">
-      <tr>
-        <th>Project</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Details</th>
-        <th>Duration</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let entry of retrieveTimesheetsForTab()">
-        <td>{{ entry.project }}</td>
-        <td>{{ entry.startTime }}</td>
-        <td>{{ entry.endTime }}</td>
-        <td>{{ entry.details }}</td>
-        <td>{{ calculateDuration(entry) }} mins</td>
-        <td><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeTimesheetEntry(entry)"></span></td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td><p class="text-primary">Total Duration</p></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><span class="badge">{{ calculateTotalDuration() }} mins</span></td>
-      </tr>
-    </tfoot>
-  </table>
-</div>
-<div class="row" *ngIf="displayListOfEntries()">
-  <button type="button" class="btn btn-primary" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
-  <button type="button" class="btn btn-primary" (click)="saveTimesheet()" *ngIf="!timesheetExists">Save Worksheet</button>
-</div>
-<!-- New Timesheet Details Modal -->
-<div class="modal fade" id="myNewTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">New Timesheet Entry</h4>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="project">Project</label>
-            <select class="form-control form-control-sm" id="project" name="project" [(ngModel)]="newEntry.project">
-              <option *ngFor="let project of projects" selected>{{project.name}}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="startTime">Start Time</label>
-            <input type="time" [(ngModel)]="newEntry.startTime" name="startTime" class="form-control" id="startTime">
-          </div>
-          <div class="form-group">
-            <label for="endTime">End Time</label>
-            <input type="time" [(ngModel)]="newEntry.endTime" name="endTime" class="form-control" id="endTime">
-          </div>
-          <div class="form-group">
-            <label for="details">Details</label>
-            <textarea [(ngModel)]="newEntry.details" name="details" class="form-control" id="details" rows="3"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button (click)="addTimesheetEntry()" class="btn btn-primary">Save Entry</button>
+  <div class="row" *ngIf="displayListOfEntries() && !loading">
+    <div class="table-responsive">
+      <table class='table'>
+        <thead class="thead-light">
+          <tr>
+            <th>Project</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Details</th>
+            <th>Duration</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of retrieveTimesheetsForTab()">
+            <td>{{ entry.project }}</td>
+            <td>{{ entry.startTime }}</td>
+            <td>{{ entry.endTime }}</td>
+            <td>{{ entry.details }}</td>
+            <td>{{ calculateDuration(entry) }} mins</td>
+            <td><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeTimesheetEntry(entry)"></span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><p class="text-primary">Total Duration</p></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="badge badge-secondary">{{ calculateTotalDuration() }} mins</span></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <div class="row" *ngIf="displayListOfEntries()">
+    <button type="button" class="btn btn-primary" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
+    <button type="button" class="btn btn-primary" (click)="saveTimesheet()" *ngIf="!timesheetExists">Save Worksheet</button>
+  </div>
+  <!-- New Timesheet Details Modal -->
+  <div class="modal fade" id="myNewTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">New Timesheet Entry</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="project">Project</label>
+              <select class="form-control form-control-sm" id="project" name="project" [(ngModel)]="newEntry.project">
+                <option *ngFor="let project of projects" selected>{{project.name}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="startTime">Start Time</label>
+              <input type="time" [(ngModel)]="newEntry.startTime" name="startTime" class="form-control" id="startTime">
+            </div>
+            <div class="form-group">
+              <label for="endTime">End Time</label>
+              <input type="time" [(ngModel)]="newEntry.endTime" name="endTime" class="form-control" id="endTime">
+            </div>
+            <div class="form-group">
+              <label for="details">Details</label>
+              <textarea [(ngModel)]="newEntry.details" name="details" class="form-control" id="details" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button (click)="addTimesheetEntry()" class="btn btn-secondary">Save Entry</button>
+        </div>
       </div>
     </div>
   </div>

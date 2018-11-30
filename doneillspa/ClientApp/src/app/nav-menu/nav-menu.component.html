@@ -1,4 +1,4 @@
-<div class='main-nav'>
+<!--<div class='main-nav'>
     <div class='navbar navbar-inverse'>
         <div class='navbar-header'>
             <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse' [attr.aria-expanded]='isExpanded' (click)='toggle()'>
@@ -50,5 +50,39 @@
           </ul>
         </div>
     </div>
-</div>
+</div>-->
 
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Denis O'Neill Electrical</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }' class="nav-item active">
+        <a [routerLink]='["/"]' class="nav-link">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
+        <a [routerLink]='["/projects"]' class="nav-link">Projects</a>
+      </li>
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
+        <a [routerLink]='["/dashboard"]' class="nav-link">Dashboard</a>
+      </li>
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
+        <a [routerLink]='["/userdashboard"]' class="nav-link">Users</a>
+      </li>
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
+        <a [routerLink]='["/projecthealth"]' class="nav-link">Project Health</a>
+      </li>
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
+        <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav">
+      <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/login"]' class="nav-link">Login</a></li>
+      <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/register"]'  class="nav-link">Sign Up</a></li>
+      <li *ngIf='isUserLoggedIn()'><a [routerLink]='["/"]' (click)='logOut()'  class="nav-link">Logout</a></li>
+    </ul>
+  </div>
+</nav>
