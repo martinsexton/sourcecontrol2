@@ -1,88 +1,50 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Users
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a *ngFor="let u of retrieveUsersToDisplay(); let i = index" class="dropdown-item" (click)="displaySelectedUserDetails(u, i)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
+      </div>
+    </li>
+  </ul>
+</nav>
 <div class="container-fluid">
-  <div class="row">
-    <nav class="navbar navbar-light">
-      <ul class="nav navbar-nav navbar-left">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Employees <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li *ngFor="let u of retrieveUsersToDisplay(); let i = index"><a (click)="displaySelectedUserDetails(u, i)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-left">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Actions <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a (click)="toggleDisplayAddCertificate()">Create Certificate</a></li>
-          </ul>
-        </li>
-      </ul>
-      <div *ngIf="errors" class="alert alert-danger alert-dismissible">
-        <strong>{{ errors }}</strong>
-      </div>
-    </nav>
+  <div class="card">
+    <div class="card-header">
+      {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Details</h5>
+      <p class="card-text">Email: {{selectedUser.email}}</p>
+      <p class="card-text">Phone: {{selectedUser.phoneNumber}}</p>
+      <p class="card-text">Role: {{selectedUser.role}}</p>
+      <a (click)="toggleDisplayAddCertificate()" class="btn btn-primary">Add Certificate</a>
+    </div>
   </div>
-  <h1 class="display-4">Users</h1>
-  <div class="row" *ngIf="selectedUser && !loading">
-    <div class="card">
-      <div class="card-title">User Details</div>
-      <div class="card-body">
-        <p><span></span> {{selectedUser.firstName}} {{selectedUser.surname}}</p>
-        <p><span></span> {{selectedUser.email}}</p>
-        <p><span></span> {{selectedUser.phoneNumber}}</p>
-        <p><span></span> {{selectedUser.role}}</p>
+  <div class="card" *ngIf="selectedUserCertifications.length>0">
+    <div class="card-header">CertificationDetails</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class='table'>
+          <thead class="thead">
+            <tr>
+              <th>Description</th>
+              <th>Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'danger': hasCertExpired(crt)}">
+              <td>{{ crt.description }}</td>
+              <td>{{ crt.expiry}}</td>
+              <td><span aria-hidden="true" (click)="deleteCertification(crt)">Delete</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="selectedUserCertifications.length>0">
-    <div class="card">
-      <div class="card-title">CertificationDetails</div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class='table'>
-            <thead class="thead">
-              <tr>
-                <th>Description</th>
-                <th>Expiry Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'danger': hasCertExpired(crt)}">
-                <td>{{ crt.description }}</td>
-                <td>{{ crt.expiry}}</td>
-                <td><span aria-hidden="true" (click)="deleteCertification(crt)">Delete</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--<div class="row" *ngIf="selectedUserCertifications.length>0">
-      <div class="card">
-        <div class="card-title">CertificationDetails</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class='table'>
-              <thead class="thead">
-                <tr>
-                  <th>Description</th>
-                  <th>Expiry Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'danger': hasCertExpired(crt)}">
-                  <td>{{ crt.description }}</td>
-                  <td>{{ crt.expiry}}</td>
-                  <td><span aria-hidden="true" (click)="deleteCertification(crt)">Delete</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>-->
 </div>
 
   <!--  New Certificate Details Modal  -->

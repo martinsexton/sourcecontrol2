@@ -1,5 +1,14 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="date" placeholder="Search" aria-label="Search" name="selectedDate" [(ngModel)]="selectedDate">
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="setSelectedDate()">Search Timesheets</button>
+  </form>
+</nav>
 <div class="container-fluid">
   <h1 class="display-4">Work Sheets</h1>
+  <div *ngIf="errors" class="alert alert-danger alert-dismissible">
+    <strong>{{ errors }}</strong>
+  </div>
   <div *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index" id="accordion">
     <div class="card">
       <div class="card-header">
@@ -43,25 +52,6 @@
           </table>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <nav class="navbar navbar-light">
-      <form class="form-inline" role="search">
-        <input type="date" class="form-control" placeholder="Search" name="selectedDate" [(ngModel)]="selectedDate">
-        <button (click)="setSelectedDate()" class="btn btn-primary">Load WorkSheets</button>
-      </form>
-      <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Employees <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li *ngFor="let u of users" (click)="retrieveTimeSheetsForCustomer(u)"><a>{{u | uppercase}}</a></li>
-          </ul>
-        </li>-
-      </ul>
-    </nav>
-    <div *ngIf="errors" class="alert alert-danger alert-dismissible">
-      <strong>{{ errors }}</strong>
     </div>
   </div>
 </div>
