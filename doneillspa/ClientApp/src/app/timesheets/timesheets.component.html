@@ -24,12 +24,9 @@
       <img src="assets/images/loading3.gif" *ngIf="loading" />
     </div>
   </div>
-  <div class="row" *ngIf="!displayListOfEntries() && !loading">
-    <div>
-      <h3>Timesheets Missing!</h3>
-      <p>Please supply time sheet entries for {{selectedDay}}</p>
-      <p><a class="btn btn-primary btn-sm" (click)="toggleDisplayAddTimesheet()" role="button">Add Entry</a></p>
-    </div>
+  <div class="row jumbotron" *ngIf="!displayListOfEntries() && !loading">
+    <h1 class="display-4">{{selectedDay}} Timesheets Missing!</h1>
+    <a class="btn btn-primary btn-lg" (click)="toggleDisplayAddTimesheet()" role="button">Add Entry</a>
   </div>
   <div class="row" *ngIf="displayListOfEntries() && !loading">
     <div class="table-responsive">
