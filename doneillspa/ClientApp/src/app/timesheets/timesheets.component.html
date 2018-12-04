@@ -1,39 +1,24 @@
-<!--<div class="row">
-  <nav class="navbar navbar-light">
-    <div class="container-fluid">
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="date" class="form-control" placeholder="Search" name="selectedDate" [(ngModel)]="selectedDate">
-        </div>
-        <button (click)="setSelectedDate()" class="btn btn-primary">Load Timesheets</button>
-      </form>
-    </div>
-  </nav>
-  <div *ngIf="errors" class="alert alert-danger alert-dismissible">
-    <strong>{{ errors }}</strong>
-  </div>
-</div>-->
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{'active': selectedDay=='Mon'}" (click)="paintMonTab()">Mon</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{'active': selectedDay=='Tue'}" (click)="paintTueTab()">Tue</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{'active': selectedDay=='Wed'}" (click)="paintWedTab()">Wed</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{'active': selectedDay=='Thurs'}" (click)="paintThursTab()">Thurs</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{'active': selectedDay=='Fri'}" (click)="paintFriTab()">Fri</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{'active': selectedDay=='Sat'}" (click)="paintSatTab()">Sat</a>
+  </li>
+</ul>
 <div class="container-fluid">
-  <ul class="nav nav-tabs">
-    <li class="nav-item" [ngClass]="{'active': selectedDay=='Mon'}">
-      <a class="nav-link" (click)="paintMonTab()">Mon</a>
-    </li>
-    <li class="nav-item" [ngClass]="{'active': selectedDay=='Tue'}">
-      <a class="nav-link" (click)="paintTueTab()">Tue</a>
-    </li>
-    <li class="nav-item" [ngClass]="{'active': selectedDay=='Wed'}">
-      <a class="nav-link" (click)="paintWedTab()">Wed</a>
-    </li>
-    <li class="nav-item" [ngClass]="{'active': selectedDay=='Thurs'}">
-      <a class="nav-link" (click)="paintThursTab()">Thurs</a>
-    </li>
-    <li class="nav-item" [ngClass]="{'active': selectedDay=='Fri'}">
-      <a class="nav-link" (click)="paintFriTab()">Fri</a>
-    </li>
-    <li class="nav-item" [ngClass]="{'active': selectedDay=='Sat'}">
-      <a class="nav-link" (click)="paintSatTab()">Sat</a>
-    </li>
-  </ul>
   <div class="row">
     <div class="text-center">
       <img src="assets/images/loading3.gif" *ngIf="loading" />
@@ -66,16 +51,16 @@
             <td>{{ entry.endTime }}</td>
             <td>{{ entry.details }}</td>
             <td>{{ calculateDuration(entry) }} mins</td>
-            <td><span class="glyphicon glyphicon-trash" aria-hidden="true" (click)="removeTimesheetEntry(entry)"></span></td>
+            <td><span aria-hidden="true" (click)="removeTimesheetEntry(entry)">Delete</span></td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <td><p class="text-primary">Total Duration</p></td>
             <td></td>
             <td></td>
             <td></td>
-            <td><span class="badge badge-secondary">{{ calculateTotalDuration() }} mins</span></td>
+            <td></td>
+            <td><span class="badge badge-primary">Duration: {{ calculateTotalDuration() }} mins</span></td>
           </tr>
         </tfoot>
       </table>

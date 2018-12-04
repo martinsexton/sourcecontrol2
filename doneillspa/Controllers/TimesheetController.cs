@@ -25,7 +25,7 @@ namespace doneillspa.Controllers
         [Route("api/timesheet")]
         public IEnumerable<Timesheet> Get()
         {
-            return _repository.GetTimesheets();
+            return _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
         }
 
         [HttpGet]
