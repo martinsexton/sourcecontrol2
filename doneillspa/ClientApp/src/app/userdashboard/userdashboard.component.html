@@ -2,7 +2,7 @@
   <ul class="navbar-nav mr-auto">
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Users
+        Filter Users
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a *ngFor="let u of retrieveUsersToDisplay(); let i = index" class="dropdown-item" (click)="displaySelectedUserDetails(u, i)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
