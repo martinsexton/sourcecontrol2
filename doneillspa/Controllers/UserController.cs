@@ -17,11 +17,13 @@ namespace doneillspa.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly ITimesheetRepository _repository;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, ITimesheetRepository repository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _repository = repository;
         }
 
         [HttpGet]
@@ -81,6 +83,17 @@ namespace doneillspa.Controllers
 
             JsonResult result = new JsonResult(user.Result.UserName);
             return result;
+        }
+
+        [HttpGet]
+        [Route("api/user/timesheets/{id}")]
+        public IEnumerable<Timesheet> GetTimesheets(string id)
+        {
+            Task<ApplicationUser> user = GetUserById(id);
+
+            JsonResult result = new JsonResult(user.Result.UserName);
+
+            return _repository.GetTimesheetsByUser(result.Value.ToString()).OrderByDescending(r => r.WeekStarting);
         }
 
         [HttpGet]

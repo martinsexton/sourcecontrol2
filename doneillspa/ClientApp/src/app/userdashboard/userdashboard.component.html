@@ -21,6 +21,7 @@
       <p class="card-text">Phone: {{selectedUser.phoneNumber}}</p>
       <p class="card-text">Role: {{selectedUser.role}}</p>
       <a (click)="toggleDisplayAddCertificate()" class="btn btn-primary">Add Certificate</a>
+      <a (click)="retrieveTimesheetsForUser()" class="btn btn-primary">Load Timesheets</a>
     </div>
   </div>
   <div class="card" *ngIf="selectedUserCertifications.length>0">
@@ -43,6 +44,53 @@
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngIf="timesheets">
+    <div class="card-header">Timesheets</div>
+    <div class="card-body">
+      <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
+        <div class="col-md-4">
+          <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
+            Week Beginning {{ ts.weekStarting | date:'fullDate'}}
+          </a>
+        </div>
+        <div class="col-md-8 collapse" id="collapseExample{{i}}">
+          <div class="table-responsive">
+            <table class='table'>
+              <thead class="thead-light">
+                <tr>
+                  <th>Day</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Project</th>
+                  <th>Details</th>
+                  <th>Duration</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tse of getTimesheetEntriesForTimesheet(i)">
+                  <td>{{ tse.day }}</td>
+                  <td>{{ tse.startTime }}</td>
+                  <td>{{ tse.endTime }}</td>
+                  <td>{{ tse.project }}</td>
+                  <td>{{ tse.details }}</td>
+                  <td>{{ calculateDuration(tse) }} mins</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>

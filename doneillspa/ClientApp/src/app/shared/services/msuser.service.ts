@@ -97,6 +97,18 @@ export class MsUserService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
+  retrieveTimesheets(id : string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get(this._baseurl + 'api/user/timesheets/' + id,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .catch(this.handleError);
+  }
+
   logout() {
     localStorage.removeItem('auth_token');
     this.loggedIn = false;

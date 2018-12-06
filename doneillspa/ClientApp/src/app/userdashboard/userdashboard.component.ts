@@ -32,6 +32,8 @@ export class UserDashboardComponent {
 
   public filterName: string;
 
+  public timesheets: Timesheet[];
+
   public users: ApplicationUser[];
   public filteredUsers: ApplicationUser[];
   public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
@@ -164,5 +166,34 @@ export class UserDashboardComponent {
       }
       this.newCertificate = new Certificate(0, new Date(), new Date(), "")
     }, error => console.error(error));
+  }
+
+  retrieveTimesheetsForDisplay() {
+    return this.timesheets;
+  }
+
+  getTimesheetEntriesForTimesheet(index) {
+    let ts = this.timesheets[index];
+    return ts.timesheetEntries;
+  }
+
+  calculateDuration(entry: TimesheetEntry): number {
+    var start = new Date("2018-01-01 " + entry.startTime);
+    var end = new Date("2018-01-01 " + entry.endTime);
+
+    var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+    var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+    return elapsedTimeInMins;
+  }
+
+  retrieveTimesheetsForUser() {
+    this._msuserService.retrieveTimesheets(this.selectedUser.id).subscribe(result => {
+      this.loading = false;
+      this.timesheets = result;
+    }, error => {
+      this.errors = error
+      this.loading = false;
+    });
   }
 }
