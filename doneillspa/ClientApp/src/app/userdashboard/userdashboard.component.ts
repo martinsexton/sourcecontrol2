@@ -207,16 +207,6 @@ export class UserDashboardComponent {
       //Update the identifier of the newly created cert so if we delete it, it will be deleted on database
       this.newCertificate.id = result as number;
       this.selectedUserCertifications.push(this.newCertificate);
-      //Need to reflect the change in the user also.
-      for (let u of this.users) {
-        if ((u.firstName + u.surname) == (this.selectedUser.firstName + this.selectedUser.surname)) {
-          if (!u.certifications) {
-            //If array is null, then create empty on
-            u.certifications = [];
-          }
-          u.certifications.push(this.newCertificate);
-        }
-      }
       this.newCertificate = new Certificate(0, new Date(), new Date(), "")
     }, error => console.error(error));
   }
@@ -227,16 +217,6 @@ export class UserDashboardComponent {
       //Update the identifier of the newly created cert so if we delete it, it will be deleted on database
       this.newEmailNotification.id = result as number;
       this.selectedUserNotifications.push(this.newEmailNotification);
-      //Need to reflect the change in the user also.
-      for (let u of this.users) {
-        if ((u.firstName + u.surname) == (this.selectedUser.firstName + this.selectedUser.surname)) {
-          if (!u.emailNotifications) {
-            //If array is null, then create empty on
-            u.emailNotifications = [];
-          }
-          u.emailNotifications.push(this.newEmailNotification);
-        }
-      }
       this.newEmailNotification = new EmailNotification(0, '', '', '');
     }, error => console.error(error));
   }
