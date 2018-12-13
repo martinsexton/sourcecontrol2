@@ -5,17 +5,6 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigDay", "BigDay\BigDay.csproj", "{68067752-C770-4CE0-8B31-F3D389177396}"
 EndProject
-<<<<<<< HEAD
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeddingServices", "..\MartinAndOrlasWeddingApplication\WeddingServices\WeddingServices.csproj", "{6CE2F69B-F103-4CB8-B317-A517157E8D3C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService", "EmailService\EmailService.csproj", "{81446415-59C1-49E3-9E07-E508CE4A43DD}"
-EndProject
-=======
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService", "EmailService\EmailService.csproj", "{81446415-59C1-49E3-9E07-E508CE4A43DD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeddingServices", "..\MartinAndOrlasWeddingApplication\WeddingServices\WeddingServices.csproj", "{6CE2F69B-F103-4CB8-B317-A517157E8D3C}"
-EndProject
->>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,24 +15,6 @@ Global
 		{68067752-C770-4CE0-8B31-F3D389177396}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68067752-C770-4CE0-8B31-F3D389177396}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68067752-C770-4CE0-8B31-F3D389177396}.Release|Any CPU.Build.0 = Release|Any CPU
-<<<<<<< HEAD
-		{6CE2F69B-F103-4CB8-B317-A517157E8D3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CE2F69B-F103-4CB8-B317-A517157E8D3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CE2F69B-F103-4CB8-B317-A517157E8D3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CE2F69B-F103-4CB8-B317-A517157E8D3C}.Release|Any CPU.Build.0 = Release|Any CPU
-=======
->>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
-		{81446415-59C1-49E3-9E07-E508CE4A43DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81446415-59C1-49E3-9E07-E508CE4A43DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81446415-59C1-49E3-9E07-E508CE4A43DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81446415-59C1-49E3-9E07-E508CE4A43DD}.Release|Any CPU.Build.0 = Release|Any CPU
-<<<<<<< HEAD
-=======
-		{6CE2F69B-F103-4CB8-B317-A517157E8D3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CE2F69B-F103-4CB8-B317-A517157E8D3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CE2F69B-F103-4CB8-B317-A517157E8D3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CE2F69B-F103-4CB8-B317-A517157E8D3C}.Release|Any CPU.Build.0 = Release|Any CPU
->>>>>>> c3571c688adaa767c8b3384d6b31352b4edcacfe
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
