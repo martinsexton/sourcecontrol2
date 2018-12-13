@@ -1,8 +1,0 @@
-C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileServiceClient\obj\Debug\FileServiceClient.csprojResolveAssemblyReference.cache
-C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileServiceClient\bin\Debug\FileServiceClient.exe.config
-C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileServiceClient\bin\Debug\FileServiceClient.exe
-C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileServiceClient\bin\Debug\FileServiceClient.pdb
-C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileServiceClient\obj\Debug\FileServiceClient.exe
-C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileServiceClient\obj\Debug\FileServiceClient.pdb
-C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileServiceClient\bin\Debug\FileShareClient.dll
-C:\Users\martin.sexton\Source\Repos\NewRepo\FileShareService\FileServiceClient\bin\Debug\FileShareClient.pdb
