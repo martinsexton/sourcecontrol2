@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="WCFServiceWebRole1.BigDaySOAPService" CodeBehind="Service1.svc.cs" %>
