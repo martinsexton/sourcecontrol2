@@ -1,56 +1,3 @@
-<!--<div class='main-nav'>
-    <div class='navbar navbar-inverse'>
-        <div class='navbar-header'>
-            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse' [attr.aria-expanded]='isExpanded' (click)='toggle()'>
-                <span class='sr-only'>Toggle navigation</span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-            </button>
-            <a class='navbar-brand' [routerLink]='["/"]'>Denis O'Neill Electrical</a>
-        </div>
-        <div class='clearfix'></div>
-        <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }'>
-          <ul class='nav navbar-nav'>
-            <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-              <a [routerLink]='["/"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-home'></span> Home
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isAdministrator()'>
-              <a [routerLink]='["/projects"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-folder-open'></span> List Projects
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isAdministrator()'>
-              <a [routerLink]='["/dashboard"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-dashboard'></span> Timesheets Dashboard
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isAdministrator()'>
-              <a [routerLink]='["/userdashboard"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-dashboard'></span> User Dashboard
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isAdministrator()'>
-              <a [routerLink]='["/projecthealth"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-heart-empty'></span> Project Health
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]' *ngIf='isUserLoggedIn() && isWorker()'>
-              <a [routerLink]='["/timesheets"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-calendar'></span>Timesheets
-              </a>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav">
-            <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/login"]'><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/register"]'><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li *ngIf='isUserLoggedIn()'><a [routerLink]='["/"]' (click)='logOut()'><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-          </ul>
-        </div>
-    </div>
-</div>-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">Denis O'Neill Electrical</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,14 +12,14 @@
         <a [routerLink]='["/projects"]' class="nav-link">Projects</a>
       </li>
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
-        <a [routerLink]='["/dashboard"]' class="nav-link">Dashboard</a>
+        <a [routerLink]='["/dashboard"]' class="nav-link">Worksheets</a>
       </li>
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/userdashboard"]' class="nav-link">Users</a>
       </li>
-      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
+      <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/projecthealth"]' class="nav-link">Project Health</a>
-      </li>
+      </li>-->
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
         <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
       </li>

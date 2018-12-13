@@ -20,9 +20,9 @@
       <p class="card-text">Email: {{selectedUser.email}}</p>
       <p class="card-text">Phone: {{selectedUser.phoneNumber}}</p>
       <p class="card-text">Role: {{selectedUser.role}}</p>
-      <a (click)="toggleDisplayAddCertificate()" class="btn btn-primary">Add Certificate</a>
-      <a (click)="toggleDisplayAddEmailNotification()" class="btn btn-primary">Add Notification</a>
-      <a (click)="retrieveTimesheetsForUser()" class="btn btn-primary">Load Timesheets</a>
+      <button type="button" class="btn btn-primary" (click)="toggleDisplayAddCertificate()">Add Certificate</button>
+      <button type="button" class="btn btn-primary" (click)="toggleDisplayAddEmailNotification()">Add Notification</button>
+      <button type="button" class="btn btn-primary" (click)="retrieveTimesheetsForUser()">Load Timesheets</button>
     </div>
   </div>
   <div class="row">
