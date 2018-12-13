@@ -8,8 +8,6 @@ namespace doneillspa.Models
 {
     public class Timesheet
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-
         public long Id { get; set; }
         public string Username { get; set; }
         public DateTime WeekStarting { get; set; }
