@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<PublicConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
-  <WadCfg>
-    <DiagnosticMonitorConfiguration overallQuotaInMB="4096">
-      <Logs scheduledTransferPeriod="PT1M" scheduledTransferLogLevelFilter="Information" />
-    </DiagnosticMonitorConfiguration>
-  </WadCfg>
-  <StorageAccount>bigdayservicestorage</StorageAccount>
-</PublicConfig>
