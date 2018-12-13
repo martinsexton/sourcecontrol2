@@ -36,7 +36,8 @@ namespace doneillspa
             services.AddScoped<ITimesheetRepository>(_ => new TimesheetRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<ICertificationRepository>(_ => new CertificationRepository(_.GetService<ApplicationContext>()));
-            
+            services.AddScoped<INotificationRepository>(_ => new NotificationRepository(_.GetService<ApplicationContext>()));
+
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
             services.AddCors();

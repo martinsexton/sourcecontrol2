@@ -41,6 +41,7 @@
     <None Remove="ClientApp\src\app\directives\email.validator.directive.ts" />
     <None Remove="ClientApp\src\app\directives\focus.directive.ts" />
     <None Remove="ClientApp\src\app\directives\password.validator.directive.ts" />
+    <None Remove="ClientApp\src\app\emailnotification.ts" />
     <None Remove="ClientApp\src\app\identityrole.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projecteffortdto.ts" />
@@ -52,6 +53,7 @@
     <None Remove="ClientApp\src\app\shared\services\certificate.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\httpservicebase.ts" />
     <None Remove="ClientApp\src\app\shared\services\msuser.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\notification.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\timesheet.service.ts" />
     <None Remove="ClientApp\src\app\shared\utils\config.service.ts" />
     <None Remove="ClientApp\src\app\Timesheet.ts" />
@@ -71,6 +73,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\directives\email.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\focus.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\password.validator.directive.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\emailnotification.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\identityrole.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecteffortdto.ts" />
@@ -78,6 +81,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\certificate.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\httpservicebase.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\notification.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\project.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\credentials.interface.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\loginresponse.interface.ts" />

@@ -26,6 +26,7 @@ import { myFocus } from './directives/focus.directive';
 /* Import Services */
 import { ProjectService } from './shared/services/project.service';
 import { CertificateService } from './shared/services/certificate.service';
+import { NotificationService } from './shared/services/notification.service';
 import { TimesheetService } from './shared/services/timesheet.service';
 import { ConfigService } from './shared/utils/config.service';
 import { MsUserService } from './shared/services/msuser.service';
@@ -56,7 +57,7 @@ import { AuthGuard } from './auth.guard';
     routing,
     ChartsModule
   ],
-  providers: [ProjectService, TimesheetService, CertificateService, MsUserService, AuthGuard],
+  providers: [ProjectService, TimesheetService, CertificateService, NotificationService, MsUserService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

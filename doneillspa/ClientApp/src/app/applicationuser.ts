@@ -1,7 +1,9 @@
 import { Certificate } from './certificate';
+import { EmailNotification } from './emailnotification';
 
 export class ApplicationUser {
   public certifications: Array<Certificate> = new Array();
+  public emailNotifications: Array<EmailNotification> = new Array();
 
   constructor(
     public id: string,

@@ -12,9 +12,10 @@ using System;
 namespace doneillspa.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20181213063243_Notificationsmodeladded")]
+    partial class Notificationsmodeladded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,6 +103,8 @@ namespace doneillspa.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ActivationDate");
+
+                    b.Property<string>("Description");
 
                     b.Property<int>("Type");
 

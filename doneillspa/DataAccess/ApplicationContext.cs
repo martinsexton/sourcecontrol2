@@ -18,6 +18,7 @@ namespace doneillspa.DataAccess
 
         public DbSet<Project> Project { get; set; }
         public DbSet<Certification> Certification { get; set; }
+        public DbSet<EmailNotification> EmailNotification { get; set; }
         public DbSet<Timesheet> Timesheet { get; set; }
         public DbSet<TimesheetEntry> TimesheetEntry { get; set; }
 
@@ -32,6 +33,16 @@ namespace doneillspa.DataAccess
                 .HasOne<ApplicationUser>(n => n.User)
                 .WithMany(a => a.Certifications)
                 .HasForeignKey(n => n.UserId);
+
+            modelBuilder.Entity<EmailNotification>()
+               .HasOne<ApplicationUser>(n => n.User)
+               .WithMany(a => a.EmailNotifications)
+               .HasForeignKey(n => n.UserId);
+
+            modelBuilder.Entity<Notification>()
+                .ToTable("Notifications")
+                .HasDiscriminator<int>("Type")
+                .HasValue<EmailNotification>(1);
         }
     }
 }

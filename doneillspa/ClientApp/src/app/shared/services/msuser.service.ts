@@ -12,6 +12,7 @@ import { LoginResponse } from '../models/loginresponse.interface';
 import { Certificate } from '../../certificate';
 import { IdentityRole } from '../../identityrole';
 import { HttpServiceBase } from './httpservicebase';
+import { EmailNotification } from '../../emailnotification';
 
 @Injectable()
 export class MsUserService extends HttpServiceBase{
@@ -88,7 +89,19 @@ export class MsUserService extends HttpServiceBase{
   addCertificate(id: string, cert: Certificate) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.put(this._baseurl + 'api/user/'+id, cert,
+    return this._httpClient.put(this._baseurl + 'api/user/'+id+'/certificates', cert,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .catch(this.handleError);
+  }
+
+  addEmailNotification(id: string, not: EmailNotification) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.put(this._baseurl + 'api/user/' + id + '/notifications', not,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

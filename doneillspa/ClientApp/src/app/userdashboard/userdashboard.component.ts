@@ -16,6 +16,8 @@ import {
 } from '../shared/services/timesheet.service';
 
 import { CertificateService } from '../shared/services/certificate.service';
+import { EmailNotification } from '../emailnotification';
+import { NotificationService } from '../shared/services/notification.service';
 
 declare var $: any;
 
@@ -27,7 +29,8 @@ declare var $: any;
 export class UserDashboardComponent {
   public selectedUser: ApplicationUser;
   public selectedUserRow: number;
-  public selectedUserCertifications: Certificate[];
+  public selectedUserCertifications: Certificate[] = [];
+  public selectedUserNotifications: EmailNotification[] = [];
   public errors: string;
 
   public filterName: string;
@@ -37,11 +40,15 @@ export class UserDashboardComponent {
   public users: ApplicationUser[];
   public filteredUsers: ApplicationUser[];
   public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
+  public newEmailNotification: EmailNotification = new EmailNotification(0, '', '', '');
 
   displayAddCert = false;
+  displayAddNotification = false;
   public loading = true;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _msuserService: MsUserService, private _certificationService: CertificateService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService,
+    private _timesheetService: TimesheetService, private _msuserService: MsUserService, private _certificationService: CertificateService,
+    private _notificationService: NotificationService) {
     this._msuserService.getUsers().subscribe(result => {
       this.users = result;
       this.loading = false;
@@ -53,6 +60,12 @@ export class UserDashboardComponent {
         }
         else {
           this.selectedUserCertifications = new Array<Certificate>();
+        }
+        if (this.selectedUser.emailNotifications) {
+          this.selectedUserNotifications = this.selectedUser.emailNotifications;
+        }
+        else {
+          this.selectedUserNotifications = new Array<EmailNotification>();
         }
       }
     }, error => this.errors = error)
@@ -102,9 +115,34 @@ export class UserDashboardComponent {
       }, error => this.errors = error)
   }
 
+  deleteNotification(not) {
+    this._notificationService.deleteNotification(not).subscribe(
+      res => {
+        console.log(res);
+        this.removeFromNotificationArrayList(this.selectedUserNotifications, not);
+        //Need to reflect the change in the user also.
+        for (let u of this.users) {
+          if ((u.firstName + u.surname) == (this.selectedUser.firstName + this.selectedUser.surname)) {
+            if (u.certifications) {
+              this.removeFromNotificationArrayList(u.emailNotifications, not);
+            }
+          }
+        }
+      }, error => this.errors = error)
+  }
+
   removeFromArrayList(list :Certificate[], crt: Certificate) {
     for (let item of list) {
       if (crt.id == item.id) {
+        list.splice(list.indexOf(item), 1);
+        break;
+      }
+    }
+  }
+
+  removeFromNotificationArrayList(list: EmailNotification[], not: EmailNotification) {
+    for (let item of list) {
+      if (not.id == item.id) {
         list.splice(list.indexOf(item), 1);
         break;
       }
@@ -137,6 +175,15 @@ export class UserDashboardComponent {
     }
   }
 
+  toggleDisplayAddEmailNotification() {
+    this.displayAddNotification = !this.displayAddNotification;
+    if (this.displayAddNotification) {
+      $("#myNewEmailNotificationModal").modal('show');
+    } else {
+      $("#myNewEmailNotificationModal").modal('hide');
+    }
+  }
+
   displaySelectedUserDetails(user, index) {
     this.selectedUser = user;
     this.selectedUserRow = index;
@@ -145,6 +192,12 @@ export class UserDashboardComponent {
     }
     else {
       this.selectedUserCertifications = new Array<Certificate>();
+    }
+    if (this.selectedUser.emailNotifications) {
+      this.selectedUserNotifications = this.selectedUser.emailNotifications;
+    }
+    else {
+      this.selectedUserNotifications = new Array<EmailNotification>();
     }
   }
 
@@ -165,6 +218,26 @@ export class UserDashboardComponent {
         }
       }
       this.newCertificate = new Certificate(0, new Date(), new Date(), "")
+    }, error => console.error(error));
+  }
+
+  addNotification() {
+    this._msuserService.addEmailNotification(this.selectedUser.id, this.newEmailNotification).subscribe(result => {
+      $("#myNewEmailNotificationModal").modal('hide');
+      //Update the identifier of the newly created cert so if we delete it, it will be deleted on database
+      this.newEmailNotification.id = result as number;
+      this.selectedUserNotifications.push(this.newEmailNotification);
+      //Need to reflect the change in the user also.
+      for (let u of this.users) {
+        if ((u.firstName + u.surname) == (this.selectedUser.firstName + this.selectedUser.surname)) {
+          if (!u.emailNotifications) {
+            //If array is null, then create empty on
+            u.emailNotifications = [];
+          }
+          u.emailNotifications.push(this.newEmailNotification);
+        }
+      }
+      this.newEmailNotification = new EmailNotification(0, '', '', '');
     }, error => console.error(error));
   }
 

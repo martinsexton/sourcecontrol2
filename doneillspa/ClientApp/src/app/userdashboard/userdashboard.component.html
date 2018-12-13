@@ -10,7 +10,7 @@
     </li>
   </ul>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="selectedUser">
   <div class="card">
     <div class="card-header">
       {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}
@@ -21,35 +21,65 @@
       <p class="card-text">Phone: {{selectedUser.phoneNumber}}</p>
       <p class="card-text">Role: {{selectedUser.role}}</p>
       <a (click)="toggleDisplayAddCertificate()" class="btn btn-primary">Add Certificate</a>
+      <a (click)="toggleDisplayAddEmailNotification()" class="btn btn-primary">Add Notification</a>
       <a (click)="retrieveTimesheetsForUser()" class="btn btn-primary">Load Timesheets</a>
     </div>
   </div>
-  <div class="card" *ngIf="selectedUserCertifications.length>0">
-    <div class="card-header">CertificationDetails</div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class='table'>
-          <thead class="thead">
-            <tr>
-              <th>Description</th>
-              <th>Expiry Date</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'danger': hasCertExpired(crt)}">
-              <td>{{ crt.description }}</td>
-              <td>{{ crt.expiry}}</td>
-              <td><span aria-hidden="true" (click)="deleteCertification(crt)">Delete</span></td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card" *ngIf="selectedUserCertifications.length>0">
+        <div class="card-header">CertificationDetails</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class='table'>
+              <thead class="thead">
+                <tr>
+                  <th>Description</th>
+                  <th>Expiry Date</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'danger': hasCertExpired(crt)}">
+                  <td>{{ crt.description }}</td>
+                  <td>{{ crt.expiry}}</td>
+                  <td><span aria-hidden="true" (click)="deleteCertification(crt)">Delete</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card" *ngIf="selectedUserNotifications.length>0">
+        <div class="card-header">Notification Details</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class='table'>
+              <thead class="thead">
+                <tr>
+                  <th>Subject</th>
+                  <th>Body</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let not of selectedUserNotifications">
+                  <td>{{ not.subject }}</td>
+                  <td>{{ not.body}}</td>
+                  <td><span aria-hidden="true" (click)="deleteNotification(not)">Delete</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="card" *ngIf="timesheets">
+  <div class="card">
     <div class="card-header">Timesheets</div>
-    <div class="card-body">
+    <div class="card-body" *ngIf="timesheets">
       <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
         <div class="col-md-4">
           <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
@@ -119,6 +149,33 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button (click)="addCertificateEntry()" class="btn btn-primary">Save Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- New Email Notification Details Modal-->
+  <div class="modal fade" id="myNewEmailNotificationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">New Email Notification</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="description">Subject</label>
+              <input type="text" [(ngModel)]="newEmailNotification.subject" name="subject" class="form-control" id="subject" rows="3">
+            </div>
+            <div class="form-group">
+              <label for="body">Body</label>
+              <textarea [(ngModel)]="newEmailNotification.body" name="body" class="form-control" id="body" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button (click)="addNotification()" class="btn btn-primary">Save Notification</button>
         </div>
       </div>
     </div>

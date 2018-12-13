@@ -11,5 +11,6 @@ namespace doneillspa.Models
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public ICollection<Certification> Certifications { get; set; }
+        public ICollection<EmailNotification> EmailNotifications { get; set; }
     }
 }

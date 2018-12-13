@@ -37,7 +37,7 @@ namespace doneillspa.Controllers
         [Route("api/user")]
         public IEnumerable<ApplicationUserDto> Get()
         {
-            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).ToList();
+            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).ToList();
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
 
@@ -69,6 +69,24 @@ namespace doneillspa.Controllers
                         certs.Add(dtocert);
                     }
                     dtouser.Certifications = certs;
+                }
+
+                if (user.EmailNotifications.Count > 0)
+                {
+                    List<EmailNotificationDto> notifications = new List<EmailNotificationDto>();
+                    foreach (EmailNotification not in user.EmailNotifications)
+                    {
+                        EmailNotificationDto notdto = new EmailNotificationDto();
+                        notdto.Subject = not.Subject;
+                        notdto.Body = not.Body;
+                        notdto.DestinationEmail = not.DestinationEmail;
+                        notdto.Id = not.Id;
+
+                        notifications.Add(notdto);
+                    }
+
+                    dtouser.EmailNotifications = notifications;
+
                 }
                 dtousers.Add(dtouser);
             }
@@ -156,7 +174,7 @@ namespace doneillspa.Controllers
         }
 
         [HttpPut()]
-        [Route("api/user/{id}")]
+        [Route("api/user/{id}/certificates")]
         public IActionResult Put(string id, [FromBody]CertificationDto t)
         {
             ApplicationUser user = GetUserIncludingCerts(id);
@@ -176,9 +194,31 @@ namespace doneillspa.Controllers
             return Ok(cert.Id);
         }
 
+        [HttpPut()]
+        [Route("api/user/{id}/notifications")]
+        public IActionResult Put(string id, [FromBody]EmailNotificationDto t)
+        {
+            ApplicationUser user = GetUserIncludingCerts(id);
+
+            EmailNotification notification = new EmailNotification();
+            notification.DestinationEmail = user.Email;
+            notification.Body = t.Body;
+            notification.Subject = t.Subject;
+            notification.User = user;
+            notification.UserId = user.Id;
+            notification.ActivationDate = new DateTime();
+
+            user.EmailNotifications.Add(notification);
+
+            Task<IdentityResult> result = _userManager.UpdateAsync(user);
+            IdentityResult r = result.Result;
+
+            return Ok(notification.Id);
+        }
+
         private ApplicationUser GetUserIncludingCerts(string id)
         {
-            return _userManager.Users.Include(r => r.Certifications).Where(r => r.Id.ToString() == id).FirstOrDefault();
+            return _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).Where(r => r.Id.ToString() == id).FirstOrDefault();
         }
 
         private async Task<ApplicationUser> GetUserById(string id)
