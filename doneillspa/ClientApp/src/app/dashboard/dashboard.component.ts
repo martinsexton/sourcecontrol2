@@ -98,6 +98,7 @@ export class DashboardComponent {
     var startOfWeek = new Date();
     startOfWeek.setDate(newDate.getDate() - (newDate.getDay() - 1));
     startOfWeek.setMonth(newDate.getMonth());
+    startOfWeek.setFullYear(newDate.getFullYear());
 
     //Retrieve Timesheets For display
     this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
