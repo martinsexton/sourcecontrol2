@@ -9,6 +9,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
 import { TimesheetComponent } from './timesheets/timesheets.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LabourComponent } from './labour/labour.componenet';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { ProjectHealthComponent } from './projecthealth/projecthealth.component';
@@ -25,6 +26,7 @@ const appRoutes: Routes = [
   { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
   { path: 'timesheets', component: TimesheetComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'labour', component: LabourComponent, canActivate: [AuthGuard] },
   { path: 'userdashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
   { path: 'projecthealth', component: ProjectHealthComponent, canActivate: [AuthGuard] }
 ];

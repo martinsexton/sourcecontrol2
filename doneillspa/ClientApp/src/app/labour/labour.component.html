@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col border">Week</div>
+    <div class="col border">Administrator</div>
+    <div class="col border">Supervisor</div>
+    <div class="col border">ChargeHand</div>
+    <div class="col border">ElectR1</div>
+    <div class="col border">ElectR2</div>
+    <div class="col border">ElectR3</div>
+    <div class="col border">Temp</div>
+    <div class="col border">First Year Apprentice</div>
+    <div class="col border">Second Year Apprentice</div>
+    <div class="col border">Third Year Apprentice</div>
+    <div class="col border">Fourth Year Apprentice</div>
+  </div>
+  <div class="row" *ngFor="let lw of labourWeeks">
+    <div class="col border">{{ lw.week | date:'fullDate'}}</div>
+    <div class="col border">{{lw.administratorHours}}</div>
+    <div class="col border">{{lw.supervisorHours}}</div>
+    <div class="col border">{{lw.chargehandHours}}</div>
+    <div class="col border">{{lw.elecR1Hours}}</div>
+    <div class="col border">{{lw.elecR2Hours}}</div>
+    <div class="col border">{{lw.elecR3Hours}}</div>
+    <div class="col border">{{lw.tempHours}}</div>
+    <div class="col border">{{lw.firstYearApprenticeHours}}</div>
+    <div class="col border">{{lw.secondYearApprenticeHours}}</div>
+    <div class="col border">{{lw.thirdYearApprenticeHours}}</div>
+    <div class="col border">{{lw.fourthYearApprenticeHours}}</div>
+  </div>
+</div>

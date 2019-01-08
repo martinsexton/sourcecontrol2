@@ -59,7 +59,7 @@ export class TimesheetComponent {
     startOfWeek.setDate(this.currentDate.getDate() - (this.currentDate.getDay() - 1))
 
     //Setting up default timesheet and timesheet entries
-    this.activeTimeSheet = new Timesheet(0, localStorage.getItem('username'), localStorage.getItem('client_id'), startOfWeek);
+    this.activeTimeSheet = new Timesheet(0, localStorage.getItem('username'), localStorage.getItem('client_id'), localStorage.getItem('role'), startOfWeek);
     this.newEntry = new TimesheetEntry("", "", "", "", "");
 
     this._projectService.getProjects().subscribe(result => {

@@ -15,11 +15,14 @@
         <a [routerLink]='["/dashboard"]' class="nav-link">Worksheets</a>
       </li>
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
+        <a [routerLink]='["/labour"]' class="nav-link">Labour Details</a>
+      </li>
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/userdashboard"]' class="nav-link">Users</a>
       </li>
       <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
-        <a [routerLink]='["/projecthealth"]' class="nav-link">Project Health</a>
-      </li>-->
+    <a [routerLink]='["/projecthealth"]' class="nav-link">Project Health</a>
+  </li>-->
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
         <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
       </li>

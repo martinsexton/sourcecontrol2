@@ -10,6 +10,7 @@ namespace doneillspa.Models
     {
         public long Id { get; set; }
         public string Username { get; set; }
+        public string Role { get; set; }
         public DateTime WeekStarting { get; set; }
         public Guid Owner { get; set; }
 

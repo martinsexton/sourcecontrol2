@@ -18,6 +18,7 @@ import { UserDashboardComponent } from './userdashboard/userdashboard.component'
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
 import { ProjectHealthComponent } from './projecthealth/projecthealth.component';
+import { LabourComponent } from './labour/labour.componenet';
 
 import { EmailValidator } from './directives/email.validator.directive';
 import { PasswordValidator } from './directives/password.validator.directive';
@@ -45,6 +46,7 @@ import { AuthGuard } from './auth.guard';
     ProjectComponent,
     TimesheetComponent,
     DashboardComponent,
+    LabourComponent,
     UserDashboardComponent,
     EmailValidator,
     PasswordValidator,
