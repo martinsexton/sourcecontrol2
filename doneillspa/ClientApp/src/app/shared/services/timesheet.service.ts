@@ -60,6 +60,18 @@ export class TimesheetService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
+  getLabourWeekDetails() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/labourdetails',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .catch(this.handleError);
+  }
+
   getTimesheet(year: number, month: number, day: number) {
     let authToken = localStorage.getItem('auth_token');
     let headers = new HttpHeaders();
