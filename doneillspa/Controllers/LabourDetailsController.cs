@@ -25,6 +25,38 @@ namespace doneillspa.Controllers
             Rates = _rateRepository.GetRates().ToList<LabourRate>();
         }
 
+        [Route("api/labourdetails/rates/{id}")]
+        public JsonResult Delete(long id)
+        {
+            var existingRate = _rateRepository.GetRateById(id);
+
+            if (existingRate != null)
+            {
+                _rateRepository.DeleteRate(existingRate);
+                _rateRepository.Save();
+
+                return Json(Ok());
+            }
+
+            return Json(Ok());
+        }
+
+        [HttpPost]
+        [Route("api/labourdetails/rates")]
+        public IActionResult Post([FromBody]LabourRate rate)
+        {
+            if (rate == null)
+            {
+                return BadRequest();
+            }
+
+            _rateRepository.InsertRate(rate);
+            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
+            _rateRepository.Save();
+
+            return Ok();
+        }
+
         [HttpGet]
         [Route("api/labourdetails/rates")]
         public IEnumerable<LabourRate> GetRates()

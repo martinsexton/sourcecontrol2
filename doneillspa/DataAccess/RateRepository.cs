@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace doneillspa.DataAccess
 {
@@ -24,6 +25,33 @@ namespace doneillspa.DataAccess
         {
             return _context.LabourRate.Where(r => r.Role.Equals(role) && r.EffectiveFrom <= date && r.EffectiveTo >= date)
                 .FirstOrDefault();
+        }
+
+        public void InsertRate(LabourRate r)
+        {
+            _context.LabourRate.Add(r);
+        }
+
+        public void UpdateRate(LabourRate r)
+        {
+            _context.Entry(r).State = EntityState.Modified;
+        }
+
+        public void DeleteRate(LabourRate r)
+        {
+            _context.Entry(r).State = EntityState.Deleted;
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
+
+        public LabourRate GetRateById(long id)
+        {
+            return _context.LabourRate
+                        .Where(b => b.Id == id)
+                        .FirstOrDefault();
         }
     }
 }

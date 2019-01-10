@@ -18,12 +18,13 @@ namespace doneillspa.Models
         {
             foreach(LabourRate r in Rates)
             {
-                if (r.Role.Equals(role) && r.EffectiveFrom <= onDate && r.EffectiveTo >= onDate)
+                if (r.Role.Equals(role) && r.EffectiveFrom <= onDate && (r.EffectiveTo == null || r.EffectiveTo >= onDate))
                 {
                     return r.RatePerHour;
                 }
             }
-            throw new Exception(string.Format("Rate not found for role {0} on date {1}",role,onDate));
+            //Default Value
+            return 0.0;
         }
 
         public DateTime Week { get; set; }
@@ -59,7 +60,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (ElecR1Minutes / 60) * GetRate("ElecR1", this.Week); ;
+                return (ElecR1Minutes / 60) * GetRate("ElectR1", this.Week); ;
             }
         }
 
@@ -68,7 +69,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (ElecR2Minutes / 60) * GetRate("ElecR2", this.Week); ;
+                return (ElecR2Minutes / 60) * GetRate("ElectR2", this.Week); ;
             }
         }
 
@@ -77,7 +78,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (ElecR3Minutes / 60) * GetRate("ElecR3", this.Week); ;
+                return (ElecR3Minutes / 60) * GetRate("ElectR3", this.Week); ;
             }
         }
 
@@ -123,6 +124,14 @@ namespace doneillspa.Models
             get
             {
                 return (FourthYearApprenticeMinutes / 60) * GetRate("Fourth Year Apprentice", this.Week);
+            }
+        }
+
+        public double TotalCost
+        {
+            get
+            {
+                return this.ChargehandCost + this.ElecR1Cost + this.ElecR2Cost + this.ElecR3Cost + this.FirstYearApprenticeCost + this.SecondYearApprenticeCost + this.ThirdYearApprenticeCost + this.FourthYearApprenticeCost;
             }
         }
     }

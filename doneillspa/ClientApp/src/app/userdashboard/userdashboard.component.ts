@@ -187,6 +187,10 @@ export class UserDashboardComponent {
   displaySelectedUserDetails(user, index) {
     this.selectedUser = user;
     this.selectedUserRow = index;
+
+    //Clear Timesheets
+    this.timesheets = new Array<Timesheet>();
+
     if (this.selectedUser.certifications) {
       this.selectedUserCertifications = this.selectedUser.certifications;
     }

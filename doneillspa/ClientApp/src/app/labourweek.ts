@@ -22,6 +22,7 @@ export class LabourWeek {
     public thirdYearApprenticeMinutes: number,
     public thirdYearCost: number,
     public fourthYearApprenticeMinutes: number,
-    public fourthYearCost: number
+    public fourthYearCost: number,
+    public totalCost:number
   ) { }
 }

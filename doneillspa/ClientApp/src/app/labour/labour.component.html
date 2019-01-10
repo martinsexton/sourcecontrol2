@@ -21,6 +21,7 @@
     <div class="col border">Third Year Apprentice Cost</div>
     <!--<div class="col border">Fourth Year Apprentice</div>-->
     <div class="col border">Fourth Year Apprentice Cost</div>
+    <div class="col border">Total Labour Cost</div>
   </div>
   <div class="row" *ngFor="let lw of labourWeeks">
     <div class="col border">{{ lw.week | date:'fullDate'}}</div>
@@ -54,5 +55,7 @@
 
     <!--<div class="col border">{{lw.fourthYearApprenticeMinutes/60}}</div>-->
     <div class="col border">{{lw.fourthYearApprenticeCost | currency}}</div>
+
+    <div class="col border">{{lw.totalCost | currency}}</div>
   </div>
 </div>

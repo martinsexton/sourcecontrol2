@@ -10,5 +10,10 @@ namespace doneillspa.DataAccess
     {
         LabourRate GetRate(string role, DateTime date);
         IEnumerable<LabourRate> GetRates();
+        LabourRate GetRateById(long id);
+        void InsertRate(LabourRate r);
+        void UpdateRate(LabourRate r);
+        void DeleteRate(LabourRate r);
+        void Save();
     }
 }

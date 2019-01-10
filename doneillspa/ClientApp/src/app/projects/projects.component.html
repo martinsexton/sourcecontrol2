@@ -1,5 +1,8 @@
 <div class="container-fluid">
   <p *ngIf="!projects"><em>Loading...</em></p>
+  <div *ngIf="errors" class="alert alert-danger alert-dismissible">
+    <strong>{{ errors }}</strong>
+  </div>
   <div class="row">
     <div class="col">
       <div class="row" *ngIf="projects">
@@ -37,6 +40,18 @@
     <div class="col" *ngIf="labourRates">
       <div class="card mb-3">
         <div class="card-header">Rates</div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filter Rates
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a *ngFor="let u of retrieveRolesToDisplay(); let i = index" class="dropdown-item" (click)="displayRatesForSelectedRole(u)">{{u}}</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
         <div class="card-body">
           <div class="table-responsive">
             <table class='table'>
@@ -49,16 +64,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let r of labourRates">
+                <tr *ngFor="let r of filteredRates">
                   <td>{{ r.role }}</td>
-                  <td>{{ r.effectiveFrom}}</td>
-                  <td>{{ r.effectiveTo}}</td>
+                  <td>{{ r.effectiveFrom | date : "fullDate"}}</td>
+                  <td>{{ r.effectiveTo | date : "fullDate"}}</td>
                   <td>{{ r.ratePerHour}}</td>
+                  <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="deleteRate(r)">Delete</span></td>
+                  <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="displaySelectedRate(r)">View Details</span></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <button type="button" class="btn btn-primary">Add Rate</button>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myNewRateModal">Add Rate</button>
         </div>
       </div>
     </div>
@@ -131,3 +148,50 @@
       </div>
     </div>
   </div>
+<!-- New Rate Details Modal-->
+<div class="modal fade" id="myNewRateModal" tabindex="-1" role="dialog" aria-labelledby="myNewRateModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myNewRateModal">New Rate</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <select class="form-control form-control-sm" id="role" name="role" [(ngModel)]="newRate.role">
+              <option>Administrator</option>
+              <option>Supervisor</option>
+              <option>ChargeHand</option>
+              <option>ElectR1</option>
+              <option>ElectR2</option>
+              <option>ElectR3</option>
+              <option>Temp</option>
+              <option>First Year Apprentice</option>
+              <option>Second Year Apprentice</option>
+              <option>Third Year Apprentice</option>
+              <option>Fourth Year Apprentice</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="effectiveFrom">Effective From Date</label>
+            <input type="date" [(ngModel)]="newRate.effectiveFrom" name="effectiveFrom" class="form-control" id="effectiveFrom">
+          </div>
+          <div class="form-group">
+            <label for="effectiveTo">Effective To Date</label>
+            <input type="date" [(ngModel)]="newRate.effectiveTo" name="effectiveTo" class="form-control" id="effectiveTo">
+          </div>
+          <div class="form-group">
+            <label for="rate">Rate</label>
+            <input type="number" [(ngModel)]="newRate.ratePerHour" name="rate" class="form-control" id="rate">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button (click)="saveRate()" class="btn btn-primary" [disabled]="newRate.role === ''">Save Rate</button>
+      </div>
+    </div>
+  </div>
+</div>

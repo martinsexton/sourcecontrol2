@@ -52,6 +52,16 @@ export class ProjectService extends HttpServiceBase  {
       .catch(this.handleError);
   }
 
+  saveRate(rate: LabourRate) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.post(this._baseurl + 'api/labourdetails/rates', rate, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    }).catch(this.handleError);
+  }
+
   saveProject(project: Project) {
     let authToken = localStorage.getItem('auth_token');
 
@@ -81,6 +91,16 @@ export class ProjectService extends HttpServiceBase  {
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       });
+  }
+
+  deleteRate(rate: LabourRate) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.delete(this._baseurl + 'api/labourdetails/rates/' + rate.id, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    });
   }
 
   deleteProject(project: Project) {
