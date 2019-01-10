@@ -8,6 +8,7 @@ namespace doneillspa.Models
     public class TimesheetEntry
     {
         public long Id { get; set; }
+        public DateTime DateCreated { get; set; }
         public string Day { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }

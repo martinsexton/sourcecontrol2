@@ -12,9 +12,10 @@ using System;
 namespace doneillspa.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20190110061815_created_date_added")]
+    partial class created_date_added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,24 +95,6 @@ namespace doneillspa.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Certification");
-                });
-
-            modelBuilder.Entity("doneillspa.Models.LabourRate", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("EffectiveFrom");
-
-                    b.Property<DateTime>("EffectiveTo");
-
-                    b.Property<double>("RatePerHour");
-
-                    b.Property<string>("Role");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LabourRate");
                 });
 
             modelBuilder.Entity("doneillspa.Models.Notification", b =>

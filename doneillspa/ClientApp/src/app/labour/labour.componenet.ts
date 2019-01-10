@@ -13,6 +13,7 @@ import {
   TimesheetService
 } from '../shared/services/timesheet.service';
 import { CertificateService } from '../shared/services/certificate.service';
+import { LabourRate } from '../labourrate';
 
 @Component({
   selector: 'labour',

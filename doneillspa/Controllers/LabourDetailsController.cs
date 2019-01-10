@@ -14,10 +14,22 @@ namespace doneillspa.Controllers
     public class LabourDetailsController : Controller
     {
         private readonly ITimesheetRepository _repository;
+        private readonly IRateRepository _rateRepository;
+        private List<LabourRate> Rates = new List<LabourRate>();
 
-        public LabourDetailsController(ITimesheetRepository repository)
+        public LabourDetailsController(ITimesheetRepository repository, IRateRepository rateRepository)
         {
             _repository = repository;
+            _rateRepository = rateRepository;
+
+            Rates = _rateRepository.GetRates().ToList<LabourRate>();
+        }
+
+        [HttpGet]
+        [Route("api/labourdetails/rates")]
+        public IEnumerable<LabourRate> GetRates()
+        {
+            return _rateRepository.GetRates();
         }
 
         [HttpGet]
@@ -26,12 +38,14 @@ namespace doneillspa.Controllers
         {
             Dictionary<DateTime, LabourWeekDetail> details = new Dictionary<DateTime, LabourWeekDetail>();
 
+            //TODO Read rates from database at this point and pass in some dictionary of role/rate to the LabourWeekDetail when creating it, so it can be use
+            //to calculate the rate based on hours worked.
             IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
             foreach(Timesheet ts in timesheets)
             {
                 if (!details.ContainsKey(ts.WeekStarting.Date))
                 {
-                    LabourWeekDetail detail = new LabourWeekDetail();
+                    LabourWeekDetail detail = new LabourWeekDetail(this.Rates);
                     detail.Week = ts.WeekStarting;
 
                     UpdateLaboutWeekDurations(detail, ts);

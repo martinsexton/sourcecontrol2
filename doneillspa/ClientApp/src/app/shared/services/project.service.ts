@@ -6,6 +6,7 @@ import { Certificate } from '../../certificate';
 import { Observable } from 'rxjs/Observable';
 import { ProjectEffortDto } from '../../projecteffortdto';
 import { HttpServiceBase } from './httpservicebase';
+import { LabourRate } from '../../labourrate';
 
 @Injectable()
 export class ProjectService extends HttpServiceBase  {
@@ -13,6 +14,18 @@ export class ProjectService extends HttpServiceBase  {
 
   constructor(_httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     super(_httpClient, baseUrl); 
+  }
+
+  getLabourRates() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<LabourRate[]>(this._baseurl + 'api/labourdetails/rates',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .catch(this.handleError);
   }
 
   getProjects() {

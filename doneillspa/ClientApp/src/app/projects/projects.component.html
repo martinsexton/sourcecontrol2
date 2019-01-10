@@ -1,35 +1,67 @@
 <div class="container-fluid">
   <p *ngIf="!projects"><em>Loading...</em></p>
-  <div class="row" *ngIf="projects">
-    <div class="table-responsive col-md-12">
-      <table class='table table-hover'>
-        <thead class="thead-light">
-          <tr>
-            <th>Client</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Start Date</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let project of projects" data-toggle="tooltip" data-placement="right" title="Click For Details">
-            <td>{{ project.client }}</td>
-            <td>{{ project.name }}</td>
-            <td>{{ project.details }}</td>
-            <td>{{ project.startDate | date : "fullDate"}}</td>
-            <td *ngIf="project.id > 0"><span aria-hidden="true" (click)="deleteProject(project)">Delete</span></td>
-            <td *ngIf="project.id > 0"><span aria-hidden="true" (click)="displaySelectedProject(project)">View Details</span></td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="row">
+    <div class="col">
+      <div class="row" *ngIf="projects">
+        <div class="table-responsive col-md-12">
+          <table class='table table-hover'>
+            <thead class="thead-light">
+              <tr>
+                <th>Client</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let project of projects" data-toggle="tooltip" data-placement="right" title="Click For Details">
+                <td>{{ project.client }}</td>
+                <td>{{ project.name }}</td>
+                <td>{{ project.details }}</td>
+                <td>{{ project.startDate | date : "fullDate"}}</td>
+                <td *ngIf="project.id > 0"><span aria-hidden="true" (click)="deleteProject(project)">Delete</span></td>
+                <td *ngIf="project.id > 0"><span aria-hidden="true" (click)="displaySelectedProject(project)">View Details</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row" *ngIf="projects">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myNewProjectModal">
+          Add New Project
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="row" *ngIf="projects">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myNewProjectModal">
-      Add New Project
-    </button>
+    <div class="col" *ngIf="labourRates">
+      <div class="card mb-3">
+        <div class="card-header">Rates</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class='table'>
+              <thead class="thead">
+                <tr>
+                  <th>Role</th>
+                  <th>Effective From</th>
+                  <th>Effective To</th>
+                  <th>Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let r of labourRates">
+                  <td>{{ r.role }}</td>
+                  <td>{{ r.effectiveFrom}}</td>
+                  <td>{{ r.effectiveTo}}</td>
+                  <td>{{ r.ratePerHour}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button type="button" class="btn btn-primary">Add Rate</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

@@ -21,6 +21,7 @@ namespace doneillspa.DataAccess
         public DbSet<EmailNotification> EmailNotification { get; set; }
         public DbSet<Timesheet> Timesheet { get; set; }
         public DbSet<TimesheetEntry> TimesheetEntry { get; set; }
+        public DbSet<LabourRate> LabourRate { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

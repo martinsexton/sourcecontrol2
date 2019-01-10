@@ -6,6 +6,7 @@ import {
   ProjectService
 } from '../shared/services/project.service';
 import { Router } from '@angular/router';
+import { LabourRate } from '../labourrate';
 
 declare var $: any;
 
@@ -16,6 +17,8 @@ declare var $: any;
 
 export class ProjectComponent {
   public projects: Project[];
+  public labourRates: LabourRate[];
+
   newProject: Project = new Project(0, '', '', '', true, new Date);
   projectSaved: boolean = false;
   selectedProject: Project = new Project(0, '', '', '', true, new Date);
@@ -26,7 +29,12 @@ export class ProjectComponent {
     }, error => {
       console.error(error);
       this._router.navigate(['/login'], { queryParams: { brandNew: false, firstname: '', surname: '' } });
-    });
+      });
+
+    //Retrieve Default list of labour rates
+    this._projectService.getLabourRates().subscribe(result => {
+      this.labourRates = result;
+    })
   }
 
   displaySelectedProject(project) {

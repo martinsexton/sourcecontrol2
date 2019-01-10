@@ -7,6 +7,25 @@ namespace doneillspa.Models
 {
     public class LabourWeekDetail
     {
+        public List<LabourRate> Rates;
+
+        public LabourWeekDetail(List<LabourRate> rates)
+        {
+            this.Rates = rates;
+        }
+
+        private double GetRate(string role, DateTime onDate)
+        {
+            foreach(LabourRate r in Rates)
+            {
+                if (r.Role.Equals(role) && r.EffectiveFrom <= onDate && r.EffectiveTo >= onDate)
+                {
+                    return r.RatePerHour;
+                }
+            }
+            throw new Exception(string.Format("Rate not found for role {0} on date {1}",role,onDate));
+        }
+
         public DateTime Week { get; set; }
         public double AdministratorMinutes { get; set; }
         public double AdministratorCost
@@ -103,7 +122,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (FourthYearApprenticeMinutes / 60) * 26.41;
+                return (FourthYearApprenticeMinutes / 60) * GetRate("Fourth Year Apprentice", this.Week);
             }
         }
     }

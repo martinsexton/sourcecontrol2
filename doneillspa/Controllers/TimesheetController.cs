@@ -67,6 +67,16 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
+            DateTime todaysDate = DateTime.Now;
+
+            //Set the date created on timesheet
+            timesheet.DateCreated = todaysDate;
+
+            foreach (TimesheetEntry tse in timesheet.TimesheetEntries)
+            {
+                tse.DateCreated = todaysDate;
+            }
+
             long id = _repository.InsertTimesheet(timesheet);
 
             return Ok(id);
@@ -82,6 +92,9 @@ namespace doneillspa.Controllers
             {
                 return NotFound();
             }
+
+            //Set date created on timesheet entry
+            entry.DateCreated = DateTime.Now;
 
             existingTimesheet.TimesheetEntries.Add(entry);
             _repository.UpdateTimesheet(existingTimesheet);
