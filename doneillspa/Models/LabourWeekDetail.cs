@@ -41,7 +41,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (SupervisorMinutes / 60) * 37.56;
+                return (SupervisorMinutes / 60) * GetRate("Supervisor", this.Week); ;
             }
         }
 
@@ -50,7 +50,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (ChargehandMinutes/60) * 35.1;
+                return (ChargehandMinutes/60) * GetRate("ChargeHand", this.Week); ;
             }
         }
 
@@ -59,7 +59,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (ElecR1Minutes / 60) * 37.94;
+                return (ElecR1Minutes / 60) * GetRate("ElecR1", this.Week); ;
             }
         }
 
@@ -68,7 +68,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (ElecR2Minutes / 60) * 34.22;
+                return (ElecR2Minutes / 60) * GetRate("ElecR2", this.Week); ;
             }
         }
 
@@ -77,7 +77,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (ElecR3Minutes / 60) * 33.03;
+                return (ElecR3Minutes / 60) * GetRate("ElecR3", this.Week); ;
             }
         }
 
@@ -86,7 +86,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (TempMinutes / 60) * 14.13;
+                return (TempMinutes / 60) * GetRate("Temp", this.Week); ;
             }
         }
 
@@ -95,7 +95,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (FirstYearApprenticeMinutes / 60) * 9.7;
+                return (FirstYearApprenticeMinutes / 60) * GetRate("First Year Apprentice", this.Week); ;
             }
         }
 
@@ -104,7 +104,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (SecondYearApprenticeMinutes / 60) * 14.85;
+                return (SecondYearApprenticeMinutes / 60) * GetRate("Second Year Apprentice", this.Week); ;
             }
         }
 
@@ -113,7 +113,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return (ThirdYearApprenticeMinutes / 60) * 21.46;
+                return (ThirdYearApprenticeMinutes / 60) * GetRate("Third Year Apprentice", this.Week);
             }
         }
 
