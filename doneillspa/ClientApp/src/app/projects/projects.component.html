@@ -113,6 +113,39 @@
     </div>
   </div>
 </div>
+
+<!-- Display Selected Rate Details -->
+<div class="modal fade" id="myDisplayRateModal" tabindex="-1" role="dialog" aria-labelledby="myDisplayRateModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myDisplayRateModal">Rate Details</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="effectiveFrom">Effective From Date</label>
+            <input type="datetime" [(ngModel)]="selectedRate.effectiveFrom" name="effectiveFrom" class="form-control" id="effectiveFrom">
+          </div>
+          <div class="form-group">
+            <label for="effectiveTo">Effective To Date</label>
+            <input type="datetime" [(ngModel)]="selectedRate.effectiveTo" name="effectiveTo" class="form-control" id="effectiveTo">
+          </div>
+          <div class="form-group">
+            <label for="rate">Rate</label>
+            <input type="number" [(ngModel)]="selectedRate.ratePerHour" name="rate" class="form-control" id="rate">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button (click)="updateRate()" class="btn btn-primary">Update Rate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- New Project Details Modal -->
 <div class="modal fade" id="myNewProjectModal" tabindex="-1" role="dialog" aria-labelledby="myNewProjectModal">
     <div class="modal-dialog" role="document">
@@ -148,6 +181,7 @@
       </div>
     </div>
   </div>
+
 <!-- New Rate Details Modal-->
 <div class="modal fade" id="myNewRateModal" tabindex="-1" role="dialog" aria-labelledby="myNewRateModal">
   <div class="modal-dialog" role="document">

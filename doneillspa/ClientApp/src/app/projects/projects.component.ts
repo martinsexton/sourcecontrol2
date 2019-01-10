@@ -25,6 +25,8 @@ export class ProjectComponent {
   newProject: Project = new Project(0, '', '', '', true, new Date);
   projectSaved: boolean = false;
   selectedProject: Project = new Project(0, '', '', '', true, new Date);
+  selectedRate: LabourRate = new LabourRate(0, null, null, '', 0);
+
   newRate: LabourRate = new LabourRate(0, null, null, '', 0);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router : Router) {
@@ -73,6 +75,26 @@ export class ProjectComponent {
     console.log("testMethod Clicked: " + project.name);
     this.selectedProject = project;
     $("#myModal").modal('show');
+  }
+
+  displaySelectedRate(rate) {
+    this.selectedRate = rate;
+    $("#myDisplayRateModal").modal('show');
+  }
+
+  updateRate() {
+    this._projectService.updateRate(this.selectedRate).subscribe(
+      res => {
+        console.log(res);
+        $("#myDisplayRateModal").modal('hide');
+      },
+      (err: HttpErrorResponse) => {
+        console.log(err.error);
+        console.log(err.name);
+        console.log(err.message);
+        console.log(err.status);
+      }
+    );
   }
 
   updateProject(){

@@ -23,10 +23,22 @@ import { LabourRate } from '../labourrate';
 export class LabourComponent {
   public labourWeeks: LabourWeek[];
   public errors: string;
+  public projects: Project[];
+  public selectedProject: Project;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
-    //Retrieve Default list of tui Timesheets For display
-    this._timesheetService.getLabourWeekDetails().subscribe(result => {
+    this._projectService.getProjects().subscribe(result => {
+      this.projects = result;
+      this.selectedProject = this.projects[0];
+
+      //Display labour costs for first project
+      this.filterLabourCostForProject(this.selectedProject);
+    });
+  }
+
+  filterLabourCostForProject(project) {
+    this.selectedProject = project;
+    this._timesheetService.getLabourWeekDetailsForProject(project.name).subscribe(result => {
       this.labourWeeks = result;
     }, error => this.errors = error)
   }

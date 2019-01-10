@@ -1,4 +1,19 @@
 <div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Project
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a *ngFor="let proj of projects; let i = index" class="dropdown-item" (click)="filterLabourCostForProject(proj)">{{proj.name}}</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <div class="row">
+    <h3 class="display-4">Labour Costs For {{selectedProject.name}}</h3>
+  </div>
   <div class="row">
     <div class="col border">Week</div>
     <!--<div class="col border">Supervisor</div>-->

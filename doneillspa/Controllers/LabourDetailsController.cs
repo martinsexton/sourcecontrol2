@@ -41,6 +41,33 @@ namespace doneillspa.Controllers
             return Json(Ok());
         }
 
+        [HttpPut]
+        [Route("api/labourdetails/rates")]
+        public IActionResult Put([FromBody]LabourRate r)
+        {
+            if (r == null)
+            {
+                return BadRequest();
+            }
+
+            var existingRate = _rateRepository.GetRateById(r.Id);
+
+            if (existingRate == null)
+            {
+                return NotFound();
+            }
+
+            existingRate.EffectiveFrom = r.EffectiveFrom;
+            existingRate.EffectiveTo = r.EffectiveTo;
+            existingRate.RatePerHour = r.RatePerHour;
+
+            _rateRepository.UpdateRate(existingRate);
+            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
+            _rateRepository.Save();
+
+            return new NoContentResult();
+        }
+
         [HttpPost]
         [Route("api/labourdetails/rates")]
         public IActionResult Post([FromBody]LabourRate rate)
@@ -65,6 +92,35 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
+        [Route("api/labourdetails/project/{proj}")]
+        public IEnumerable<LabourWeekDetail> GetByProject(string proj)
+        {
+            Dictionary<DateTime, LabourWeekDetail> details = new Dictionary<DateTime, LabourWeekDetail>();
+
+            //TODO Read rates from database at this point and pass in some dictionary of role/rate to the LabourWeekDetail when creating it, so it can be use
+            //to calculate the rate based on hours worked.
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
+            foreach (Timesheet ts in timesheets)
+            {
+                if (!details.ContainsKey(ts.WeekStarting.Date))
+                {
+                    LabourWeekDetail detail = new LabourWeekDetail(this.Rates);
+                    detail.Week = ts.WeekStarting;
+
+                    UpdateLaboutWeekDurations(detail, ts, proj);
+                    details.Add(ts.WeekStarting.Date, detail);
+                }
+                else
+                {
+                    LabourWeekDetail detail = details[ts.WeekStarting.Date];
+                    UpdateLaboutWeekDurations(detail, ts, proj);
+                }
+            }
+
+            return details.Values.AsEnumerable<LabourWeekDetail>();
+        }
+
+        [HttpGet]
         [Route("api/labourdetails")]
         public IEnumerable<LabourWeekDetail> Get()
         {
@@ -80,23 +136,27 @@ namespace doneillspa.Controllers
                     LabourWeekDetail detail = new LabourWeekDetail(this.Rates);
                     detail.Week = ts.WeekStarting;
 
-                    UpdateLaboutWeekDurations(detail, ts);
+                    UpdateLaboutWeekDurations(detail, ts, String.Empty);
                     details.Add(ts.WeekStarting.Date, detail);
                 }
                 else
                 {
                     LabourWeekDetail detail = details[ts.WeekStarting.Date];
-                    UpdateLaboutWeekDurations(detail, ts);
+                    UpdateLaboutWeekDurations(detail, ts, String.Empty);
                 }
             }
 
             return details.Values.AsEnumerable<LabourWeekDetail>();
         }
 
-        private void UpdateLaboutWeekDurations(LabourWeekDetail detail, Timesheet ts)
+        private void UpdateLaboutWeekDurations(LabourWeekDetail detail, Timesheet ts, string project)
         {
             foreach (TimesheetEntry tse in ts.TimesheetEntries)
             {
+                if (!String.IsNullOrEmpty(project) && !tse.Project.Equals(project))
+                {
+                    continue;
+                }
                 TimeSpan startTimespan = TimeSpan.Parse(tse.StartTime);
                 TimeSpan endTimespan = TimeSpan.Parse(tse.EndTime);
                 TimeSpan result = endTimespan - startTimespan;
