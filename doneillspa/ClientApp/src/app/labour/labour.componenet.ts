@@ -48,6 +48,15 @@ export class LabourComponent {
     });
   }
 
+  // events
+  public chartClicked(e: any): void {
+    console.log(e);
+  }
+
+  public chartHovered(e: any): void {
+    console.log(e);
+  }
+
   filterLabourCostForProject(project) {
     this.selectedProject = project;
     this._timesheetService.getLabourWeekDetailsForProject(project.name).subscribe(result => {
