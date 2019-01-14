@@ -131,7 +131,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return this.ChargehandCost + this.ElecR1Cost + this.ElecR2Cost + this.ElecR3Cost + this.FirstYearApprenticeCost + this.SecondYearApprenticeCost + this.ThirdYearApprenticeCost + this.FourthYearApprenticeCost;
+                return this.SupervisorCost + this.ChargehandCost + this.ElecR1Cost + this.ElecR2Cost + this.ElecR3Cost + this.FirstYearApprenticeCost + this.SecondYearApprenticeCost + this.ThirdYearApprenticeCost + this.FourthYearApprenticeCost;
             }
         }
     }

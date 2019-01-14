@@ -11,10 +11,10 @@
       </li>
     </ul>
   </nav>
-  <div class="row">
+  <div class="row" *ngIf="selectedProject">
     <h3 class="display-4">Labour Costs For {{selectedProject.name}}</h3>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="selectedProject">
     <div class="col border">Week</div>
     <!--<div class="col border">Supervisor</div>-->
     <div class="col border">Supervisor Cost</div>
@@ -72,5 +72,17 @@
     <div class="col border">{{lw.fourthYearApprenticeCost | currency}}</div>
 
     <div class="col border">{{lw.totalCost | currency}}</div>
+  </div>
+
+  <!-- Graphs -->
+  <div style="display: block" *ngIf="!loading">
+    <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [chartType]="barChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
   </div>
 </div>
