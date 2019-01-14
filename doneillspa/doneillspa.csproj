@@ -63,7 +63,7 @@
     <None Remove="ClientApp\src\app\timesheetentry.ts" />
     <None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
     <None Remove="ClientApp\src\app\userdashboard\userdashboard.component.ts" />
-    <None Remove="Properties\PublishProfiles\doneillspa - Web Deploy.pubxml" />
+    <!--<None Remove="Properties\PublishProfiles\doneillspa - Web Deploy.pubxml" />-->
   </ItemGroup>
 
   <ItemGroup>
@@ -108,9 +108,9 @@
 		</Content>
 	</ItemGroup>
 
-	<ItemGroup>
+	<!--<ItemGroup>
 	  <Folder Include="Properties\PublishProfiles\" />
-	</ItemGroup>
+	</ItemGroup>-->
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
