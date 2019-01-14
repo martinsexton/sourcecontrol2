@@ -43,7 +43,7 @@ export class LabourComponent {
       this.projects = result;
       this.selectedProject = this.projects[0];
 
-      //Display labour costs for first project
+      //Display labour costs for first project 
       this.filterLabourCostForProject(this.selectedProject);
     });
   }

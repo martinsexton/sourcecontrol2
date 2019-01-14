@@ -43,6 +43,9 @@
     <None Remove="ClientApp\src\app\directives\password.validator.directive.ts" />
     <None Remove="ClientApp\src\app\emailnotification.ts" />
     <None Remove="ClientApp\src\app\identityrole.ts" />
+    <None Remove="ClientApp\src\app\labourrate.ts" />
+    <None Remove="ClientApp\src\app\labourweek.ts" />
+    <None Remove="ClientApp\src\app\labour\labour.componenet.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projecteffortdto.ts" />
     <None Remove="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
@@ -60,6 +63,7 @@
     <None Remove="ClientApp\src\app\timesheetentry.ts" />
     <None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
     <None Remove="ClientApp\src\app\userdashboard\userdashboard.component.ts" />
+    <None Remove="Properties\PublishProfiles\doneillspa - Web Deploy.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,6 +79,9 @@
     <TypeScriptCompile Include="ClientApp\src\app\directives\password.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\emailnotification.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\identityrole.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\labourrate.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\labourweek.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\labour\labour.componenet.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecteffortdto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
@@ -99,6 +106,10 @@
 		<Content Update="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
