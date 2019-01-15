@@ -6,6 +6,7 @@ import { Timesheet } from '../../timesheet';
 import { TimesheetEntry } from '../../timesheetentry';
 import { HttpServiceBase } from './httpservicebase';
 import { LabourRate } from '../../labourrate';
+import { LabourWeek } from '../../labourweek';
 
 @Injectable()
 export class TimesheetService extends HttpServiceBase{
@@ -65,6 +66,18 @@ export class TimesheetService extends HttpServiceBase{
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/labourdetails',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .catch(this.handleError);
+  }
+
+  downloadReport(weeks: LabourWeek[]) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.post(this._baseurl + 'api/labourdetails/report', weeks,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

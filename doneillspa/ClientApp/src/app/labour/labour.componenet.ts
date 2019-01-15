@@ -57,6 +57,12 @@ export class LabourComponent {
     console.log(e);
   }
 
+  public downloadReport() {
+    this._timesheetService.downloadReport(this.labourWeeks).subscribe(result => {
+      console.log("uploaded");
+    }, error => this.errors = error)
+  }
+
   filterLabourCostForProject(project) {
     this.selectedProject = project;
     this._timesheetService.getLabourWeekDetailsForProject(project.name).subscribe(result => {
