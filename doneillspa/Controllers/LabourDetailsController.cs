@@ -155,9 +155,9 @@ namespace doneillspa.Controllers
 
             //}
 
-            //using(MemoryStream stream = new MemoryStream())
+            //using (MemoryStream stream = new MemoryStream())
             //{
-            //    using(FileStream fs = new FileStream("C:\\Users\\martin.sexton\\Documents\\labour_costs.xlsx", FileMode.Open, FileAccess.Read))
+            //    using (FileStream fs = new FileStream("C:\\Users\\martin.sexton\\Documents\\labour_costs.xlsx", FileMode.Open, FileAccess.Read))
             //    {
             //        byte[] bytes = new byte[fs.Length];
             //        fs.Read(bytes, 0, (int)fs.Length);
@@ -166,6 +166,7 @@ namespace doneillspa.Controllers
             //    var filecontents = Convert.ToBase64String(stream.ToArray());
             //    SendMail(filecontents).Wait();
             //}
+            SendMail("");
             return Ok();
         }
 
@@ -179,7 +180,10 @@ namespace doneillspa.Controllers
             var plainTextContent = "Please find attached labout cost reports";
             var htmlContent = "<strong>Project Labour Cost Reports</strong>";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            msg.AddAttachment("labour_costs.xlsx",filecontent);
+            if (!String.IsNullOrEmpty(filecontent))
+            {
+                msg.AddAttachment("labour_costs.xlsx", filecontent);
+            }
 
             var response = await client.SendEmailAsync(msg);
         }

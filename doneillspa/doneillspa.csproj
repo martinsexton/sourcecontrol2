@@ -10,10 +10,13 @@
 
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
+    <ApplicationInsightsResourceId>/subscriptions/a953f295-b1e1-473c-8df9-dc1ddf7a7a72/resourcegroups/doneillspaeurope/providers/microsoft.insights/components/doneillspa</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/a953f295-b1e1-473c-8df9-dc1ddf7a7a72/resourcegroups/doneillspaeurope/providers/microsoft.insights/components/doneillspa</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.2" />
@@ -65,6 +68,7 @@
     <None Remove="ClientApp\src\app\timesheetentry.ts" />
     <None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
     <None Remove="ClientApp\src\app\userdashboard\userdashboard.component.ts" />
+    <None Remove="Properties\PublishProfiles\doneillsa - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\doneillspa - Web Deploy.pubxml" />
   </ItemGroup>
 
@@ -112,6 +116,10 @@
 
 	<ItemGroup>
 	  <Folder Include="Properties\PublishProfiles\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <WCFMetadata Include="Connected Services" />
 	</ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

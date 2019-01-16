@@ -17,7 +17,7 @@ namespace doneillspa.DataAccess
               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
               .AddJsonFile("appsettings.json")
               .Build();
-            builder.UseSqlServer(configuration["Data:Baby:ConnectionString"]);
+            builder.UseSqlServer(configuration["ConnectionStrings: ConnectionString"]);
             return new ApplicationContext(builder.Options);
         }
     }
