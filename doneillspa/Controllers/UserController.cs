@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace doneillspa.Controllers
 {
@@ -18,12 +21,14 @@ namespace doneillspa.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly ITimesheetRepository _repository;
+        private IConfiguration Configuration;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, ITimesheetRepository repository)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, ITimesheetRepository repository, IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _repository = repository;
+            Configuration = configuration;
         }
 
         [HttpGet]
@@ -213,7 +218,24 @@ namespace doneillspa.Controllers
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             IdentityResult r = result.Result;
 
+            SendMail("doneill@hotmail.com", notification.DestinationEmail, notification.Subject, notification.Body);
+
             return Ok(notification.Id);
+        }
+
+        private async Task SendMail(string f, string t, string s, string body)
+        {
+            var apiKey = Configuration["Data:Baby:SendGridKey"];
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress(f, "Example User");
+            var subject = s;
+            var to = new EmailAddress(t, "Example User");
+            var plainTextContent = body;
+            var htmlContent = "<strong>"+ body+ "</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+
+
+            var response = await client.SendEmailAsync(msg);
         }
 
         private ApplicationUser GetUserIncludingCerts(string id)

@@ -174,7 +174,7 @@ namespace doneillspa.Controllers
         {
             var apiKey = Configuration["Data:Baby:SendGridKey"];
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("sexton.martin@gmail.com", "Example User");
+            var from = new EmailAddress("doneillspa@hotmail.com", "Example User");
             var subject = "Project Labour Cost";
             var to = new EmailAddress("sexton.martin@gmail.com", "Example User");
             var plainTextContent = "Please find attached labout cost reports";
