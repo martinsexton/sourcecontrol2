@@ -108,68 +108,60 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/report")]
         public IActionResult Download([FromBody]LabourWeekDetail[] labourDetails)
         {
-            //using (SpreadsheetDocument document = SpreadsheetDocument.Create("C:\\Users\\martin.sexton\\Documents\\labour_costs.xlsx", SpreadsheetDocumentType.Workbook))
-            //{
-            //    // Add a WorkbookPart to the document.
-            //    WorkbookPart workbookPart = document.AddWorkbookPart();
-            //    workbookPart.Workbook = new Workbook();
+            MemoryStream spreadSheetStream = new MemoryStream();
+            using (SpreadsheetDocument document = SpreadsheetDocument.Create(spreadSheetStream, SpreadsheetDocumentType.Workbook))
+            {
+                // Add a WorkbookPart to the document.
+                WorkbookPart workbookPart = document.AddWorkbookPart();
+                workbookPart.Workbook = new Workbook();
 
-            //    // Add a WorksheetPart to the WorkbookPart.
-            //    WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
-            //    worksheetPart.Worksheet = new Worksheet(new SheetData());
+                // Add a WorksheetPart to the WorkbookPart.
+                WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+                worksheetPart.Worksheet = new Worksheet(new SheetData());
 
-            //    Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
+                Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
 
-            //    Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = " Labour Costs" };
-            //    sheets.Append(sheet);
+                Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = " Labour Costs" };
+                sheets.Append(sheet);
 
-            //    Columns lstColumns = worksheetPart.Worksheet.GetFirstChild<Columns>();
-            //    if (lstColumns == null)
-            //    {
-            //        lstColumns = new Columns();
+                Columns lstColumns = worksheetPart.Worksheet.GetFirstChild<Columns>();
+                if (lstColumns == null)
+                {
+                    lstColumns = new Columns();
 
-            //        lstColumns.Append(new Column() { Min = 1, Max = 1, Width = 20, CustomWidth = true });
-            //        lstColumns.Append(new Column() { Min = 2, Max = 2, Width = 20, CustomWidth = true });
-            //        lstColumns.Append(new Column() { Min = 3, Max = 3, Width = 20, CustomWidth = true });
-            //        lstColumns.Append(new Column() { Min = 4, Max = 4, Width = 20, CustomWidth = true });
-            //        lstColumns.Append(new Column() { Min = 5, Max = 5, Width = 20, CustomWidth = true });
-            //        lstColumns.Append(new Column() { Min = 6, Max = 6, Width = 20, CustomWidth = true });
-            //        lstColumns.Append(new Column() { Min = 7, Max = 7, Width = 20, CustomWidth = true });
-            //        lstColumns.Append(new Column() { Min = 8, Max = 11, Width = 30, CustomWidth = true });
-            //        lstColumns.Append(new Column() { Min = 12, Max = 12, Width = 20, CustomWidth = true });
+                    lstColumns.Append(new Column() { Min = 1, Max = 1, Width = 20, CustomWidth = true });
+                    lstColumns.Append(new Column() { Min = 2, Max = 2, Width = 20, CustomWidth = true });
+                    lstColumns.Append(new Column() { Min = 3, Max = 3, Width = 20, CustomWidth = true });
+                    lstColumns.Append(new Column() { Min = 4, Max = 4, Width = 20, CustomWidth = true });
+                    lstColumns.Append(new Column() { Min = 5, Max = 5, Width = 20, CustomWidth = true });
+                    lstColumns.Append(new Column() { Min = 6, Max = 6, Width = 20, CustomWidth = true });
+                    lstColumns.Append(new Column() { Min = 7, Max = 7, Width = 20, CustomWidth = true });
+                    lstColumns.Append(new Column() { Min = 8, Max = 11, Width = 30, CustomWidth = true });
+                    lstColumns.Append(new Column() { Min = 12, Max = 12, Width = 20, CustomWidth = true });
 
-            //        worksheetPart.Worksheet.InsertAt(lstColumns, 0);
-            //    }
+                    worksheetPart.Worksheet.InsertAt(lstColumns, 0);
+                }
 
-            //    // Get the sheetData cell table.
-            //    SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+                // Get the sheetData cell table.
+                SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
 
-            //    SetupExcelHeader(worksheetPart.Worksheet.GetFirstChild<SheetData>());
-            //    int rowIndex = 2;
-            //    foreach (LabourWeekDetail week in labourDetails)
-            //    {
-            //        WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), week, rowIndex);
-            //        rowIndex += 1;
-            //    }
+                SetupExcelHeader(worksheetPart.Worksheet.GetFirstChild<SheetData>());
+                int rowIndex = 2;
+                foreach (LabourWeekDetail week in labourDetails)
+                {
+                    WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), week, rowIndex);
+                    rowIndex += 1;
+                }
 
-            //    workbookPart.Workbook.Save();
+                document.Save();
+                document.Close();
+                
 
-            //}
+                _emailService.SendMail("doneill@hotmail.com", "sexton.martin@gmail.com", "Project Labour Cost",
+                        "Please find attached labout cost reports", "<strong>Project Labour Cost Reports</strong>",
+                        "labour_costs.xlsx", Convert.ToBase64String(spreadSheetStream.ToArray()));
+            }
 
-            //using (MemoryStream stream = new MemoryStream())
-            //{
-            //    using (FileStream fs = new FileStream("C:\\Users\\martin.sexton\\Documents\\labour_costs.xlsx", FileMode.Open, FileAccess.Read))
-            //    {
-            //        byte[] bytes = new byte[fs.Length];
-            //        fs.Read(bytes, 0, (int)fs.Length);
-            //        stream.Write(bytes, 0, (int)fs.Length);
-            //    }
-            //    var filecontents = Convert.ToBase64String(stream.ToArray());
-            //    SendMail(filecontents).Wait();
-            //}
-            //SendMail("");
-            _emailService.SendMail("doneill@hotmail.com", "sexton.martin@gmail.com", "Project Labour Cost",
-                "Please find attached labout cost reports", "<strong>Project Labour Cost Reports</strong>", "labour_costs.xlsx", string.Empty);
             return Ok();
         }
 
