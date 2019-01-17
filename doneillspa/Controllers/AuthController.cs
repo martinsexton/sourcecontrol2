@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace doneillspa.Controllers
 {
@@ -83,6 +84,8 @@ namespace doneillspa.Controllers
 
                 if (userToVerify != null)
                 {
+                    HttpContext.Session.SetString("UserEmail", userToVerify.Email);
+
                     IList<string> roles = await _userManager.GetRolesAsync(userToVerify);
 
                     // check the credentials   

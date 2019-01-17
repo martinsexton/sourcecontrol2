@@ -17,6 +17,7 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using Microsoft.Extensions.Configuration;
 using doneillspa.Services.Email;
+using Microsoft.AspNetCore.Http;
 
 namespace doneillspa.Controllers
 {
@@ -108,6 +109,8 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/report")]
         public IActionResult Download([FromBody]LabourWeekDetail[] labourDetails)
         {
+            string usermail = HttpContext.Session.GetString("UserEmail");
+
             MemoryStream spreadSheetStream = new MemoryStream();
             using (SpreadsheetDocument document = SpreadsheetDocument.Create(spreadSheetStream, SpreadsheetDocumentType.Workbook))
             {
@@ -157,7 +160,7 @@ namespace doneillspa.Controllers
                 document.Close();
                 
 
-                _emailService.SendMail("doneill@hotmail.com", "sexton.martin@gmail.com", "Project Labour Cost",
+                _emailService.SendMail("doneill@hotmail.com", usermail, "Project Labour Cost",
                         "Please find attached labout cost reports", "<strong>Project Labour Cost Reports</strong>",
                         "labour_costs.xlsx", Convert.ToBase64String(spreadSheetStream.ToArray()));
             }

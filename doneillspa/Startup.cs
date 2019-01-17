@@ -47,6 +47,9 @@ namespace doneillspa
             services.AddMvc();
             services.AddCors();
 
+            //Enable Session
+            services.AddSession();
+
             services.AddIdentity<ApplicationUser, IdentityRole<System.Guid>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
@@ -102,6 +105,7 @@ namespace doneillspa
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseAuthentication();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
