@@ -16,6 +16,7 @@ using doneillspa.Auth;
 using doneillspa.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
+using doneillspa.Services.Email;
 
 namespace doneillspa
 {
@@ -40,6 +41,7 @@ namespace doneillspa
             services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<ICertificationRepository>(_ => new CertificationRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<INotificationRepository>(_ => new NotificationRepository(_.GetService<ApplicationContext>()));
+            services.AddScoped<IEmailService>(_ => new EmailService(Configuration));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();

@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
-using SendGrid;
-using SendGrid.Helpers.Mail;
+using doneillspa.Services.Email;
 
 namespace doneillspa.Controllers
 {
@@ -21,14 +20,14 @@ namespace doneillspa.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly ITimesheetRepository _repository;
-        private IConfiguration Configuration;
+        private readonly IEmailService _emailService;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, ITimesheetRepository repository, IConfiguration configuration)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, ITimesheetRepository repository, IEmailService emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _repository = repository;
-            Configuration = configuration;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -218,24 +217,9 @@ namespace doneillspa.Controllers
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             IdentityResult r = result.Result;
 
-            SendMail("doneill@hotmail.com", notification.DestinationEmail, notification.Subject, notification.Body);
+            _emailService.SendMail("doneill@hotmail.com", notification.DestinationEmail, notification.Subject, notification.Body, notification.Body, string.Empty, string.Empty);
 
             return Ok(notification.Id);
-        }
-
-        private async Task SendMail(string f, string t, string s, string body)
-        {
-            var apiKey = Configuration["Data:Baby:SendGridKey"];
-            var client = new SendGridClient(apiKey);
-            var from = new EmailAddress(f, "Example User");
-            var subject = s;
-            var to = new EmailAddress(t, "Example User");
-            var plainTextContent = body;
-            var htmlContent = "<strong>"+ body+ "</strong>";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-
-
-            var response = await client.SendEmailAsync(msg);
         }
 
         private ApplicationUser GetUserIncludingCerts(string id)

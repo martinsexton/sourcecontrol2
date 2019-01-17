@@ -16,6 +16,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Microsoft.Extensions.Configuration;
+using doneillspa.Services.Email;
 
 namespace doneillspa.Controllers
 {
@@ -26,13 +27,13 @@ namespace doneillspa.Controllers
         private readonly ITimesheetRepository _repository;
         private readonly IRateRepository _rateRepository;
         private List<LabourRate> Rates = new List<LabourRate>();
-        private IConfiguration Configuration;
+        private readonly IEmailService _emailService;
 
-        public LabourDetailsController(ITimesheetRepository repository, IRateRepository rateRepository, IConfiguration configuration)
+        public LabourDetailsController(ITimesheetRepository repository, IRateRepository rateRepository, IEmailService emailService)
         {
             _repository = repository;
             _rateRepository = rateRepository;
-            Configuration = configuration;
+            _emailService = emailService;
 
             Rates = _rateRepository.GetRates().ToList<LabourRate>();
         }
@@ -166,26 +167,10 @@ namespace doneillspa.Controllers
             //    var filecontents = Convert.ToBase64String(stream.ToArray());
             //    SendMail(filecontents).Wait();
             //}
-            SendMail("");
+            //SendMail("");
+            _emailService.SendMail("doneill@hotmail.com", "sexton.martin@gmail.com", "Project Labour Cost",
+                "Please find attached labout cost reports", "<strong>Project Labour Cost Reports</strong>", "labour_costs.xlsx", string.Empty);
             return Ok();
-        }
-
-        private async Task SendMail(string filecontent)
-        {
-            var apiKey = Configuration["Data:Baby:SendGridKey"];
-            var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("doneillspa@hotmail.com", "Example User");
-            var subject = "Project Labour Cost";
-            var to = new EmailAddress("sexton.martin@gmail.com", "Example User");
-            var plainTextContent = "Please find attached labout cost reports";
-            var htmlContent = "<strong>Project Labour Cost Reports</strong>";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            if (!String.IsNullOrEmpty(filecontent))
-            {
-                msg.AddAttachment("labour_costs.xlsx", filecontent);
-            }
-
-            var response = await client.SendEmailAsync(msg);
         }
 
         private void WriteRow(SheetData sheetData, LabourWeekDetail detail, int rowIndex)
