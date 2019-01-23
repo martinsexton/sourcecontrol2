@@ -35,3 +35,6 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+#New Task Added to publish build artifacts so release pipe lines can work
+- task: PublishBuildArtifacts@1
