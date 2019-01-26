@@ -30,7 +30,7 @@ namespace doneillspa.Services.Email
             }
 
             //We dont need to call await here, as we will not bother doing anything with the asyn response from send grid.
-            //if it fails to send mail, then its not the end of the world. 
+            //if it fails to send mail, then its not the end of the world.
 
             //If in the future we want to wait for the response, then we need to add an await here and wait for the Task<Response>
             //tom come back from the call to SendEmailAsync
