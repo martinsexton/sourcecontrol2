@@ -72,7 +72,6 @@ export class ProjectComponent {
   }
 
   displaySelectedProject(project) {
-    console.log("testMethod Clicked: " + project.name);
     this.selectedProject = project;
     $("#myModal").modal('show');
   }
