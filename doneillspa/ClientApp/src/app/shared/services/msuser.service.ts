@@ -31,6 +31,7 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -48,6 +49,7 @@ export class MsUserService extends HttpServiceBase{
         }
         return res;
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -60,6 +62,7 @@ export class MsUserService extends HttpServiceBase{
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -72,6 +75,7 @@ export class MsUserService extends HttpServiceBase{
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -83,7 +87,8 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      });
+      })
+      .retry(5);
   }
 
   addCertificate(id: string, cert: Certificate) {
@@ -95,6 +100,7 @@ export class MsUserService extends HttpServiceBase{
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -107,6 +113,7 @@ export class MsUserService extends HttpServiceBase{
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -119,6 +126,7 @@ export class MsUserService extends HttpServiceBase{
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 

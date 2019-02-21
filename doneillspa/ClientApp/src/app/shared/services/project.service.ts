@@ -25,6 +25,7 @@ export class ProjectService extends HttpServiceBase  {
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -37,6 +38,7 @@ export class ProjectService extends HttpServiceBase  {
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -49,6 +51,7 @@ export class ProjectService extends HttpServiceBase  {
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -59,7 +62,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    }).catch(this.handleError);
+    })
+      .retry(5)
+      .catch(this.handleError);
   }
 
   saveProject(project: Project) {
@@ -69,7 +74,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    }).catch(this.handleError);
+    })
+      .retry(5)
+      .catch(this.handleError);
   }
 
   updateRate(rate: LabourRate) {
@@ -79,7 +86,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    }).catch(this.handleError);
+    })
+      .retry(5)
+      .catch(this.handleError);
   }
   updateProject(project: Project) {
     let authToken = localStorage.getItem('auth_token');
@@ -88,7 +97,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    }).catch(this.handleError);
+    })
+      .retry(5)
+      .catch(this.handleError);
   }
 
   getUserName(id) {
@@ -99,7 +110,8 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      });
+      })
+      .retry(5);
   }
 
   deleteRate(rate: LabourRate) {
@@ -109,7 +121,8 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    });
+    })
+      .retry(5);
   }
 
   deleteProject(project: Project) {

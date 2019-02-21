@@ -23,6 +23,7 @@ export class CertificateService extends HttpServiceBase{
       {
         headers
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -34,6 +35,7 @@ export class CertificateService extends HttpServiceBase{
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
     })
+    .retry(5)
     .catch(this.handleError);
   }
 }

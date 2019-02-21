@@ -25,7 +25,8 @@ export class TimesheetService extends HttpServiceBase{
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
     })
-    .catch(this.handleError);
+      .retry(5)
+      .catch(this.handleError);
   }
 
   addTimesheetEntry(timesheetId: number, entry: TimesheetEntry) {
@@ -36,6 +37,7 @@ export class TimesheetService extends HttpServiceBase{
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
     })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -47,6 +49,7 @@ export class TimesheetService extends HttpServiceBase{
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
     })
+    .retry(5)
     .catch(this.handleError);
   }
 
@@ -59,6 +62,7 @@ export class TimesheetService extends HttpServiceBase{
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -83,6 +87,7 @@ export class TimesheetService extends HttpServiceBase{
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -95,6 +100,7 @@ export class TimesheetService extends HttpServiceBase{
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -107,6 +113,7 @@ export class TimesheetService extends HttpServiceBase{
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       })
+      .retry(5)
       .catch(this.handleError);
   }
 
@@ -120,6 +127,7 @@ export class TimesheetService extends HttpServiceBase{
       {
         headers
       })
+      .retry(5)
       .catch(this.handleError);
   }
 

@@ -20,6 +20,7 @@ export class NotificationService extends HttpServiceBase {
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
     })
+      .retry(5)
       .catch(this.handleError);
   }
 }
