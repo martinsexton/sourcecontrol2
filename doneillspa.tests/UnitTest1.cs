@@ -11,7 +11,7 @@ namespace doneillspa.tests
         [TestMethod]
         public void TestMethod1()
         {
-            // create mock version
+            // create mock version 
             var mockCertificationRepository = new Mock<ICertificationRepository>();
 
             CertificationController testController = new CertificationController(mockCertificationRepository.Object);
