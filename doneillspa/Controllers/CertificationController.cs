@@ -20,6 +20,11 @@ namespace doneillspa.Controllers
             _repository = repository;
         }
 
+        public bool ShouldICertify()
+        {
+            return true;
+        }
+
         [HttpGet]
         [Route("api/certification/user/{id}")]
         public IEnumerable<Certification> Get(string id)
