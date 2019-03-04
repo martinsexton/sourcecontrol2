@@ -16,7 +16,7 @@ namespace doneillspa.tests
 
             CertificationController testController = new CertificationController(mockCertificationRepository.Object);
 
-            Assert.IsFalse(testController.ShouldICertify());
+            Assert.IsTrue(testController.ShouldICertify());
         }
     }
 }
