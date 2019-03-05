@@ -263,6 +263,8 @@ export class TimesheetComponent {
       else {
         this.satEntries.push(entry);
       }
+      //Automatically save timesheet if it has not been saved already
+      this.saveTimesheet();
     }
 
     $("#myNewTimesheetModal").modal('hide');
