@@ -326,13 +326,13 @@ namespace doneillspa.Controllers
                     LabourWeekDetail detail = new LabourWeekDetail(this.Rates);
                     detail.Week = ts.WeekStarting;
 
-                    UpdateLaboutWeekDurations(detail, ts, proj);
+                    UpdateLabourWeekDurations(detail, ts, proj);
                     details.Add(ts.WeekStarting.Date, detail);
                 }
                 else
                 {
                     LabourWeekDetail detail = details[ts.WeekStarting.Date];
-                    UpdateLaboutWeekDurations(detail, ts, proj);
+                    UpdateLabourWeekDurations(detail, ts, proj);
                 }
             }
 
@@ -355,20 +355,20 @@ namespace doneillspa.Controllers
                     LabourWeekDetail detail = new LabourWeekDetail(this.Rates);
                     detail.Week = ts.WeekStarting;
 
-                    UpdateLaboutWeekDurations(detail, ts, String.Empty);
+                    UpdateLabourWeekDurations(detail, ts, String.Empty);
                     details.Add(ts.WeekStarting.Date, detail);
                 }
                 else
                 {
                     LabourWeekDetail detail = details[ts.WeekStarting.Date];
-                    UpdateLaboutWeekDurations(detail, ts, String.Empty);
+                    UpdateLabourWeekDurations(detail, ts, String.Empty);
                 }
             }
 
             return details.Values.AsEnumerable<LabourWeekDetail>();
         }
 
-        private void UpdateLaboutWeekDurations(LabourWeekDetail detail, Timesheet ts, string project)
+        private void UpdateLabourWeekDurations(LabourWeekDetail detail, Timesheet ts, string project)
         {
             foreach (TimesheetEntry tse in ts.TimesheetEntries)
             {
