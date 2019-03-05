@@ -18,6 +18,7 @@ using SendGrid.Helpers.Mail;
 using Microsoft.Extensions.Configuration;
 using doneillspa.Services.Email;
 using Microsoft.AspNetCore.Http;
+using System.Collections;
 
 namespace doneillspa.Controllers
 {
@@ -370,12 +371,10 @@ namespace doneillspa.Controllers
 
         private void UpdateLabourWeekDurations(LabourWeekDetail detail, Timesheet ts, string project)
         {
-            foreach (TimesheetEntry tse in ts.TimesheetEntries)
+            IEnumerable<TimesheetEntry> filteredTimesheets = ts.TimesheetEntries.Where(t => t.Project.Equals(project));
+
+            foreach (TimesheetEntry tse in filteredTimesheets)
             {
-                if (!String.IsNullOrEmpty(project) && !tse.Project.Equals(project))
-                {
-                    continue;
-                }
                 TimeSpan startTimespan = TimeSpan.Parse(tse.StartTime);
                 TimeSpan endTimespan = TimeSpan.Parse(tse.EndTime);
                 TimeSpan result = endTimespan - startTimespan;
