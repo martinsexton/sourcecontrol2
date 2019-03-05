@@ -20,23 +20,14 @@ namespace doneillspa.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtFactory _jwtFactory;
-        private readonly JsonSerializerSettings _serializerSettings;
-
+        private const string INVALID_LOGIN_ATTEMPT = "Invalid username or password";
 
         public AuthController(UserManager<ApplicationUser> userManager, IJwtFactory jwtFactory)
         {
             _userManager = userManager;
             _jwtFactory = jwtFactory;
-
-
-            _serializerSettings = new JsonSerializerSettings
-            {
-                Formatting = Formatting.Indented
-            };
         }
 
-
-        // POST api/auth/login 
         [HttpPost("login")]
         public async Task<JsonResult> Post([FromBody]RegistrationDetails credentials)
         {
@@ -47,19 +38,17 @@ namespace doneillspa.Controllers
             var identity = await GetClaimsIdentity(credentials.FirstName+credentials.Surname, credentials.Password);
             if (identity == null)
             {
-                // Serialize and return the response 
                 var errorResponse = new
                 {
                     id = string.Empty,
                     auth_token = string.Empty,
                     expires_in = (int)expiresIn.TotalSeconds,
-                    error = "Invalid username or password"
+                    error = INVALID_LOGIN_ATTEMPT
                 };
                 result = new JsonResult(errorResponse);
             }
             else
             {
-                // Serialize and return the response 
                 var response = new
                 {
                     id = identity.Claims.Single(c => c.Type == "id").Value,
@@ -79,7 +68,6 @@ namespace doneillspa.Controllers
         {
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password))
             {
-                // get the user to verifty 
                 ApplicationUser userToVerify = await _userManager.FindByNameAsync(userName.ToUpper());
 
                 if (userToVerify != null)
@@ -95,8 +83,6 @@ namespace doneillspa.Controllers
                     }
                 }
             }
-
-
             // Credentials are invalid, or account doesn't exist 
             return await Task.FromResult<ClaimsIdentity>(null);
         }
