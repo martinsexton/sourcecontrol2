@@ -44,7 +44,7 @@ namespace doneillspa.Controllers
             }
 
             //Set date created on timesheet entry
-            tse.DateCreated = DateTime.Now;
+            tse.DateCreated = DateTime.UtcNow;
 
             _repository.InsertTimesheetEntry(tse);
             //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work

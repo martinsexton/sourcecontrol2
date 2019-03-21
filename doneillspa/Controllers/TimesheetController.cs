@@ -67,7 +67,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            DateTime todaysDate = DateTime.Now;
+            DateTime todaysDate = DateTime.UtcNow;
 
             //Set the date created on timesheet
             timesheet.DateCreated = todaysDate;
@@ -94,7 +94,7 @@ namespace doneillspa.Controllers
             }
 
             //Set date created on timesheet entry
-            entry.DateCreated = DateTime.Now;
+            entry.DateCreated = DateTime.UtcNow;
 
             existingTimesheet.TimesheetEntries.Add(entry);
             _repository.UpdateTimesheet(existingTimesheet);
