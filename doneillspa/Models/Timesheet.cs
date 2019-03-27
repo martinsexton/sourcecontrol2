@@ -16,5 +16,31 @@ namespace doneillspa.Models
         public Guid Owner { get; set; }
 
         public ICollection<TimesheetEntry> TimesheetEntries { get; set; }
+
+        public LabourWeekDetail BuildLabourWeekDetails(List<LabourRate> Rates, string proj)
+        {
+            //Retrieve details from timesheet and populate the LabourWeekDetail object
+            LabourWeekDetail detail = new LabourWeekDetail();
+
+            detail.Week = this.WeekStarting;
+
+            foreach (TimesheetEntry tse in this.TimesheetEntries)
+            {
+                if (!String.IsNullOrEmpty(proj))
+                {
+                    //Only populate details for relevant project
+                    if (tse.Project.Equals(proj))
+                    {
+                        tse.PopulateLabourDetail(detail, Rates);
+                    }
+                }
+                else
+                {
+                    tse.PopulateLabourDetail(detail, Rates);
+                }
+            }
+
+            return detail;
+        }
     }
 }

@@ -7,125 +7,29 @@ namespace doneillspa.Models
 {
     public class LabourWeekDetail
     {
-        public List<LabourRate> Rates;
-
-        public LabourWeekDetail(List<LabourRate> rates)
-        {
-            this.Rates = rates;
-        }
-
-        private double GetRate(string role, DateTime onDate)
-        {
-            foreach(LabourRate r in Rates)
-            {
-                if (r.Role.Equals(role) && r.EffectiveFrom <= onDate && (r.EffectiveTo == null || r.EffectiveTo >= onDate))
-                {
-                    return r.RatePerHour;
-                }
-            }
-            //Default Value
-            return 0.0;
-        }
-
         public DateTime Week { get; set; }
-        public double AdministratorMinutes { get; set; }
-        public double AdministratorCost
-        {
-            get
-            {
-                return (AdministratorMinutes / 60) * 10;
-            }
-        }
 
-        public double SupervisorMinutes { get; set; }
-        public double SupervisorCost
-        {
-            get
-            {
-                return (SupervisorMinutes / 60) * GetRate("Supervisor", this.Week); ;
-            }
-        }
+        public double AdministratorCost { get; set; }
 
-        public double ChargehandMinutes { get; set; }
-        public double ChargehandCost
-        {
-            get
-            {
-                return (ChargehandMinutes/60) * GetRate("ChargeHand", this.Week); ;
-            }
-        }
+        public double SupervisorCost { get; set; }
 
-        public double ElecR1Minutes { get; set; }
-        public double ElecR1Cost
-        {
-            get
-            {
-                return (ElecR1Minutes / 60) * GetRate("ElectR1", this.Week); ;
-            }
-        }
+        public double ChargehandCost { get; set; }
 
-        public double ElecR2Minutes { get; set; }
-        public double ElecR2Cost
-        {
-            get
-            {
-                return (ElecR2Minutes / 60) * GetRate("ElectR2", this.Week); ;
-            }
-        }
+        public double ElecR1Cost { get; set; }
 
-        public double ElecR3Minutes { get; set; }
-        public double ElecR3Cost
-        {
-            get
-            {
-                return (ElecR3Minutes / 60) * GetRate("ElectR3", this.Week); ;
-            }
-        }
+        public double ElecR2Cost { get; set; }
 
-        public double TempMinutes { get; set; }
-        public double TempCost
-        {
-            get
-            {
-                return (TempMinutes / 60) * GetRate("Temp", this.Week); ;
-            }
-        }
+        public double ElecR3Cost { get; set; }
 
-        public double FirstYearApprenticeMinutes { get; set; }
-        public double FirstYearApprenticeCost
-        {
-            get
-            {
-                return (FirstYearApprenticeMinutes / 60) * GetRate("First Year Apprentice", this.Week); ;
-            }
-        }
+        public double TempCost { get; set; }
 
-        public double SecondYearApprenticeMinutes { get; set; }
-        public double SecondYearApprenticeCost
-        {
-            get
-            {
-                return (SecondYearApprenticeMinutes / 60) * GetRate("Second Year Apprentice", this.Week); ;
-            }
-        }
+        public double FirstYearApprenticeCost { get; set; }
 
-        public double ThirdYearApprenticeMinutes { get; set; }
-        public double ThirdYearApprenticeCost
-        {
-            get
-            {
-                return (ThirdYearApprenticeMinutes / 60) * GetRate("Third Year Apprentice", this.Week);
-            }
-        }
+        public double SecondYearApprenticeCost { get; set; }
 
-        public double FourthYearApprenticeMinutes { get; set; }
-        public double FourthYearApprenticeCost
-        {
-            get
-            {
-                return (FourthYearApprenticeMinutes / 60) * GetRate("Fourth Year Apprentice", this.Week);
-            }
-        }
+        public double ThirdYearApprenticeCost { get; set; }
+
+        public double FourthYearApprenticeCost { get; set; }
 
         public double TotalCost
         {

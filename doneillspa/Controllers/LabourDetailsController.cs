@@ -315,109 +315,34 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/project/{proj}")]
         public IEnumerable<LabourWeekDetail> GetByProject(string proj)
         {
-            Dictionary<DateTime, LabourWeekDetail> details = new Dictionary<DateTime, LabourWeekDetail>();
+            List<LabourWeekDetail> details = new List<LabourWeekDetail>();
 
             //TODO Read rates from database at this point and pass in some dictionary of role/rate to the LabourWeekDetail when creating it, so it can be use
             //to calculate the rate based on hours worked.
             IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
-                if (!details.ContainsKey(ts.WeekStarting.Date))
-                {
-                    LabourWeekDetail detail = new LabourWeekDetail(this.Rates);
-                    detail.Week = ts.WeekStarting;
-
-                    UpdateLabourWeekDurations(detail, ts, proj);
-                    details.Add(ts.WeekStarting.Date, detail);
-                }
-                else
-                {
-                    LabourWeekDetail detail = details[ts.WeekStarting.Date];
-                    UpdateLabourWeekDurations(detail, ts, proj);
-                }
+                details.Add(ts.BuildLabourWeekDetails(this.Rates, proj));
             }
 
-            return details.Values.AsEnumerable<LabourWeekDetail>();
+            return details.AsEnumerable<LabourWeekDetail>();
         }
 
         [HttpGet]
         [Route("api/labourdetails")]
         public IEnumerable<LabourWeekDetail> Get()
         {
-            Dictionary<DateTime, LabourWeekDetail> details = new Dictionary<DateTime, LabourWeekDetail>();
+            List<LabourWeekDetail> details = new List<LabourWeekDetail>();
 
             //TODO Read rates from database at this point and pass in some dictionary of role/rate to the LabourWeekDetail when creating it, so it can be use
             //to calculate the rate based on hours worked.
             IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
             foreach(Timesheet ts in timesheets)
             {
-                if (!details.ContainsKey(ts.WeekStarting.Date))
-                {
-                    LabourWeekDetail detail = new LabourWeekDetail(this.Rates);
-                    detail.Week = ts.WeekStarting;
-
-                    UpdateLabourWeekDurations(detail, ts, String.Empty);
-                    details.Add(ts.WeekStarting.Date, detail);
-                }
-                else
-                {
-                    LabourWeekDetail detail = details[ts.WeekStarting.Date];
-                    UpdateLabourWeekDurations(detail, ts, String.Empty);
-                }
+                details.Add(ts.BuildLabourWeekDetails(this.Rates, string.Empty));
             }
 
-            return details.Values.AsEnumerable<LabourWeekDetail>();
-        }
-
-        private void UpdateLabourWeekDurations(LabourWeekDetail detail, Timesheet ts, string project)
-        {
-            IEnumerable<TimesheetEntry> filteredTimesheets = ts.TimesheetEntries.Where(t => t.Project.Equals(project));
-
-            foreach (TimesheetEntry tse in filteredTimesheets)
-            {
-                TimeSpan startTimespan = TimeSpan.Parse(tse.StartTime);
-                TimeSpan endTimespan = TimeSpan.Parse(tse.EndTime);
-                TimeSpan result = endTimespan - startTimespan;
-
-                switch (ts.Role)
-                {
-                    case "Administrator":
-                        detail.AdministratorMinutes += result.TotalMinutes;
-                        break;
-                    case "Supervisor":
-                        detail.SupervisorMinutes += result.TotalMinutes;
-                        break;
-                    case "ChargeHand":
-                        detail.ChargehandMinutes += result.TotalMinutes;
-                        break;
-                    case "ElectR1":
-                        detail.ElecR1Minutes += result.TotalMinutes;
-                        break;
-                    case "ElectR2":
-                        detail.ElecR2Minutes += result.TotalMinutes;
-                        break;
-                    case "ElectR3":
-                        detail.ElecR3Minutes += result.TotalMinutes;
-                        break;
-                    case "Temp":
-                        detail.TempMinutes += result.TotalMinutes;
-                        break;
-                    case "First Year Apprentice":
-                        detail.FirstYearApprenticeMinutes += result.TotalMinutes;
-                        break;
-                    case "Second Year Apprentice":
-                        detail.SecondYearApprenticeMinutes += result.TotalMinutes;
-                        break;
-                    case "Third Year Apprentice":
-                        detail.ThirdYearApprenticeMinutes += result.TotalMinutes;
-                        break;
-                    case "Fourth Year Apprentice":
-                        detail.FourthYearApprenticeMinutes += result.TotalMinutes;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            return details.AsEnumerable<LabourWeekDetail>();
         }
     }
 }
