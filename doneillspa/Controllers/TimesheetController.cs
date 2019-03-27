@@ -23,39 +23,62 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/timesheet")]
-        public IEnumerable<Timesheet> Get()
+        public IEnumerable<TimesheetDto> Get()
         {
-            return _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
+            foreach(Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+            return timesheetsDtos;
         }
 
         [HttpGet]
         [Route("api/timesheet/{id}")]
         public JsonResult Get(long id)
         {
-            var item = _repository.GetTimsheetById(id);
+            Timesheet item = _repository.GetTimsheetById(id);
 
             if (item == null)
             {
                 return Json(Ok());
             }
-            JsonResult result = new JsonResult(item);
+
+            JsonResult result = new JsonResult(ConvertToDto(item));
             return result;
         }
 
         [HttpGet]
         [Route("api/timesheet/week/{year}/{month}/{day}")]
-        public IEnumerable<Timesheet> Get(int year, int month, int day)
+        public IEnumerable<TimesheetDto> Get(int year, int month, int day)
         {
             DateTime weekStarting = new DateTime(year, month, day);
 
-            return _repository.GetTimesheetsByDate(weekStarting);
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheetsByDate(weekStarting);
+            foreach (Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+            return timesheetsDtos;
+
         }
 
         [HttpGet]
         [Route("api/timesheet/name/{user}")]
-        public IEnumerable<Timesheet> Get(string user)
+        public IEnumerable<TimesheetDto> Get(string user)
         {
-            return _repository.GetTimesheetsByUser(user);
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheetsByUser(user);
+            foreach (Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+            return timesheetsDtos;
         }
 
         [HttpPost]
@@ -101,5 +124,34 @@ namespace doneillspa.Controllers
 
             return Ok(entry.Id);
         }
+
+        private TimesheetDto ConvertToDto(Timesheet ts)
+        {
+            TimesheetDto tsdto = new TimesheetDto();
+            tsdto.DateCreated = ts.DateCreated;
+            tsdto.Id = ts.Id;
+            tsdto.Owner = ts.Owner;
+            tsdto.Role = ts.Role;
+            tsdto.Username = ts.Username;
+            tsdto.WeekStarting = ts.WeekStarting;
+
+            tsdto.TimesheetEntries = new List<TimesheetEntryDto>();
+            foreach (TimesheetEntry tse in ts.TimesheetEntries)
+            {
+                TimesheetEntryDto tsedto = new TimesheetEntryDto();
+                tsedto.DateCreated = tse.DateCreated;
+                tsedto.Day = tse.Day;
+                tsedto.Details = tse.Details;
+                tsedto.EndTime = tse.EndTime;
+                tsedto.Id = tse.Id;
+                tsedto.Project = tse.Project;
+                tsedto.StartTime = tse.StartTime;
+
+                tsdto.TimesheetEntries.Add(tsedto);
+            }
+
+            return tsdto;
+        }
+
     }
 }

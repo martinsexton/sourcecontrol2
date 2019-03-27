@@ -93,7 +93,7 @@ namespace doneillspa.Controllers
             }
 
             _rateRepository.InsertRate(rate);
-            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
+            //Save should be last thing to call at the end of a business transaction as it closes the Unit Of Work
             _rateRepository.Save();
 
             return Ok();
@@ -317,11 +317,10 @@ namespace doneillspa.Controllers
         {
             List<LabourWeekDetail> details = new List<LabourWeekDetail>();
 
-            //TODO Read rates from database at this point and pass in some dictionary of role/rate to the LabourWeekDetail when creating it, so it can be use
-            //to calculate the rate based on hours worked.
             IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
+                //For each Timesheet create a LabourDetails object.
                 details.Add(ts.BuildLabourWeekDetails(this.Rates, proj));
             }
 

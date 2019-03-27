@@ -109,13 +109,21 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/user/timesheets/{id}")]
-        public IEnumerable<Timesheet> GetTimesheets(string id)
+        public IEnumerable<TimesheetDto> GetTimesheets(string id)
         {
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
             Task<ApplicationUser> user = GetUserById(id);
 
             JsonResult result = new JsonResult(user.Result.UserName);
 
-            return _repository.GetTimesheetsByUser(result.Value.ToString()).OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheetsByUser(result.Value.ToString()).OrderByDescending(r => r.WeekStarting);
+
+            foreach (Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+            return timesheetsDtos;
         }
 
         [HttpGet]
@@ -247,6 +255,34 @@ namespace doneillspa.Controllers
             }
             //User not found
             return await Task.FromResult<ApplicationUser>(null);
+        }
+
+        private TimesheetDto ConvertToDto(Timesheet ts)
+        {
+            TimesheetDto tsdto = new TimesheetDto();
+            tsdto.DateCreated = ts.DateCreated;
+            tsdto.Id = ts.Id;
+            tsdto.Owner = ts.Owner;
+            tsdto.Role = ts.Role;
+            tsdto.Username = ts.Username;
+            tsdto.WeekStarting = ts.WeekStarting;
+
+            tsdto.TimesheetEntries = new List<TimesheetEntryDto>();
+            foreach (TimesheetEntry tse in ts.TimesheetEntries)
+            {
+                TimesheetEntryDto tsedto = new TimesheetEntryDto();
+                tsedto.DateCreated = tse.DateCreated;
+                tsedto.Day = tse.Day;
+                tsedto.Details = tse.Details;
+                tsedto.EndTime = tse.EndTime;
+                tsedto.Id = tse.Id;
+                tsedto.Project = tse.Project;
+                tsedto.StartTime = tse.StartTime;
+
+                tsdto.TimesheetEntries.Add(tsedto);
+            }
+
+            return tsdto;
         }
     }
 }
