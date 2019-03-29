@@ -4,10 +4,9 @@ import { NG_VALIDATORS, FormControl } from '@angular/forms';
 
 function validatePasswordFactory() {
   return (c: FormControl) => {
-    let EMAIL_REGEXP = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+]).{8,}$/i;
+    let PWD_REGEXP = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+]).{8,}$/i;
 
-
-    return EMAIL_REGEXP.test(c.value) ? null : {
+    return PWD_REGEXP.test(c.value) ? null : {
       validateEmail: {
         valid: false
 
@@ -18,7 +17,6 @@ function validatePasswordFactory() {
   };
 }
 
-
 @Directive({
   selector: '[validatePassword][ngModel],[validatePassword][formControl]',
   providers: [
@@ -26,16 +24,12 @@ function validatePasswordFactory() {
   ]
 })
 export class PasswordValidator {
-
-
   validator: Function;
-
 
   constructor() {
     this.validator = validatePasswordFactory();
 
   }
-
 
   validate(c: FormControl) {
     return this.validator(c);
