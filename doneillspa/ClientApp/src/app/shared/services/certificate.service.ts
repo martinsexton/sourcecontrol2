@@ -13,19 +13,6 @@ export class CertificateService extends HttpServiceBase{
     super(_httpClient, baseUrl); 
   }
 
-  getCertifications(userId: string) {
-    let authToken = localStorage.getItem('auth_token');
-    let headers = new HttpHeaders();
-    headers = headers.append('Content-Type', 'application/json');
-    headers = headers.append('Authorization', 'Bearer ' + authToken);
-
-    return this._httpClient.get<Certificate[]>(this._baseurl + 'api/certification/user/' + userId,
-      {
-        headers
-      })
-      .retry(5)
-      .catch(this.handleError);
-  }
 
   deleteCertification(crt: Certificate) {
     let authToken = localStorage.getItem('auth_token');

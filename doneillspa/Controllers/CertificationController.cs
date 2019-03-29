@@ -25,13 +25,6 @@ namespace doneillspa.Controllers
             return true;
         }
 
-        [HttpGet]
-        [Route("api/certification/user/{id}")]
-        public IEnumerable<Certification> Get(string id)
-        {
-            return _repository.GetCertificationsByUserId(id);
-        }
-
         [HttpDelete]
         [Route("api/certification/{id}")]
         public JsonResult Delete(long id)
