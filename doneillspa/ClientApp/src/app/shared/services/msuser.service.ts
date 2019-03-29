@@ -134,7 +134,7 @@ export class MsUserService extends HttpServiceBase{
   retrieveTimesheets(id : string) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get(this._baseurl + 'api/user/timesheets/' + id,
+    return this._httpClient.get(this._baseurl + 'api/user/' + id + '/timesheets',
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
