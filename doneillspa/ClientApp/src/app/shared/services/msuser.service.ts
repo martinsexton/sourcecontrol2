@@ -13,6 +13,7 @@ import { Certificate } from '../../certificate';
 import { IdentityRole } from '../../identityrole';
 import { HttpServiceBase } from './httpservicebase';
 import { EmailNotification } from '../../emailnotification';
+import { HolidayRequest } from '../../holidayrequest';
 
 @Injectable()
 export class MsUserService extends HttpServiceBase{
@@ -89,6 +90,19 @@ export class MsUserService extends HttpServiceBase{
           .set('Authorization', 'Bearer ' + authToken)
       })
       .retry(5);
+  }
+
+  addHolidayRequest(id: string, request: HolidayRequest) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.put(this._baseurl + 'api/user/' + id + '/holidayrequests', request,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5)
+      .catch(this.handleError);
   }
 
   addCertificate(id: string, cert: Certificate) {

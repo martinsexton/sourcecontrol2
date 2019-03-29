@@ -55,6 +55,8 @@
     <None Remove="ClientApp\src\app\directives\focus.directive.ts" />
     <None Remove="ClientApp\src\app\directives\password.validator.directive.ts" />
     <None Remove="ClientApp\src\app\emailnotification.ts" />
+    <None Remove="ClientApp\src\app\holidayrequest.ts" />
+    <None Remove="ClientApp\src\app\holidays\holidays.component.ts" />
     <None Remove="ClientApp\src\app\identityrole.ts" />
     <None Remove="ClientApp\src\app\labourrate.ts" />
     <None Remove="ClientApp\src\app\labourweek.ts" />
@@ -92,6 +94,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\directives\focus.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\password.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\emailnotification.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\holidayrequest.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\holidays\holidays.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\identityrole.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\labourrate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\labourweek.ts" />

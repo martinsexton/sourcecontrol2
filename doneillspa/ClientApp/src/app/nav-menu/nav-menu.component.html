@@ -26,6 +26,9 @@
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
         <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
       </li>
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
+        <a [routerLink]='["/holidays"]' class="nav-link">Holidays</a>
+      </li>
     </ul>
     <ul class="nav navbar-nav">
       <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/login"]' class="nav-link">Login</a></li>

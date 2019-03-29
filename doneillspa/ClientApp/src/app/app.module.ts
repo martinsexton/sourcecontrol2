@@ -13,6 +13,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
 import { TimesheetComponent } from './timesheets/timesheets.component';
+import { HolidaysComponent } from './holidays/holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
@@ -45,6 +46,7 @@ import { AuthGuard } from './auth.guard';
     LoginFormComponent,
     ProjectComponent,
     TimesheetComponent,
+    HolidaysComponent,
     DashboardComponent,
     LabourComponent,
     UserDashboardComponent,

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using doneillspa.Services.Email;
+using doneillspa.Dtos;
 
 namespace doneillspa.Controllers
 {
@@ -41,7 +42,7 @@ namespace doneillspa.Controllers
         [Route("api/user")]
         public IEnumerable<ApplicationUserDto> Get()
         {
-            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).ToList();
+            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).Include(r => r.HolidayRequests).ToList();
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
 
@@ -92,6 +93,7 @@ namespace doneillspa.Controllers
                     dtouser.EmailNotifications = notifications;
 
                 }
+                //TODO need a section here to copy across the holiday requests into DTO object.
                 dtousers.Add(dtouser);
             }
             return dtousers;
@@ -133,7 +135,7 @@ namespace doneillspa.Controllers
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
 
             List<ApplicationUser> users = _userManager.Users.Where(r => r.UserName.Equals(name)).
-                Include(r => r.Certifications).ToList();
+                Include(r => r.Certifications).Include(r => r.HolidayRequests).ToList();
 
             foreach (ApplicationUser user in users)
             {
@@ -164,6 +166,8 @@ namespace doneillspa.Controllers
                     }
                     dtouser.Certifications = certs;
                 }
+
+                //TODO need to bring back the holiday requests here.
                 dtousers.Add(dtouser);
             }
             return dtousers.First();
@@ -207,6 +211,26 @@ namespace doneillspa.Controllers
         }
 
         [HttpPut()]
+        [Route("api/user/{id}/holidayrequests")]
+        public IActionResult Put(string id, [FromBody]HolidayRequestDto t)
+        {
+            ApplicationUser user = GetUserIncludingCerts(id);
+
+            HolidayRequest holiday = new HolidayRequest();
+            holiday.FromDate = t.Fromdate;
+            holiday.Days = t.Days;
+            holiday.RequestedDate = DateTime.UtcNow;
+            holiday.Status = HolidayRequestStatus.New;
+
+            user.HolidayRequests.Add(holiday);
+
+            Task<IdentityResult> result = _userManager.UpdateAsync(user);
+            IdentityResult r = result.Result;
+
+            return Ok(holiday.Id);
+        }
+
+        [HttpPut()]
         [Route("api/user/{id}/notifications")]
         public IActionResult Put(string id, [FromBody]EmailNotificationDto t)
         {
@@ -232,7 +256,7 @@ namespace doneillspa.Controllers
 
         private ApplicationUser GetUserIncludingCerts(string id)
         {
-            return _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).Where(r => r.Id.ToString() == id).FirstOrDefault();
+            return _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).Include(r => r.HolidayRequests).Where(r => r.Id.ToString() == id).FirstOrDefault();
         }
 
         private async Task<ApplicationUser> GetUserById(string id)
