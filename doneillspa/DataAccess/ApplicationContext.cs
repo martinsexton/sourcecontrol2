@@ -41,6 +41,10 @@ namespace doneillspa.DataAccess
                .WithMany(a => a.HolidayRequests)
                .HasForeignKey(n => n.UserId);
 
+            modelBuilder.Entity<HolidayRequest>()
+               .HasOne<ApplicationUser>(n => n.Approver);
+
+
             modelBuilder.Entity<EmailNotification>()
                .HasOne<ApplicationUser>(n => n.User)
                .WithMany(a => a.EmailNotifications)

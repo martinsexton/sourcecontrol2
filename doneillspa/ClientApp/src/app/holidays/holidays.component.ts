@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { HolidayRequest } from '../holidayrequest';
 import { MsUserService } from '../shared/services/msuser.service';
+import { ApplicationUser } from '../applicationuser';
 
 @Component({
   selector: 'holidays',
@@ -9,11 +10,15 @@ import { MsUserService } from '../shared/services/msuser.service';
 })
 
 export class HolidaysComponent {
-  public holidayRequest: HolidayRequest = new HolidayRequest(0, new Date(),0);
+  public holidayRequest: HolidayRequest = new HolidayRequest(0, new Date(),0, '', 'New');
   public holidayRequests: HolidayRequest[] = [];
+  public supervisors: ApplicationUser[];
+  public errors: string;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _msuserService: MsUserService) {
-
+    this._msuserService.getUsersWithRole('Supervisor').subscribe(result => {
+      this.supervisors = result;
+    }, error => this.errors = error)
   }
 
   submitHolidayRequest() {
@@ -23,7 +28,7 @@ export class HolidaysComponent {
       this.holidayRequests.push(this.holidayRequest);
 
       //Create fresh version
-      this.holidayRequest = new HolidayRequest(0, new Date(), 0);
+      this.holidayRequest = new HolidayRequest(0, new Date(), 0, '','New');
     }, error => console.error(error));
   }
 }

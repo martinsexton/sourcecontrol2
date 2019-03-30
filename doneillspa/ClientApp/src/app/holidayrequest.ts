@@ -3,5 +3,7 @@ export class HolidayRequest {
     public id: number,
     public fromDate: Date,
     public days: number,
+    public approverId: string,
+    public status:string
   ) { }
 }

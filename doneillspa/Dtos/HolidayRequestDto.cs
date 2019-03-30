@@ -10,5 +10,6 @@ namespace doneillspa.Dtos
         public long Id { get; set; }
         public DateTime Fromdate { get; set; }
         public int Days { get; set; }
+        public string ApproverId { get; set; }
     }
 }

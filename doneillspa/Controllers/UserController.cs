@@ -39,6 +39,34 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
+        [Route("api/user/role/{role}")]
+        public IEnumerable<ApplicationUserDto> GetUsersWithRole(string role)
+        {
+            List<ApplicationUserDto> usersWithRole = new List<ApplicationUserDto>();
+
+            List<ApplicationUser> users = _userManager.Users.ToList();
+            foreach (ApplicationUser user in users)
+            {
+                Task<IList<string>> roles = _userManager.GetRolesAsync(user);
+                foreach(String r in roles.Result)
+                {
+                    if (r.Equals(role))
+                    {
+                        ApplicationUserDto dtouser = new ApplicationUserDto();
+                        dtouser.Id = user.Id;
+                        dtouser.FirstName = user.FirstName;
+                        dtouser.Surname = user.Surname;
+                        dtouser.PhoneNumber = user.PhoneNumber;
+                        dtouser.Email = user.Email;
+
+                        usersWithRole.Add(dtouser);
+                    }
+                }
+            }
+            return usersWithRole;
+        }
+
+        [HttpGet]
         [Route("api/user")]
         public IEnumerable<ApplicationUserDto> Get()
         {
@@ -155,12 +183,14 @@ namespace doneillspa.Controllers
         public IActionResult Put(string id, [FromBody]HolidayRequestDto t)
         {
             ApplicationUser user = GetUserIncludingCerts(id);
+            ApplicationUser approver = GetUserById(t.ApproverId).Result;
 
             HolidayRequest holiday = new HolidayRequest();
             holiday.FromDate = t.Fromdate;
             holiday.Days = t.Days;
             holiday.RequestedDate = DateTime.UtcNow;
             holiday.Status = HolidayRequestStatus.New;
+            holiday.Approver = approver;
 
             user.HolidayRequests.Add(holiday);
 
