@@ -5,6 +5,7 @@ import { Project } from '../../project';
 import { Certificate } from '../../certificate';
 import { Observable } from 'rxjs/Observable';
 import { HttpServiceBase } from './httpservicebase';
+import { HolidayRequest } from '../../holidayrequest';
 
 @Injectable()
 export class CertificateService extends HttpServiceBase{
@@ -12,7 +13,6 @@ export class CertificateService extends HttpServiceBase{
   constructor(_httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     super(_httpClient, baseUrl); 
   }
-
 
   deleteCertification(crt: Certificate) {
     let authToken = localStorage.getItem('auth_token');

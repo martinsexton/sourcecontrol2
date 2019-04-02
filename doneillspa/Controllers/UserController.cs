@@ -183,6 +183,28 @@ namespace doneillspa.Controllers
         }
 
 
+        [HttpGet]
+        [Route("api/supervisor/{id}/holidayrequests")]
+        public IEnumerable<HolidayRequestDto> GetHolidayRequestsForApproval(string id)
+        {
+            List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
+
+            IEnumerable<HolidayRequest> holidayRequests = _holidayRepository.GetHolidayRequestsForApprover(id);
+
+            foreach (HolidayRequest hr in holidayRequests)
+            {
+                HolidayRequestDto dto = new HolidayRequestDto();
+                dto.Id = hr.Id;
+                dto.FromDate = hr.FromDate;
+                dto.Days = hr.Days;
+                dto.ApproverId = hr.Approver.Id.ToString();
+                dto.Status = hr.Status.ToString();
+                dto.RequestedDate = hr.RequestedDate;
+
+                holidayRequestDtos.Add(dto);
+            }
+            return holidayRequestDtos;
+        }
         [HttpPut()]
         [Route("api/user/{id}/certificates")]
         public IActionResult Put(string id, [FromBody]CertificationDto t)

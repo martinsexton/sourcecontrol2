@@ -15,6 +15,7 @@ import { ProjectComponent } from './projects/projects.component';
 import { TimesheetComponent } from './timesheets/timesheets.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SupervisorComponent } from './supervisor/supervisor.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
@@ -49,6 +50,7 @@ import { AuthGuard } from './auth.guard';
     TimesheetComponent,
     HolidaysComponent,
     DashboardComponent,
+    SupervisorComponent,
     LabourComponent,
     UserDashboardComponent,
     EmailValidator,

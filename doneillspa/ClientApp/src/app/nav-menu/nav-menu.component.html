@@ -17,6 +17,9 @@
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/labour"]' class="nav-link">Labour Details</a>
       </li>
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn && isSupervisor()'>
+        <a [routerLink]='["/supervisor"]' class="nav-link">Supervisor Dashboard</a>
+      </li>
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/userdashboard"]' class="nav-link">Users</a>
       </li>

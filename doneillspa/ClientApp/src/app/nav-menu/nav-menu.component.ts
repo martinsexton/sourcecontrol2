@@ -27,6 +27,10 @@ export class NavMenuComponent {
     return this.isUserLoggedIn && !this.userService.isAdministrator();
   }
 
+  isSupervisor() {
+    return this.userService.isSupervisor();
+  }
+
   isUserLoggedIn() {
     return this.userService.isLoggedIn();
   }

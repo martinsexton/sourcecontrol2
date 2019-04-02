@@ -10,6 +10,7 @@ import { ProjectComponent } from './projects/projects.component';
 import { TimesheetComponent } from './timesheets/timesheets.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SupervisorComponent } from './supervisor/supervisor.component';
 import { LabourComponent } from './labour/labour.componenet';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
@@ -28,6 +29,7 @@ const appRoutes: Routes = [
   { path: 'timesheets', component: TimesheetComponent, canActivate: [AuthGuard] },
   { path: 'holidays', component: HolidaysComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'supervisor', component: SupervisorComponent, canActivate: [AuthGuard] },
   { path: 'labour', component: LabourComponent, canActivate: [AuthGuard] },
   { path: 'userdashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
   { path: 'projecthealth', component: ProjectHealthComponent, canActivate: [AuthGuard] }

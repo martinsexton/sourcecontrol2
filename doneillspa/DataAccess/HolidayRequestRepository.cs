@@ -32,6 +32,7 @@ namespace doneillspa.DataAccess
         public IEnumerable<HolidayRequest> GetHolidayRequestsForApprover(string userId)
         {
             return _context.HolidayRequest
+                        .Include(b => b.Approver)
                         .Where(b => b.Approver.Id.ToString() == userId)
                         .ToList();
         }

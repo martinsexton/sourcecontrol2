@@ -117,6 +117,18 @@ export class MsUserService extends HttpServiceBase{
       .retry(5);
   }
 
+  getHolidayRequestsForApproval() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<HolidayRequest[]>(this._baseurl + 'api/supervisor/' + localStorage.getItem('client_id') + '/holidayrequests',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5);
+  }
+
   addHolidayRequest(id: string, request: HolidayRequest) {
     let authToken = localStorage.getItem('auth_token');
 
@@ -176,6 +188,10 @@ export class MsUserService extends HttpServiceBase{
 
   isAdministrator() {
     return localStorage.getItem('role') == 'Administrator';
+  }
+
+  isSupervisor() {
+    return localStorage.getItem('role') == 'Supervisor';
   }
 
   isLoggedIn() {

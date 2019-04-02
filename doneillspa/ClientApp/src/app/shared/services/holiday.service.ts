@@ -13,6 +13,23 @@ export class HolidayService extends HttpServiceBase {
     super(_httpClient, baseUrl);
   }
 
+  updateHolidayRequest(h: HolidayRequest) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.put(this._baseurl + 'api/holidayrequest/', h, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
+  approveHolidayRequest(h: HolidayRequest) {
+    h.status = 'Approved';
+    return this.updateHolidayRequest(h);
+  }
+
 
   deleteHolidayRequest(h: HolidayRequest) {
     let authToken = localStorage.getItem('auth_token');

@@ -26,16 +26,17 @@ namespace doneillspa.Controllers
             _emailService = emailService;
             _repository = holidayRepository;
         }
-
         [HttpPut]
-        [Route("api/holidayrequest/{id}/approve")]
-        public JsonResult Approve(long id)
+        [Route("api/holidayrequest")]
+        public IActionResult Put([FromBody]HolidayRequestDto hr)
         {
-            HolidayRequest request = _repository.GetHolidayRequestById(id);
-            request.Approve();
-            _repository.Save();
-
-            return Json(Ok());
+            HolidayRequest request = _repository.GetHolidayRequestById(hr.Id);
+            if (hr.Status.Equals("Approved"))
+            {
+                request.Approve();
+                _repository.Save();
+            }
+            return new NoContentResult();
         }
 
         [HttpDelete]

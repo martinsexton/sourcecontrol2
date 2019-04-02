@@ -75,6 +75,7 @@
     <None Remove="ClientApp\src\app\shared\services\notification.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\timesheet.service.ts" />
     <None Remove="ClientApp\src\app\shared\utils\config.service.ts" />
+    <None Remove="ClientApp\src\app\supervisor\supervisor.component.ts" />
     <None Remove="ClientApp\src\app\Timesheet.ts" />
     <None Remove="ClientApp\src\app\timesheetentry.ts" />
     <None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
@@ -116,6 +117,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\msuser.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\timesheet.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\utils\config.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\supervisor\supervisor.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheet.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheetentry.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheets\timesheets.component.ts" />
