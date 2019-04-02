@@ -197,6 +197,8 @@ namespace doneillspa.Controllers
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             IdentityResult r = result.Result;
 
+            _emailService.SendMail("doneill@hotmail.com", approver.Email, "Holiday Request", string.Format("{0} has requested holiday from {1} for {2} days.", user.FirstName, holiday.FromDate, holiday.Days), "", string.Empty, string.Empty);
+
             return Ok(holiday.Id);
         }
 
