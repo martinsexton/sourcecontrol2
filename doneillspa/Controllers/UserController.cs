@@ -22,13 +22,15 @@ namespace doneillspa.Controllers
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly ITimesheetRepository _repository;
         private readonly IEmailService _emailService;
+        private readonly IHolidayRequestRepository _holidayRepository;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, ITimesheetRepository repository, IEmailService emailService)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, ITimesheetRepository repository, IHolidayRequestRepository holidayRepository, IEmailService emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _repository = repository;
             _emailService = emailService;
+            _holidayRepository = holidayRepository;
         }
 
         [HttpGet]
@@ -157,6 +159,30 @@ namespace doneillspa.Controllers
         }
 
 
+        [HttpGet]
+        [Route("api/user/{id}/holidayrequests")]
+        public IEnumerable<HolidayRequestDto> GetHolidayRequestsForUser(string id)
+        {
+            List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
+
+            IEnumerable<HolidayRequest> holidayRequests = _holidayRepository.GetHolidayRequestsForUser(id);
+
+            foreach (HolidayRequest hr in holidayRequests)
+            {
+                HolidayRequestDto dto = new HolidayRequestDto();
+                dto.Id = hr.Id;
+                dto.FromDate = hr.FromDate;
+                dto.Days = hr.Days;
+                dto.ApproverId = hr.Approver.Id.ToString();
+                dto.Status = hr.Status.ToString();
+                dto.RequestedDate = hr.RequestedDate;
+
+                holidayRequestDtos.Add(dto);
+            }
+            return holidayRequestDtos;
+        }
+
+
         [HttpPut()]
         [Route("api/user/{id}/certificates")]
         public IActionResult Put(string id, [FromBody]CertificationDto t)
@@ -186,7 +212,7 @@ namespace doneillspa.Controllers
             ApplicationUser approver = GetUserById(t.ApproverId).Result;
 
             HolidayRequest holiday = new HolidayRequest();
-            holiday.FromDate = t.Fromdate;
+            holiday.FromDate = t.FromDate;
             holiday.Days = t.Days;
             holiday.RequestedDate = DateTime.UtcNow;
             holiday.Status = HolidayRequestStatus.New;

@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col">
+    <div class="col-md-4">
       <form>
         <div class="form-group">
           <label for="fromDate">From Date</label>
@@ -19,7 +19,7 @@
         <button (click)="submitHolidayRequest()" class="btn btn-secondary">Submit Request</button>
       </form>
     </div>
-    <div class="col" *ngIf="holidayRequests">
+    <div class="col-md-8" *ngIf="holidayRequests">
       <div class="card mb-3">
         <div class="card-header">
           Holiday Requests
@@ -29,16 +29,20 @@
             <table class='table'>
               <thead class="thead">
                 <tr>
+                  <th>Date Requested</th>
                   <th>From Date</th>
                   <th>Days</th>
                   <th>Status</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let r of holidayRequests">
-                  <td>{{ r.fromDate }}</td>
+                  <td>{{ r.requestedDate | date:'fullDate'}}</td>
+                  <td>{{ r.fromDate | date:'fullDate'}}</td>
                   <td>{{ r.days}}</td>
-                  <td>{{r.status}}</td>
+                  <td>{{ r.status}}</td>
+                  <td><span aria-hidden="true" (click)="deleteHolidayRequest(r)">Delete</span></td>
                 </tr>
               </tbody>
             </table>

@@ -18,6 +18,11 @@ namespace doneillspa.Models
         public int Days { get; set; }
 
         public HolidayRequestStatus Status { get; set; }
+
+        public void Approve()
+        {
+            Status = HolidayRequestStatus.Approved;
+        }
     }
 
     public enum HolidayRequestStatus

@@ -105,6 +105,18 @@ export class MsUserService extends HttpServiceBase{
       .retry(5);
   }
 
+  getHolidayRequests() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<HolidayRequest[]>(this._baseurl + 'api/user/' + localStorage.getItem('client_id') + '/holidayrequests',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5);
+  }
+
   addHolidayRequest(id: string, request: HolidayRequest) {
     let authToken = localStorage.getItem('auth_token');
 
