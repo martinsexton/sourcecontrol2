@@ -20,7 +20,7 @@ export class NavMenuComponent {
   }
 
   isAdministrator() {
-    return this.userService.isAdministrator();
+    return this.isUserLoggedIn && this.userService.isAdministrator();
   }
 
   isWorker() {
@@ -28,7 +28,7 @@ export class NavMenuComponent {
   }
 
   isSupervisor() {
-    return this.userService.isSupervisor();
+    return this.isUserLoggedIn && this.userService.isSupervisor();
   }
 
   isUserLoggedIn() {
