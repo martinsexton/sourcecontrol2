@@ -267,9 +267,8 @@ namespace doneillspa.Controllers
             user.EmailNotifications.Add(notification);
 
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
-            IdentityResult r = result.Result;
 
-            _emailService.SendMail("doneill@hotmail.com", notification.DestinationEmail, notification.Subject, notification.Body, notification.Body, string.Empty, string.Empty);
+            notification.Send(_emailService);
 
             return Ok(notification.Id);
         }
@@ -312,17 +311,9 @@ namespace doneillspa.Controllers
                     }
                     dtouser.Certifications = certs;
                 }
-
-                //TODO need to bring back the holiday requests here.
                 dtousers.Add(dtouser);
             }
             return dtousers.First();
-
-            ////Need to bring back the full user object not just the name below.
-            //Task<ApplicationUser> user = GetUserByName(name);
-
-            //JsonResult result = new JsonResult(user.Result.UserName);
-            //return result;
         }
 
         private ApplicationUser GetUserIncludingCerts(string id)

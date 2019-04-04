@@ -27,7 +27,6 @@ export class SupervisorComponent {
     this._holidayService.approveHolidayRequest(hr).subscribe(
       res => {
         console.log(res);
-        //this.removeFromArrayList(hr);
       }, error => this.errors = error)
   }
 }
