@@ -14,75 +14,51 @@
   <div class="row" *ngIf="selectedProject">
     <h3 class="display-4">Labour Costs For {{selectedProject.name}}</h3>
   </div>
-  <div class="row" *ngIf="selectedProject">
-    <div class="col border">Week</div>
-    <!--<div class="col border">Supervisor</div>-->
-    <div class="col border">Supervisor Cost</div>
-    <!--<div class="col border">ChargeHand</div>-->
-    <div class="col border">Charge Hand Cost</div>
-    <!--<div class="col border">ElectR1</div>-->
-    <div class="col border">ElectR1 Cost</div>
-    <!--<div class="col border">ElectR2</div>-->
-    <div class="col border">ElectR2 Cost</div>
-    <!--<div class="col border">ElectR3</div>-->
-    <div class="col border">ElectR3 Cost</div>
-    <!--<div class="col border">Temp</div>-->
-    <div class="col border">Temp Cost</div>
-    <!--<div class="col border">First Year Apprentice</div>-->
-    <div class="col border">First Year Apprentice Cost</div>
-    <!--<div class="col border">Second Year Apprentice</div>-->
-    <div class="col border">Second Year Apprentice Cost</div>
-    <!--<div class="col border">Third Year Apprentice</div>-->
-    <div class="col border">Third Year Apprentice Cost</div>
-    <!--<div class="col border">Fourth Year Apprentice</div>-->
-    <div class="col border">Fourth Year Apprentice Cost</div>
-    <div class="col border">Total Labour Cost</div>
-  </div>
-  <div class="row" *ngFor="let lw of labourWeeks">
-    <div class="col border">{{ lw.week | date:'fullDate'}}</div>
 
-    <!--<div class="col border">{{lw.supervisorMinutes/60}}</div>-->
-    <div class="col border">{{lw.supervisorCost | currency}}</div>
-
-    <!--<div class="col border">{{lw.chargehandMinutes/60}}</div>-->
-    <div class="col border">{{lw.chargehandCost | currency}}</div>
-
-    <!--<div class="col border">{{lw.elecR1Minutes/60}}</div>-->
-    <div class="col border">{{lw.elecR1Cost | currency}}</div>
-
-    <!--<div class="col border">{{lw.elecR2Minutes/60}}</div>-->
-    <div class="col border">{{lw.elecR2Cost | currency}}</div>
-
-    <!--<div class="col border">{{lw.elecR3Minutes/60}}</div>-->
-    <div class="col border">{{lw.elecR3Cost | currency}}</div>
-
-    <!--<div class="col border">{{lw.tempMinutes/60}}</div>-->
-    <div class="col border">{{lw.tempCost | currency}}</div>
-
-    <!--<div class="col border">{{lw.firstYearApprenticeMinutes/60}}</div>-->
-    <div class="col border">{{lw.firstYearApprenticeCost | currency}}</div>
-
-    <!--<div class="col border">{{lw.secondYearApprenticeMinutes/60}}</div>-->
-    <div class="col border">{{lw.secondYearApprenticeCost | currency}}</div>
-
-    <!-- <div class="col border">{{lw.thirdYearApprenticeMinutes/60}}</div>-->
-    <div class="col border">{{lw.thirdYearApprenticeCost | currency}}</div>
-
-    <!--<div class="col border">{{lw.fourthYearApprenticeMinutes/60}}</div>-->
-    <div class="col border">{{lw.fourthYearApprenticeCost | currency}}</div>
-
-    <div class="col border">{{lw.totalCost | currency}}</div>
-  </div>
+  <table class="table table-bordered" *ngIf="selectedProject">
+    <thead>
+      <tr>
+        <th>Week</th>
+        <th>Supervisor</th>
+        <th>Charge Hand</th>
+        <th>Elect R1</th>
+        <th>Elect R2</th>
+        <th>Elect R3</th>
+        <th>Temp</th>
+        <th>First Year Apprentice</th>
+        <th>Second Year Apprentice</th>
+        <th>Third Year Apprentice</th>
+        <th>Fourth Year Apprentice</th>
+        <th>Total Labour Cost</th>
+      </tr>
+    </thead>
+    <tbody class="tbody">
+      <tr *ngFor="let lw of labourWeeks">
+        <td>{{lw.week | date:'fullDate'}}</td>
+        <td>{{lw.supervisorCost | currency}}</td>
+        <td>{{lw.chargehandCost | currency}}</td>
+        <td>{{lw.elecR1Cost | currency}}</td>
+        <td>{{lw.elecR2Cost | currency}}</td>
+        <td>{{lw.elecR3Cost | currency}}</td>
+        <td>{{lw.tempCost | currency}}</td>
+        <td>{{lw.firstYearApprenticeCost | currency}}</td>
+        <td>{{lw.secondYearApprenticeCost | currency}}</td>
+        <td>{{lw.thirdYearApprenticeCost | currency}}</td>
+        <td>{{lw.fourthYearApprenticeCost | currency}}</td>
+        <td>{{lw.totalCost | currency}}</td>
+      </tr>
+    </tbody>
+  </table>
   <button (click)="downloadReport()" class="btn btn-primary">Email Report</button>
-  <!-- Graphs -->
-  <!--<div style="display: block">
-    <canvas baseChart
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [chartType]="barChartType"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
-  </div>-->
+    <!-- Graphs -->
+    <!--<div style="display: block">
+      <canvas baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+    </div>-->
 </div>
