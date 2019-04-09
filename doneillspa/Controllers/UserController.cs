@@ -123,7 +123,21 @@ namespace doneillspa.Controllers
                     dtouser.EmailNotifications = notifications;
 
                 }
-                //TODO need a section here to copy across the holiday requests into DTO object.
+                if (user.HolidayRequests.Count > 0)
+                {
+                    List<HolidayRequestDto> holidays = new List<HolidayRequestDto>();
+                    foreach (HolidayRequest hol in user.HolidayRequests)
+                    {
+                        HolidayRequestDto holdto = new HolidayRequestDto();
+                        holdto.FromDate = hol.FromDate;
+                        holdto.Days = hol.Days;
+                        holdto.Status = hol.Status.ToString();
+
+                        holidays.Add(holdto);
+                    }
+
+                    dtouser.HolidayRequests = holidays;
+                }
                 dtousers.Add(dtouser);
             }
             return dtousers;

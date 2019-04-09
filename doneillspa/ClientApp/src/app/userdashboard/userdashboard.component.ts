@@ -18,6 +18,7 @@ import {
 import { CertificateService } from '../shared/services/certificate.service';
 import { EmailNotification } from '../emailnotification';
 import { NotificationService } from '../shared/services/notification.service';
+import { HolidayRequest } from '../holidayrequest';
 
 declare var $: any;
 
@@ -31,6 +32,7 @@ export class UserDashboardComponent {
   public selectedUserRow: number;
   public selectedUserCertifications: Certificate[] = [];
   public selectedUserNotifications: EmailNotification[] = [];
+  public selectedUsersHolidayRequests: HolidayRequest[] = [];
   public errors: string;
 
   public filterName: string;
@@ -66,6 +68,12 @@ export class UserDashboardComponent {
         }
         else {
           this.selectedUserNotifications = new Array<EmailNotification>();
+        }
+        if (this.selectedUser.holidayRequests) {
+          this.selectedUsersHolidayRequests = this.selectedUser.holidayRequests;
+        }
+        else {
+          this.selectedUsersHolidayRequests = new Array<HolidayRequest>();
         }
       }
     }, error => this.errors = error)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using doneillspa.Dtos;
 
 namespace doneillspa.Models
 {
@@ -15,5 +16,6 @@ namespace doneillspa.Models
         public string PhoneNumber { get; set; }
         public ICollection<CertificationDto> Certifications { get; set; }
         public ICollection<EmailNotificationDto> EmailNotifications { get; set; }
+        public ICollection<HolidayRequestDto> HolidayRequests { get; set; }
     }
 }

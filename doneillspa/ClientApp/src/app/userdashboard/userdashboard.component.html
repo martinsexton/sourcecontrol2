@@ -11,16 +11,46 @@
   </ul>
 </nav>
 <div class="container-fluid" *ngIf="selectedUser">
-  <div class="card mb-3">
-    <div class="card-header">
-      {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Details</h5>
+          <p class="card-text">Email: {{selectedUser.email}}</p>
+          <p class="card-text">Phone: {{selectedUser.phoneNumber}}</p>
+          <p class="card-text">Role: {{selectedUser.role}}</p>
+          <button type="button" class="btn btn-primary" (click)="retrieveTimesheetsForUser()">Load Timesheets</button>
+        </div>
+      </div>
     </div>
-    <div class="card-body">
-      <h5 class="card-title">Details</h5>
-      <p class="card-text">Email: {{selectedUser.email}}</p>
-      <p class="card-text">Phone: {{selectedUser.phoneNumber}}</p>
-      <p class="card-text">Role: {{selectedUser.role}}</p>
-      <button type="button" class="btn btn-primary" (click)="retrieveTimesheetsForUser()">Load Timesheets</button>
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">Holiday Requests</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class='table'>
+              <thead class="thead">
+                <tr>
+                  <th>From Date</th>
+                  <th>Number Of Days</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let hol of selectedUsersHolidayRequests">
+                  <td>{{hol.fromDate}}</td>
+                  <td>{{hol.days}}</td>
+                  <td>{{hol.status}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row">
