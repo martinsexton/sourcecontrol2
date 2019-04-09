@@ -79,25 +79,6 @@ export class UserDashboardComponent {
     }, error => this.errors = error)
   }
 
-  retrieveUser() {
-    this.filteredUsers = [];
-    for (let item of this.users) {
-      if ((item.firstName + item.surname) == this.filterName) {
-        this.filteredUsers.push(item);
-      }
-    }
-    if (this.filteredUsers) {
-      this.selectedUser = this.filteredUsers[0];
-
-      if (this.selectedUser.certifications) {
-        this.selectedUserCertifications = this.selectedUser.certifications;
-      }
-      else {
-        this.selectedUserCertifications = new Array<Certificate>();
-      }
-    }
-  }
-
   retrieveUsersToDisplay() {
     if (this.filteredUsers) {
       return this.filteredUsers;
@@ -210,6 +191,12 @@ export class UserDashboardComponent {
     }
     else {
       this.selectedUserNotifications = new Array<EmailNotification>();
+    }
+    if (this.selectedUser.holidayRequests) {
+      this.selectedUsersHolidayRequests = this.selectedUser.holidayRequests;
+    }
+    else {
+      this.selectedUsersHolidayRequests = new Array<HolidayRequest>();
     }
   }
 
