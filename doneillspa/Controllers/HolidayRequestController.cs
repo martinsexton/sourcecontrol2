@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using doneillspa.Services.Email;
 using doneillspa.Dtos;
+using doneillspa.Services.Calendar;
 
 namespace doneillspa.Controllers
 {
@@ -19,11 +20,13 @@ namespace doneillspa.Controllers
     public class HolidayRequestController : Controller
     {
         private readonly IEmailService _emailService;
+        private readonly ICalendarService _calendarService;
         private readonly IHolidayRequestRepository _repository;
 
-        public HolidayRequestController(IEmailService emailService, IHolidayRequestRepository holidayRepository)
+        public HolidayRequestController(IEmailService emailService, ICalendarService calendarService, IHolidayRequestRepository holidayRepository)
         {
             _emailService = emailService;
+            _calendarService = calendarService;
             _repository = holidayRepository;
         }
         [HttpPut]
@@ -35,6 +38,7 @@ namespace doneillspa.Controllers
             {
                 request.Approve();
                 _repository.Save();
+                _calendarService.CreateEvent(request.FromDate, request.Days, request.User.FirstName + " " + request.User.Surname);
             }
             return new NoContentResult();
         }

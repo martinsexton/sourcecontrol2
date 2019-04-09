@@ -25,6 +25,7 @@ namespace doneillspa.DataAccess
         {
             return _context.HolidayRequest
                         .Include(b => b.Approver)
+                        .Include(b => b.User)
                         .Where(b => b.Id == id)
                         .FirstOrDefault();
         }

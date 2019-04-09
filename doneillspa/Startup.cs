@@ -17,6 +17,7 @@ using doneillspa.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using doneillspa.Services.Email;
+using doneillspa.Services.Calendar;
 
 namespace doneillspa
 {
@@ -43,6 +44,7 @@ namespace doneillspa
             services.AddScoped<IHolidayRequestRepository>(_ => new HolidayRequestRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<INotificationRepository>(_ => new NotificationRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<IEmailService>(_ => new EmailService(Configuration));
+            services.AddScoped<ICalendarService>(_ => new DoneillCalendarService(Configuration));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
