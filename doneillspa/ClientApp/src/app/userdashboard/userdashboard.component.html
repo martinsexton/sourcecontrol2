@@ -41,7 +41,7 @@
                 <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'danger': hasCertExpired(crt)}">
                   <td>{{ crt.description }}</td>
                   <td>{{ crt.expiry}}</td>
-                  <td><span aria-hidden="true" (click)="deleteCertification(crt)">Delete</span></td>
+                  <td><span aria-hidden="true" (click)="deleteCertification(crt)"><img src="assets/images/delete.png" class="img-responsive" alt="..."></span></td>
                 </tr>
               </tbody>
             </table>
@@ -67,7 +67,7 @@
                 <tr *ngFor="let not of selectedUserNotifications">
                   <td>{{ not.subject }}</td>
                   <td>{{ not.body}}</td>
-                  <td><span aria-hidden="true" (click)="deleteNotification(not)">Delete</span></td>
+                  <td><span aria-hidden="true" (click)="deleteNotification(not)"><img src="assets/images/delete.png" class="img-responsive" alt="..."></span></td>
                 </tr>
               </tbody>
             </table>

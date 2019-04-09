@@ -1,53 +1,67 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4">
-      <form>
-        <div class="form-group">
-          <label for="fromDate">From Date</label>
-          <input type="date" [(ngModel)]="holidayRequest.fromDate" name="fromDate" class="form-control" id="fromDate">
+    <div class="card mb-3">
+      <div class="card-header">
+        Holiday Requests
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class='table'>
+            <thead class="thead">
+              <tr>
+                <th>Date Requested</th>
+                <th>From Date</th>
+                <th>Days</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of holidayRequests">
+                <td>{{ r.requestedDate | date:'fullDate'}}</td>
+                <td>{{ r.fromDate | date:'fullDate'}}</td>
+                <td>{{ r.days}}</td>
+                <td>{{ r.status}}</td>
+                <td><span aria-hidden="true" (click)="deleteHolidayRequest(r)"><img src="assets/images/delete.png" class="img-responsive" alt="..."></span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="form-group">
-          <label for="days">Number of days</label>
-          <input type="number" [(ngModel)]="holidayRequest.days" name="days" class="form-control" id="days">
-        </div>
-        <div class="form-group">
-          <label for="approverId">Choose Approver</label>
-          <select [(ngModel)]="holidayRequest.approverId" name="approverId" class="form-control" id="approverId">
-            <option *ngFor="let s of supervisors" [value]="s.id">{{s.firstName}} {{s.surname}}</option>
-          </select>
-        </div>
-        <button (click)="submitHolidayRequest()" class="btn btn-secondary">Submit Request</button>
-      </form>
+      </div>
     </div>
-    <div class="col-md-8" *ngIf="holidayRequests">
-      <div class="card mb-3">
-        <div class="card-header">
-          Holiday Requests
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class='table'>
-              <thead class="thead">
-                <tr>
-                  <th>Date Requested</th>
-                  <th>From Date</th>
-                  <th>Days</th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let r of holidayRequests">
-                  <td>{{ r.requestedDate | date:'fullDate'}}</td>
-                  <td>{{ r.fromDate | date:'fullDate'}}</td>
-                  <td>{{ r.days}}</td>
-                  <td>{{ r.status}}</td>
-                  <td><span aria-hidden="true" (click)="deleteHolidayRequest(r)">Delete</span></td>
-                </tr>
-              </tbody>
-            </table>
+  </div>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myNewHolidayModal">Request Holiday</button>
+</div>
+
+<!-- New Rate Details Modal-->
+<div class="modal fade" id="myNewHolidayModal" tabindex="-1" role="dialog" aria-labelledby="myNewHolidayModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myNewHolidayModal">Holiday Request</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="fromDate">From Date</label>
+            <input type="date" [(ngModel)]="holidayRequest.fromDate" name="fromDate" class="form-control" id="fromDate">
           </div>
-        </div>
+          <div class="form-group">
+            <label for="days">Number of Days</label>
+            <input type="number" [(ngModel)]="holidayRequest.days" name="days" class="form-control" id="days">
+          </div>
+          <div class="form-group">
+            <label for="approverId">Approver</label>
+            <select [(ngModel)]="holidayRequest.approverId" name="approverId" class="form-control" id="approverId">
+              <option *ngFor="let s of supervisors" [value]="s.id">{{s.firstName}} {{s.surname}}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button (click)="submitHolidayRequest()" class="btn btn-primary">Submit Request</button>
       </div>
     </div>
   </div>

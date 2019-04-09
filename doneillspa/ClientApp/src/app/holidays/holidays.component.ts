@@ -5,6 +5,8 @@ import { MsUserService } from '../shared/services/msuser.service';
 import { HolidayService } from '../shared/services/holiday.service';
 import { ApplicationUser } from '../applicationuser';
 
+declare var $: any;
+
 @Component({
   selector: 'holidays',
   templateUrl: './holidays.component.html'
@@ -28,6 +30,7 @@ export class HolidaysComponent {
 
   submitHolidayRequest() {
     this._msuserService.addHolidayRequest(localStorage.getItem('client_id'), this.holidayRequest).subscribe(result => {
+      $("#myNewHolidayModal").modal('hide');
       //Update the identifier of the newly created cert so if we delete it, it will be deleted on database
       this.holidayRequest.id = result as number;
       this.holidayRequests.push(this.holidayRequest);
