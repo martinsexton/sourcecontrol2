@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using doneillspa.Services.Calendar;
 
 namespace doneillspa.Models
 {
@@ -19,9 +20,11 @@ namespace doneillspa.Models
 
         public HolidayRequestStatus Status { get; set; }
 
-        public void Approve()
+        public void Approve(ICalendarService _calendarService)
         {
             Status = HolidayRequestStatus.Approved;
+            //Create an event in Google Calendar.
+            _calendarService.CreateEvent(FromDate, Days, User.FirstName + " " + User.Surname);
         }
     }
 

@@ -36,9 +36,8 @@ namespace doneillspa.Controllers
             HolidayRequest request = _repository.GetHolidayRequestById(hr.Id);
             if (hr.Status.Equals(HolidayRequestStatus.Approved.ToString()))
             {
-                request.Approve();
+                request.Approve(_calendarService);
                 _repository.Save();
-                _calendarService.CreateEvent(request.FromDate, request.Days, request.User.FirstName + " " + request.User.Surname);
             }
             return new NoContentResult();
         }

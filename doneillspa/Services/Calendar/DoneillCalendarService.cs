@@ -21,28 +21,21 @@ namespace doneillspa.Services.Calendar
 
         public void CreateEvent(DateTime fromDate, int days, string description)
         {
-            var clientEmail = Configuration["calendar:client_email"];
-            var privatekey = Configuration["calendar:private_key"];
-            string calanderId = Configuration["calendar:id"];
+            var service = CreateCalendarService();
+            var InsertRequest = BuildEventInsertRequest(service, fromDate, days, description);
 
-            string[] Scopes = { CalendarService.Scope.Calendar };
-
-            ServiceAccountCredential credential;
-
-            credential = new ServiceAccountCredential(
-            new ServiceAccountCredential.Initializer(clientEmail)
+            try
             {
-                Scopes = Scopes
-            }.FromPrivateKey(privatekey));
-
-            var service = new CalendarService(new BaseClientService.Initializer()
+                InsertRequest.Execute();
+            }
+            catch (Exception ex)
             {
-                HttpClientInitializer = credential,
-                ApplicationName = "Doneill Calendar Application",
-            });
+                //What to do here        
+            }
+        }
 
-            var calendar = service.Calendars.Get(calanderId).Execute();
-
+        private EventsResource.InsertRequest BuildEventInsertRequest(CalendarService service, DateTime fromDate, int days, string description)
+        {
             var myEvent = new Event
             {
                 Summary = description,
@@ -60,16 +53,37 @@ namespace doneillspa.Services.Calendar
                 },
             };
 
-            var InsertRequest = service.Events.Insert(myEvent, calanderId);
+            return service.Events.Insert(myEvent, Configuration["calendar:id"]);
+        }
 
-            try
+        private CalendarService CreateCalendarService()
+        {
+            var clientEmail = Configuration["calendar:client_email"];
+            string privatekey = Configuration["calendar:private_key"];
+            string privateKeyToUse = "-----BEGIN PRIVATE KEY-----" + privatekey + "-----END PRIVATE KEY-----";
+            string calanderId = Configuration["calendar:id"];
+
+            string[] Scopes = { CalendarService.Scope.Calendar };
+
+            ServiceAccountCredential credential;
+
+            credential = new ServiceAccountCredential(
+            new ServiceAccountCredential.Initializer(clientEmail)
             {
-                InsertRequest.Execute();
-            }
-            catch (Exception ex)
+                Scopes = Scopes
+            }.FromPrivateKey(privateKeyToUse));
+
+            return new CalendarService(new BaseClientService.Initializer()
             {
-                //What to do here        
-            }
+                HttpClientInitializer = credential,
+                ApplicationName = "Doneill Calendar Application",
+            });
+        }
+
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
         }
     }
 }
