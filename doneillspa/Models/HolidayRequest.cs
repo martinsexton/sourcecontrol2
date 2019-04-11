@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.Dtos;
+using doneillspa.Models.State;
 using doneillspa.Services.Calendar;
 
 namespace doneillspa.Models
@@ -21,20 +22,23 @@ namespace doneillspa.Models
 
         public HolidayRequestStatus Status { get; set; }
 
-        private void Approve(ICalendarService _calendarService)
-        {
-            Status = HolidayRequestStatus.Approved;
-            //Create an event in Google Calendar.
-            _calendarService.CreateEvent(FromDate, Days, User.FirstName + " " + User.Surname);
-        }
-
         //Method triggerd by controller when HolidayRequest has been updated.
         public void Updated(HolidayRequestDto dto, ICalendarService _calendarService)
         {
-            if (dto.Status.Equals(HolidayRequestStatus.Approved.ToString())
-                && Status == HolidayRequestStatus.New)
+            if (dto.Status.Equals(HolidayRequestStatus.Approved.ToString()))
             {
-                Approve(_calendarService);
+                GetState().Approve(_calendarService);
+            }
+        }
+
+        private IHolidayRequestState GetState()
+        {
+            switch (Status)
+            {
+                case HolidayRequestStatus.New:
+                    return new HolidayRequestNewState(this);
+                default:
+                    return new HolidayRequestApproveState(this);
             }
         }
     }
