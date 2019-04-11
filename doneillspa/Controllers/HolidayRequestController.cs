@@ -34,12 +34,9 @@ namespace doneillspa.Controllers
         public IActionResult Put([FromBody]HolidayRequestDto hr)
         {
             HolidayRequest request = _repository.GetHolidayRequestById(hr.Id);
-            if (hr.Status.Equals(HolidayRequestStatus.Approved.ToString()) 
-                && request.Status == HolidayRequestStatus.New)
-            {
-                request.Approve(_calendarService);
-                _repository.Save();
-            }
+            request.Updated(hr, _calendarService);
+
+            _repository.Save();
             return new NoContentResult();
         }
 
