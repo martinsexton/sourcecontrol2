@@ -23,15 +23,7 @@ namespace doneillspa.Services.Calendar
         {
             var service = CreateCalendarService();
             var InsertRequest = BuildEventInsertRequest(service, fromDate, days, description);
-
-            try
-            {
-                InsertRequest.Execute();
-            }
-            catch (Exception ex)
-            {
-                //What to do here        
-            }
+            InsertRequest.Execute();
         }
 
         private EventsResource.InsertRequest BuildEventInsertRequest(CalendarService service, DateTime fromDate, int days, string description)
@@ -78,12 +70,6 @@ namespace doneillspa.Services.Calendar
                 HttpClientInitializer = credential,
                 ApplicationName = "Doneill Calendar Application",
             });
-        }
-
-        public static string Base64Encode(string plainText)
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
         }
     }
 }
