@@ -10,11 +10,11 @@ using Google.Apis.Services;
 
 namespace doneillspa.Services.Calendar
 {
-    public class DoneillCalendarService : ICalendarService
+    public class GoogleCalendarService : ICalendarService
     {
         private IConfiguration Configuration;
 
-        public DoneillCalendarService(IConfiguration configuration)
+        public GoogleCalendarService(IConfiguration configuration)
         {
             Configuration = configuration;
         }

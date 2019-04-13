@@ -8,11 +8,11 @@ using SendGrid.Helpers.Mail;
 
 namespace doneillspa.Services.Email
 {
-    public class EmailService : IEmailService
+    public class SendGridEmailService : IEmailService
     {
         private IConfiguration Configuration;
 
-        public EmailService(IConfiguration configuration)
+        public SendGridEmailService(IConfiguration configuration)
         {
             Configuration = configuration;
         }

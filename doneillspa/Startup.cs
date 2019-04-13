@@ -43,8 +43,13 @@ namespace doneillspa
             services.AddScoped<ICertificationRepository>(_ => new CertificationRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<IHolidayRequestRepository>(_ => new HolidayRequestRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<INotificationRepository>(_ => new NotificationRepository(_.GetService<ApplicationContext>()));
-            services.AddScoped<IEmailService>(_ => new EmailService(Configuration));
-            services.AddScoped<ICalendarService>(_ => new DoneillCalendarService(Configuration));
+            
+            //Email Services
+            services.AddScoped<IEmailService>(_ => new SendGridEmailService(Configuration));
+            //services.AddScoped<IEmailService>(_ => new GmailMailService(Configuration));
+
+            //Calendar Services
+            services.AddScoped<ICalendarService>(_ => new GoogleCalendarService(Configuration));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
