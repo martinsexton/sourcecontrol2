@@ -13,5 +13,10 @@ namespace doneillspa.Models
         public DateTime CreatedDate { get; set; }
         public DateTime Expiry { get; set; }
         public string Description { get; set; }
+
+        public bool HasExpired()
+        {
+            return (Expiry <= DateTime.UtcNow);
+        }
     }
 }

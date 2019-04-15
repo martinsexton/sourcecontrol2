@@ -110,8 +110,34 @@ namespace doneillspa.tests
 
             //Verify that a call is not made to create an event in calendar if already approved
             mockCalendarService.Verify(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()), Times.Never());
-
         }
 
+        [TestMethod]
+        public void TestCertificateHasNotExpired()
+        {
+            Certification cert = new Certification();
+            cert.Expiry = DateTime.UtcNow.AddDays(1);
+
+            Assert.IsFalse(cert.HasExpired());
+        }
+
+        [TestMethod]
+        public void TestCertificateHasExpired()
+        {
+            Certification cert = new Certification();
+            cert.Expiry = DateTime.UtcNow.AddDays(-1);
+
+            Assert.IsTrue(cert.HasExpired());
+        }
+
+        [TestMethod]
+        public void TestCertificateHasExpiredOnSameDay()
+        {
+            //If expiry date is today then its considered expired.
+            Certification cert = new Certification();
+            cert.Expiry = DateTime.UtcNow;
+
+            Assert.IsTrue(cert.HasExpired());
+        }
     }
 }

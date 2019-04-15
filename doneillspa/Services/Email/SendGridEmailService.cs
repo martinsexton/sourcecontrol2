@@ -27,8 +27,8 @@ namespace doneillspa.Services.Email
 
         private SendGridMessage BuildMessage(string fromAddress, string toAddress, string subject, string plainTextContent, string htmlContent, string attachmentName, string attachmentContent)
         {
-            var from = new EmailAddress(fromAddress, "Example User");
-            var to = new EmailAddress(toAddress, "Example User");
+            var from = new EmailAddress(fromAddress);
+            var to = new EmailAddress(toAddress);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
 
             if (!String.IsNullOrEmpty(attachmentContent))
