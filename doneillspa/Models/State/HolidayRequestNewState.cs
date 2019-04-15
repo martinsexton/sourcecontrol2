@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.Services.Calendar;
+using doneillspa.Services.Email;
 
 namespace doneillspa.Models.State
 {
@@ -24,6 +25,11 @@ namespace doneillspa.Models.State
         public void Reject()
         {
             throw new NotImplementedException();
+        }
+
+        public void Created(IEmailService _emailServie)
+        {
+            _emailServie.SendMail("doneill@hotmail.com", context.Approver.Email, "Holiday Request", string.Format("{0} has requested holiday from {1} for {2} days.", context.User.FirstName, context.FromDate, context.Days), "", string.Empty, string.Empty);
         }
     }
 }

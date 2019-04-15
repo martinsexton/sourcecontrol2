@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using doneillspa.Dtos;
 using doneillspa.Models.State;
 using doneillspa.Services.Calendar;
+using doneillspa.Services.Email;
 
 namespace doneillspa.Models
 {
@@ -21,6 +22,16 @@ namespace doneillspa.Models
         public int Days { get; set; }
 
         public HolidayRequestStatus Status { get; set; }
+
+        public HolidayRequest()
+        {
+            Status = HolidayRequestStatus.New;
+        }
+
+        public void Created(IEmailService emailService)
+        {
+            GetState().Created(emailService);
+        }
 
         //Method triggerd by controller when HolidayRequest has been updated.
         public void Updated(HolidayRequestDto dto, ICalendarService _calendarService)

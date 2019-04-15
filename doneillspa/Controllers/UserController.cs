@@ -251,7 +251,6 @@ namespace doneillspa.Controllers
             holiday.FromDate = t.FromDate;
             holiday.Days = t.Days;
             holiday.RequestedDate = DateTime.UtcNow;
-            holiday.Status = HolidayRequestStatus.New;
             holiday.Approver = approver;
 
             user.HolidayRequests.Add(holiday);
@@ -259,7 +258,8 @@ namespace doneillspa.Controllers
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             IdentityResult r = result.Result;
 
-            _emailService.SendMail("doneill@hotmail.com", approver.Email, "Holiday Request", string.Format("{0} has requested holiday from {1} for {2} days.", user.FirstName, holiday.FromDate, holiday.Days), "", string.Empty, string.Empty);
+            //Trigger saved method on holiday.
+            holiday.Created(_emailService);
 
             return Ok(holiday.Id);
         }

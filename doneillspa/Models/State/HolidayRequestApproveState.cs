@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.Services.Calendar;
+using doneillspa.Services.Email;
 
 namespace doneillspa.Models.State
 {
@@ -22,6 +23,11 @@ namespace doneillspa.Models.State
         public void Reject()
         {
             throw new NotImplementedException();
+        }
+
+        public void Created(IEmailService _emailServie)
+        {
+            //Nothing to do on saving a holiday request that is already approved.
         }
     }
 }
