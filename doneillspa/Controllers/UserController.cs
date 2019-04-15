@@ -95,12 +95,7 @@ namespace doneillspa.Controllers
                     List<CertificationDto> certs = new List<CertificationDto>();
                     foreach (Certification cert in user.Certifications)
                     {
-                        CertificationDto dtocert = new CertificationDto();
-                        dtocert.CreatedDate = cert.CreatedDate;
-                        dtocert.Description = cert.Description;
-                        dtocert.Expiry = cert.Expiry;
-                        dtocert.Id = cert.Id;
-
+                        CertificationDto dtocert = CertificationToDto(cert);
                         certs.Add(dtocert);
                     }
                     dtouser.Certifications = certs;
@@ -111,12 +106,7 @@ namespace doneillspa.Controllers
                     List<EmailNotificationDto> notifications = new List<EmailNotificationDto>();
                     foreach (EmailNotification not in user.EmailNotifications)
                     {
-                        EmailNotificationDto notdto = new EmailNotificationDto();
-                        notdto.Subject = not.Subject;
-                        notdto.Body = not.Body;
-                        notdto.DestinationEmail = not.DestinationEmail;
-                        notdto.Id = not.Id;
-
+                        EmailNotificationDto notdto = NotificationToDto(not);
                         notifications.Add(notdto);
                     }
 
@@ -128,11 +118,7 @@ namespace doneillspa.Controllers
                     List<HolidayRequestDto> holidays = new List<HolidayRequestDto>();
                     foreach (HolidayRequest hol in user.HolidayRequests)
                     {
-                        HolidayRequestDto holdto = new HolidayRequestDto();
-                        holdto.FromDate = hol.FromDate;
-                        holdto.Days = hol.Days;
-                        holdto.Status = hol.Status.ToString();
-
+                        HolidayRequestDto holdto = HolidayToDto(hol);
                         holidays.Add(holdto);
                     }
 
@@ -167,7 +153,7 @@ namespace doneillspa.Controllers
 
             foreach (Timesheet ts in timesheets)
             {
-                timesheetsDtos.Add(ConvertToDto(ts));
+                timesheetsDtos.Add(TimesheetToDto(ts));
             }
             return timesheetsDtos;
         }
@@ -183,14 +169,7 @@ namespace doneillspa.Controllers
 
             foreach (HolidayRequest hr in holidayRequests)
             {
-                HolidayRequestDto dto = new HolidayRequestDto();
-                dto.Id = hr.Id;
-                dto.FromDate = hr.FromDate;
-                dto.Days = hr.Days;
-                dto.ApproverId = hr.Approver.Id.ToString();
-                dto.Status = hr.Status.ToString();
-                dto.RequestedDate = hr.RequestedDate;
-
+                HolidayRequestDto dto = HolidayToDto(hr);
                 holidayRequestDtos.Add(dto);
             }
             return holidayRequestDtos;
@@ -207,14 +186,7 @@ namespace doneillspa.Controllers
 
             foreach (HolidayRequest hr in holidayRequests)
             {
-                HolidayRequestDto dto = new HolidayRequestDto();
-                dto.Id = hr.Id;
-                dto.FromDate = hr.FromDate;
-                dto.Days = hr.Days;
-                dto.ApproverId = hr.Approver.Id.ToString();
-                dto.Status = hr.Status.ToString();
-                dto.RequestedDate = hr.RequestedDate;
-
+                HolidayRequestDto dto = HolidayToDto(hr);
                 holidayRequestDtos.Add(dto);
             }
             return holidayRequestDtos;
@@ -225,19 +197,18 @@ namespace doneillspa.Controllers
         {
             ApplicationUser user = GetUserIncludingCerts(id);
 
-            Certification cert = new Certification();
-            cert.CreatedDate = t.CreatedDate;
-            cert.Description = t.Description;
-            cert.Expiry = t.Expiry;
-            cert.User = user;
-            cert.UserId = user.Id;
-
+            Certification cert = CertificationFromDto(user, t);
             user.Certifications.Add(cert);
 
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
-            IdentityResult r = result.Result;
-
-            return Ok(cert.Id);
+            if (result.Result.Succeeded)
+            {
+                return Ok(cert.Id);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut()]
@@ -253,8 +224,15 @@ namespace doneillspa.Controllers
 
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             IdentityResult r = result.Result;
-
-            return Ok(holiday.Id);
+            if (result.Result.Succeeded)
+            {
+                holiday.Created(_emailService);
+                return Ok(holiday.Id);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut()]
@@ -264,12 +242,19 @@ namespace doneillspa.Controllers
             ApplicationUser user = GetUserIncludingCerts(id);
 
             EmailNotification notification = NotificationFromDto(user, t);
-            notification.Created(_emailService);
 
             user.EmailNotifications.Add(notification);
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
 
-            return Ok(notification.Id);
+            if (result.Result.Succeeded)
+            {
+                notification.Created(_emailService);
+                return Ok(notification.Id);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]
@@ -354,6 +339,19 @@ namespace doneillspa.Controllers
 
             return notification;
         }
+
+        private EmailNotificationDto NotificationToDto(EmailNotification not)
+        {
+            EmailNotificationDto notdto = new EmailNotificationDto();
+            notdto.Subject = not.Subject;
+            notdto.Body = not.Body;
+            notdto.DestinationEmail = not.DestinationEmail;
+            notdto.Id = not.Id;
+
+            return notdto;
+        }
+
+
         private HolidayRequest HolidayFromDto(ApplicationUser user, HolidayRequestDto dto)
         {
             HolidayRequest holiday = new HolidayRequest();
@@ -366,7 +364,43 @@ namespace doneillspa.Controllers
             return holiday;
         }
 
-        private TimesheetDto ConvertToDto(Timesheet ts)
+        private HolidayRequestDto HolidayToDto(HolidayRequest hol)
+        {
+            HolidayRequestDto dto = new HolidayRequestDto();
+            dto.Id = hol.Id;
+            dto.FromDate = hol.FromDate;
+            dto.Days = hol.Days;
+            dto.ApproverId = hol.Approver.Id.ToString();
+            dto.Status = hol.Status.ToString();
+            dto.RequestedDate = hol.RequestedDate;
+
+            return dto;
+        }
+
+        private Certification CertificationFromDto(ApplicationUser user, CertificationDto dto)
+        {
+            Certification cert = new Certification();
+            cert.CreatedDate = dto.CreatedDate;
+            cert.Description = dto.Description;
+            cert.Expiry = dto.Expiry;
+            cert.User = user;
+            cert.UserId = user.Id;
+
+            return cert;
+        }
+
+        private CertificationDto CertificationToDto(Certification cert)
+        {
+            CertificationDto dtocert = new CertificationDto();
+            dtocert.CreatedDate = cert.CreatedDate;
+            dtocert.Description = cert.Description;
+            dtocert.Expiry = cert.Expiry;
+            dtocert.Id = cert.Id;
+
+            return dtocert;
+        }
+
+        private TimesheetDto TimesheetToDto(Timesheet ts)
         {
             TimesheetDto tsdto = new TimesheetDto();
             tsdto.DateCreated = ts.DateCreated;
