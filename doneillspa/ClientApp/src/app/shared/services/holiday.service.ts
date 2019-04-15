@@ -30,6 +30,10 @@ export class HolidayService extends HttpServiceBase {
     return this.updateHolidayRequest(h);
   }
 
+  rejectHolidayRequest(h: HolidayRequest) {
+    h.status = 'Rejected';
+    return this.updateHolidayRequest(h);
+  }
 
   deleteHolidayRequest(h: HolidayRequest) {
     let authToken = localStorage.getItem('auth_token');

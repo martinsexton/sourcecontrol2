@@ -29,4 +29,11 @@ export class SupervisorComponent {
         console.log(res);
       }, error => this.errors = error)
   }
+
+  rejectHolidayRequest(hr) {
+    this._holidayService.rejectHolidayRequest(hr).subscribe(
+      res => {
+        console.log(res);
+      }, error => this.errors = error)
+  }
 }
