@@ -2,12 +2,13 @@
 using Google.Apis.Gmail.v1;
 using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Services;
-using Google.Apis.Util.Store;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,57 +26,46 @@ namespace doneillspa.Services.Email
             Configuration = configuration;
         }
 
+        //Implementation uses SMTP client to send mail via Gmail. You will need to change security settings in your
+        //gmail account to allow less secure apps sign into your account to allow this to work.
+        //https://support.google.com/accounts/answer/6010255?hl=en
         public void SendMail(string fromAddress, string toAddress, string subject, string plainTextContent, string htmlContent, string attachmentName, string attachmentContent)
         {
-            var mailMessage = new System.Net.Mail.MailMessage();
-            mailMessage.From = new System.Net.Mail.MailAddress(fromAddress);
-            mailMessage.To.Add(toAddress);
-            mailMessage.ReplyToList.Add(fromAddress);
-            mailMessage.Subject = subject;
-            mailMessage.Body = plainTextContent;
-            mailMessage.IsBodyHtml = false;
-
-            var mimeMessage = MimeKit.MimeMessage.CreateFromMailMessage(mailMessage);
-
-            var gmailMessage = new Google.Apis.Gmail.v1.Data.Message
+            try
             {
-                Raw = Encode(mimeMessage.ToString())
-            };
+                // Credentials
+                var credentials = new NetworkCredential("<email here>", "<password here>");
 
-            Google.Apis.Gmail.v1.UsersResource.MessagesResource.SendRequest request = CreateGmailService().Users.Messages.Send(gmailMessage, Configuration["calendar:client_email"]);
+                // Mail message
+                var mail = new MailMessage()
+                {
+                    From = new MailAddress("<from address>"),
+                    Subject = "Test email.",
+                    Body = "Test email body"
+                };
 
-            request.Execute();
-        }
+                mail.To.Add(new MailAddress("<to address>"));
 
-        private string Encode(string text)
-        {
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(text);
+                // Smtp client
+                var client = new SmtpClient()
+                {
+                    Port = 587,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    Credentials = credentials
+                };
 
-            return System.Convert.ToBase64String(bytes)
-                .Replace('+', '-')
-                .Replace('/', '_')
-                .Replace("=", "");
-        }
-
-        private GmailService CreateGmailService()
-        {
-            var clientEmail = Configuration["calendar:client_email"];
-            string privatekey = Configuration["calendar:private_key"];
-            string privateKeyToUse = "-----BEGIN PRIVATE KEY-----" + privatekey + "-----END PRIVATE KEY-----";
-
-            ServiceAccountCredential credential;
-
-            credential = new ServiceAccountCredential(
-            new ServiceAccountCredential.Initializer(clientEmail)
+                // Send it...         
+                client.Send(mail);
+            }
+            catch (Exception ex)
             {
-                Scopes = Scopes
-            }.FromPrivateKey(privateKeyToUse));
-
-            return new GmailService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = ApplicationName,
-            });
+                Console.WriteLine("Error in sending email: " + ex.Message);
+                Console.ReadKey();
+                return;
+            }
         }
     }
 }
