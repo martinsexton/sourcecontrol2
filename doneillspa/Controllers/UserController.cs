@@ -245,21 +245,14 @@ namespace doneillspa.Controllers
         public IActionResult Put(string id, [FromBody]HolidayRequestDto t)
         {
             ApplicationUser user = GetUserIncludingCerts(id);
-            ApplicationUser approver = GetUserById(t.ApproverId).Result;
 
-            HolidayRequest holiday = new HolidayRequest();
-            holiday.FromDate = t.FromDate;
-            holiday.Days = t.Days;
-            holiday.RequestedDate = DateTime.UtcNow;
-            holiday.Approver = approver;
-
+            HolidayRequest holiday = HolidayFromDto(user,t);
             user.HolidayRequests.Add(holiday);
+
+            holiday.Created(_emailService);
 
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             IdentityResult r = result.Result;
-
-            //Trigger saved method on holiday.
-            holiday.Created(_emailService);
 
             return Ok(holiday.Id);
         }
@@ -270,19 +263,11 @@ namespace doneillspa.Controllers
         {
             ApplicationUser user = GetUserIncludingCerts(id);
 
-            EmailNotification notification = new EmailNotification();
-            notification.DestinationEmail = user.Email;
-            notification.Body = t.Body;
-            notification.Subject = t.Subject;
-            notification.User = user;
-            notification.UserId = user.Id;
-            notification.ActivationDate = new DateTime();
+            EmailNotification notification = NotificationFromDto(user, t);
+            notification.Created(_emailService);
 
             user.EmailNotifications.Add(notification);
-
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
-
-            notification.Send(_emailService);
 
             return Ok(notification.Id);
         }
@@ -355,6 +340,30 @@ namespace doneillspa.Controllers
             }
             //User not found
             return await Task.FromResult<ApplicationUser>(null);
+        }
+
+        private EmailNotification NotificationFromDto(ApplicationUser user, EmailNotificationDto dto)
+        {
+            EmailNotification notification = new EmailNotification();
+            notification.DestinationEmail = user.Email;
+            notification.Body = dto.Body;
+            notification.Subject = dto.Subject;
+            notification.User = user;
+            notification.UserId = user.Id;
+            notification.ActivationDate = new DateTime();
+
+            return notification;
+        }
+        private HolidayRequest HolidayFromDto(ApplicationUser user, HolidayRequestDto dto)
+        {
+            HolidayRequest holiday = new HolidayRequest();
+            holiday.FromDate = dto.FromDate;
+            holiday.Days = dto.Days;
+            holiday.RequestedDate = DateTime.UtcNow;
+            holiday.Approver = GetUserById(dto.ApproverId).Result;
+            holiday.User = user;
+
+            return holiday;
         }
 
         private TimesheetDto ConvertToDto(Timesheet ts)

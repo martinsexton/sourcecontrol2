@@ -12,7 +12,12 @@ namespace doneillspa.Models
         public string Body { get; set; }
         public string Subject { get; set; }
 
-        public void Send(IEmailService _emailService)
+        public void Created(IEmailService _emailService)
+        {
+            Send(_emailService);
+        }
+
+        private void Send(IEmailService _emailService)
         {
             _emailService.SendMail("doneill@hotmail.com", DestinationEmail, Subject, Body, Body, string.Empty, string.Empty);
         }
