@@ -9,8 +9,8 @@ namespace doneillspa.Models.State
 {
     public interface IHolidayRequestState
     {
-        void Created(IEmailService _emailServie);
-        void Approve(ICalendarService _calendarService);
-        void Reject();
+        void Created(IEmailService _emailService);
+        void Approve(ICalendarService _calendarService, IEmailService _emailService);
+        void Reject(IEmailService _emailService);
     }
 }

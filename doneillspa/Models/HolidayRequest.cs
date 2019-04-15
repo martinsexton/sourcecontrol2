@@ -34,11 +34,15 @@ namespace doneillspa.Models
         }
 
         //Method triggerd by controller when HolidayRequest has been updated.
-        public void Updated(HolidayRequestDto dto, ICalendarService _calendarService)
+        public void Updated(HolidayRequestDto dto, ICalendarService _calendarService, IEmailService _emailService)
         {
             if (dto.Status.Equals(HolidayRequestStatus.Approved.ToString()))
             {
-                GetState().Approve(_calendarService);
+                GetState().Approve(_calendarService, _emailService);
+            }
+            else if (dto.Status.Equals(HolidayRequestStatus.Rejected.ToString()))
+            {
+                GetState().Reject(_emailService);
             }
         }
 

@@ -34,7 +34,7 @@ namespace doneillspa.Controllers
         public IActionResult Put([FromBody]HolidayRequestDto hr)
         {
             HolidayRequest request = _repository.GetHolidayRequestById(hr.Id);
-            request.Updated(hr, _calendarService);
+            request.Updated(hr, _calendarService, _emailService);
 
             _repository.Save();
             return new NoContentResult();

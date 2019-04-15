@@ -15,14 +15,14 @@ namespace doneillspa.Models.State
         {
             context = request;
         }
-        public void Approve(ICalendarService _calendarService)
+        public void Approve(ICalendarService _calendarService, IEmailService _emailService)
         {
             //Holiday Request already in Approve State.
         }
 
-        public void Reject()
+        public void Reject(IEmailService _emailService)
         {
-            throw new NotImplementedException();
+            //Can we reject after a holiday has been approved?
         }
 
         public void Created(IEmailService _emailServie)

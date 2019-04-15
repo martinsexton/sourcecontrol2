@@ -15,16 +15,17 @@ namespace doneillspa.Models.State
         {
             context = request;
         }
-        public void Approve(ICalendarService _calendarService)
+        public void Approve(ICalendarService _calendarService, IEmailService _emailService)
         {
             context.Status = HolidayRequestStatus.Approved;
-            //Create an event in Google Calendar.
             _calendarService.CreateEvent(context.FromDate, context.Days, context.User.FirstName + " " + context.User.Surname);
+            _emailService.SendMail("doneill@hotmail.com", context.User.Email, "Holiday Request Approved", string.Format("Your holiday request from {0} for {1} days, has been approved", context.FromDate, context.Days), "", string.Empty, string.Empty);
         }
 
-        public void Reject()
+        public void Reject(IEmailService _emailService)
         {
-            throw new NotImplementedException();
+            context.Status = HolidayRequestStatus.Rejected;
+            _emailService.SendMail("doneill@hotmail.com", context.User.Email, "Holiday Request Rejected", string.Format("Your holiday request from {0} for {1} days, has been rejected", context.FromDate, context.Days), "", string.Empty, string.Empty);
         }
 
         public void Created(IEmailService _emailServie)
