@@ -49,7 +49,7 @@
       </tr>
     </tbody>
   </table>
-  <button (click)="downloadReport()" class="btn btn-primary">Email Report</button>
+  <button (click)="downloadReport()" [class]="emailSent ? 'btn btn-success' : 'btn btn-primary'"  [disabled]="emailButtonText === 'Report Sent'">{{emailButtonText}}</button>
     <!-- Graphs -->
     <!--<div style="display: block">
       <canvas baseChart

@@ -28,6 +28,8 @@ export class LabourComponent {
   public barChartLabels: string[] = [];
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
+  public emailButtonText: string = 'Email Report';
+  public emailSent: boolean = false;
 
   public barChartData: any[] = [
     { data: [], label: 'Week 1' }, { data: [], label: 'Week 2' }, { data: [], label: 'Week 3' }, { data: [], label: 'Week 4' }, { data: [], label: 'Week 5' }
@@ -60,6 +62,8 @@ export class LabourComponent {
   public downloadReport() {
     this._timesheetService.downloadReport(this.labourWeeks).subscribe(result => {
       console.log("uploaded");
+      this.emailButtonText = 'Report Sent';
+      this.emailSent = true;
     }, error => this.errors = error)
   }
 
