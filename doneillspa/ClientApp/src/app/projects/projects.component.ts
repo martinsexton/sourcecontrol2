@@ -12,7 +12,8 @@ declare var $: any;
 
 @Component({
   selector: 'projects',
-  templateUrl: './projects.component.html'
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.css']
 })
 
 export class ProjectComponent {
