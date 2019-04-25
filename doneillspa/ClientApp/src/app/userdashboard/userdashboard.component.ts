@@ -25,6 +25,7 @@ declare var $: any;
 @Component({
   selector: 'userdashboard',
   templateUrl: './userdashboard.component.html',
+  styleUrls: ['./userdashboard.component.css']
 })
 
 export class UserDashboardComponent {

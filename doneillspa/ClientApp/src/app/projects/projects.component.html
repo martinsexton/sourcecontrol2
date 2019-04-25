@@ -1,11 +1,11 @@
-<div class="container-fluid">
+<div class="container-fluid container-with-bg">
   <p *ngIf="!projects"><em>Loading...</em></p>
   <div *ngIf="errors" class="alert alert-danger alert-dismissible">
     <strong>{{ errors }}</strong>
   </div>
-  <div class="row div-with-bg">
+  <div class="row">
     <div class="col">
-      <div class="card mb-3">
+      <div class="card mb-3 mt-3">
         <div class="card-header">Projects</div>
         <div class="card-body" *ngIf="projects">
           <div class="table-responsive">
@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="col" *ngIf="labourRates">
-      <div class="card mb-3">
+      <div class="card mb-3 mt-3">
         <div class="card-header">Rates</div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <ul class="navbar-nav mr-auto">
