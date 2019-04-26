@@ -10,7 +10,8 @@ declare var $: any;
 
 @Component({
   selector: 'supervisor',
-  templateUrl: './supervisor.component.html'
+  templateUrl: './supervisor.component.html',
+  styleUrls: ['./supervisor.component.css']
 })
 
 export class SupervisorComponent {
