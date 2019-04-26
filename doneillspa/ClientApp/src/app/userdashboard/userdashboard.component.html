@@ -107,48 +107,52 @@
       </div>
     </div>
   </div>
-  <div class="card mb-3 mt-3">
-    <div class="card-header">Timesheets</div>
-    <div class="card-body" *ngIf="timesheets">
-      <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
-        <div class="col-md-4">
-          <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
-            Week Beginning {{ ts.weekStarting | date:'fullDate'}}
-          </a>
-        </div>
-        <div class="col-md-8 collapse" id="collapseExample{{i}}">
-          <div class="table-responsive">
-            <table class='table'>
-              <thead class="thead-light">
-                <tr>
-                  <th>Day</th>
-                  <th>Start Time</th>
-                  <th>End Time</th>
-                  <th>Project</th>
-                  <th>Details</th>
-                  <th>Duration</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let tse of getTimesheetEntriesForTimesheet(i)">
-                  <td>{{ tse.day }}</td>
-                  <td>{{ tse.startTime }}</td>
-                  <td>{{ tse.endTime }}</td>
-                  <td>{{ tse.project }}</td>
-                  <td>{{ tse.details }}</td>
-                  <td>{{ calculateDuration(tse) }} mins</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tfoot>
-            </table>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card mb-3 mt-3" *ngIf="timesheets">
+        <div class="card-header">Timesheets</div>
+        <div class="card-body">
+          <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
+            <div class="col-md-4">
+              <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
+                Week Beginning {{ ts.weekStarting | date:'fullDate'}}
+              </a>
+            </div>
+            <div class="col-md-8 collapse" id="collapseExample{{i}}">
+              <div class="table-responsive">
+                <table class='table'>
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Day</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
+                      <th>Project</th>
+                      <th>Details</th>
+                      <th>Duration</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let tse of getTimesheetEntriesForTimesheet(i)">
+                      <td>{{ tse.day }}</td>
+                      <td>{{ tse.startTime }}</td>
+                      <td>{{ tse.endTime }}</td>
+                      <td>{{ tse.project }}</td>
+                      <td>{{ tse.details }}</td>
+                      <td>{{ calculateDuration(tse) }} mins</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
