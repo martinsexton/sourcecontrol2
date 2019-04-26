@@ -13,7 +13,7 @@
 <div class="container-fluid container-with-bg" *ngIf="selectedUser">
   <div class="row">
     <div class="col-md-6">
-      <div class="card mb-3 mt-3">
+      <div class="card mb-3 mt-3 div-to-stand-out">
         <div class="card-header">
           {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}
         </div>
@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="card mb-3 mt-3">
+      <div class="card mb-3 mt-3 div-to-stand-out">
         <div class="card-header">Holiday Requests</div>
         <div class="card-body">
           <div class="table-responsive">
@@ -55,7 +55,7 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      <div class="card mb-3 mt-3">
+      <div class="card mb-3 mt-3 div-to-stand-out">
         <div class="card-header">CertificationDetails</div>
         <div class="card-body">
           <div class="table-responsive">
@@ -81,7 +81,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="card mb-3 mt-3">
+      <div class="card mb-3 mt-3 div-to-stand-out">
         <div class="card-header">Notification Details</div>
         <div class="card-body">
           <div class="table-responsive">
@@ -109,7 +109,7 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <div class="card mb-3 mt-3" *ngIf="timesheets">
+      <div class="card mb-3 mt-3 div-to-stand-out" *ngIf="timesheets">
         <div class="card-header">Timesheets</div>
         <div class="card-body">
           <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
