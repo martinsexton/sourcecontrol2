@@ -236,6 +236,24 @@ namespace doneillspa.Controllers
         }
 
         [HttpPut()]
+        [Route("api/user/{id}/reset")]
+        public IActionResult Put(string id, [FromBody]PasswordReset d)
+        {
+            ApplicationUser user = _userManager.FindByIdAsync(d.UserId).Result;
+            var token = _userManager.GeneratePasswordResetTokenAsync(user).Result;
+
+            IdentityResult result = _userManager.ResetPasswordAsync(user, token, d.Password).Result;
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut()]
         [Route("api/user/{id}/notifications")]
         public IActionResult Put(string id, [FromBody]EmailNotificationDto t)
         {

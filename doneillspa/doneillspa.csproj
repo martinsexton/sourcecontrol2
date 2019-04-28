@@ -64,6 +64,7 @@
     <None Remove="ClientApp\src\app\labourrate.ts" />
     <None Remove="ClientApp\src\app\labourweek.ts" />
     <None Remove="ClientApp\src\app\labour\labour.componenet.ts" />
+    <None Remove="ClientApp\src\app\passwordreset.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projecteffortdto.ts" />
     <None Remove="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
@@ -105,6 +106,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\labourrate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\labourweek.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\labour\labour.componenet.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\passwordreset.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecteffortdto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
@@ -135,6 +137,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Properties\PublishProfiles\" />
+	  <Folder Include="Views\" />
 	</ItemGroup>
 
 	<ItemGroup>

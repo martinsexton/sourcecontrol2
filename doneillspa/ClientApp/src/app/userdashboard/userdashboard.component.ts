@@ -19,6 +19,8 @@ import { CertificateService } from '../shared/services/certificate.service';
 import { EmailNotification } from '../emailnotification';
 import { NotificationService } from '../shared/services/notification.service';
 import { HolidayRequest } from '../holidayrequest';
+import { UserRegistration } from '../shared/models/user.registration.interface';
+import { PasswordReset } from '../passwordreset';
 
 declare var $: any;
 
@@ -35,6 +37,8 @@ export class UserDashboardComponent {
   public selectedUserNotifications: EmailNotification[] = [];
   public selectedUsersHolidayRequests: HolidayRequest[] = [];
   public errors: string;
+  public resetPasswordDetails: PasswordReset = new PasswordReset('', '');
+  public passwordReset: boolean = false;
 
   public filterName: string;
 
@@ -57,6 +61,7 @@ export class UserDashboardComponent {
       this.loading = false;
       if (this.users.length > 0) {
         this.selectedUser = this.users[0];
+        this.resetPasswordDetails.userid = this.selectedUser.id;
         this.selectedUserRow = 0;
         if (this.selectedUser.certifications) {
           this.selectedUserCertifications = this.selectedUser.certifications;
@@ -78,6 +83,14 @@ export class UserDashboardComponent {
         }
       }
     }, error => this.errors = error)
+  }
+
+  resetPassword() {
+      this._msuserService.resetPassword(localStorage.getItem('client_id'), this.resetPasswordDetails).subscribe(
+      result => {
+        this.resetPasswordDetails.password = '';
+        this.passwordReset = true;
+      }, responseError => this.errors = responseError);
   }
 
   retrieveUsersToDisplay() {
@@ -177,6 +190,7 @@ export class UserDashboardComponent {
   displaySelectedUserDetails(user, index) {
     this.selectedUser = user;
     this.selectedUserRow = index;
+    this.resetPasswordDetails.userid = this.selectedUser.id;
 
     //Clear Timesheets
     this.timesheets = new Array<Timesheet>();

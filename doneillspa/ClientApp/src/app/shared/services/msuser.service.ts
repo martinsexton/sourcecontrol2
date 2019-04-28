@@ -14,6 +14,7 @@ import { IdentityRole } from '../../identityrole';
 import { HttpServiceBase } from './httpservicebase';
 import { EmailNotification } from '../../emailnotification';
 import { HolidayRequest } from '../../holidayrequest';
+import { PasswordReset } from '../../passwordreset';
 
 @Injectable()
 export class MsUserService extends HttpServiceBase{
@@ -31,6 +32,19 @@ export class MsUserService extends HttpServiceBase{
       {
         headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
+      })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
+  resetPassword(id: string, details: PasswordReset) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.put(this._baseurl + 'api/user/' + id + '/reset', details,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
       })
       .retry(5)
       .catch(this.handleError);
