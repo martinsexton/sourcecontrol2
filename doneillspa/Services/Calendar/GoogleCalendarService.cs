@@ -51,6 +51,10 @@ namespace doneillspa.Services.Calendar
         private CalendarService CreateCalendarService()
         {
             var clientEmail = Configuration["calendar:client_email"];
+
+            //NB: ensure you remove any \n in the private key before adding to azure configuration page. 
+            //i.e. take the private key from json file
+            //but then strip out any \n characters before adding to azure configuration.
             string privatekey = Configuration["calendar:private_key"];
             string privateKeyToUse = "-----BEGIN PRIVATE KEY-----" + privatekey + "-----END PRIVATE KEY-----";
             string calanderId = Configuration["calendar:id"];
