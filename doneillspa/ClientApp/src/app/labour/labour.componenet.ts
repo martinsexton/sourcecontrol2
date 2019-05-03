@@ -18,6 +18,7 @@ import { LabourRate } from '../labourrate';
 @Component({
   selector: 'labour',
   templateUrl: './labour.component.html',
+  styleUrls: ['./labour.component.css']
 })
 
 export class LabourComponent {

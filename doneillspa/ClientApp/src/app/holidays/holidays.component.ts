@@ -9,7 +9,8 @@ declare var $: any;
 
 @Component({
   selector: 'holidays',
-  templateUrl: './holidays.component.html'
+  templateUrl: './holidays.component.html',
+  styleUrls: ['./holidays.component.css']
 })
 
 export class HolidaysComponent {

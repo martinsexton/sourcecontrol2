@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid container-with-bg">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item dropdown">
@@ -14,42 +14,43 @@
   <div class="row" *ngIf="selectedProject">
     <h3 class="display-4">Labour Costs For {{selectedProject.name}}</h3>
   </div>
-
-  <table class="table table-bordered" *ngIf="selectedProject">
-    <thead>
-      <tr>
-        <th>Week</th>
-        <th>Supervisor</th>
-        <th>Charge Hand</th>
-        <th>Elect R1</th>
-        <th>Elect R2</th>
-        <th>Elect R3</th>
-        <th>Temp</th>
-        <th>First Year Apprentice</th>
-        <th>Second Year Apprentice</th>
-        <th>Third Year Apprentice</th>
-        <th>Fourth Year Apprentice</th>
-        <th>Total Labour Cost</th>
-      </tr>
-    </thead>
-    <tbody class="tbody">
-      <tr *ngFor="let lw of labourWeeks">
-        <td>{{lw.week | date:'fullDate'}}</td>
-        <td>{{lw.supervisorCost | currency}}</td>
-        <td>{{lw.chargehandCost | currency}}</td>
-        <td>{{lw.elecR1Cost | currency}}</td>
-        <td>{{lw.elecR2Cost | currency}}</td>
-        <td>{{lw.elecR3Cost | currency}}</td>
-        <td>{{lw.tempCost | currency}}</td>
-        <td>{{lw.firstYearApprenticeCost | currency}}</td>
-        <td>{{lw.secondYearApprenticeCost | currency}}</td>
-        <td>{{lw.thirdYearApprenticeCost | currency}}</td>
-        <td>{{lw.fourthYearApprenticeCost | currency}}</td>
-        <td>{{lw.totalCost | currency}}</td>
-      </tr>
-    </tbody>
-  </table>
-  <button (click)="downloadReport()" [class]="emailSent ? 'btn btn-success' : 'btn btn-primary'"  [disabled]="emailButtonText === 'Report Sent'">{{emailButtonText}}</button>
+  <div class="div-to-stand-out">
+    <table class="table table-bordered" *ngIf="selectedProject">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Supervisor</th>
+          <th>Charge Hand</th>
+          <th>Elect R1</th>
+          <th>Elect R2</th>
+          <th>Elect R3</th>
+          <th>Temp</th>
+          <th>First Year Apprentice</th>
+          <th>Second Year Apprentice</th>
+          <th>Third Year Apprentice</th>
+          <th>Fourth Year Apprentice</th>
+          <th>Total Labour Cost</th>
+        </tr>
+      </thead>
+      <tbody class="tbody">
+        <tr *ngFor="let lw of labourWeeks">
+          <td>{{lw.week | date:'fullDate'}}</td>
+          <td>{{lw.supervisorCost | currency}}</td>
+          <td>{{lw.chargehandCost | currency}}</td>
+          <td>{{lw.elecR1Cost | currency}}</td>
+          <td>{{lw.elecR2Cost | currency}}</td>
+          <td>{{lw.elecR3Cost | currency}}</td>
+          <td>{{lw.tempCost | currency}}</td>
+          <td>{{lw.firstYearApprenticeCost | currency}}</td>
+          <td>{{lw.secondYearApprenticeCost | currency}}</td>
+          <td>{{lw.thirdYearApprenticeCost | currency}}</td>
+          <td>{{lw.fourthYearApprenticeCost | currency}}</td>
+          <td>{{lw.totalCost | currency}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button (click)="downloadReport()" [class]="emailSent ? 'btn btn-success' : 'btn btn-primary'" [disabled]="emailButtonText === 'Report Sent'">{{emailButtonText}}</button>
+  </div>
     <!-- Graphs -->
     <!--<div style="display: block">
       <canvas baseChart
