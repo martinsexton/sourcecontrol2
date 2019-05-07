@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using doneillspa.Services.Email;
 using doneillspa.Services.Calendar;
+using doneillspa.Services.Document;
 
 namespace doneillspa
 {
@@ -47,6 +48,9 @@ namespace doneillspa
             //Email Services
             services.AddScoped<IEmailService>(_ => new SendGridEmailService(Configuration));
             //services.AddScoped<IEmailService>(_ => new GmailMailService(Configuration));
+
+            //Document Service
+            services.AddScoped<IDocumentService>(_ => new DropBoxDocumentService(Configuration));
 
             //Calendar Services
             services.AddScoped<ICalendarService>(_ => new GoogleCalendarService(Configuration));

@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using doneillspa.Services.Email;
 using Microsoft.AspNetCore.Http;
 using System.Collections;
+using doneillspa.Services.Document;
 
 namespace doneillspa.Controllers
 {
@@ -30,12 +31,14 @@ namespace doneillspa.Controllers
         private readonly IRateRepository _rateRepository;
         private List<LabourRate> Rates = new List<LabourRate>();
         private readonly IEmailService _emailService;
+        private readonly IDocumentService _documentService;
 
-        public LabourDetailsController(ITimesheetRepository repository, IRateRepository rateRepository, IEmailService emailService)
+        public LabourDetailsController(ITimesheetRepository repository, IRateRepository rateRepository, IEmailService emailService, IDocumentService docService)
         {
             _repository = repository;
             _rateRepository = rateRepository;
             _emailService = emailService;
+            _documentService = docService;
 
             Rates = _rateRepository.GetRates().ToList<LabourRate>();
         }
@@ -159,11 +162,15 @@ namespace doneillspa.Controllers
 
                 document.Save();
                 document.Close();
-                
+
+                string filename = "labour_costs_" + DateTime.Now.Ticks + ".xlsx";
 
                 _emailService.SendMail("doneill@hotmail.com", usermail, "Project Labour Cost",
                         "Please find attached labout cost reports", "<strong>Project Labour Cost Reports</strong>",
-                        "labour_costs.xlsx", Convert.ToBase64String(spreadSheetStream.ToArray()));
+                        filename, Convert.ToBase64String(spreadSheetStream.ToArray()));
+
+                //Save Document to document service
+                _documentService.SaveDocument(filename, spreadSheetStream.ToArray());
             }
 
             return Ok();
