@@ -220,8 +220,6 @@ namespace doneillspa.Controllers
             HolidayRequest holiday = HolidayFromDto(user,t);
             user.HolidayRequests.Add(holiday);
 
-            holiday.Created(_emailService);
-
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             IdentityResult r = result.Result;
             if (result.Result.Succeeded)
