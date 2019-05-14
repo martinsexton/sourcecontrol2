@@ -63,7 +63,12 @@
     </div>
   </div>
   <div class="row" *ngIf="displayListOfEntries()">
-    <button type="button" class="btn btn-primary" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
+    <div class="col-md-2">
+      <button type="button" [disabled]="activeTimeSheet.status != 'New'" class="btn btn-primary" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
+    </div>
+    <div class="col-md-2">
+      <button type="button" [disabled]="activeTimeSheet.status != 'New'" class="btn btn-primary" (click)="submitTimesheet()">Submit Timesheet</button>
+    </div>
   </div>
   <!-- New Timesheet Details Modal -->
   <div class="modal fade" id="myNewTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

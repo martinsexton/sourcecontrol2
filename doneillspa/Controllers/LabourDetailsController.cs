@@ -324,7 +324,8 @@ namespace doneillspa.Controllers
         {
             List<LabourWeekDetail> details = new List<LabourWeekDetail>();
 
-            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().Where(r=>r.Status.ToString().Equals("Approved"))
+                .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
                 //For each Timesheet create a LabourDetails object.
@@ -342,7 +343,8 @@ namespace doneillspa.Controllers
 
             //TODO Read rates from database at this point and pass in some dictionary of role/rate to the LabourWeekDetail when creating it, so it can be use
             //to calculate the rate based on hours worked.
-            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved")).
+                OrderByDescending(r => r.WeekStarting);
             foreach(Timesheet ts in timesheets)
             {
                 details.Add(ts.BuildLabourWeekDetails(this.Rates, string.Empty));

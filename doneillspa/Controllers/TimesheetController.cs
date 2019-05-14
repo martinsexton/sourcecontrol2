@@ -90,6 +90,9 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
+            //Setup new timesheets with a default value of New.
+            timesheet.Status = TimesheetStatus.New;
+
             DateTime todaysDate = DateTime.UtcNow;
 
             //Set the date created on timesheet
@@ -104,6 +107,17 @@ namespace doneillspa.Controllers
 
             return Ok(id);
         }
+
+        [HttpPut()]
+        [Route("api/timesheet")]
+        public IActionResult Put(int id, [FromBody]Timesheet ts)
+        {
+            _repository.UpdateTimesheet(ts);
+
+            //If submitted then trigger submitted action on Timesheet.
+            return Ok();
+        }
+
 
         [HttpPut()]
         [Route("api/timesheet/{id}")]
@@ -134,6 +148,7 @@ namespace doneillspa.Controllers
             tsdto.Role = ts.Role;
             tsdto.Username = ts.Username;
             tsdto.WeekStarting = ts.WeekStarting;
+            tsdto.Status = ts.Status.ToString();
 
             tsdto.TimesheetEntries = new List<TimesheetEntryDto>();
             foreach (TimesheetEntry tse in ts.TimesheetEntries)

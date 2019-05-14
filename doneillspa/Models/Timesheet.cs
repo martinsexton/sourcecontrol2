@@ -14,6 +14,7 @@ namespace doneillspa.Models
         public DateTime WeekStarting { get; set; }
         public DateTime DateCreated { get; set; }
         public Guid Owner { get; set; }
+        public TimesheetStatus Status { get; set; }
 
         public ICollection<TimesheetEntry> TimesheetEntries { get; set; }
 
@@ -42,5 +43,13 @@ namespace doneillspa.Models
 
             return detail;
         }
+    }
+
+    public enum TimesheetStatus
+    {
+        New = 1,
+        Submitted = 2,
+        Approved = 3,
+        Rejected = 4
     }
 }

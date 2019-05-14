@@ -13,6 +13,7 @@ namespace doneillspa.Models
         public DateTime WeekStarting { get; set; }
         public DateTime DateCreated { get; set; }
         public Guid Owner { get; set; }
+        public string Status { get; set; }
 
         public ICollection<TimesheetEntryDto> TimesheetEntries { get; set; }
     }

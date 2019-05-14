@@ -70,17 +70,37 @@ export class DashboardComponent {
     }
   }
 
-  retrieveTimeSheetsForCustomer(name : string) {
+  retrieveTimesheetsForApproval() {
     this.filteredTimesheets = [];
     for (let item of this.timesheets) {
-      if (item.username.toUpperCase() == name.toUpperCase()) {
+      if (item.status.toUpperCase() == 'SUBMITTED') {
         this.filteredTimesheets.push(item);
       }
     }
     if (this.filteredTimesheets) {
-      this.selectedTimesheet = this.filteredTimesheets[0];
-      this.selectedTsRow = 0;
+      return this.filteredTimesheets;
     }
+    else {
+      return this.timesheets;
+    }
+  }
+
+  rejectTimesheet(ts: Timesheet) {
+    ts.status = 'Rejected';
+    this._timesheetService.updateTimesheet(ts).subscribe(
+      res => {
+        console.log(res);
+      },
+      error => this.errors = error);
+  }
+
+  approveTimesheet(ts: Timesheet) {
+    ts.status = 'Approved';
+    this._timesheetService.updateTimesheet(ts).subscribe(
+      res => {
+        console.log(res);
+      },
+      error => this.errors = error);
   }
 
   retrieveTimesheetsForDisplay() {

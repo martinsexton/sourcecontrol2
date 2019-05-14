@@ -10,10 +10,10 @@
 <div class="container-fluid container-with-bg">
   <div class="card mb-3 mt-3">
     <div class="card-header">
-      Work Sheets
+      Work Sheets For Approval
     </div>
     <div class="card-body">
-      <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
+      <div class="row" *ngFor="let ts of retrieveTimesheetsForApproval(); let i = index">
         <div class="col-md-6">
           <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
             Timesheets For {{ ts.username }}, Week Beginning {{ ts.weekStarting | date:'fullDate'}}
@@ -54,6 +54,8 @@
                   </tr>
                 </tfoot>
               </table>
+              <button (click)="approveTimesheet(ts)" class="btn btn-primary">Approve Timesheet</button>
+              <button (click)="rejectTimesheet(ts)" class="btn btn-primary">Reject Timesheet</button>
             </div>
           </div>
         </div>

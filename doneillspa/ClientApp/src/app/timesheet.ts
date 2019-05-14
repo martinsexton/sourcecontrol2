@@ -8,6 +8,7 @@ export class Timesheet {
     public username:string,
     public owner: string,
     public role:string,
-    public weekStarting: Date
+    public weekStarting: Date,
+    public status: string
   ) { }
 }

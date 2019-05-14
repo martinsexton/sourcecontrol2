@@ -17,6 +17,18 @@ export class TimesheetService extends HttpServiceBase{
     super(_httpClient, baseUrl); 
   }
 
+  updateTimesheet(timesheet: Timesheet) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.put(this._baseurl + 'api/timesheet', timesheet, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
   saveTimesheet(timesheet: Timesheet) {
     let authToken = localStorage.getItem('auth_token');
 
