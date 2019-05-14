@@ -10,6 +10,7 @@ namespace doneillspa.DataAccess
     {
         TimesheetEntry GetTimsheetEntryById(long id);
         void InsertTimesheetEntry(TimesheetEntry tse);
+        void UpdateTimesheetEntry(TimesheetEntry tse);
         void DeleteTimesheetEntry(TimesheetEntry tse);
         void Save();
     }

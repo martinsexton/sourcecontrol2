@@ -37,5 +37,10 @@ namespace doneillspa.DataAccess
         {
             _context.SaveChanges();
         }
+
+        public void UpdateTimesheetEntry(TimesheetEntry tse)
+        {
+            _context.Entry(tse).State = EntityState.Modified;
+        }
     }
 }

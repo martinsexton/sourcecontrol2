@@ -53,6 +53,22 @@ namespace doneillspa.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("api/timesheetentry")]
+        public IActionResult Put([FromBody]TimesheetEntry tse)
+        {
+            if (tse == null)
+            {
+                return BadRequest();
+            }
+
+            _repository.UpdateTimesheetEntry(tse);
+            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
+            _repository.Save();
+
+            return Ok();
+        }
+
         [HttpDelete]
         [Route("api/timesheetentry/{id}")]
         public JsonResult Delete(long id)

@@ -184,7 +184,7 @@ export class TimesheetComponent {
 
   removeTimesheetEntry(ts) {
     //We can only delete timesheet entries while the timesheet is in a status of new.
-    if (this.activeTimeSheet.status == 'New') {
+    if (this.activeTimeSheet.status == 'New' || this.activeTimeSheet.status == 'Rejected') {
       this._timesheetService.deleteTimesheetEntry(ts).subscribe(
         res => {
           console.log(res);
