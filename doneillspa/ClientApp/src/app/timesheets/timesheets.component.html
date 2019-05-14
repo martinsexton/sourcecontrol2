@@ -24,9 +24,6 @@
       <img src="assets/images/loading3.gif" *ngIf="loading" />
     </div>
   </div>
-  <div class="row" *ngIf="!displayListOfEntries() && !loading">
-    <button type="button" class="btn btn-primary" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
-  </div>
   <div class="row" *ngIf="displayListOfEntries() && !loading">
     <div class="table-responsive">
       <table class='table'>
@@ -62,12 +59,12 @@
       </table>
     </div>
   </div>
-  <div class="row" *ngIf="displayListOfEntries()">
-    <div class="col-md-2">
-      <button type="button" [disabled]="activeTimeSheet.status != 'New'" class="btn btn-primary" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
+  <div class="row">
+    <div class="col-md-2" *ngIf="!loading && (activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected')">
+      <button type="button" class="btn btn-primary" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
     </div>
-    <div class="col-md-2">
-      <button type="button" [disabled]="activeTimeSheet.status != 'New'" class="btn btn-primary" (click)="submitTimesheet()">Submit Timesheet</button>
+    <div class="col-md-2" *ngIf="!loading && (activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected')">
+      <button type="button" class="btn btn-primary" (click)="submitTimesheet()">Submit Timesheet</button>
     </div>
   </div>
   <!-- New Timesheet Details Modal -->
