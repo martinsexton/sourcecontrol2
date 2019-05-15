@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
@@ -64,7 +64,10 @@ import { AuthGuard } from './auth.guard';
     routing,
     ChartsModule
   ],
-  providers: [ProjectService, TimesheetService, CertificateService, HolidayService, NotificationService, MsUserService, AuthGuard],
+  providers: [ProjectService, TimesheetService, CertificateService, HolidayService, NotificationService, MsUserService, AuthGuard, {
+    provide: LOCALE_ID,
+    useValue: 'en-IE'
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

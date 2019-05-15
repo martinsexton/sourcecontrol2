@@ -35,17 +35,17 @@
       <tbody class="tbody">
         <tr *ngFor="let lw of labourWeeks">
           <td>{{lw.week | date:'fullDate'}}</td>
-          <td>{{lw.supervisorCost | currency}}</td>
-          <td>{{lw.chargehandCost | currency}}</td>
-          <td>{{lw.elecR1Cost | currency}}</td>
-          <td>{{lw.elecR2Cost | currency}}</td>
-          <td>{{lw.elecR3Cost | currency}}</td>
-          <td>{{lw.tempCost | currency}}</td>
-          <td>{{lw.firstYearApprenticeCost | currency}}</td>
-          <td>{{lw.secondYearApprenticeCost | currency}}</td>
-          <td>{{lw.thirdYearApprenticeCost | currency}}</td>
-          <td>{{lw.fourthYearApprenticeCost | currency}}</td>
-          <td>{{lw.totalCost | currency}}</td>
+          <td>{{lw.supervisorCost | currency:'EUR'}}</td>
+          <td>{{lw.chargehandCost | currency:'EUR'}}</td>
+          <td>{{lw.elecR1Cost | currency:'EUR'}}</td>
+          <td>{{lw.elecR2Cost | currency:'EUR'}}</td>
+          <td>{{lw.elecR3Cost | currency:'EUR'}}</td>
+          <td>{{lw.tempCost | currency:'EUR'}}</td>
+          <td>{{lw.firstYearApprenticeCost | currency:'EUR'}}</td>
+          <td>{{lw.secondYearApprenticeCost | currency:'EUR'}}</td>
+          <td>{{lw.thirdYearApprenticeCost | currency:'EUR'}}</td>
+          <td>{{lw.fourthYearApprenticeCost | currency:'EUR'}}</td>
+          <td>{{lw.totalCost | currency:'EUR'}}</td>
         </tr>
       </tbody>
     </table>
