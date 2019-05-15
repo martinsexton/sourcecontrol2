@@ -186,12 +186,14 @@ export class TimesheetComponent {
   }
 
   showEditTimesheet(entry: TimesheetEntry) {
-    this.timesheetEntryToEdit = entry;
-    this.displayEditTimesheet = true;
-    if (this.displayEditTimesheet) {
-      $("#myEditTimesheetModal").modal('show');
-    } else {
-      $("#myEditTimesheetModal").modal('hide');
+    if (this.activeTimeSheet.status == 'New' || this.activeTimeSheet.status == 'Rejected') {
+      this.timesheetEntryToEdit = entry;
+      this.displayEditTimesheet = true;
+      if (this.displayEditTimesheet) {
+        $("#myEditTimesheetModal").modal('show');
+      } else {
+        $("#myEditTimesheetModal").modal('hide');
+      }
     }
   }
 
