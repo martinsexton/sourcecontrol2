@@ -38,8 +38,10 @@ export class TimesheetComponent {
   public satEntries: Array<TimesheetEntry> = new Array();
 
   activeTimeSheet: Timesheet;
+ 
 
   public newEntry: TimesheetEntry;
+  public timesheetEntryToEdit: TimesheetEntry
 
   currentDate: Date;
 
@@ -51,6 +53,7 @@ export class TimesheetComponent {
   sat: DayOfWeek;
 
   displayAddTimesheet = false;
+  displayEditTimesheet = false;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService : TimesheetService) {
     this.currentDate = new Date();
@@ -180,6 +183,24 @@ export class TimesheetComponent {
     } else {
       $("#myNewTimesheetModal").modal('hide');
     }
+  }
+
+  showEditTimesheet(entry: TimesheetEntry) {
+    this.timesheetEntryToEdit = entry;
+    this.displayEditTimesheet = true;
+    if (this.displayEditTimesheet) {
+      $("#myEditTimesheetModal").modal('show');
+    } else {
+      $("#myEditTimesheetModal").modal('hide');
+    }
+  }
+
+  updateTimesheetEntry() {
+    console.log('updating timesheetEntryToEdit')
+    $("#myEditTimesheetModal").modal('hide');
+    this._timesheetService.updateTimesheetEntry(this.timesheetEntryToEdit).subscribe(
+      res => {
+      }, error => this.errors = error);
   }
 
   removeTimesheetEntry(ts) {

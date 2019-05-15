@@ -19,11 +19,6 @@
   </li>
 </ul>
 <div class="container-fluid">
-  <div class="row">
-    <div class="text-center">
-      <img src="assets/images/loading3.gif" *ngIf="loading" />
-    </div>
-  </div>
   <div class="row" *ngIf="displayListOfEntries() && !loading">
     <div class="table-responsive">
       <table class='table'>
@@ -35,6 +30,7 @@
             <th>Details</th>
             <th>Duration</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +41,7 @@
             <td>{{ entry.details }}</td>
             <td>{{ calculateDuration(entry) }} mins</td>
             <td><span aria-hidden="true" (click)="removeTimesheetEntry(entry)"><img src="assets/images/delete.png" class="img-responsive" alt="..."></span></td>
+            <td><span aria-hidden="true" (click)="showEditTimesheet(entry)"><img src="assets/images/details.png" class="img-responsive" alt="..."></span></td>
           </tr>
         </tbody>
         <tfoot>
@@ -100,6 +97,38 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button (click)="addTimesheetEntry()" class="btn btn-secondary">Save Entry</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Timesheet Details Modal -->
+  <div *ngIf="displayEditTimesheet" class="modal fade" id="myEditTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Edit Timesheet Entry</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="startTime">Start Time</label>
+              <input type="time" [(ngModel)]="timesheetEntryToEdit.startTime" name="startTime" class="form-control" id="startTime">
+            </div>
+            <div class="form-group">
+              <label for="endTime">End Time</label>
+              <input type="time" [(ngModel)]="timesheetEntryToEdit.endTime" name="endTime" class="form-control" id="endTime">
+            </div>
+            <div class="form-group">
+              <label for="details">Details</label>
+              <textarea [(ngModel)]="timesheetEntryToEdit.details" name="details" class="form-control" id="details" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button (click)="updateTimesheetEntry()" class="btn btn-secondary">Update Entry</button>
         </div>
       </div>
     </div>
