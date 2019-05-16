@@ -70,7 +70,7 @@ export class DashboardComponent {
     }
   }
 
-  retrieveTimesheetsForApproval() {
+  retrieveSubmittedTimesheets() {
     this.filteredTimesheets = [];
     for (let item of this.timesheets) {
       if (item.status.toUpperCase() == 'SUBMITTED') {
@@ -161,8 +161,8 @@ export class DashboardComponent {
     this.selectedTsRow = index
   }
 
-  getTimesheetEntriesForTimesheet(index) {
-    let ts = this.timesheets[index];
+  getTimesheetEntriesForSubmittedTimesheets(index) {
+    let ts = this.retrieveSubmittedTimesheets()[index];
     return ts.timesheetEntries;
   }
 }

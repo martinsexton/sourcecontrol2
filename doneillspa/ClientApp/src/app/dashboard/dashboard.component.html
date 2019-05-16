@@ -13,7 +13,7 @@
       Work Sheets For Approval
     </div>
     <div class="card-body">
-      <div class="row" *ngFor="let ts of retrieveTimesheetsForApproval(); let i = index">
+      <div class="row" *ngFor="let ts of retrieveSubmittedTimesheets(); let i = index">
         <div class="col-md-6">
           <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
             Timesheets For {{ ts.username }}, Week Beginning {{ ts.weekStarting | date:'fullDate'}}
@@ -34,7 +34,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let tse of getTimesheetEntriesForTimesheet(i)">
+                  <tr *ngFor="let tse of getTimesheetEntriesForSubmittedTimesheets(i)">
                     <td>{{ tse.day }}</td>
                     <td>{{ tse.startTime }}</td>
                     <td>{{ tse.endTime }}</td>
