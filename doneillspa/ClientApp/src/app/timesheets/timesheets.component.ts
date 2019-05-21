@@ -260,7 +260,8 @@ export class TimesheetComponent {
     if (this.activeTimeSheet.status == 'New' || this.activeTimeSheet.status == 'Rejected') {
       this._timesheetService.deleteTimesheetEntry(ts).subscribe(
         res => {
-          console.log(res);
+          $("#myEditTimesheetModal").modal('hide');
+
           if (this.selectedDay == "Mon") {
             this.removeFromArrayList(this.monEntries, ts);
           }

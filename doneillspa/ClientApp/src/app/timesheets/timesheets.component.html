@@ -19,48 +19,16 @@
       </div>
       <div id="collapseExample{{i}}" class="collapse" attr.aria-labelledby="heading{{i}}" data-parent="#accordion">
         <div class="card-body">
-          <div class="row">
-            <div>
-              <div class="table-responsive">
-                <table class='table'>
-                  <thead class="thead-light">
-                    <tr>
-                      <th>Project</th>
-                      <th>Start</th>
-                      <th>End</th>
-                      <th>Details</th>
-                      <!--<th>Duration</th>-->
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let entry of retrieveTimesheetsForDay(i)">
-                      <td>{{ entry.project }}</td>
-                      <td>{{ entry.startTime }}</td>
-                      <td>{{ entry.endTime }}</td>
-                      <td>{{ entry.details }}</td>
-                      <!--<td>{{ calculateDuration(entry) }} mins</td>-->
-                      <td *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'"><span aria-hidden="true" (click)="removeTimesheetEntry(entry)"><img src="assets/images/delete.png" class="img-responsive" alt="..."></span></td>
-                      <td *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'"><span aria-hidden="true" (click)="showEditTimesheet(entry)"><img src="assets/images/details.png" class="img-responsive" alt="..."></span></td>
-                    </tr>
-                  </tbody>
-                  <!--<tfoot>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td><span class="badge badge-primary">Duration: {{ calculateTotalDuration() }} mins</span></td>
-                    </tr>
-                  </tfoot>-->
-                </table>
-              </div>
-            </div>
+          <div *ngFor="let entry of retrieveTimesheetsForDay(i)">
+            <p class="card-text">
+              {{entry.project}}: {{entry.startTime}} -> {{entry.endTime}}
+              <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><img src="assets/images/details.png" class="img-responsive" alt="..."></span>
+            </p>
           </div>
         </div>
+        <!--<div>
+          <span class="badge badge-primary">Duration: {{ calculateTotalDuration() }} mins</span>
+        </div>-->
       </div>
     </div>
   </div>
@@ -130,6 +98,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button (click)="updateTimesheetEntry()" class="btn btn-secondary">Update Entry</button>
+          <button (click)="removeTimesheetEntry(timesheetEntryToEdit)" class="btn btn-secondary">Delete Entry</button>
         </div>
       </div>
     </div>
