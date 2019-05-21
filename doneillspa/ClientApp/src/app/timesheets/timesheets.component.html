@@ -1,12 +1,12 @@
 <div class="container-fluid container-fluid">
-  <div class="buttonHolder">
-    <p class="font-weight-light" *ngIf="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Rejected'">Timesheet has been {{activeTimeSheet.status}}</p>
-  </div>
-  <div class="buttonHolder" *ngIf="!loading && (activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected')">
+  <!--<div class="buttonHolder">
+    <p *ngIf="!(activeTimeSheet.status == 'New')" class="font-weight-light">Timesheet has been {{activeTimeSheet.status}}</p>
+  </div>-->
+  <div class="buttonHolder" *ngIf="!loading">
     <form class="form-inline my-2 my-lg-0">
       <span class="mr-3" (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
-      <button class="btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet(entry)">Add Entry</button>
-      <button class="btn btn-outline-success my-2 my-sm-0" (click)="submitTimesheet()">Submit</button>
+      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet(entry)">Add Entry</button>
+      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="submitTimesheet()">Submit</button>
       <span class="ml-3" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
     </form>
   </div>
@@ -14,7 +14,7 @@
     <div class="card mb-3 mt-3" *ngFor="let day of daysOfWeek; let i = index">
       <div class="card-header">
         <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}" (click)="setActiveDay(i)">
-          Timesheets For {{ day }}
+          {{day | uppercase}} {{ retrieveDateForDay(day) | date : "mediumDate" }}
         </a>
       </div>
       <div id="collapseExample{{i}}" class="collapse" attr.aria-labelledby="heading{{i}}" data-parent="#accordion">

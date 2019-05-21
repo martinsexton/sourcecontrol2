@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
 import { Project } from '../project';
+import * as moment from 'moment'; // add this 1 of 4
 
 import {
   ProjectService
@@ -41,19 +42,20 @@ export class TimesheetComponent {
   public daysOfWeek: Array<string> = new Array();
 
   activeTimeSheet: Timesheet;
- 
+
+  selectedMoment: moment.Moment = moment();
 
   public newEntry: TimesheetEntry;
   public timesheetEntryToEdit: TimesheetEntry
 
   currentDate: Date;
 
-  //monday: DayOfWeek;
-  //tues: DayOfWeek;
-  //wed: DayOfWeek;
-  //thurs: DayOfWeek;
-  //fri: DayOfWeek;
-  //sat: DayOfWeek;
+  public monday: DayOfWeek;
+  public tues: DayOfWeek;
+  public wed: DayOfWeek;
+  public thurs: DayOfWeek;
+  public fri: DayOfWeek;
+  public sat: DayOfWeek;
 
   displayAddTimesheet = false;
   displayEditTimesheet = false;
@@ -81,7 +83,7 @@ export class TimesheetComponent {
       }
     }, error => console.error(error));    
 
-    //this.refreshCalendarTabs(this.currentDate);
+    this.refreshCalendarTabs(this.currentDate);
 
     this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth()+1), startOfWeek.getDate()).subscribe(result => {
       this.loading = false;
@@ -95,17 +97,42 @@ export class TimesheetComponent {
   }
 
   nextWeek() {
-    var dayOfWeek = 1;//Monday
-    var date = new Date();
-    date.setDate(date.getDate() + (dayOfWeek + 7 - date.getDay()) % 7);
-    console.log(date);
+    this.selectedMoment.add(7, 'days');
+
+    var startOfWeek = new Date();
+    var newDate = this.selectedMoment.toDate();
+
+    this.refreshCalendarTabs(newDate);
+
+    startOfWeek.setDate(newDate.getDate() - (newDate.getDay() - 1));
+    startOfWeek.setMonth(newDate.getMonth());
+
+    this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
+      this.loading = false;
+      this.timesheets = result;
+      //Populate calendar if we find timesheets for this week
+      this.populateWeeklyCalendar(this.timesheets, startOfWeek);
+    }, error => this.errors = error);
+
   }
 
   previousWeek() {
-    var dayOfWeek = 1;//Monday
-    var date = new Date();
-    date.setDate(date.getDate() - (dayOfWeek + 7 - date.getDay()) % 7);
-    console.log(date);
+    this.selectedMoment.add(-7, 'days');
+
+    var startOfWeek = new Date();
+    var newDate = this.selectedMoment.toDate();
+
+    this.refreshCalendarTabs(newDate);
+
+    startOfWeek.setDate(newDate.getDate() - (newDate.getDay() - 1));
+    startOfWeek.setMonth(newDate.getMonth());
+
+    this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
+      this.loading = false;
+      this.timesheets = result;
+      //Populate calendar if we find timesheets for this week
+      this.populateWeeklyCalendar(this.timesheets, startOfWeek);
+    }, error => this.errors = error);
   }
 
   setActiveDay(index) {
@@ -135,22 +162,22 @@ export class TimesheetComponent {
     }
   }
 
-  setSelectedDate() {
-    let newDate = new Date(this.selectedDate);
+  //setSelectedDate() {
+  //  let newDate = new Date(this.selectedDate);
 
-    var startOfWeek = new Date();
-    startOfWeek.setDate(newDate.getDate() - (newDate.getDay() - 1));
-    startOfWeek.setMonth(newDate.getMonth());
+  //  var startOfWeek = new Date();
+  //  startOfWeek.setDate(newDate.getDate() - (newDate.getDay() - 1));
+  //  startOfWeek.setMonth(newDate.getMonth());
 
-    //this.refreshCalendarTabs(newDate);
+  //  //this.refreshCalendarTabs(newDate);
 
-    this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
-      this.loading = false;
-      this.timesheets = result;
-      //Populate calendar if we find timesheets for this week
-      this.populateWeeklyCalendar(this.timesheets, startOfWeek);
-    }, error => this.errors = error);
-  }
+  //  this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
+  //    this.loading = false;
+  //    this.timesheets = result;
+  //    //Populate calendar if we find timesheets for this week
+  //    this.populateWeeklyCalendar(this.timesheets, startOfWeek);
+  //  }, error => this.errors = error);
+  //}
   populateWeeklyCalendar(array: Timesheet[], ws : Date) {
     //Clear Arrays before loading
     this.monEntries.length = 0;
@@ -163,6 +190,7 @@ export class TimesheetComponent {
     //reset flag that determines if timesheet exists or not for the given date
     this.timesheetExists = false;
     this.activeTimeSheet.id = 0;
+    this.activeTimeSheet.status = "New";
     this.activeTimeSheet.weekStarting = ws;
 
     for (let ts of array) {
@@ -197,34 +225,54 @@ export class TimesheetComponent {
     }
   }
 
+  retrieveDateForDay(day: string) : Date{
+    if (day == "Mon") {
+      return this.monday.date;
+    }
+    else if (day == "Tue") {
+      return this.tues.date;
+    }
+    else if (day == "Wed") {
+      return this.wed.date;
+    }
+    else if (day == "Thurs") {
+      return this.thurs.date;
+    }
+    else if (day == "Fri") {
+      return this.fri.date;
+    }
+    else {
+      return this.sat.date;
+    }
+  }
 
-  //refreshCalendarTabs(baseDate : Date) {
-  //  let day = baseDate.getDay();
+  refreshCalendarTabs(baseDate : Date) {
+    let day = baseDate.getDay();
 
-  //  var monday = new Date();
-  //  monday.setDate(baseDate.getDate() - (day - 1))
-  //  this.monday = new DayOfWeek("Mon", monday);
+    var monday = new Date();
+    monday.setDate(baseDate.getDate() - (day - 1))
+    this.monday = new DayOfWeek("Mon", monday);
 
-  //  var tuesday = new Date();
-  //  tuesday.setDate(monday.getDate() + 1);
-  //  this.tues = new DayOfWeek("Tue", tuesday);
+    var tuesday = new Date();
+    tuesday.setDate(monday.getDate() + 1);
+    this.tues = new DayOfWeek("Tue", tuesday);
 
-  //  var wednesday = new Date();
-  //  wednesday.setDate(tuesday.getDate() + 1);
-  //  this.wed = new DayOfWeek("Wed", wednesday);
+    var wednesday = new Date();
+    wednesday.setDate(tuesday.getDate() + 1);
+    this.wed = new DayOfWeek("Wed", wednesday);
 
-  //  var thursday = new Date();
-  //  thursday.setDate(wednesday.getDate() + 1);
-  //  this.thurs = new DayOfWeek("Thurs", thursday);
+    var thursday = new Date();
+    thursday.setDate(wednesday.getDate() + 1);
+    this.thurs = new DayOfWeek("Thurs", thursday);
 
-  //  var friday = new Date();
-  //  friday.setDate(thursday.getDate() + 1);
-  //  this.fri = new DayOfWeek("Fri", friday);
+    var friday = new Date();
+    friday.setDate(thursday.getDate() + 1);
+    this.fri = new DayOfWeek("Fri", friday);
 
-  //  var saturday = new Date();
-  //  saturday.setDate(friday.getDate() + 1);
-  //  this.sat = new DayOfWeek("Sat", saturday);
-  //}
+    var saturday = new Date();
+    saturday.setDate(friday.getDate() + 1);
+    this.sat = new DayOfWeek("Sat", saturday);
+  }
 
   toggleDisplayAddTimesheet() {
     this.displayAddTimesheet = !this.displayAddTimesheet;
