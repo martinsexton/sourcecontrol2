@@ -31,19 +31,26 @@ export class ProjectComponent {
   newRate: LabourRate = new LabourRate(0, null, null, '', 0);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router : Router) {
-    this._projectService.getProjects().subscribe(result => {
-      this.projects = result;
-    }, error => {
-      console.error(error);
-      this._router.navigate(['/login'], { queryParams: { brandNew: false, firstname: '', surname: '' } });
-      });
+    this.retrieveProjects()
+    this.retrieveRates();
+  }
 
+  retrieveRates() {
     //Retrieve Default list of labour rates
     this._projectService.getLabourRates().subscribe(result => {
       this.labourRates = result;
       //Default to supervisor
       this.displayRatesForSelectedRole("Supervisor");
     }, error => this.errors = error)
+  }
+
+  retrieveProjects() {
+    this._projectService.getProjects().subscribe(result => {
+      this.projects = result;
+    }, error => {
+      console.error(error);
+      this._router.navigate(['/login'], { queryParams: { brandNew: false, firstname: '', surname: '' } });
+    });
   }
 
   displayRatesForSelectedRole(role) {
