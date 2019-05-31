@@ -19,7 +19,7 @@
       </div>
       <div id="collapseExample{{i}}" class="collapse" attr.aria-labelledby="heading{{i}}" data-parent="#accordion">
         <div class="card-body">
-          <div *ngFor="let entry of retrieveTimesheetsForDay(i)">
+          <div *ngFor="let entry of retrieveTimesheetsForIndex(i)">
             <p class="card-text">
               {{entry.project}}: {{entry.startTime}} -> {{entry.endTime}}
               <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><img src="assets/images/details.png" class="img-responsive" alt="..."></span>

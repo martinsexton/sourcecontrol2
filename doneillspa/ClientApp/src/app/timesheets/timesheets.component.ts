@@ -48,8 +48,6 @@ export class TimesheetComponent {
   public newEntry: TimesheetEntry;
   public timesheetEntryToEdit: TimesheetEntry
 
-  currentDate: Date;
-
   public monday: DayOfWeek;
   public tues: DayOfWeek;
   public wed: DayOfWeek;
@@ -68,7 +66,7 @@ export class TimesheetComponent {
     this.setupListOfProjects();
 
     //setup dates for each day of the week
-    this.refreshCalendarDates(this.currentDate);
+    this.refreshCalendarDates();
 
     //Get the start of this working week
     var startOfWeek = this.getStartOfWeek();
@@ -94,7 +92,9 @@ export class TimesheetComponent {
 
   getStartOfWeek(): Date {
     var startOfWeek = new Date();
-    startOfWeek.setDate(this.currentDate.getDate() - (this.currentDate.getDay() - 1))
+    var currentDate = this.selectedMoment.toDate();
+
+    startOfWeek.setDate(currentDate.getDate() - (currentDate.getDay() - 1))
     return startOfWeek;
   }
 
@@ -108,7 +108,6 @@ export class TimesheetComponent {
   }
 
   populateDaysOfWeek() {
-    this.currentDate = new Date();
     this.daysOfWeek.push("Mon");
     this.daysOfWeek.push("Tue");
     this.daysOfWeek.push("Wed");
@@ -131,7 +130,7 @@ export class TimesheetComponent {
     var startOfWeek = new Date();
     var newDate = this.selectedMoment.toDate();
 
-    this.refreshCalendarDates(newDate);
+    this.refreshCalendarDates();
 
     startOfWeek.setDate(newDate.getDate() - (newDate.getDay() - 1));
     startOfWeek.setMonth(newDate.getMonth());
@@ -240,30 +239,31 @@ export class TimesheetComponent {
     }
   }
 
-  refreshCalendarDates(baseDate : Date) {
+  refreshCalendarDates() {
+    var baseDate = this.selectedMoment.toDate();
     let day = baseDate.getDay();
 
-    var monday = new Date();
+    var monday = new Date(this.selectedMoment.toDate());
     monday.setDate(baseDate.getDate() - (day - 1))
     this.monday = new DayOfWeek("Mon", monday);
 
-    var tuesday = new Date();
+    var tuesday = new Date(this.selectedMoment.toDate());
     tuesday.setDate(monday.getDate() + 1);
     this.tues = new DayOfWeek("Tue", tuesday);
 
-    var wednesday = new Date();
+    var wednesday = new Date(this.selectedMoment.toDate());
     wednesday.setDate(tuesday.getDate() + 1);
     this.wed = new DayOfWeek("Wed", wednesday);
 
-    var thursday = new Date();
+    var thursday = new Date(this.selectedMoment.toDate());
     thursday.setDate(wednesday.getDate() + 1);
     this.thurs = new DayOfWeek("Thurs", thursday);
 
-    var friday = new Date();
+    var friday = new Date(this.selectedMoment.toDate());
     friday.setDate(thursday.getDate() + 1);
     this.fri = new DayOfWeek("Fri", friday);
 
-    var saturday = new Date();
+    var saturday = new Date(this.selectedMoment.toDate());
     saturday.setDate(friday.getDate() + 1);
     this.sat = new DayOfWeek("Sat", saturday);
   }
