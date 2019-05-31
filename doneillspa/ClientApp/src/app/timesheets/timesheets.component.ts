@@ -185,6 +185,8 @@ export class TimesheetComponent {
     this.activeTimeSheet.id = 0;
     this.activeTimeSheet.status = "New";
     this.activeTimeSheet.weekStarting = ws;
+    //Clear the timesheet entries in the existing in memory timesheet
+    this.activeTimeSheet.timesheetEntries.length = 0;
 
     for (let ts of array) {
       if (ts.owner == localStorage.getItem("client_id")) {

@@ -22,7 +22,7 @@
           <div *ngFor="let entry of retrieveTimesheetsForIndex(i)">
             <p class="card-text">
               {{entry.project}}: {{entry.startTime}} -> {{entry.endTime}}
-              <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><img src="assets/images/details.png" class="img-responsive" alt="..."></span>
+              <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span>
             </p>
           </div>
         </div>
