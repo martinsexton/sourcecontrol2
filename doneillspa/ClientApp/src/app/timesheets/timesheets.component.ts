@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
 import { Project } from '../project';
-import * as moment from 'moment'; // add this 1 of 4
+import * as moment from 'moment';
 
 import {
   ProjectService
@@ -58,6 +58,8 @@ export class TimesheetComponent {
   displayAddTimesheet = false;
   displayEditTimesheet = false;
 
+  //declare var $: any;
+
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService : TimesheetService) {
     //Populate available days of the week for entering timesheets
     this.populateDaysOfWeek();
@@ -79,6 +81,10 @@ export class TimesheetComponent {
     this.retrieveTimeSheetsForDate(startOfWeek);
   }
 
+  ngOnInit() {
+    $('[data-toggle="tooltip"]').tooltip(); 
+  }
+
   retrieveTimeSheetsForDate(startOfWeek:Date) {
     this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
       this.loading = false;
@@ -91,10 +97,10 @@ export class TimesheetComponent {
   }
 
   getStartOfWeek(): Date {
-    var startOfWeek = new Date();
-    var currentDate = this.selectedMoment.toDate();
-
-    startOfWeek.setDate(currentDate.getDate() - (currentDate.getDay() - 1))
+    var baseDate = this.selectedMoment.toDate();
+    let day = baseDate.getDay();
+    var startOfWeek = new Date(this.selectedMoment.toDate());
+    startOfWeek.setDate(baseDate.getDate() - (day - 1))
     return startOfWeek;
   }
 
@@ -127,13 +133,9 @@ export class TimesheetComponent {
   }
 
   LoadWeek() {
-    var startOfWeek = new Date();
-    var newDate = this.selectedMoment.toDate();
-
     this.refreshCalendarDates();
 
-    startOfWeek.setDate(newDate.getDate() - (newDate.getDay() - 1));
-    startOfWeek.setMonth(newDate.getMonth());
+    var startOfWeek = this.getStartOfWeek();
 
     this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
       this.loading = false;
@@ -398,31 +400,6 @@ export class TimesheetComponent {
 
     return elapsedTimeInMins;
   }
-
-  //retrieveTimesheetsForTab(): Array<TimesheetEntry> {
-  //  if (this.selectedDay == "Mon") {
-  //    return this.monEntries;
-  //  }
-  //  else if (this.selectedDay == "Tue") {
-  //    return this.tueEntries;
-  //  }
-  //  else if (this.selectedDay == "Wed") {
-  //    return this.wedEntries;
-  //  }
-  //  else if (this.selectedDay == "Thurs") {
-  //    return this.thursEntries;
-  //  }
-  //  else if (this.selectedDay == "Fri") {
-  //    return this.friEntries;
-  //  }
-  //  else {
-  //    return this.satEntries;
-  //  }
-  //}
-
-  //displayListOfEntries(): boolean {
-  //  return this.retrieveTimesheetsForTab().length > 0;
-  //}
 
   populateTimesheet(entries: TimesheetEntry[]) {
     for (let item of entries) {

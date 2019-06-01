@@ -54,11 +54,20 @@ namespace doneillspa.Controllers
         [Route("api/timesheet/week/{year}/{month}/{day}")]
         public IEnumerable<TimesheetDto> Get(int year, int month, int day)
         {
-            DateTime weekStarting = new DateTime(year, month, day);
-
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+            IEnumerable<Timesheet> timesheets = new List<Timesheet>();
 
-            IEnumerable<Timesheet> timesheets = _repository.GetTimesheetsByDate(weekStarting);
+            //If no date provide, then bring back all timesheets
+            if (year == 0 || year == 1970)
+            {
+                timesheets = _repository.GetTimesheets();
+            }
+            else
+            {
+                DateTime weekStarting = new DateTime(year, month, day);
+                timesheets = _repository.GetTimesheetsByDate(weekStarting);
+            }
+
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
