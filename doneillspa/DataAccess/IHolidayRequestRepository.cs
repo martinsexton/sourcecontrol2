@@ -12,6 +12,7 @@ namespace doneillspa.DataAccess
         IEnumerable<HolidayRequest> GetHolidayRequestsForApprover(string userId);
         IEnumerable<HolidayRequest> GetHolidayRequestsForUser(string userId);
         void Delete(HolidayRequest request);
-        void Save();
+        void Update(HolidayRequest request);
+       //void Save();
     }
 }

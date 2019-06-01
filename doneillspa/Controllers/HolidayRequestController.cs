@@ -36,7 +36,7 @@ namespace doneillspa.Controllers
             HolidayRequest request = _repository.GetHolidayRequestById(hr.Id);
             request.Updated(hr, _calendarService, _emailService);
 
-            _repository.Save();
+            _repository.Update(request);
             return new NoContentResult();
         }
 
@@ -49,7 +49,6 @@ namespace doneillspa.Controllers
             if (request != null)
             {
                 _repository.Delete(request);
-                _repository.Save();
 
                 return Json(Ok());
             }

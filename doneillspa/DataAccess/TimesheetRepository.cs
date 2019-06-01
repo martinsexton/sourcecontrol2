@@ -55,11 +55,6 @@ namespace doneillspa.DataAccess
             return t.Id;
         }
 
-        //public void Save()
-        //{
-        //    _context.SaveChanges();
-        //}
-
         public void UpdateTimesheet(Timesheet b)
         {
             _context.Entry(b).State = EntityState.Modified;

@@ -70,8 +70,8 @@
                   <td>{{ r.effectiveFrom | date : "fullDate"}}</td>
                   <td>{{ r.effectiveTo | date : "fullDate"}}</td>
                   <td>{{ r.ratePerHour}}</td>
-                  <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="deleteRate(r)">Delete</span></td>
-                  <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="displaySelectedRate(r)">View Details</span></td>
+                  <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="deleteRate(r)"><img src="assets/images/delete.png" class="img-responsive" alt="..."></span></td>
+                  <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="displaySelectedRate(r)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span></td>
                 </tr>
               </tbody>
             </table>

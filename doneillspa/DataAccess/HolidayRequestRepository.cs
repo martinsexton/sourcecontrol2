@@ -18,7 +18,8 @@ namespace doneillspa.DataAccess
 
         public void Delete(HolidayRequest request)
         {
-            _context.Entry(request).State = EntityState.Deleted; ;
+            _context.Entry(request).State = EntityState.Deleted;
+            _context.SaveChanges();
         }
 
         public HolidayRequest GetHolidayRequestById(long id)
@@ -46,8 +47,14 @@ namespace doneillspa.DataAccess
                         .ToList();
         }
 
-        public void Save()
+        //public void Save()
+        //{
+        //    _context.SaveChanges();
+        //}
+
+        public void Update(HolidayRequest request)
         {
+            _context.Entry(request).State = EntityState.Modified;
             _context.SaveChanges();
         }
     }
