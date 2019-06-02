@@ -18,6 +18,50 @@ namespace doneillspa.Models
 
         public ICollection<TimesheetEntry> TimesheetEntries { get; set; }
 
+        public void OnCreation()
+        {
+            //Setup new timesheets with a default value of New.
+            Status = TimesheetStatus.New;
+
+            DateTime todaysDate = DateTime.UtcNow;
+
+            //Set the date created on timesheet
+            DateCreated = todaysDate;
+
+            foreach (TimesheetEntry tse in TimesheetEntries)
+            {
+                tse.DateCreated = todaysDate;
+            }
+        }
+
+        public void Updated(TimesheetDto ts)
+        {
+            UpdateStatus(ts);
+        }
+
+        private void UpdateStatus(TimesheetDto ts)
+        {
+            if (ts.Status.Equals("Approved"))
+            {
+                Status = TimesheetStatus.Approved;
+            }
+            else if (ts.Status.Equals("Rejected"))
+            {
+                Status = TimesheetStatus.Rejected;
+            }
+            else if (ts.Status.Equals("Submitted"))
+            {
+                Status = TimesheetStatus.Submitted;
+            }
+        }
+
+        public void AddTimesheetEntry(TimesheetEntry entry)
+        {
+            //Set date created on timesheet entry
+            entry.DateCreated = DateTime.UtcNow;
+            TimesheetEntries.Add(entry);
+        }
+
         public LabourWeekDetail BuildLabourWeekDetails(List<LabourRate> Rates, string proj)
         {
             //Retrieve details from timesheet and populate the LabourWeekDetail object

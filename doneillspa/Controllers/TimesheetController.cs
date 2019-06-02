@@ -94,23 +94,7 @@ namespace doneillspa.Controllers
         [Route("api/timesheet")]
         public IActionResult Post([FromBody]Timesheet timesheet)
         {
-            if (timesheet == null)
-            {
-                return BadRequest();
-            }
-
-            //Setup new timesheets with a default value of New.
-            timesheet.Status = TimesheetStatus.New;
-
-            DateTime todaysDate = DateTime.UtcNow;
-
-            //Set the date created on timesheet
-            timesheet.DateCreated = todaysDate;
-
-            foreach (TimesheetEntry tse in timesheet.TimesheetEntries)
-            {
-                tse.DateCreated = todaysDate;
-            }
+            timesheet.OnCreation();
 
             long id = _repository.InsertTimesheet(timesheet);
 
@@ -119,11 +103,13 @@ namespace doneillspa.Controllers
 
         [HttpPut()]
         [Route("api/timesheet")]
-        public IActionResult Put(int id, [FromBody]Timesheet ts)
+        public IActionResult Put(int id, [FromBody]TimesheetDto ts)
         {
-            _repository.UpdateTimesheet(ts);
+            Timesheet timesheet = _repository.GetTimsheetById(ts.Id);
+            timesheet.Updated(ts);
 
-            //If submitted then trigger submitted action on Timesheet.
+            _repository.UpdateTimesheet(timesheet);
+
             return Ok();
         }
 
@@ -133,16 +119,8 @@ namespace doneillspa.Controllers
         public IActionResult Put(int id, [FromBody]TimesheetEntry entry)
         {
             var existingTimesheet = _repository.GetTimsheetById(id);
+            existingTimesheet.AddTimesheetEntry(entry);
 
-            if (existingTimesheet == null)
-            {
-                return NotFound();
-            }
-
-            //Set date created on timesheet entry
-            entry.DateCreated = DateTime.UtcNow;
-
-            existingTimesheet.TimesheetEntries.Add(entry);
             _repository.UpdateTimesheet(existingTimesheet);
 
             return Ok(entry.Id);
