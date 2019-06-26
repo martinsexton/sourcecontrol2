@@ -38,7 +38,9 @@ export class UserDashboardComponent {
   public selectedUsersHolidayRequests: HolidayRequest[] = [];
   public errors: string;
   public resetPasswordDetails: PasswordReset = new PasswordReset('', '');
-  public passwordReset: boolean = false;
+  //public passwordReset: boolean = false;
+  public loadingTimesheets: boolean = false;
+  public resettingPassword: boolean = false;
 
   public filterName: string;
 
@@ -86,10 +88,12 @@ export class UserDashboardComponent {
   }
 
   resetPassword() {
+      this.resettingPassword = true;
       this._msuserService.resetPassword(localStorage.getItem('client_id'), this.resetPasswordDetails).subscribe(
-      result => {
+        result => {
+        this.resettingPassword = false;
         this.resetPasswordDetails.password = '';
-        this.passwordReset = true;
+        //this.passwordReset = true;
       }, responseError => this.errors = responseError);
   }
 
@@ -255,12 +259,13 @@ export class UserDashboardComponent {
   }
 
   retrieveTimesheetsForUser() {
+    this.loadingTimesheets = true;
     this._msuserService.retrieveTimesheets(this.selectedUser.id).subscribe(result => {
-      this.loading = false;
+      this.loadingTimesheets = false;
       this.timesheets = result;
     }, error => {
       this.errors = error
-      this.loading = false;
+      this.loadingTimesheets = false;
     });
   }
 }
