@@ -4,5 +4,6 @@ export class EmailNotification {
     public body: string,
     public subject: string,
     public destination: string,
+    public activationDate: Date,
   ) { }
 }

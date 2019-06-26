@@ -42,7 +42,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let hol of selectedUsersHolidayRequests">
-                  <td>{{hol.fromDate}}</td>
+                  <td>{{hol.fromDate | date : "fullDate"}}</td>
                   <td>{{hol.days}}</td>
                   <td>{{hol.status}}</td>
                 </tr>
@@ -70,7 +70,7 @@
               <tbody>
                 <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'danger': hasCertExpired(crt)}">
                   <td>{{ crt.description }}</td>
-                  <td>{{ crt.expiry}}</td>
+                  <td>{{ crt.expiry | date : "fullDate"}}</td>
                   <td><span aria-hidden="true" (click)="deleteCertification(crt)"><img src="assets/images/delete.png" class="img-responsive" alt="..."></span></td>
                 </tr>
               </tbody>
@@ -90,6 +90,7 @@
                 <tr>
                   <th>Subject</th>
                   <th>Body</th>
+                  <th>Date Sent</th>
                   <th></th>
                 </tr>
               </thead>
@@ -97,6 +98,7 @@
                 <tr *ngFor="let not of selectedUserNotifications">
                   <td>{{ not.subject }}</td>
                   <td>{{ not.body}}</td>
+                  <td>{{ not.activationDate | date : "fullDate"}}</td>
                   <td><span aria-hidden="true" (click)="deleteNotification(not)"><img src="assets/images/delete.png" class="img-responsive" alt="..."></span></td>
                 </tr>
               </tbody>

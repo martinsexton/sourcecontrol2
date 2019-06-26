@@ -363,6 +363,7 @@ namespace doneillspa.Controllers
             notdto.Body = not.Body;
             notdto.DestinationEmail = not.DestinationEmail;
             notdto.Id = not.Id;
+            notdto.ActivationDate = not.ActivationDate;
 
             return notdto;
         }

@@ -11,5 +11,6 @@ namespace doneillspa.Models
         public string Body { get; set; }
         public string Subject { get; set; }
         public string DestinationEmail { get; set; }
+        public DateTime ActivationDate { get; set; }
     }
 }
