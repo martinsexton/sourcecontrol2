@@ -18,7 +18,6 @@ namespace doneillspa.Services.Email
     public class GmailMailService : IEmailService
     {
         private IConfiguration Configuration;
-        static string ApplicationName = "Doneill Gmail API";
         static string[] Scopes = { GmailService.Scope.GmailSend, GmailService.Scope.GmailCompose };
 
         public GmailMailService(IConfiguration configuration)
