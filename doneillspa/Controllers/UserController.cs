@@ -259,6 +259,9 @@ namespace doneillspa.Controllers
 
             EmailNotification notification = NotificationFromDto(user, t);
 
+            //Default Activation Date to right now for the time being.
+            notification.ActivationDate = DateTime.UtcNow;
+
             user.EmailNotifications.Add(notification);
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
 

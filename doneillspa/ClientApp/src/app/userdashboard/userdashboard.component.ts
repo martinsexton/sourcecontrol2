@@ -47,7 +47,7 @@ export class UserDashboardComponent {
   public users: ApplicationUser[];
   public filteredUsers: ApplicationUser[];
   public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
-  public newEmailNotification: EmailNotification = new EmailNotification(0, '', '', '',null);
+  public newEmailNotification: EmailNotification = new EmailNotification(0, '', '', '',new Date());
 
   displayAddCert = false;
   displayAddNotification = false;
@@ -231,7 +231,7 @@ export class UserDashboardComponent {
       //Update the identifier of the newly created cert so if we delete it, it will be deleted on database
       this.newEmailNotification.id = result as number;
       this.selectedUserNotifications.push(this.newEmailNotification);
-      this.newEmailNotification = new EmailNotification(0, '', '', '',null);
+      this.newEmailNotification = new EmailNotification(0, '', '', '',new Date());
     }, error => console.error(error));
   }
 
