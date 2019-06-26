@@ -41,15 +41,19 @@ export class ProjectComponent {
       this.labourRates = result;
       //Default to supervisor
       this.displayRatesForSelectedRole("Supervisor");
-    }, error => this.errors = error)
+    }, error => {
+      this.errors = "Failed to retrieve project rates"
+      $('.toast').toast('show');
+    })
   }
 
   retrieveProjects() {
     this._projectService.getProjects().subscribe(result => {
       this.projects = result;
     }, error => {
+      this.errors = "Failed to retrieve available Projects"
+      $('.toast').toast('show');
       console.error(error);
-      this._router.navigate(['/login'], { queryParams: { brandNew: false, firstname: '', surname: '' } });
     });
   }
 
@@ -94,14 +98,12 @@ export class ProjectComponent {
       res => {
         console.log(res);
         $("#myDisplayRateModal").modal('hide');
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
+      }, error => {
+        $("#myDisplayRateModal").modal('hide');
+        this.errors = "Failed to update Rate"
+        $('.toast').toast('show');
+        console.error(error);
+      });
   }
 
   updateProject(){
@@ -109,14 +111,12 @@ export class ProjectComponent {
       res => {
         console.log(res);
         $("#myModal").modal('hide');
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
+      }, error => {
+        $("#myModal").modal('hide');
+        this.errors = "Failed to update project"
+        $('.toast').toast('show');
+        console.error(error);
+      });
   }
 
   deleteRate(r) {
@@ -125,14 +125,11 @@ export class ProjectComponent {
         console.log(res);
         this.removeFromRatesArrays(r);
         
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
+      }, error => {
+        this.errors = "Failed to delete Rate"
+        $('.toast').toast('show');
+        console.error(error);
+      });
   }
 
   deleteProject(p) {
@@ -140,14 +137,11 @@ export class ProjectComponent {
       res => {
         console.log(res);
         this.removeFromArrayList(p);
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
+      }, error => {
+        this.errors = "Failed to delete Project"
+        $('.toast').toast('show');
+        console.error(error);
+      });
   }
 
   removeFromArrayList(p: Project) {
@@ -186,17 +180,17 @@ export class ProjectComponent {
         //clear down the new project model
         this.newRate = new LabourRate(0, null, null, '', 0);
         $("#myNewRateModal").modal('hide');
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
+      }, error => {
+        $("#myNewRateModal").modal('hide');
+        this.errors = "Failed to save Rate"
+        $('.toast').toast('show');
+        console.error(error);
+      });
   }
 
   saveProject() {
+    //this.errors = "failed to save project";
+    //$('.toast').toast('show');
     this._projectService.saveProject(this.newProject).subscribe(
       res => {
         console.log(res);
@@ -206,13 +200,11 @@ export class ProjectComponent {
         //clear down the new project model
         this.newProject = new Project(0, '', '', '', true, new Date);
         $("#myNewProjectModal").modal('hide');
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
+      }, error => {
+        $("#myNewProjectModal").modal('hide');
+        this.errors = "Failed to save project"
+        $('.toast').toast('show');
+        console.error(error);
+      });
   }
 }
