@@ -15,18 +15,30 @@ declare var $: any;
 
 export class HolidaysComponent {
   public holidayRequest: HolidayRequest = new HolidayRequest(0, new Date(), new Date(), 0, '', 'New');
-  public holidayRequests: HolidayRequest[] = [];
+  public holidayRequests: HolidayRequest[];// = [];
   public supervisors: ApplicationUser[];
   public errors: string;
+  public loadingHolidays: Boolean = false;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _msuserService: MsUserService, private _holidayService : HolidayService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _msuserService: MsUserService, private _holidayService: HolidayService) {
+    this.loadingHolidays = true;
     this._msuserService.getUsersWithRole('Supervisor').subscribe(result => {
+      this.loadingHolidays = false;
       this.supervisors = result;
-    }, error => this.errors = error)
+    }, error => {
+      this.loadingHolidays = false;
+      this.errors = "Failed to retrieve holiday requests"
+      $('.toast').toast('show');
+    })
 
     this._msuserService.getHolidayRequests().subscribe(result => {
       this.holidayRequests = result;
-    }, error => this.errors = error)
+      this.loadingHolidays = false;
+    }, error => {
+      this.loadingHolidays = false;
+      this.errors = "Failed to retrieve holiday requests"
+      $('.toast').toast('show');
+    })
   }
 
   submitHolidayRequest() {
@@ -38,7 +50,11 @@ export class HolidaysComponent {
 
       //Create fresh version
       this.holidayRequest = new HolidayRequest(0, new Date(), new Date(), 0, '','New');
-    }, error => console.error(error));
+    }, error => {
+      $("#myNewHolidayModal").modal('hide');
+      this.errors = "Failed to submit holiday request"
+      $('.toast').toast('show');
+    })
   }
 
   deleteHolidayRequest(hr) {
@@ -46,7 +62,10 @@ export class HolidaysComponent {
       res => {
         console.log(res);
         this.removeFromArrayList(hr);
-      }, error => this.errors = error)
+      }, error => {
+        this.errors = "Unable to delete holiday request"
+        $('.toast').toast('show');
+      })
   }
 
 

@@ -15,6 +15,8 @@ import {
 import { CertificateService } from '../shared/services/certificate.service';
 import { LabourRate } from '../labourrate';
 
+declare var $: any;
+
 @Component({
   selector: 'labour',
   templateUrl: './labour.component.html',
@@ -39,14 +41,21 @@ export class LabourComponent {
   public errors: string;
   public projects: Project[];
   public selectedProject: Project;
+  public loadingLabourDetails: Boolean = false;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
+    this.loadingLabourDetails = true;
     this._projectService.getProjects().subscribe(result => {
+      this.loadingLabourDetails = false;
       this.projects = result;
       this.selectedProject = this.projects[0];
 
       //Display labour costs for first project 
       this.filterLabourCostForProject(this.selectedProject);
+    }, error => {
+      this.loadingLabourDetails = false;
+      this.errors = "Failed to retrieve labour details"
+      $('.toast').toast('show');
     });
   }
 
@@ -64,7 +73,12 @@ export class LabourComponent {
     this._timesheetService.downloadReport(this.labourWeeks).subscribe(result => {
       console.log("uploaded");
       this.sendingReport = false;
-    }, error => this.errors = error)
+    }, error => {
+      this.loadingLabourDetails = false;
+      this.sendingReport = false;
+      this.errors = "Failed to download report"
+      $('.toast').toast('show');
+    });
   }
 
   filterLabourCostForProject(project) {
@@ -118,6 +132,10 @@ export class LabourComponent {
         this.barChartData = clone;
       }
 
-    }, error => this.errors = error)
+    }, error => {
+      this.loadingLabourDetails = false;
+      this.errors = "Failed to retrieve labour details"
+      $('.toast').toast('show');
+    });
   }
 }

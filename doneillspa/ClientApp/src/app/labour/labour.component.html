@@ -1,5 +1,5 @@
-<div class="container-fluid container-with-bg">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container-fluid">
+  <nav *ngIf="selectedProject" class="navbar navbar-expand-lg navbar-light bg-light">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -11,10 +11,15 @@
       </li>
     </ul>
   </nav>
+  <div *ngIf="loadingLabourDetails" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
   <div class="row" *ngIf="selectedProject">
     <h3 class="display-4">Labour Costs For {{selectedProject.name}}</h3>
   </div>
-  <div class="div-to-stand-out">
+  <div *ngIf="selectedProject" class="div-to-stand-out">
     <table class="table table-bordered" *ngIf="selectedProject">
       <thead>
         <tr>
@@ -54,15 +59,28 @@
       Download Report
     </button>
   </div>
-    <!-- Graphs -->
-    <!--<div style="display: block">
-      <canvas baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-              [chartType]="barChartType"
-              (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-    </div>-->
+  <!--Toast-->
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true" data-animation="true" data-delay="5000">
+    <div class="toast-header">
+      <strong class="mr-auto">Error!!</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      {{errors}}
+    </div>
+  </div>
+  <!--Toast-->
+  <!-- Graphs -->
+  <!--<div style="display: block">
+    <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [chartType]="barChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
+  </div>-->
 </div>
