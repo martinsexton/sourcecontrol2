@@ -26,9 +26,9 @@ export class ProjectComponent {
   newProject: Project = new Project(0, '', '', '', true, new Date);
   projectSaved: boolean = false;
   selectedProject: Project = new Project(0, '', '', '', true, new Date);
-  selectedRate: LabourRate = new LabourRate(0, null, null, '', 0);
+  selectedRate: LabourRate = new LabourRate(0, null, null, '', 0, 0);
 
-  newRate: LabourRate = new LabourRate(0, null, null, '', 0);
+  newRate: LabourRate = new LabourRate(0, null, null, '', 0, 0);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router : Router) {
     this.retrieveProjects()
@@ -173,12 +173,12 @@ export class ProjectComponent {
       res => {
         console.log(res);
         //Update the collection of projects with newly created one
-        this.labourRates.push(new LabourRate(0,this.newRate.effectiveFrom, this.newRate.effectiveTo, this.newRate.role, this.newRate.ratePerHour));
+        this.labourRates.push(new LabourRate(0,this.newRate.effectiveFrom, this.newRate.effectiveTo, this.newRate.role, this.newRate.ratePerHour, this.newRate.overTimeRatePerHour));
 
         this.displayRatesForSelectedRole(this.newRate.role);
 
         //clear down the new project model
-        this.newRate = new LabourRate(0, null, null, '', 0);
+        this.newRate = new LabourRate(0, null, null, '', 0, 0);
         $("#myNewRateModal").modal('hide');
       }, error => {
         $("#myNewRateModal").modal('hide');

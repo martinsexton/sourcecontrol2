@@ -78,6 +78,7 @@ namespace doneillspa.Controllers
             existingRate.EffectiveFrom = r.EffectiveFrom;
             existingRate.EffectiveTo = r.EffectiveTo;
             existingRate.RatePerHour = r.RatePerHour;
+            existingRate.OverTimeRatePerHour = r.OverTimeRatePerHour;
 
             _rateRepository.UpdateRate(existingRate);
             //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
@@ -106,7 +107,8 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/rates")]
         public IEnumerable<LabourRate> GetRates()
         {
-            return _rateRepository.GetRates();
+            IEnumerable<LabourRate> rates = _rateRepository.GetRates();
+            return rates;
         }
 
         [HttpPost]

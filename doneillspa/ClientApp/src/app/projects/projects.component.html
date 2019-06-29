@@ -61,6 +61,7 @@
                   <th>Effective From</th>
                   <th>Effective To</th>
                   <th>Rate</th>
+                  <th>Overtime Rate</th>
                   <th></th>
                   <th></th>
                 </tr>
@@ -71,6 +72,7 @@
                   <td>{{ r.effectiveFrom | date : "fullDate"}}</td>
                   <td>{{ r.effectiveTo | date : "fullDate"}}</td>
                   <td>{{ r.ratePerHour}}</td>
+                  <td>{{ r.overTimeRatePerHour}}</td>
                   <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="deleteRate(r)"><img src="assets/images/delete.png" class="img-responsive" alt="..."></span></td>
                   <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="displaySelectedRate(r)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span></td>
                 </tr>
@@ -150,6 +152,10 @@
           <div class="form-group">
             <label for="rate">Rate</label>
             <input type="number" [(ngModel)]="selectedRate.ratePerHour" name="rate" class="form-control" id="rate">
+          </div>
+          <div class="form-group">
+            <label for="overtimerate">Overtime Rate</label>
+            <input type="number" [(ngModel)]="selectedRate.overTimeRatePerHour" name="overtimerate" class="form-control" id="overtimerate">
           </div>
         </form>
       </div>
@@ -234,6 +240,10 @@
           <div class="form-group">
             <label for="rate">Rate</label>
             <input type="number" [(ngModel)]="newRate.ratePerHour" name="rate" class="form-control" id="rate">
+          </div>
+          <div class="form-group">
+            <label for="overtimerate">Overtime Rate</label>
+            <input type="number" [(ngModel)]="newRate.overTimeRatePerHour" name="overtimerate" class="form-control" id="overtimerate">
           </div>
         </form>
       </div>

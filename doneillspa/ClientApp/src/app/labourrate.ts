@@ -4,6 +4,7 @@ export class LabourRate {
     public effectiveFrom: Date,
     public effectiveTo: Date,
     public role: string,
-    public ratePerHour: number
+    public ratePerHour: number,
+    public overTimeRatePerHour: number
   ) { }
 }
