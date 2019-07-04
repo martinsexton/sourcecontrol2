@@ -52,7 +52,6 @@ namespace doneillspa.Controllers
             if (existingProject != null)
             {
                 _repository.DeleteProject(existingProject);
-                _repository.Save();
 
                 return Json(Ok());
             }
@@ -69,11 +68,9 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            _repository.InsertProject(project);
-            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
-            _repository.Save();
+           long id = _repository.InsertProject(project);
 
-            return Ok();
+            return Ok(id);
         }
 
         [HttpPut]
@@ -98,8 +95,6 @@ namespace doneillspa.Controllers
             existingProject.IsActive = p.IsActive;
 
             _repository.UpdateProject(existingProject);
-            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
-            _repository.Save();
 
             return new NoContentResult();
         }

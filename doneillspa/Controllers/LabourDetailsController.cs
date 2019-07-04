@@ -51,7 +51,6 @@ namespace doneillspa.Controllers
             if (existingRate != null)
             {
                 _rateRepository.DeleteRate(existingRate);
-                _rateRepository.Save();
 
                 return Json(Ok());
             }
@@ -81,8 +80,6 @@ namespace doneillspa.Controllers
             existingRate.OverTimeRatePerHour = r.OverTimeRatePerHour;
 
             _rateRepository.UpdateRate(existingRate);
-            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
-            _rateRepository.Save();
 
             return new NoContentResult();
         }
@@ -96,11 +93,9 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            _rateRepository.InsertRate(rate);
-            //Save should be last thing to call at the end of a business transaction as it closes the Unit Of Work
-            _rateRepository.Save();
+           long id = _rateRepository.InsertRate(rate);
 
-            return Ok();
+            return Ok(id);
         }
 
         [HttpGet]

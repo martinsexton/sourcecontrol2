@@ -31,21 +31,20 @@ namespace doneillspa.DataAccess
         public void DeleteProject(Project p)
         {
             _context.Entry(p).State = EntityState.Deleted;
+            _context.SaveChanges();
         }
 
-        public void InsertProject(Project p)
+        public long InsertProject(Project p)
         {
             _context.Project.Add(p);
-        }
-
-        public void Save()
-        {
             _context.SaveChanges();
+            return p.Id;
         }
 
         public void UpdateProject(Project p)
         {
             _context.Entry(p).State = EntityState.Modified;
+            _context.SaveChanges();
         }
     }
 }

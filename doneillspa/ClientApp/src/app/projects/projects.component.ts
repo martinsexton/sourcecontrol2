@@ -172,8 +172,9 @@ export class ProjectComponent {
     this._projectService.saveRate(this.newRate).subscribe(
       res => {
         console.log(res);
+        this.newRate.id = res as number;
         //Update the collection of projects with newly created one
-        this.labourRates.push(new LabourRate(0,this.newRate.effectiveFrom, this.newRate.effectiveTo, this.newRate.role, this.newRate.ratePerHour, this.newRate.overTimeRatePerHour));
+        this.labourRates.push(new LabourRate(this.newRate.id,this.newRate.effectiveFrom, this.newRate.effectiveTo, this.newRate.role, this.newRate.ratePerHour, this.newRate.overTimeRatePerHour));
 
         this.displayRatesForSelectedRole(this.newRate.role);
 
@@ -189,14 +190,13 @@ export class ProjectComponent {
   }
 
   saveProject() {
-    //this.errors = "failed to save project";
-    //$('.toast').toast('show');
     this._projectService.saveProject(this.newProject).subscribe(
       res => {
+        this.newProject.id = res as number;
         console.log(res);
         this.projectSaved = true;
         //Update the collection of projects with newly created one
-        this.projects.push(new Project(0, this.newProject.client, this.newProject.name, this.newProject.details, this.newProject.isactive, this.newProject.startDate));
+        this.projects.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.details, this.newProject.isactive, this.newProject.startDate));
         //clear down the new project model
         this.newProject = new Project(0, '', '', '', true, new Date);
         $("#myNewProjectModal").modal('hide');

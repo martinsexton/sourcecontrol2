@@ -27,23 +27,22 @@ namespace doneillspa.DataAccess
                 .FirstOrDefault();
         }
 
-        public void InsertRate(LabourRate r)
+        public long InsertRate(LabourRate r)
         {
             _context.LabourRate.Add(r);
+            _context.SaveChanges();
+            return r.Id;
         }
 
         public void UpdateRate(LabourRate r)
         {
             _context.Entry(r).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public void DeleteRate(LabourRate r)
         {
             _context.Entry(r).State = EntityState.Deleted;
-        }
-
-        public void Save()
-        {
             _context.SaveChanges();
         }
 

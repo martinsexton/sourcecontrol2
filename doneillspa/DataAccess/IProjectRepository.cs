@@ -8,11 +8,10 @@ namespace doneillspa.DataAccess
 {
     public interface IProjectRepository
     {
-        void InsertProject(Project b);
+        long InsertProject(Project b);
         void UpdateProject(Project b);
         void DeleteProject(Project b);
         IEnumerable<Project> GetProjects();
         Project GetProjectById(long id);
-        void Save();
     }
 }
