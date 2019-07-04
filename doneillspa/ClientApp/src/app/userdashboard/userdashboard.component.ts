@@ -36,7 +36,7 @@ export class UserDashboardComponent {
   public selectedUserCertifications: Certificate[] = [];
   public selectedUserNotifications: EmailNotification[] = [];
   public selectedUsersHolidayRequests: HolidayRequest[] = [];
-  public errors: string;
+  public userMessage: string;
   public resetPasswordDetails: PasswordReset = new PasswordReset('', '');
   //public passwordReset: boolean = false;
   public loadingTimesheets: boolean = false;
@@ -84,7 +84,12 @@ export class UserDashboardComponent {
           this.selectedUsersHolidayRequests = new Array<HolidayRequest>();
         }
       }
-    }, error => this.errors = error)
+    }, error => this.userMessage = error)
+  }
+
+  showUserMessage(msg: string) {
+    this.userMessage = msg;
+    $('.toast').toast('show');
   }
 
   resetPassword() {
@@ -94,7 +99,7 @@ export class UserDashboardComponent {
         this.resettingPassword = false;
         this.resetPasswordDetails.password = '';
         //this.passwordReset = true;
-      }, responseError => this.errors = responseError);
+      }, responseError => this.userMessage = responseError);
   }
 
   retrieveUsersToDisplay() {
@@ -119,7 +124,8 @@ export class UserDashboardComponent {
             }
           }
         }
-      }, error => this.errors = error)
+        this.showUserMessage("Certificate Deleted!");
+      }, error => this.userMessage = error)
   }
 
   deleteNotification(not) {
@@ -135,7 +141,8 @@ export class UserDashboardComponent {
             }
           }
         }
-      }, error => this.errors = error)
+        this.showUserMessage("Notification Deleted!");
+      }, error => this.userMessage = error)
   }
 
   removeFromArrayList(list :Certificate[], crt: Certificate) {
@@ -226,6 +233,7 @@ export class UserDashboardComponent {
       this.newCertificate.id = result as number;
       this.selectedUserCertifications.push(this.newCertificate);
       this.newCertificate = new Certificate(0, new Date(), new Date(), "")
+      this.showUserMessage("Certificate Added Successfully!");
     }, error => console.error(error));
   }
 
@@ -235,7 +243,8 @@ export class UserDashboardComponent {
       //Update the identifier of the newly created cert so if we delete it, it will be deleted on database
       this.newEmailNotification.id = result as number;
       this.selectedUserNotifications.push(this.newEmailNotification);
-      this.newEmailNotification = new EmailNotification(0, '', '', '',new Date());
+      this.newEmailNotification = new EmailNotification(0, '', '', '', new Date());
+      this.showUserMessage("Notification Added Successfully!");
     }, error => console.error(error));
   }
 
@@ -264,7 +273,7 @@ export class UserDashboardComponent {
       this.loadingTimesheets = false;
       this.timesheets = result;
     }, error => {
-      this.errors = error
+      this.userMessage = error
       this.loadingTimesheets = false;
     });
   }

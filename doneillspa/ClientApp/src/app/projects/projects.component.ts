@@ -20,7 +20,7 @@ export class ProjectComponent {
   public projects: Project[];
   public labourRates: LabourRate[];
   public filteredRates: LabourRate[] = [];
-  public errors: string;
+  public userMessage: string;
   public selectedRole: string;
 
   newProject: Project = new Project(0, '', '', '', true, new Date);
@@ -42,7 +42,7 @@ export class ProjectComponent {
       //Default to supervisor
       this.displayRatesForSelectedRole("Supervisor");
     }, error => {
-      this.errors = "Failed to retrieve project rates"
+      this.userMessage = "Failed to retrieve project rates"
       $('.toast').toast('show');
     })
   }
@@ -51,7 +51,7 @@ export class ProjectComponent {
     this._projectService.getProjects().subscribe(result => {
       this.projects = result;
     }, error => {
-      this.errors = "Failed to retrieve available Projects"
+      this.userMessage = "Failed to retrieve available Projects"
       $('.toast').toast('show');
       console.error(error);
     });
@@ -98,9 +98,10 @@ export class ProjectComponent {
       res => {
         console.log(res);
         $("#myDisplayRateModal").modal('hide');
+        this.showUserMessage("Rate Updated Successfully!")
       }, error => {
         $("#myDisplayRateModal").modal('hide');
-        this.errors = "Failed to update Rate"
+        this.userMessage = "Failed to update Rate"
         $('.toast').toast('show');
         console.error(error);
       });
@@ -111,9 +112,10 @@ export class ProjectComponent {
       res => {
         console.log(res);
         $("#myModal").modal('hide');
+        this.showUserMessage("Project Updated Successfully!")
       }, error => {
         $("#myModal").modal('hide');
-        this.errors = "Failed to update project"
+        this.userMessage = "Failed to update project"
         $('.toast').toast('show');
         console.error(error);
       });
@@ -124,9 +126,10 @@ export class ProjectComponent {
       res => {
         console.log(res);
         this.removeFromRatesArrays(r);
+        this.showUserMessage("Rate Deleted!")
         
       }, error => {
-        this.errors = "Failed to delete Rate"
+        this.userMessage = "Failed to delete Rate"
         $('.toast').toast('show');
         console.error(error);
       });
@@ -137,8 +140,9 @@ export class ProjectComponent {
       res => {
         console.log(res);
         this.removeFromArrayList(p);
+        this.showUserMessage("Project Deleted!")
       }, error => {
-        this.errors = "Failed to delete Project"
+        this.userMessage = "Failed to delete Project"
         $('.toast').toast('show');
         console.error(error);
       });
@@ -181,12 +185,19 @@ export class ProjectComponent {
         //clear down the new project model
         this.newRate = new LabourRate(0, null, null, '', 0, 0);
         $("#myNewRateModal").modal('hide');
+
+        this.showUserMessage("Rate Saved Successfully!")
       }, error => {
         $("#myNewRateModal").modal('hide');
-        this.errors = "Failed to save Rate"
+        this.userMessage = "Failed to save Rate"
         $('.toast').toast('show');
         console.error(error);
       });
+  }
+
+  showUserMessage(msg :string) {
+    this.userMessage = msg;
+    $('.toast').toast('show');
   }
 
   saveProject() {
@@ -200,9 +211,11 @@ export class ProjectComponent {
         //clear down the new project model
         this.newProject = new Project(0, '', '', '', true, new Date);
         $("#myNewProjectModal").modal('hide');
+
+        this.showUserMessage("Project Saved Successfully!")
       }, error => {
         $("#myNewProjectModal").modal('hide');
-        this.errors = "Failed to save project"
+        this.userMessage = "Failed to save project"
         $('.toast').toast('show');
         console.error(error);
       });

@@ -17,7 +17,7 @@ export class HolidaysComponent {
   public holidayRequest: HolidayRequest = new HolidayRequest(0, new Date(), new Date(), 0, '', 'New');
   public holidayRequests: HolidayRequest[];// = [];
   public supervisors: ApplicationUser[];
-  public errors: string;
+  public userMessage: string;
   public loadingHolidays: Boolean = false;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _msuserService: MsUserService, private _holidayService: HolidayService) {
@@ -27,7 +27,7 @@ export class HolidaysComponent {
       this.supervisors = result;
     }, error => {
       this.loadingHolidays = false;
-      this.errors = "Failed to retrieve holiday requests"
+      this.userMessage = "Failed to retrieve holiday requests"
       $('.toast').toast('show');
     })
 
@@ -36,9 +36,14 @@ export class HolidaysComponent {
       this.loadingHolidays = false;
     }, error => {
       this.loadingHolidays = false;
-      this.errors = "Failed to retrieve holiday requests"
+      this.userMessage = "Failed to retrieve holiday requests"
       $('.toast').toast('show');
     })
+  }
+
+  showUserMessage(msg: string) {
+    this.userMessage = msg;
+    $('.toast').toast('show');
   }
 
   submitHolidayRequest() {
@@ -49,10 +54,11 @@ export class HolidaysComponent {
       this.holidayRequests.push(this.holidayRequest);
 
       //Create fresh version
-      this.holidayRequest = new HolidayRequest(0, new Date(), new Date(), 0, '','New');
+      this.holidayRequest = new HolidayRequest(0, new Date(), new Date(), 0, '', 'New');
+      this.showUserMessage("Holiday Request Submitted!")
     }, error => {
       $("#myNewHolidayModal").modal('hide');
-      this.errors = "Failed to submit holiday request"
+      this.userMessage = "Failed to submit holiday request"
       $('.toast').toast('show');
     })
   }
@@ -63,7 +69,7 @@ export class HolidaysComponent {
         console.log(res);
         this.removeFromArrayList(hr);
       }, error => {
-        this.errors = "Unable to delete holiday request"
+        this.userMessage = "Unable to delete holiday request"
         $('.toast').toast('show');
       })
   }
