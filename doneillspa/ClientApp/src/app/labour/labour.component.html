@@ -12,7 +12,7 @@
     </ul>
   </nav>
   <div *ngIf="loadingLabourDetails" class="d-flex justify-content-center">
-    <div class="spinner-border" role="status">
+    <div class="spinner-grow" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
@@ -55,7 +55,7 @@
       </tbody>
     </table>
     <button class="btn btn-primary" type="button" (click)="downloadReport()">
-      <span [class]="sendingReport ? 'spinner-border spinner-border-sm' : ''" role="status" aria-hidden="true"></span>
+      <span [class]="sendingReport ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
       Download Report
     </button>
   </div>

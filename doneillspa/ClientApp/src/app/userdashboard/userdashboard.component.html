@@ -1,5 +1,5 @@
 <div *ngIf="!selectedUser" class="d-flex justify-content-center">
-  <div class="spinner-border" role="status">
+  <div class="spinner-grow" role="status">
     <span class="sr-only">Loading...</span>
   </div>
 </div>
@@ -28,7 +28,7 @@
           <p class="card-text">Phone: {{selectedUser.phoneNumber}}</p>
           <p class="card-text">Role: {{selectedUser.role}}</p>
           <button class="btn btn-primary" type="button" (click)="retrieveTimesheetsForUser()">
-            <span [class]="loadingTimesheets ? 'spinner-border spinner-border-sm' : ''" role="status" aria-hidden="true"></span>
+            <span [class]="loadingTimesheets ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
             Load Timesheets
           </button>
         </div>
@@ -128,7 +128,7 @@
               <input type="text" [(ngModel)]="resetPasswordDetails.password" name="password" class="form-control" id="password">
             </div>
             <button class="btn btn-primary" type="button" (click)="resetPassword()">
-              <span [class]="resettingPassword ? 'spinner-border spinner-border-sm' : ''" role="status" aria-hidden="true"></span>
+              <span [class]="resettingPassword ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
               Reset Password
             </button>
           </form>

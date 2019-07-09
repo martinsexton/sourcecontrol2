@@ -5,7 +5,7 @@ export class Project{
     public client: string,
     public name: string,
     public details: string,
-    public isactive: boolean,
+    public isActive: boolean,
     public startDate:Date
   ) { }
 

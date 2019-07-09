@@ -207,7 +207,7 @@ export class ProjectComponent {
         console.log(res);
         this.projectSaved = true;
         //Update the collection of projects with newly created one
-        this.projects.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.details, this.newProject.isactive, this.newProject.startDate));
+        this.projects.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
         //clear down the new project model
         this.newProject = new Project(0, '', '', '', true, new Date);
         $("#myNewProjectModal").modal('hide');
