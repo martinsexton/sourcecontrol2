@@ -24,6 +24,7 @@ declare var $: any;
 export class TimesheetComponent {
   public timesheets: Timesheet[];
   public projects: Project[];
+  public activeProjects: Project[];
   public timesheetExists = false;
   public loading = true;
   public selectedDate: string = null;
@@ -85,6 +86,16 @@ export class TimesheetComponent {
     $('[data-toggle="tooltip"]').tooltip(); 
   }
 
+  setUpActiveProjects() {
+    this.activeProjects = [];
+    for (let item of this.projects) {
+      if (item.isActive == true) {
+        this.activeProjects.push(item);
+      }
+    }
+
+  }
+
   retrieveTimeSheetsForDate(startOfWeek:Date) {
     this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
       this.loading = false;
@@ -108,7 +119,10 @@ export class TimesheetComponent {
     this._projectService.getProjects().subscribe(result => {
       this.projects = result;
       if (this.projects) {
-        this.newEntry.project = this.projects[0].name;
+        this.setUpActiveProjects();
+        if (this.activeProjects.length > 0) {
+          this.newEntry.project = this.activeProjects[0].name;
+        }
       }
     }, error => console.error(error));  
   }
