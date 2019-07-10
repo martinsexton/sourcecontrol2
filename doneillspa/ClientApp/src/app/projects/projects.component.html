@@ -126,11 +126,11 @@
             <input type="text" [(ngModel)]="selectedProject.details" name="projectDetails" class="form-control" id="projectDescription">
           </div>
           <div class="form-group">
-            <div class="form-check">
-              <input class="form-check-input" [checked]="selectedProject.isActive" type="checkbox" [(ngModel)]="selectedProject.isActive" name="isActive" id="isActive">
-              <label class="form-check-label" for="isActive">Active</label>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" [checked]="selectedProject.isActive" class="custom-control-input" id="isActive" name="isActive" [(ngModel)]="selectedProject.isActive">
+              <label class="custom-control-label" for="isActive">Active</label>
+            </div>
           </div>
-        </div>
         </form>
       </div>
       <div class="modal-footer">
