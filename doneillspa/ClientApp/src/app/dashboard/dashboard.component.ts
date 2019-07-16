@@ -37,7 +37,7 @@ export class DashboardComponent {
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
     this.loading = false;
-    //Retrieve Default list of tui Timesheets For display
+    //Retrieve Default list of tui Timesheets For display 
     this._timesheetService.getTimesheets().subscribe(result => {
       this.timesheets = result;
       if (this.timesheets.length > 0) {
