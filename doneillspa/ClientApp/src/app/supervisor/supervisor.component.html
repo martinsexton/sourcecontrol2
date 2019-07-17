@@ -1,4 +1,4 @@
-<div class="container-fluid container-with-bg">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-6">
       <div class="card mb-3 mt-3 div-to-stand-out">
@@ -18,7 +18,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let r of holidayRequests">
+                <tr *ngFor="let r of pendingHolidayRequests">
                   <td>{{ r.requestedDate | date:'fullDate'}}</td>
                   <td>{{ r.fromDate | date:'fullDate'}}</td>
                   <td>{{ r.days}}</td>

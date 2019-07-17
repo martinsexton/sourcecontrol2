@@ -17,11 +17,22 @@ declare var $: any;
 export class SupervisorComponent {
   public errors: string;
   public holidayRequests: HolidayRequest[] = [];
+  public pendingHolidayRequests: HolidayRequest[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _msuserService: MsUserService, private _holidayService : HolidayService) {
     this._msuserService.getHolidayRequestsForApproval().subscribe(result => {
       this.holidayRequests = result;
+      this.filterPendingHolidayRequests();
     }, error => this.errors = error)
+  }
+
+  filterPendingHolidayRequests() {
+    this.pendingHolidayRequests = [];
+    for (let item of this.holidayRequests) {
+      if (item.status.toUpperCase() == 'NEW') {
+        this.pendingHolidayRequests.push(item);
+      }
+    }
   }
 
   approveHolidayRequest(hr) {
@@ -36,5 +47,14 @@ export class SupervisorComponent {
       res => {
         console.log(res);
       }, error => this.errors = error)
+  }
+
+  removeFromArrayList(h: HolidayRequest) {
+    for (let item of this.pendingHolidayRequests) {
+      if (h.id == item.id) {
+        this.pendingHolidayRequests.splice(this.pendingHolidayRequests.indexOf(item), 1);
+        break;
+      }
+    }
   }
 }
