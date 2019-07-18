@@ -47,6 +47,10 @@ export class ProjectComponent {
     })
   }
 
+  isProjectActive(project: Project) {
+    return project.isActive;
+  }
+
   retrieveProjects() {
     this._projectService.getProjects().subscribe(result => {
       this.projects = result;

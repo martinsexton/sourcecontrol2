@@ -76,7 +76,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'danger': hasCertExpired(crt)}">
+                <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'text-danger': hasCertExpired(crt)}">
                   <td>{{ crt.description }}</td>
                   <td>{{ crt.expiry | date : "fullDate"}}</td>
                   <td><span aria-hidden="true" (click)="deleteCertification(crt)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>

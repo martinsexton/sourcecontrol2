@@ -22,7 +22,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let project of projects" data-toggle="tooltip" data-placement="right" title="Click For Details">
+                <tr *ngFor="let project of projects" [ngClass]="{'text-danger': !isProjectActive(project)}" data-toggle="tooltip" data-placement="right" title="Click For Details">
                   <td>{{ project.client }}</td>
                   <td>{{ project.name }}</td>
                   <td>{{ project.details }}</td>
