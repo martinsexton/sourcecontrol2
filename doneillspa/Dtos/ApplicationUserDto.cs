@@ -14,6 +14,7 @@ namespace doneillspa.Models
         public string Role { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public bool? IsEnabled { get; set; }
         public ICollection<CertificationDto> Certifications { get; set; }
         public ICollection<EmailNotificationDto> EmailNotifications { get; set; }
         public ICollection<HolidayRequestDto> HolidayRequests { get; set; }

@@ -34,7 +34,8 @@ namespace doneillspa.Controllers
                 Surname = details.Surname,
                 Email = details.Email,
                 PhoneNumber = details.Phone,
-                UserName = details.FirstName.ToUpper() + details.Surname.ToUpper()
+                UserName = details.FirstName.ToUpper() + details.Surname.ToUpper(),
+                IsEnabled = true
             };
 
             //Password supplied must have non numeric, uppercase and digits in them in order to be saved

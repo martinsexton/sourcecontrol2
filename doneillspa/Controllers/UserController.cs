@@ -50,7 +50,7 @@ namespace doneillspa.Controllers
             foreach (ApplicationUser user in users)
             {
                 Task<IList<string>> roles = _userManager.GetRolesAsync(user);
-                foreach(String r in roles.Result)
+                foreach (String r in roles.Result)
                 {
                     if (r.Equals(role))
                     {
@@ -66,6 +66,24 @@ namespace doneillspa.Controllers
                 }
             }
             return usersWithRole;
+        }
+
+        [HttpPut]
+        [Route("api/user")]
+        public IActionResult Put([FromBody]ApplicationUserDto p)
+        {
+            ApplicationUser user = GetUserById(p.Id.ToString()).Result;
+            user.IsEnabled = p.IsEnabled;
+
+            Task<IdentityResult> result = _userManager.UpdateAsync(user);
+            if (result.Result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]
@@ -86,6 +104,8 @@ namespace doneillspa.Controllers
                 dtouser.Surname = user.Surname;
                 dtouser.PhoneNumber = user.PhoneNumber;
                 dtouser.Email = user.Email;
+                dtouser.IsEnabled = user.IsEnabled;
+
                 if (roles.Result.Count > 0)
                 {
                     dtouser.Role = roles.Result.First();

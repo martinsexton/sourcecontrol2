@@ -10,6 +10,7 @@ namespace doneillspa.Models
     {
         public string FirstName { get; set; }
         public string Surname { get; set; }
+        public bool? IsEnabled { get; set; }
         public ICollection<Certification> Certifications { get; set; }
         public ICollection<HolidayRequest> HolidayRequests { get; set; }
         public ICollection<EmailNotification> EmailNotifications { get; set; }

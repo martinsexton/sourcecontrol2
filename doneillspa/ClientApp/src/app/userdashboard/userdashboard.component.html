@@ -4,21 +4,24 @@
   </div>
 </div>
 <nav *ngIf="selectedUser" class="navbar navbar-expand-lg navbar-light bg-light">
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Filter Users
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a *ngFor="let u of retrieveUsersToDisplay(); let i = index" class="dropdown-item" (click)="displaySelectedUserDetails(u, i)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
-      </div>
-    </li>
-  </ul>
+  <form class="form-inline my-2 my-lg-0">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Filter Users
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a *ngFor="let u of retrieveUsersToDisplay(); let i = index" class="dropdown-item" (click)="displaySelectedUserDetails(u, i)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
+        </div>
+      </li>
+    </ul>
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="showAddUser()">Add User</button>
+  </form>
 </nav>
 <div class="container-fluid" *ngIf="selectedUser">
   <div class="row">
     <div class="col-md-6">
-      <div class="card mb-3 mt-3 div-to-stand-out">
+      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
         <div class="card-header">
           {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}
         </div>
@@ -31,11 +34,17 @@
             <span [class]="loadingTimesheets ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
             Load Timesheets
           </button>
+          <button *ngIf="selectedUser.isEnabled == false" class="btn btn-primary" type="button" (click)="enableUser()">
+              Enable User
+          </button>
+          <button *ngIf="selectedUser.isEnabled == null || selectedUser.isEnabled == true" class="btn btn-primary" type="button" (click)="disableUser()">
+            Disable User
+          </button>
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="card mb-3 mt-3 div-to-stand-out">
+      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
         <div class="card-header">Holiday Requests</div>
         <div class="card-body">
           <div class="table-responsive">
@@ -63,7 +72,7 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      <div class="card mb-3 mt-3 div-to-stand-out">
+      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
         <div class="card-header">CertificationDetails</div>
         <div class="card-body">
           <div class="table-responsive">
@@ -84,12 +93,12 @@
               </tbody>
             </table>
           </div>
-          <button type="button" class="btn btn-primary" (click)="toggleDisplayAddCertificate()">Add Certificate</button>
+          <button type="button" [disabled]="selectedUser.isEnabled == false" class="btn btn-primary" (click)="toggleDisplayAddCertificate()">Add Certificate</button>
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="card mb-3 mt-3 div-to-stand-out">
+      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
         <div class="card-header">Notification Details</div>
         <div class="card-body">
           <div class="table-responsive">
@@ -112,14 +121,14 @@
               </tbody>
             </table>
           </div>
-          <button type="button" class="btn btn-primary" (click)="toggleDisplayAddEmailNotification()">Add Notification</button>
+          <button type="button" [disabled]="selectedUser.isEnabled == false" class="btn btn-primary" (click)="toggleDisplayAddEmailNotification()">Add Notification</button>
         </div>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-4">
-      <div class="card mb-3 mt-3 div-to-stand-out">
+      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
         <div class="card-header">Reset Password For {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}</div>
         <div class="card-body">
           <form>
@@ -136,7 +145,7 @@
       </div>
     </div>
     <div class="col-md-8">
-      <div class="card mb-3 mt-3 div-to-stand-out" *ngIf="timesheets">
+      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'" *ngIf="timesheets">
         <div class="card-header">Timesheets</div>
         <div class="card-body">
           <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
@@ -258,3 +267,67 @@
     </div>
   </div>
 </div>
+
+<!-- Registration Modal -->
+<div class="modal fade" id="myRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)='navigateHome()' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Register</h4>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm" novalidate (ngSubmit)="registerUser(f)">
+          <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input id="firstname" type="text" required name="firstname" class="form-control" placeholder="Your Firstname" tmFocus ngModel>
+          </div>
+          <div class="form-group">
+            <label for="surname">Surname</label>
+            <input id="surname" type="text" required name="surname" class="form-control" placeholder="Your Surname" tmFocus ngModel>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="text" required name="email" validateEmail class="form-control" placeholder="Email" ngModel #email="ngModel">
+            <small [hidden]="email.valid || (email.pristine && !submitted)" class="text-danger">Please enter a valid email</small>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" required name="password" validatePassword class="form-control" placeholder="Password" ngModel #password="ngModel">
+            <small [hidden]="password.valid || (password.pristine && !submitted)" class="text-danger">Please enter a valid Password</small>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input id="phone" type="tel" required name="phone" class="form-control" ngModel #phone="ngModel">
+          </div>
+          <div class="form-group">
+            <label for="role">Role In Organization</label>
+            <!--<select class="form-control form-control-sm" id="role" name="role" ngModel>
+        <option selected *ngFor="let role of roles">{{role.name}}</option>
+        </select>-->
+            <select class="form-control form-control-sm" id="role" name="role" ngModel>
+              <option>Administrator</option>
+              <option>Supervisor</option>
+              <option>ChargeHand</option>
+              <option>ElectR1</option>
+              <option>ElectR2</option>
+              <option>ElectR3</option>
+              <option>Temp</option>
+              <option>First Year Apprentice</option>
+              <option>Second Year Apprentice</option>
+              <option>Third Year Apprentice</option>
+              <option>Fourth Year Apprentice</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+          </div>
+          <div *ngIf="errors" class="alert alert-danger" role="alert">
+            <strong>Oops!</strong> {{errors}}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

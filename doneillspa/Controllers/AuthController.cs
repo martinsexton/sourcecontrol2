@@ -70,7 +70,8 @@ namespace doneillspa.Controllers
             {
                 ApplicationUser userToVerify = await _userManager.FindByNameAsync(userName.ToUpper());
 
-                if (userToVerify != null)
+                //Only bring back users who are enabled
+                if (userToVerify != null && userToVerify.IsEnabled.Value)
                 {
                     HttpContext.Session.SetString("UserEmail", userToVerify.Email);
 

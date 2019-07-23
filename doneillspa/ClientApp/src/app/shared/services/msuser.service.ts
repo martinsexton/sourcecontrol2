@@ -156,6 +156,19 @@ export class MsUserService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
+  updateUser(user: ApplicationUser) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.put(this._baseurl + 'api/user', user,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
   addCertificate(id: string, cert: Certificate) {
     let authToken = localStorage.getItem('auth_token');
 

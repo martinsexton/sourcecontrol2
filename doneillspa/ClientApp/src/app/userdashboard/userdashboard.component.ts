@@ -41,6 +41,7 @@ export class UserDashboardComponent {
   //public passwordReset: boolean = false;
   public loadingTimesheets: boolean = false;
   public resettingPassword: boolean = false;
+ 
 
   public filterName: string;
 
@@ -87,9 +88,43 @@ export class UserDashboardComponent {
     }, error => this.userMessage = error)
   }
 
+  showAddUser() {
+    $("#myRegistrationModal").modal('show');
+  }
+
+  registerUser({ value, valid }: { value: UserRegistration, valid: boolean }) {
+    this.userMessage = '';
+    if (valid) {
+      this._msuserService.register(value.email, value.password, value.firstname, value.surname, value.role, value.phone)
+        .subscribe(
+        result => {
+          if (result) {
+            $("#myRegistrationModal").modal('hide');
+          }
+        },
+        errors => this.userMessage = errors);
+    }
+  }
+
   showUserMessage(msg: string) {
     this.userMessage = msg;
     $('.toast').toast('show');
+  }
+
+  enableUser() {
+    this.selectedUser.isEnabled = true;
+    this._msuserService.updateUser(this.selectedUser).subscribe(
+      result => {
+        console.info(result);
+      }, responseError => this.userMessage = responseError);
+  }
+
+  disableUser() {
+    this.selectedUser.isEnabled = false;
+    this._msuserService.updateUser(this.selectedUser).subscribe(
+      result => {
+        console.info(result);
+      }, responseError => this.userMessage = responseError);
   }
 
   resetPassword() {

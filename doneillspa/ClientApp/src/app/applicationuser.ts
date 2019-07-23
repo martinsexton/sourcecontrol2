@@ -13,6 +13,7 @@ export class ApplicationUser {
     public surname: string,
     public email: string,
     public phoneNumber: string,
-    public role: string
+    public role: string,
+    public isEnabled: boolean
   ) { }
 }
