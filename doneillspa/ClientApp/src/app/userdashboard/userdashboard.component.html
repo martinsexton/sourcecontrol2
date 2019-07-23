@@ -273,7 +273,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" (click)='navigateHome()' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Register</h4>
       </div>
       <div class="modal-body">
@@ -289,12 +289,12 @@
           <div class="form-group">
             <label for="email">Email</label>
             <input id="email" type="text" required name="email" validateEmail class="form-control" placeholder="Email" ngModel #email="ngModel">
-            <small [hidden]="email.valid || (email.pristine && !submitted)" class="text-danger">Please enter a valid email</small>
+            <small [hidden]="email.valid || (email.pristine)" class="text-danger">Please enter a valid email</small>
           </div>
           <div class="form-group">
             <label for="password">Password</label>
             <input id="password" type="password" required name="password" validatePassword class="form-control" placeholder="Password" ngModel #password="ngModel">
-            <small [hidden]="password.valid || (password.pristine && !submitted)" class="text-danger">Please enter a valid Password</small>
+            <small [hidden]="password.valid || (password.pristine)" class="text-danger">Please enter a valid Password</small>
           </div>
           <div class="form-group">
             <label for="phone">Phone</label>
@@ -322,8 +322,8 @@
           <div class="form-group">
             <button type="submit" class="btn btn-primary">Sign Up</button>
           </div>
-          <div *ngIf="errors" class="alert alert-danger" role="alert">
-            <strong>Oops!</strong> {{errors}}
+          <div *ngIf="userMessage" class="alert alert-danger" role="alert">
+            <strong>Oops!</strong> {{userMessage}}
           </div>
         </form>
       </div>
