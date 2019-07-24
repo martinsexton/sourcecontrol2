@@ -137,23 +137,35 @@ export class DashboardComponent {
     }, error => this.errors = error);
   }
 
-  calculateTotalDuration() {
+  calculateTotalDuration() : string{
     let totalDuration: number = 0;
 
     for (let tse of this.selectedTimesheet.timesheetEntries) {
-      totalDuration = totalDuration + this.calculateDuration(tse);
+      var start = new Date("2018-01-01 " + tse.startTime);
+      var end = new Date("2018-01-01 " + tse.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+      totalDuration += elapsedTimeInMins;
     }
-    return totalDuration;
+
+    var hours = Math.floor(totalDuration / 60);
+    var minutes = totalDuration % 60;
+
+    return hours + ':' + minutes;
   }
 
-  calculateDuration(entry: TimesheetEntry): number {
+  calculateDuration(entry: TimesheetEntry): string {
     var start = new Date("2018-01-01 " + entry.startTime);
     var end = new Date("2018-01-01 " + entry.endTime);
 
     var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
     var elapsedTimeInMins = elapsedTimeInSec / 60;
 
-    return elapsedTimeInMins;
+    var hours = Math.floor(elapsedTimeInMins / 60);
+    var minutes = elapsedTimeInMins % 60;
+
+    return hours+ ':' + minutes;
   }
 
   displaySelectedTimesheetDetails(timesheet, index) {
