@@ -54,6 +54,7 @@
     <None Remove="ClientApp\src\app\ApplicationUser.ts" />
     <None Remove="ClientApp\src\app\auth.guard.ts" />
     <None Remove="ClientApp\src\app\certificate.ts" />
+    <None Remove="ClientApp\src\app\client.ts" />
     <None Remove="ClientApp\src\app\dashboard\dashboard.component.ts" />
     <None Remove="ClientApp\src\app\directives\email.validator.directive.ts" />
     <None Remove="ClientApp\src\app\directives\focus.directive.ts" />
@@ -96,6 +97,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\applicationuser.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\certificate.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\client.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\dashboard\dashboard.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\email.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\focus.directive.ts" />

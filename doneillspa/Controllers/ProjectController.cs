@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
+using doneillspa.Dtos;
 using doneillspa.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,24 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/project")]
-        public IEnumerable<Project> Get()
+        public IEnumerable<ProjectDto> Get()
         {
-            return _repository.GetProjects();
+            List<ProjectDto> projectDtos = new List<ProjectDto>();
+
+            IEnumerable<Project> projects = _repository.GetProjects();
+            foreach(Project p in projects)
+            {
+                ProjectDto dto = new ProjectDto();
+                dto.Client = p.OwningClient.Name;
+                dto.Id = p.Id;
+                dto.IsActive = p.IsActive;
+                dto.Name = p.Name;
+                dto.StartDate = p.StartDate;
+                dto.Details = p.Details;
+
+                projectDtos.Add(dto);
+            }
+            return projectDtos;
         }
 
         [HttpGet]
@@ -89,7 +105,6 @@ namespace doneillspa.Controllers
                 return NotFound();
             }
 
-            existingProject.Client = p.Client;
             existingProject.Name = p.Name;
             existingProject.Details = p.Details;
             existingProject.IsActive = p.IsActive;

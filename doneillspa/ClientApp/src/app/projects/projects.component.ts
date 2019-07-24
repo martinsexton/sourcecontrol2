@@ -7,6 +7,7 @@ import {
 } from '../shared/services/project.service';
 import { Router } from '@angular/router';
 import { LabourRate } from '../labourrate';
+import { Client } from '../client';
 
 declare var $: any;
 
@@ -17,22 +18,31 @@ declare var $: any;
 })
 
 export class ProjectComponent {
-  public projects: Project[];
+  public projectsToDisplay: Project[];
+  public clients: Client[];
+  public selectedClient: Client;
+
   public labourRates: LabourRate[];
   public filteredRates: LabourRate[] = [];
   public userMessage: string;
   public selectedRole: string;
 
   newProject: Project = new Project(0, '', '', '', true, new Date);
+  newClient: Client = new Client(0, "");
   projectSaved: boolean = false;
   selectedProject: Project = new Project(0, '', '', '', true, new Date);
   selectedRate: LabourRate = new LabourRate(0, null, null, '', 0, 0);
 
   newRate: LabourRate = new LabourRate(0, null, null, '', 0, 0);
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router : Router) {
-    this.retrieveProjects()
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router: Router) {
+    this.retrieveClients();
     this.retrieveRates();
+  }
+
+  displayProjectsForSelectedClient(client) {
+    this.selectedClient = client;
+    this.projectsToDisplay = this.selectedClient.projects;
   }
 
   retrieveRates() {
@@ -51,11 +61,16 @@ export class ProjectComponent {
     return project.isActive;
   }
 
-  retrieveProjects() {
-    this._projectService.getProjects().subscribe(result => {
-      this.projects = result;
+  retrieveClients() {
+    this._projectService.getClients().subscribe(result => {
+      this.clients = result;
+      if (this.clients) {
+        //By default select first client
+        this.selectedClient = this.clients[0];
+        this.projectsToDisplay = this.selectedClient.projects;
+      }
     }, error => {
-      this.userMessage = "Failed to retrieve available Projects"
+      this.userMessage = "Failed to retrieve Client Details"
       $('.toast').toast('show');
       console.error(error);
     });
@@ -153,9 +168,9 @@ export class ProjectComponent {
   }
 
   removeFromArrayList(p: Project) {
-    for (let item of this.projects) {
-      if (item.name == p.name && item.client == p.client && item.details == p.details) {
-        this.projects.splice(this.projects.indexOf(item), 1);
+    for (let item of this.projectsToDisplay) {
+      if (item.client == p.client && item.client == p.client && item.details == p.details) {
+        this.projectsToDisplay.splice(this.projectsToDisplay.indexOf(item), 1);
         break;
       }
     }
@@ -203,6 +218,47 @@ export class ProjectComponent {
     this.userMessage = msg;
     $('.toast').toast('show');
   }
+  saveClient() {
+    this._projectService.saveClient(this.newClient).subscribe(
+      res => {
+        this.newClient.id = res as number;
+        console.log(res);
+        //Update the collection of projects with newly created one
+        this.clients.push(new Client(this.newClient.id, this.newClient.name));
+        //clear down the new project model
+        this.newClient = new Client(0, '');
+        $("#myNewClientModal").modal('hide');
+
+        this.showUserMessage("Client Saved Successfully!")
+      }, error => {
+        $("#myNewClientModal").modal('hide');
+        this.userMessage = "Failed to save client"
+        $('.toast').toast('show');
+        console.error(error);
+      });
+  }
+  saveProject2() {
+    this._projectService.addProject(this.selectedClient.id, this.newProject).subscribe(
+      res => {
+        this.newProject.id = res as number;
+        this.newProject.client = this.selectedClient.name;
+
+        console.log(res);
+        this.projectSaved = true;
+        //Update the collection of projects with newly created one
+        this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
+        //clear down the new project model
+        this.newProject = new Project(0, '', '', '', true, new Date);
+        $("#myNewProjectModal").modal('hide');
+
+        this.showUserMessage("Project Saved Successfully!")
+      }, error => {
+        $("#myNewProjectModal").modal('hide');
+        this.userMessage = "Failed to save project"
+        $('.toast').toast('show');
+        console.error(error);
+      });
+  }
 
   saveProject() {
     this._projectService.saveProject(this.newProject).subscribe(
@@ -211,7 +267,7 @@ export class ProjectComponent {
         console.log(res);
         this.projectSaved = true;
         //Update the collection of projects with newly created one
-        this.projects.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
+        this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, '', this.newProject.details, this.newProject.isActive, this.newProject.startDate));
         //clear down the new project model
         this.newProject = new Project(0, '', '', '', true, new Date);
         $("#myNewProjectModal").modal('hide');

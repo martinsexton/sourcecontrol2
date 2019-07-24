@@ -19,13 +19,14 @@ namespace doneillspa.DataAccess
         public Project GetProjectById(long id)
         {
             return _context.Project
+                        .Include(b => b.OwningClient)
                         .Where(b => b.Id == id)
                         .FirstOrDefault();
         }
 
         public IEnumerable<Project> GetProjects()
         {
-            return _context.Project.ToList();
+            return _context.Project.Include(b => b.OwningClient) .ToList();
         }
 
         public void DeleteProject(Project p)

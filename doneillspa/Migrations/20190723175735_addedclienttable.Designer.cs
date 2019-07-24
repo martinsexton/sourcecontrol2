@@ -13,9 +13,10 @@ using System;
 namespace doneillspa.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20190723175735_addedclienttable")]
+    partial class addedclienttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,19 +181,19 @@ namespace doneillspa.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<long>("ClientId");
+
                     b.Property<string>("Details");
 
                     b.Property<bool>("IsActive");
 
                     b.Property<string>("Name");
 
-                    b.Property<long>("OwningClientId");
-
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwningClientId");
+                    b.HasIndex("ClientId");
 
                     b.ToTable("Project");
                 });
@@ -389,9 +390,9 @@ namespace doneillspa.Migrations
 
             modelBuilder.Entity("doneillspa.Models.Project", b =>
                 {
-                    b.HasOne("doneillspa.Models.Client", "OwningClient")
+                    b.HasOne("doneillspa.Models.Client", "Client")
                         .WithMany("Projects")
-                        .HasForeignKey("OwningClientId")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../../project';
+import { Client } from '../../client';
 import { Certificate } from '../../certificate';
 import { Observable } from 'rxjs/Observable';
 import { ProjectEffortDto } from '../../projecteffortdto';
@@ -20,6 +21,19 @@ export class ProjectService extends HttpServiceBase  {
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.get<LabourRate[]>(this._baseurl + 'api/labourdetails/rates',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
+  getClients() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Project[]>(this._baseurl + 'api/client',
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
@@ -59,6 +73,31 @@ export class ProjectService extends HttpServiceBase  {
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.post(this._baseurl + 'api/labourdetails/rates', rate, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
+  addProject(id: number, proj: Project) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.put(this._baseurl + 'api/client/' + id + '/projects', proj,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
+  saveClient(c: Client) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.post(this._baseurl + 'api/client', c, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
