@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using doneillspa.Dtos;
 
 namespace doneillspa.Models
 {
@@ -16,5 +17,6 @@ namespace doneillspa.Models
         public string Status { get; set; }
 
         public ICollection<TimesheetEntryDto> TimesheetEntries { get; set; }
+        public ICollection<TimesheetNoteDto> TimesheetNotes { get; set; }
     }
 }

@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
+import { TimesheetNote } from '../timesheetnote';
 import { Project } from '../project';
 
 import {
@@ -23,8 +24,10 @@ declare var $: any;
 
 export class DashboardComponent {
   public timesheets: Timesheet[];
+  public timesheetToAddNoteTo: Timesheet;
   public filteredTimesheets: Timesheet[];
   public users: string[];
+  public newNote: TimesheetNote = new TimesheetNote('');
   public selectedTimesheet: Timesheet;
   public selectedTsRow: number;
   public selectedUserRow: number;
@@ -68,6 +71,40 @@ export class DashboardComponent {
         }
       }
     }
+  }
+
+  addTimesheetNote(timesheet:Timesheet) {
+    $("#myNewNoteModal").modal('show');
+    this.timesheetToAddNoteTo = timesheet;
+  }
+
+  saveTimesheetNote() {
+    this._timesheetService.addTimesheetNote(this.timesheetToAddNoteTo.id, this.newNote).subscribe(
+      res => {
+        //Update the entry with the primary key that has come back from server
+        this.newNote.id = res as number;
+
+        var notetosubmit = new TimesheetNote(this.newNote.details);
+        notetosubmit.id = this.newNote.id;
+
+        //Error with undefined timesheetnotes here.
+        if (this.timesheetToAddNoteTo.timesheetNotes) {
+          this.timesheetToAddNoteTo.timesheetNotes.push(notetosubmit);
+        }
+        else {
+          this.timesheetToAddNoteTo.timesheetNotes = new Array();
+          this.timesheetToAddNoteTo.timesheetNotes.push(notetosubmit);
+        }
+        
+        this.newNote = new TimesheetNote('');
+
+        $("#myNewNoteModal").modal('hide');
+
+      }, error => this.errors = error);
+  }
+
+  retrieveNotesToDisplay(timesheet: Timesheet) {
+    return timesheet.timesheetNotes
   }
 
   retrieveSubmittedTimesheets() {

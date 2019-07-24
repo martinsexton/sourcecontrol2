@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
+using doneillspa.Dtos;
 using doneillspa.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -115,7 +116,7 @@ namespace doneillspa.Controllers
 
 
         [HttpPut()]
-        [Route("api/timesheet/{id}")]
+        [Route("api/timesheet/{id}/timesheetentry")]
         public IActionResult Put(int id, [FromBody]TimesheetEntry entry)
         {
             var existingTimesheet = _repository.GetTimsheetById(id);
@@ -124,6 +125,22 @@ namespace doneillspa.Controllers
             _repository.UpdateTimesheet(existingTimesheet);
 
             return Ok(entry.Id);
+        }
+
+        [HttpPut()]
+        [Route("api/timesheet/{id}/note")]
+        public IActionResult Put(int id, [FromBody]TimesheetNote note)
+        {
+            if(note != null)
+            {
+                var existingTimesheet = _repository.GetTimsheetById(id);
+                existingTimesheet.AddTimesheetNote(note);
+
+                _repository.UpdateTimesheet(existingTimesheet);
+
+                return Ok(note.Id);
+            }
+            return BadRequest();
         }
 
         private TimesheetDto ConvertToDto(Timesheet ts)
@@ -138,6 +155,8 @@ namespace doneillspa.Controllers
             tsdto.Status = ts.Status.ToString();
 
             tsdto.TimesheetEntries = new List<TimesheetEntryDto>();
+            tsdto.TimesheetNotes = new List<TimesheetNoteDto>();
+
             foreach (TimesheetEntry tse in ts.TimesheetEntries)
             {
                 TimesheetEntryDto tsedto = new TimesheetEntryDto();
@@ -150,6 +169,15 @@ namespace doneillspa.Controllers
                 tsedto.StartTime = tse.StartTime;
 
                 tsdto.TimesheetEntries.Add(tsedto);
+            }
+
+            foreach(TimesheetNote note in ts.TimesheetNotes)
+            {
+                TimesheetNoteDto ndto = new TimesheetNoteDto();
+                ndto.Id = note.Id;
+                ndto.Details = note.Details;
+
+                tsdto.TimesheetNotes.Add(ndto);
             }
 
             return tsdto;

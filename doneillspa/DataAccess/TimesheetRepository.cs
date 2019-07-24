@@ -20,6 +20,7 @@ namespace doneillspa.DataAccess
         {
             return _context.Timesheet
                 .Include(b => b.TimesheetEntries)
+                .Include(b => b.TimesheetNotes)
                 .ToList();
         }
 
@@ -28,6 +29,7 @@ namespace doneillspa.DataAccess
             return _context.Timesheet
                         .Where(b => b.WeekStarting.Date == weekStarting.Date)
                         .Include(b => b.TimesheetEntries)
+                        .Include(b => b.TimesheetNotes)
                         .ToList();
 
         }
@@ -37,6 +39,7 @@ namespace doneillspa.DataAccess
             return _context.Timesheet
                 .Where(b => b.Username.ToUpper().Equals(user.ToUpper()))
                 .Include(b => b.TimesheetEntries)
+                .Include(b => b.TimesheetNotes)
                 .ToList();
         }
 
@@ -45,6 +48,7 @@ namespace doneillspa.DataAccess
             return _context.Timesheet
                         .Where(b => b.Id == id)
                         .Include(b => b.TimesheetEntries)
+                        .Include(b => b.TimesheetNotes)
                         .FirstOrDefault();
         }
 

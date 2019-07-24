@@ -17,6 +17,7 @@ namespace doneillspa.Models
         public TimesheetStatus Status { get; set; }
 
         public ICollection<TimesheetEntry> TimesheetEntries { get; set; }
+        public ICollection<TimesheetNote> TimesheetNotes { get; set; }
 
         public void OnCreation()
         {
@@ -53,6 +54,13 @@ namespace doneillspa.Models
             {
                 Status = TimesheetStatus.Submitted;
             }
+        }
+
+        public void AddTimesheetNote(TimesheetNote note)
+        {
+            //Set date created on timesheet entry
+            note.DateCreated = DateTime.UtcNow;
+            TimesheetNotes.Add(note);
         }
 
         public void AddTimesheetEntry(TimesheetEntry entry)

@@ -12,54 +12,87 @@
     <div class="card-header">
       Work Sheets For Approval
     </div>
-    <div class="card-body" *ngIf="timesheets">
-      <div class="row" *ngFor="let ts of retrieveSubmittedTimesheets(); let i = index">
-        <div class="col-md-6">
-          <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
-            Timesheets For {{ ts.username }}, Week Beginning {{ ts.weekStarting | date:'fullDate'}}
-          </a>
+  <div class="card-body" *ngIf="timesheets">
+    <div class="row" *ngFor="let ts of retrieveSubmittedTimesheets(); let i = index">
+      <div class="col-md-3">
+        <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
+          Timesheets For {{ ts.username }}, Week Beginning {{ ts.weekStarting | date:'fullDate'}}
+        </a>
+      </div>
+      <div class="col-md-6">
+        <div class="collapse" id="collapseExample{{i}}">
+          <div class="table-responsive">
+            <table class='table'>
+              <thead class="thead-light">
+                <tr>
+                  <th>Day</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Project</th>
+                  <th>Details</th>
+                  <th>Duration</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tse of getTimesheetEntriesForSubmittedTimesheets(i)">
+                  <td>{{ tse.day }}</td>
+                  <td>{{ tse.startTime }}</td>
+                  <td>{{ tse.endTime }}</td>
+                  <td>{{ tse.project }}</td>
+                  <td>{{ tse.details }}</td>
+                  <td>{{ calculateDuration(tse) }} hrs</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><span class="badge badge-primary">Duration: {{ calculateTotalDuration() }} hrs</span></td>
+                </tr>
+              </tfoot>
+            </table>
+            <button type="button" class="btn btn-primary" data-toggle="modal" (click)="addTimesheetNote(ts)">Add Note</button>
+            <button (click)="approveTimesheet(ts)" class="btn btn-primary">Approve Timesheet</button>
+            <button (click)="rejectTimesheet(ts)" class="btn btn-primary">Reject Timesheet</button>
+          </div>
         </div>
-        <div class="col-md-6">
-          <div class="collapse" id="collapseExample{{i}}">
-            <div class="table-responsive">
-              <table class='table'>
-                <thead class="thead-light">
-                  <tr>
-                    <th>Day</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Project</th>
-                    <th>Details</th>
-                    <th>Duration</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let tse of getTimesheetEntriesForSubmittedTimesheets(i)">
-                    <td>{{ tse.day }}</td>
-                    <td>{{ tse.startTime }}</td>
-                    <td>{{ tse.endTime }}</td>
-                    <td>{{ tse.project }}</td>
-                    <td>{{ tse.details }}</td>
-                    <td>{{ calculateDuration(tse) }} hrs</td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="badge badge-primary">Duration: {{ calculateTotalDuration() }} hrs</span></td>
-                  </tr>
-                </tfoot>
-              </table>
-              <button (click)="approveTimesheet(ts)" class="btn btn-primary">Approve Timesheet</button>
-              <button (click)="rejectTimesheet(ts)" class="btn btn-primary">Reject Timesheet</button>
-            </div>
+      </div>
+      <div class="col-md-3">
+        <div class="collapse" id="collapseExample{{i}}">
+          <h3>Notes</h3>
+          <div class="card mb-3 mt-3" *ngFor="let note of retrieveNotesToDisplay(ts)">
+            <div class="card-body">{{note.details}}</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+ </div>
+
+    <!-- New Timesheet Note -->
+    <div class="modal fade" id="myNewNoteModal" tabindex="-1" role="dialog" aria-labelledby="myNewNoteModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myNewNoteModal">New Note</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="details">Details</label>
+                <input type="text" [(ngModel)]="newNote.details" name="details" class="form-control" id="details" placeholder="Enter Details">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button (click)="saveTimesheetNote()" class="btn btn-primary">Save Note</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

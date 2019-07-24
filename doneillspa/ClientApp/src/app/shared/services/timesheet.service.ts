@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../../project';
 import { Timesheet } from '../../timesheet';
 import { TimesheetEntry } from '../../timesheetentry';
+import { TimesheetNote } from '../../timesheetnote';
 import { HttpServiceBase } from './httpservicebase';
 import { LabourRate } from '../../labourrate';
 import { LabourWeek } from '../../labourweek';
@@ -41,10 +42,22 @@ export class TimesheetService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
+  addTimesheetNote(timesheetId: number, note: TimesheetNote) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.put(this._baseurl + 'api/timesheet/' + timesheetId + '/note', note, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
   addTimesheetEntry(timesheetId: number, entry: TimesheetEntry) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.put(this._baseurl + 'api/timesheet/'+timesheetId, entry, {
+    return this._httpClient.put(this._baseurl + 'api/timesheet/'+timesheetId + '/timesheetentry', entry, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)

@@ -96,6 +96,10 @@ export class TimesheetComponent {
 
   }
 
+  retrieveNotesToDisplay() {
+    return this.activeTimeSheet.timesheetNotes
+  }
+
   retrieveTimeSheetsForDate(startOfWeek:Date) {
     this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
       this.loading = false;
@@ -203,12 +207,14 @@ export class TimesheetComponent {
     this.activeTimeSheet.weekStarting = ws;
     //Clear the timesheet entries in the existing in memory timesheet
     this.activeTimeSheet.timesheetEntries.length = 0;
+    this.activeTimeSheet.timesheetNotes.length = 0;
 
     for (let ts of array) {
       if (ts.owner == localStorage.getItem("client_id")) {
         this.activeTimeSheet.weekStarting = ts.weekStarting;
         this.activeTimeSheet.id = ts.id;
         this.activeTimeSheet.status = ts.status;
+        this.activeTimeSheet.timesheetNotes = ts.timesheetNotes;
         this.timesheetExists = true;
 
         for (let item of ts.timesheetEntries) {
