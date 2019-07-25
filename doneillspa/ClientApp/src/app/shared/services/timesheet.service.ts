@@ -42,6 +42,18 @@ export class TimesheetService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
+  deleteNote(note: TimesheetNote) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.delete(this._baseurl + 'api/note/' + note.id, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
   addTimesheetNote(timesheetId: number, note: TimesheetNote) {
     let authToken = localStorage.getItem('auth_token');
 

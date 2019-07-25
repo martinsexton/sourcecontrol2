@@ -45,7 +45,8 @@ namespace doneillspa
             services.AddScoped<ICertificationRepository>(_ => new CertificationRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<IHolidayRequestRepository>(_ => new HolidayRequestRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<INotificationRepository>(_ => new NotificationRepository(_.GetService<ApplicationContext>()));
-            
+            services.AddScoped<INoteRepository>(_ => new NoteRepository(_.GetService<ApplicationContext>()));
+
             //Email Services
             services.AddScoped<IEmailService>(_ => new SendGridEmailService(Configuration));
             //services.AddScoped<IEmailService>(_ => new GmailMailService(Configuration));

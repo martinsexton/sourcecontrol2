@@ -64,7 +64,10 @@
           <div class="collapse" id="collapseExample{{i}}">
             <h3>Notes</h3>
             <div class="card mb-3 mt-3 bg-light" *ngFor="let note of retrieveNotesToDisplay(ts)">
-              <div class="card-body">{{note.details}}</div>
+              <div class="card-body">
+                <p class="card-text">{{note.details}}</p>
+                <a class="text-primary" (click)="deleteNote(note,ts)">Delete</a>
+              </div>
             </div>
           </div>
         </div>

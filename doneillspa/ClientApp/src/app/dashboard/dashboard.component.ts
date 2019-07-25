@@ -78,6 +78,23 @@ export class DashboardComponent {
     this.timesheetToAddNoteTo = timesheet;
   }
 
+  deleteNote(note: TimesheetNote, ts : Timesheet) {
+    this._timesheetService.deleteNote(note).subscribe(
+      res => {
+        //Remove note from array list
+        this.removeFromArrayList(ts.timesheetNotes, note);
+      }, error => this.errors = error);
+  }
+
+  removeFromArrayList(array: TimesheetNote[], note: TimesheetNote) {
+    for (let item of array) {
+      if (item.id == note.id) {
+        array.splice(array.indexOf(item), 1);
+        break;
+      }
+    }
+  }
+
   saveTimesheetNote() {
     this._timesheetService.addTimesheetNote(this.timesheetToAddNoteTo.id, this.newNote).subscribe(
       res => {
