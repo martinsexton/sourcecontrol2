@@ -13,9 +13,10 @@ using System;
 namespace doneillspa.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20190725200721_nonchargeabletimeadded")]
+    partial class nonchargeabletimeadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,8 +239,6 @@ namespace doneillspa.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Code");
-
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<string>("Day");
@@ -247,6 +246,8 @@ namespace doneillspa.Migrations
                     b.Property<string>("Details");
 
                     b.Property<string>("EndTime");
+
+                    b.Property<string>("Project");
 
                     b.Property<string>("StartTime");
 

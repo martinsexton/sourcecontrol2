@@ -2,7 +2,7 @@
   <!--<div class="buttonHolder">
     <p *ngIf="!(activeTimeSheet.status == 'New')" class="font-weight-light">Timesheet has been {{activeTimeSheet.status}}</p>
   </div>-->
-  <div class="buttonHolder" *ngIf="!loading">
+  <div class="buttonHolder" *ngIf="activeProjects">
     <form class="form-inline my-2 my-lg-0">
       <span class="mr-3" (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
       <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet(entry)">Add Entry</button>
@@ -21,7 +21,7 @@
         <div class="card-body">
           <div *ngFor="let entry of retrieveTimesheetsForIndex(i)">
             <p class="card-text" data-toggle="tooltip" title="Details: {{entry.details}}" (click)="toggleToolTip">
-              {{entry.project}}: {{entry.startTime}} -> {{entry.endTime}}
+              {{entry.code}}: {{entry.startTime}} -> {{entry.endTime}}
               <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span>
             </p>
           </div>
@@ -29,7 +29,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="retrieveNotesToDisplay().length > 0">
+  <div *ngIf="retrieveNotesToDisplay()">
     <h3>Notes</h3>
     <div class="card mb-3 mt-3" *ngFor="let note of retrieveNotesToDisplay()">
       <div class="card-body">{{note.details}}</div>
@@ -48,8 +48,8 @@
           <form>
             <div class="form-group">
               <label for="project">Project</label>
-              <select class="form-control form-control-sm" id="project" name="project" [(ngModel)]="newEntry.project">
-                <option *ngFor="let project of activeProjects" selected>{{project.name}}</option>
+              <select class="form-control form-control-sm" id="project" name="project" [(ngModel)]="newEntry.code">
+                <option *ngFor="let c of retrieveTimeCodes()" value="{{c.code}}" selected>{{c.description}}</option>
               </select>
             </div>
             <div class="form-group">

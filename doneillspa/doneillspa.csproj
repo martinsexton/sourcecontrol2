@@ -66,6 +66,7 @@
     <None Remove="ClientApp\src\app\labourrate.ts" />
     <None Remove="ClientApp\src\app\labourweek.ts" />
     <None Remove="ClientApp\src\app\labour\labour.componenet.ts" />
+    <None Remove="ClientApp\src\app\nonchargeabletime.ts" />
     <None Remove="ClientApp\src\app\passwordreset.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projecteffortdto.ts" />
@@ -83,6 +84,7 @@
     <None Remove="ClientApp\src\app\shared\utils\config.service.ts" />
     <None Remove="ClientApp\src\app\supervisor\supervisor.component.ts" />
     <None Remove="ClientApp\src\app\Timesheet.ts" />
+    <None Remove="ClientApp\src\app\timesheetcode.ts" />
     <None Remove="ClientApp\src\app\timesheetentry.ts" />
     <None Remove="ClientApp\src\app\timesheetnote.ts" />
     <None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
@@ -110,6 +112,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\labourrate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\labourweek.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\labour\labour.componenet.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\nonchargeabletime.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\passwordreset.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecteffortdto.ts" />
@@ -128,6 +131,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\utils\config.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\supervisor\supervisor.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheet.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\timesheetcode.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheetentry.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheetnote.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheets\timesheets.component.ts" />

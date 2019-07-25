@@ -25,6 +25,7 @@ namespace doneillspa.DataAccess
         public DbSet<TimesheetEntry> TimesheetEntry { get; set; }
         public DbSet<TimesheetNote> TimesheetNote { get; set; }
         public DbSet<LabourRate> LabourRate { get; set; }
+        public DbSet<NonChargeableTime> NonChargeableTime { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

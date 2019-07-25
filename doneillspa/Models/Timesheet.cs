@@ -82,7 +82,7 @@ namespace doneillspa.Models
                 if (!String.IsNullOrEmpty(proj))
                 {
                     //Only populate details for relevant project
-                    if (tse.Project.Equals(proj))
+                    if (tse.Code.Equals(proj))
                     {
                         tse.PopulateLabourDetail(detail, Rates);
                     }

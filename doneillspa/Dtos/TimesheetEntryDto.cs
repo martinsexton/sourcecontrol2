@@ -12,7 +12,7 @@ namespace doneillspa.Models
         public string Day { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
-        public string Project { get; set; }
+        public string Code { get; set; }
         public string Details { get; set; }
     }
 }

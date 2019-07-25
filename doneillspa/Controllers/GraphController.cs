@@ -31,19 +31,19 @@ namespace doneillspa.Controllers
             {
                 foreach(TimesheetEntry tse in ts.TimesheetEntries)
                 {
-                    if (!effort.ContainsKey(tse.Project))
+                    if (!effort.ContainsKey(tse.Code))
                     {
                         ProjectEffortDto effortDto = new ProjectEffortDto();
-                        effortDto.ProjectName = tse.Project;
+                        effortDto.ProjectName = tse.Code;
                         effortDto.TotalEffort = CalculateDurationInHours(tse);
                         effortDto.TotalCost = CalculateCosts(tse);
-                        effort.Add(tse.Project, effortDto);
+                        effort.Add(tse.Code, effortDto);
                     }
                     else
                     {
                         foreach (KeyValuePair<string, ProjectEffortDto> effortDto in effort)
                         {
-                            if (effortDto.Key.Equals(tse.Project))
+                            if (effortDto.Key.Equals(tse.Code))
                             {
                                 ProjectEffortDto tmp = effortDto.Value;
                                 tmp.TotalEffort = tmp.TotalEffort + CalculateDurationInHours(tse);

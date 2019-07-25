@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { ProjectEffortDto } from '../../projecteffortdto';
 import { HttpServiceBase } from './httpservicebase';
 import { LabourRate } from '../../labourrate';
+import { NonChargeableTime } from '../../nonchargeabletime';
 
 @Injectable()
 export class ProjectService extends HttpServiceBase  {
@@ -34,6 +35,19 @@ export class ProjectService extends HttpServiceBase  {
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.get<Project[]>(this._baseurl + 'api/client',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
+  getNonChargeableTime() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<NonChargeableTime[]>(this._baseurl + 'api/nonchargeabletime',
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

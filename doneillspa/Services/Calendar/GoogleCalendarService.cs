@@ -45,6 +45,7 @@ namespace doneillspa.Services.Calendar
                 },
             };
 
+            //Pass in calendar id so it knows which calendar to update.
             return service.Events.Insert(myEvent, Configuration["calendar:id"]);
         }
 
@@ -57,7 +58,6 @@ namespace doneillspa.Services.Calendar
             //but then strip out any \n characters before adding to azure configuration.
             string privatekey = Configuration["calendar:private_key"];
             string privateKeyToUse = "-----BEGIN PRIVATE KEY-----" + privatekey + "-----END PRIVATE KEY-----";
-            string calanderId = Configuration["calendar:id"];
 
             string[] Scopes = { CalendarService.Scope.Calendar };
 

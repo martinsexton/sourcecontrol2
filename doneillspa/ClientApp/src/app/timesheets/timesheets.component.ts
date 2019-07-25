@@ -2,7 +2,9 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
+import { TimesheetCode } from '../timesheetcode';
 import { Project } from '../project';
+import { NonChargeableTime } from '../nonchargeabletime';
 import * as moment from 'moment';
 
 import {
@@ -24,6 +26,7 @@ declare var $: any;
 export class TimesheetComponent {
   public timesheets: Timesheet[];
   public projects: Project[];
+  public nonChargeableTime: NonChargeableTime[];
   public activeProjects: Project[];
   public timesheetExists = false;
   public loading = true;
@@ -68,6 +71,8 @@ export class TimesheetComponent {
     //Setup list of available projects
     this.setupListOfProjects();
 
+    this.setupNonChargeableTime();
+
     //setup dates for each day of the week
     this.refreshCalendarDates();
 
@@ -84,6 +89,23 @@ export class TimesheetComponent {
 
   ngOnInit() {
     $('[data-toggle="tooltip"]').tooltip(); 
+  }
+
+  retrieveTimeCodes() {
+    let codes: Array<TimesheetCode> = new Array();
+
+
+    if (this.activeProjects && this.nonChargeableTime) {
+      for (let p of this.activeProjects) {
+        let code = new TimesheetCode(p.name, p.name, true);
+        codes.push(code);
+      }
+      for (let nc of this.nonChargeableTime) {
+        let code = new TimesheetCode(nc.code, nc.description, false);
+        codes.push(code);
+      }    
+    }
+    return codes;
   }
 
   setUpActiveProjects() {
@@ -119,13 +141,19 @@ export class TimesheetComponent {
     return startOfWeek;
   }
 
+  setupNonChargeableTime() {
+    this._projectService.getNonChargeableTime().subscribe(result => {
+      this.nonChargeableTime = result;
+    }, error => console.error(error)); 
+  }
+
   setupListOfProjects() {
     this._projectService.getProjects().subscribe(result => {
       this.projects = result;
       if (this.projects) {
         this.setUpActiveProjects();
         if (this.activeProjects.length > 0) {
-          this.newEntry.project = this.activeProjects[0].name;
+          this.newEntry.code = this.activeProjects[0].name;
         }
       }
     }, error => console.error(error));  
@@ -352,7 +380,7 @@ export class TimesheetComponent {
 
   removeFromArrayList(array: TimesheetEntry[], ts: TimesheetEntry) {
     for (let item of array) {
-      if (item.project == ts.project && item.startTime == ts.startTime && item.endTime == ts.endTime) {
+      if (item.code == ts.code && item.startTime == ts.startTime && item.endTime == ts.endTime) {
         array.splice(array.indexOf(item), 1);
         break;
       }
@@ -360,7 +388,7 @@ export class TimesheetComponent {
   }
 
   addTimesheetEntry() {
-    let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.project, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details);
+    let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details);
     if (this.timesheetExists) {
       this._timesheetService.addTimesheetEntry(this.activeTimeSheet.id, entry).subscribe(
         res => {

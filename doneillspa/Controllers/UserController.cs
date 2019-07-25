@@ -459,7 +459,7 @@ namespace doneillspa.Controllers
                 tsedto.Details = tse.Details;
                 tsedto.EndTime = tse.EndTime;
                 tsedto.Id = tse.Id;
-                tsedto.Project = tse.Project;
+                tsedto.Code = tse.Code;
                 tsedto.StartTime = tse.StartTime;
 
                 tsdto.TimesheetEntries.Add(tsedto);
