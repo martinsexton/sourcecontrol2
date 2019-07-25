@@ -22,7 +22,7 @@ export class HolidaysComponent {
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _msuserService: MsUserService, private _holidayService: HolidayService) {
     this.loadingHolidays = true;
-    this._msuserService.getUsersWithRole('Supervisor').subscribe(result => {
+    this._msuserService.getUsersWithRole('Administrator').subscribe(result => {
       this.loadingHolidays = false;
       this.supervisors = result;
     }, error => {
