@@ -37,6 +37,7 @@ namespace doneillspa.Controllers
                 dto.Id = p.Id;
                 dto.IsActive = p.IsActive;
                 dto.Name = p.Name;
+                dto.Code = p.Code;
                 dto.StartDate = p.StartDate;
                 dto.Details = p.Details;
 
@@ -108,6 +109,7 @@ namespace doneillspa.Controllers
             existingProject.Name = p.Name;
             existingProject.Details = p.Details;
             existingProject.IsActive = p.IsActive;
+            existingProject.Code = p.Code;
 
             _repository.UpdateProject(existingProject);
 

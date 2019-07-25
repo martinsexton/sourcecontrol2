@@ -27,10 +27,10 @@ export class ProjectComponent {
   public userMessage: string;
   public selectedRole: string;
 
-  newProject: Project = new Project(0, '', '', '', true, new Date);
+  newProject: Project = new Project(0, '', '', '', '', true, new Date);
   newClient: Client = new Client(0, "");
   projectSaved: boolean = false;
-  selectedProject: Project = new Project(0, '', '', '', true, new Date);
+  selectedProject: Project = new Project(0, '', '', '', '', true, new Date);
   selectedRate: LabourRate = new LabourRate(0, null, null, '', 0, 0);
 
   newRate: LabourRate = new LabourRate(0, null, null, '', 0, 0);
@@ -246,9 +246,9 @@ export class ProjectComponent {
         console.log(res);
         this.projectSaved = true;
         //Update the collection of projects with newly created one
-        this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
+        this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.code, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
         //clear down the new project model
-        this.newProject = new Project(0, '', '', '', true, new Date);
+        this.newProject = new Project(0, '', '', '', '', true, new Date);
         $("#myNewProjectModal").modal('hide');
 
         this.showUserMessage("Project Saved Successfully!")
@@ -267,9 +267,9 @@ export class ProjectComponent {
         console.log(res);
         this.projectSaved = true;
         //Update the collection of projects with newly created one
-        this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, '', this.newProject.details, this.newProject.isActive, this.newProject.startDate));
+        this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.code, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
         //clear down the new project model
-        this.newProject = new Project(0, '', '', '', true, new Date);
+        this.newProject = new Project(0, '', '', '', '', true, new Date);
         $("#myNewProjectModal").modal('hide');
 
         this.showUserMessage("Project Saved Successfully!")

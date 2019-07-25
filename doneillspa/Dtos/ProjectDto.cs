@@ -11,6 +11,7 @@ namespace doneillspa.Dtos
         public long OwningClientId { get; set; }
         public string Client { get; set; }
         public string Name { get; set; }
+        public string Code { get; set; }
         public bool IsActive { get; set; }
         public string Details { get; set; }
         public DateTime StartDate { get; set; }

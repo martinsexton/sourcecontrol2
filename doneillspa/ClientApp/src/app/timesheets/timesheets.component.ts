@@ -97,7 +97,7 @@ export class TimesheetComponent {
 
     if (this.activeProjects && this.nonChargeableTime) {
       for (let p of this.activeProjects) {
-        let code = new TimesheetCode(p.name, p.name, true);
+        let code = new TimesheetCode(p.code, p.name, true);
         codes.push(code);
       }
       for (let nc of this.nonChargeableTime) {

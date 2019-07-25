@@ -59,6 +59,7 @@ namespace doneillspa.Controllers
                     pdto.IsActive = proj.IsActive;
                     pdto.StartDate = proj.StartDate;
                     pdto.Name = proj.Name;
+                    pdto.Code = proj.Code;
 
                     projects.Add(pdto);
                 }

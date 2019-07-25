@@ -37,6 +37,7 @@
                 <tr>
                   <th>Client</th>
                   <th>Name</th>
+                  <th>Code</th>
                   <th>Description</th>
                   <th>Start Date</th>
                   <th></th>
@@ -47,6 +48,7 @@
                 <tr *ngFor="let project of projectsToDisplay" [ngClass]="{'text-danger': !isProjectActive(project)}" data-toggle="tooltip" data-placement="right" title="Click For Details">
                   <td>{{ project.client }}</td>
                   <td>{{ project.name }}</td>
+                  <td>{{ project.code }}</td>
                   <td>{{ project.details }}</td>
                   <td>{{ project.startDate | date : "fullDate"}}</td>
                   <td><span aria-hidden="true" (click)="deleteProject(project)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
@@ -146,6 +148,10 @@
             <input type="text" [(ngModel)]="selectedProject.name" name="projectName" class="form-control" id="projectName">
           </div>
           <div class="form-group">
+            <label for="projectCode">Project Code</label>
+            <input type="text" [(ngModel)]="selectedProject.code" name="projectCode" class="form-control" id="projectCode">
+          </div>
+          <div class="form-group">
             <label for="projectDetails">Details</label>
             <input type="text" [(ngModel)]="selectedProject.details" name="projectDetails" class="form-control" id="projectDescription">
           </div>
@@ -238,6 +244,10 @@
             <div class="form-group">
               <label for="projectName">Project Name</label>
               <input type="text" [(ngModel)]="newProject.name" name="projectName" class="form-control" id="projectName" placeholder="Enter Project Name">
+            </div>
+            <div class="form-group">
+              <label for="projectCode">Project Code</label>
+              <input type="text" [(ngModel)]="newProject.code" name="projectCode" class="form-control" id="projectCode" placeholder="Enter Project Code">
             </div>
             <div class="form-group">
               <label for="projectDetails">Details</label>
