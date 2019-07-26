@@ -6,7 +6,7 @@
           Project
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a *ngFor="let proj of projects; let i = index" class="dropdown-item" (click)="filterLabourCostForProject(proj)">{{proj.name}}</a>
+          <a *ngFor="let p of projects; let i = index" class="dropdown-item" (click)="filterLabourCostForProject(p)">{{p.name}}</a>
         </div>
       </li>
     </ul>

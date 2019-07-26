@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
+import { TimesheetCode } from '../timesheetcode';
 import { Project } from '../project';
 import { LabourWeek } from '../labourweek';
 
@@ -81,9 +82,22 @@ export class LabourComponent {
     });
   }
 
+  retrieveTimeCodes() {
+    let codes: Array<TimesheetCode> = new Array();
+
+
+    if (this.projects) {
+      for (let p of this.projects) {
+        let code = new TimesheetCode(p.code, p.name, true);
+        codes.push(code);
+      }
+    }
+    return codes;
+  }
+
   filterLabourCostForProject(project) {
     this.selectedProject = project;
-    this._timesheetService.getLabourWeekDetailsForProject(project.name).subscribe(result => {
+    this._timesheetService.getLabourWeekDetailsForProject(project.code).subscribe(result => {
       this.labourWeeks = result;
 
       //Update Graph
