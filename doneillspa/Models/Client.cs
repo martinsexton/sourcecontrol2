@@ -10,5 +10,10 @@ namespace doneillspa.Models
         public long Id { get; set; }
         public string Name { get; set; }
         public ICollection<Project> Projects { get; set; }
+
+        public void AddProject(Project proj)
+        {
+            Projects.Add(proj);
+        }
     }
 }

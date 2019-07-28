@@ -76,7 +76,7 @@ namespace doneillspa.Controllers
         public IActionResult Put(long id, [FromBody]Project p)
         {
             Client c = _repository.GetClientById(id);
-            c.Projects.Add(p);
+            c.AddProject(p);
 
             _repository.UpdateClient(c);
 
