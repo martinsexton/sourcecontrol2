@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Models;
+using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,22 +14,22 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class NoteController : Controller
     {
-        private readonly INoteRepository _repository;
+        private readonly ITimesheetService _timesheetService;
 
-        public NoteController(INoteRepository repository)
+        public NoteController(ITimesheetService tss)
         {
-            _repository = repository;
+            _timesheetService = tss;
         }
 
         [HttpDelete]
         [Route("api/note/{id}")]
         public JsonResult Delete(long id)
         {
-            TimesheetNote note = _repository.GetNoteById(id);
+            TimesheetNote note = _timesheetService.GetNoteById(id);
 
             if (note != null)
             {
-                _repository.DeleteNote(note);
+                _timesheetService.DeleteNote(note);
 
                 return Json(Ok());
             }

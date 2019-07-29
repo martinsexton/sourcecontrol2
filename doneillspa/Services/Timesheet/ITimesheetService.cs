@@ -19,5 +19,7 @@ namespace doneillspa.Services
         void InsertTimesheetEntry(TimesheetEntry tse);
         void UpdateTimesheetEntry(TimesheetEntry tse);
         void DeleteTimesheetEntry(TimesheetEntry tse);
+        TimesheetNote GetNoteById(long id);
+        void DeleteNote(TimesheetNote note);
     }
 }

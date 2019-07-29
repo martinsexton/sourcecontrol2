@@ -11,17 +11,29 @@ namespace doneillspa.Services
     {
         private readonly ITimesheetRepository _repository;
         private readonly ITimesheetEntryRepository _tseRepository;
+        private readonly INoteRepository _noteRepository;
 
-        public TimesheetService(ITimesheetRepository tsr, ITimesheetEntryRepository tser)
+        public TimesheetService(ITimesheetRepository tsr, ITimesheetEntryRepository tser, INoteRepository nr)
         {
             _repository = tsr;
             _tseRepository = tser;
+            _noteRepository = nr;
+        }
+
+        public void DeleteNote(TimesheetNote note)
+        {
+            _noteRepository.DeleteNote(note);
         }
 
         public void DeleteTimesheetEntry(TimesheetEntry tse)
         {
             _tseRepository.DeleteTimesheetEntry(tse);
             _tseRepository.Save();
+        }
+
+        public TimesheetNote GetNoteById(long id)
+        {
+            return _noteRepository.GetNoteById(id);
         }
 
         public IEnumerable<Timesheet> GetTimesheets()
