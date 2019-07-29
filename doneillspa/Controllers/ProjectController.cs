@@ -49,15 +49,7 @@ namespace doneillspa.Controllers
         [Route("api/project/{id}")]
         public JsonResult Delete(long id)
         {
-            var existingProject = _service.GetProjectById(id);
-
-            if (existingProject != null)
-            {
-                _service.DeleteProject(existingProject);
-
-                return Json(Ok());
-            }
-
+            _service.DeleteProject(id);
             return Json(Ok());
         }
 

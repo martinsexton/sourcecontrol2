@@ -37,9 +37,10 @@ namespace doneillspa.Services
             }
         }
 
-        public void DeleteProject(Project b)
+        public void DeleteProject(long id)
         {
-            _projectRepository.DeleteProject(b);
+            Project proj = GetProjectById(id);
+            _projectRepository.DeleteProject(proj);
         }
 
         public Project GetProjectById(long id)
@@ -94,9 +95,10 @@ namespace doneillspa.Services
             _rateRepository.UpdateRate(existingRate);
         }
 
-        public void DeleteRate(LabourRate r)
+        public void DeleteRate(long id)
         {
-            _rateRepository.DeleteRate(r);
+            LabourRate rate = GetRateById(id);
+            _rateRepository.DeleteRate(rate);
         }
 
         public LabourRate GetRate(string role, DateTime date)

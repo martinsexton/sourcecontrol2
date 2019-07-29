@@ -9,7 +9,7 @@ namespace doneillspa.Services
     public interface IProjectService
     {
         void UpdateProject(Project b);
-        void DeleteProject(Project b);
+        void DeleteProject(long id);
         IEnumerable<Project> GetProjects();
         Project GetProjectById(long id);
 
@@ -20,7 +20,7 @@ namespace doneillspa.Services
 
         long SaveRate(LabourRate r);
         void UpdateRate(LabourRate r);
-        void DeleteRate(LabourRate r);
+        void DeleteRate(long id);
 
         LabourRate GetRate(string role, DateTime date);
         IEnumerable<LabourRate> GetRates();

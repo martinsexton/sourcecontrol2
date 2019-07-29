@@ -47,15 +47,7 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/rates/{id}")]
         public JsonResult Delete(long id)
         {
-            var existingRate = _projectService.GetRateById(id);
-
-            if (existingRate != null)
-            {
-                _projectService.DeleteRate(existingRate);
-
-                return Json(Ok());
-            }
-
+            _projectService.DeleteRate(id);
             return Json(Ok());
         }
 
