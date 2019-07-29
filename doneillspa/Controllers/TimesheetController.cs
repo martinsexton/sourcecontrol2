@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
+using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +16,11 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class TimesheetController : Controller
     {
-        private readonly ITimesheetRepository _repository;
+        private readonly ITimesheetService _service;
 
-        public TimesheetController(ITimesheetRepository repository)
+        public TimesheetController(ITimesheetService tss)
         {
-            _repository = repository;
+            _service = tss;
         }
 
         [HttpGet]
@@ -28,7 +29,7 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _service.GetTimesheets().OrderByDescending(r => r.WeekStarting);
             foreach(Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
@@ -40,7 +41,7 @@ namespace doneillspa.Controllers
         [Route("api/timesheet/{id}")]
         public JsonResult Get(long id)
         {
-            Timesheet item = _repository.GetTimsheetById(id);
+            Timesheet item = _service.GetTimsheetById(id);
 
             if (item == null)
             {
@@ -61,12 +62,12 @@ namespace doneillspa.Controllers
             //If no date provide, then bring back all timesheets
             if (year == 0 || year == 1970)
             {
-                timesheets = _repository.GetTimesheets();
+                timesheets = _service.GetTimesheets();
             }
             else
             {
                 DateTime weekStarting = new DateTime(year, month, day);
-                timesheets = _repository.GetTimesheetsByDate(weekStarting);
+                timesheets = _service.GetTimesheetsByDate(weekStarting);
             }
 
             foreach (Timesheet ts in timesheets)
@@ -83,7 +84,7 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _repository.GetTimesheetsByUser(user);
+            IEnumerable<Timesheet> timesheets = _service.GetTimesheetsByUser(user);
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
@@ -97,7 +98,7 @@ namespace doneillspa.Controllers
         {
             timesheet.OnCreation();
 
-            long id = _repository.InsertTimesheet(timesheet);
+            long id = _service.InsertTimesheet(timesheet);
 
             return Ok(id);
         }
@@ -106,10 +107,10 @@ namespace doneillspa.Controllers
         [Route("api/timesheet")]
         public IActionResult Put(int id, [FromBody]TimesheetDto ts)
         {
-            Timesheet timesheet = _repository.GetTimsheetById(ts.Id);
+            Timesheet timesheet = _service.GetTimsheetById(ts.Id);
             timesheet.Updated(ts);
 
-            _repository.UpdateTimesheet(timesheet);
+            _service.UpdateTimesheet(timesheet);
 
             return Ok();
         }
@@ -119,10 +120,10 @@ namespace doneillspa.Controllers
         [Route("api/timesheet/{id}/timesheetentry")]
         public IActionResult Put(int id, [FromBody]TimesheetEntry entry)
         {
-            var existingTimesheet = _repository.GetTimsheetById(id);
+            var existingTimesheet = _service.GetTimsheetById(id);
             existingTimesheet.AddTimesheetEntry(entry);
 
-            _repository.UpdateTimesheet(existingTimesheet);
+            _service.UpdateTimesheet(existingTimesheet);
 
             return Ok(entry.Id);
         }
@@ -133,10 +134,10 @@ namespace doneillspa.Controllers
         {
             if(note != null)
             {
-                var existingTimesheet = _repository.GetTimsheetById(id);
+                var existingTimesheet = _service.GetTimsheetById(id);
                 existingTimesheet.AddTimesheetNote(note);
 
-                _repository.UpdateTimesheet(existingTimesheet);
+                _service.UpdateTimesheet(existingTimesheet);
 
                 return Ok(note.Id);
             }

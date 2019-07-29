@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Models;
+using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,11 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class GraphController : Controller
     {
-        private readonly ITimesheetRepository _repository;
+        private readonly ITimesheetService _timesheetService;
 
-        public GraphController(ITimesheetRepository repository)
+        public GraphController(ITimesheetService tss)
         {
-            _repository = repository;
+            _timesheetService = tss;
         }
 
         [HttpGet]
@@ -26,7 +27,7 @@ namespace doneillspa.Controllers
         {
             Dictionary<string, ProjectEffortDto> effort = new Dictionary<string, ProjectEffortDto>();
 
-            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets();
+            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets();
             foreach(Timesheet ts in timesheets.AsQueryable())
             {
                 foreach(TimesheetEntry tse in ts.TimesheetEntries)

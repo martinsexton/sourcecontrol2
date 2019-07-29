@@ -21,17 +21,18 @@ namespace doneillspa.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-        private readonly ITimesheetRepository _repository;
+        private readonly ITimesheetService _timesheetService;
+
         private readonly IEmailService _emailService;
         private readonly IHolidayService _holidayService;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, 
-            ITimesheetRepository repository, IEmailService emailService,
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,
+            ITimesheetService tss, IEmailService emailService,
             IHolidayService hservice)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _repository = repository;
+            _timesheetService = tss;
             _emailService = emailService;
             _holidayService = hservice;
         }
@@ -172,7 +173,7 @@ namespace doneillspa.Controllers
 
             JsonResult result = new JsonResult(user.Result.UserName);
 
-            IEnumerable<Timesheet> timesheets = _repository.GetTimesheetsByUser(result.Value.ToString()).OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheetsByUser(result.Value.ToString()).OrderByDescending(r => r.WeekStarting);
 
             foreach (Timesheet ts in timesheets)
             {

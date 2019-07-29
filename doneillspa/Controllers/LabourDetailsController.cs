@@ -20,6 +20,7 @@ using doneillspa.Services.Email;
 using Microsoft.AspNetCore.Http;
 using System.Collections;
 using doneillspa.Services.Document;
+using doneillspa.Services;
 
 namespace doneillspa.Controllers
 {
@@ -27,15 +28,15 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class LabourDetailsController : Controller
     {
-        private readonly ITimesheetRepository _repository;
+        private readonly ITimesheetService _timesheetService;
         private readonly IRateRepository _rateRepository;
         private List<LabourRate> Rates = new List<LabourRate>();
         private readonly IEmailService _emailService;
         private readonly IDocumentService _documentService;
 
-        public LabourDetailsController(ITimesheetRepository repository, IRateRepository rateRepository, IEmailService emailService, IDocumentService docService)
+        public LabourDetailsController(ITimesheetService tss, IRateRepository rateRepository, IEmailService emailService, IDocumentService docService)
         {
-            _repository = repository;
+            _timesheetService = tss;
             _rateRepository = rateRepository;
             _emailService = emailService;
             _documentService = docService;
@@ -321,7 +322,7 @@ namespace doneillspa.Controllers
         {
             List<LabourWeekDetail> details = new List<LabourWeekDetail>();
 
-            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().Where(r=>r.Status.ToString().Equals("Approved"))
+            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r=>r.Status.ToString().Equals("Approved"))
                 .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
@@ -340,7 +341,7 @@ namespace doneillspa.Controllers
 
             //TODO Read rates from database at this point and pass in some dictionary of role/rate to the LabourWeekDetail when creating it, so it can be use
             //to calculate the rate based on hours worked.
-            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved")).
+            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved")).
                 OrderByDescending(r => r.WeekStarting);
             foreach(Timesheet ts in timesheets)
             {

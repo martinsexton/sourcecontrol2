@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Models;
+using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,18 +14,18 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class TimesheetEntryController : Controller
     {
-        private readonly ITimesheetEntryRepository _repository;
+        private readonly ITimesheetService _timesheetService;
 
-        public TimesheetEntryController(ITimesheetEntryRepository repository)
+        public TimesheetEntryController(ITimesheetService tss)
         {
-            _repository = repository;
+            _timesheetService = tss;
         }
 
         [HttpGet]
         [Route("api/timesheetentry/{id}")]
         public JsonResult Get(long id)
         {
-            var item = _repository.GetTimsheetEntryById(id);
+            var item = _timesheetService.GetTimsheetEntryById(id);
 
             if (item == null)
             {
@@ -46,9 +47,7 @@ namespace doneillspa.Controllers
             //Set date created on timesheet entry
             tse.DateCreated = DateTime.UtcNow;
 
-            _repository.InsertTimesheetEntry(tse);
-            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
-            _repository.Save();
+            _timesheetService.InsertTimesheetEntry(tse);
 
             return Ok();
         }
@@ -62,9 +61,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            _repository.UpdateTimesheetEntry(tse);
-            //Save should be last thing to call at the end of a business transaction as it closes of the Unit Of Work
-            _repository.Save();
+            _timesheetService.UpdateTimesheetEntry(tse);
 
             return Ok();
         }
@@ -73,12 +70,11 @@ namespace doneillspa.Controllers
         [Route("api/timesheetentry/{id}")]
         public JsonResult Delete(long id)
         {
-            TimesheetEntry timesheetentry = _repository.GetTimsheetEntryById(id);
+            TimesheetEntry timesheetentry = _timesheetService.GetTimsheetEntryById(id);
            
             if (timesheetentry != null)
             {
-                _repository.DeleteTimesheetEntry(timesheetentry);
-                _repository.Save();
+                _timesheetService.DeleteTimesheetEntry(timesheetentry);
 
                 return Json(Ok());
             }
