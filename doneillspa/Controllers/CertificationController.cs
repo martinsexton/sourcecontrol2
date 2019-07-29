@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Models;
+using doneillspa.Services.Certification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,11 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class CertificationController : Controller
     {
-        private readonly ICertificationRepository _repository;
+        private readonly ICertificationService _service;
 
-        public CertificationController(ICertificationRepository repository)
+        public CertificationController(ICertificationService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         public bool ShouldICertify()
@@ -29,12 +30,11 @@ namespace doneillspa.Controllers
         [Route("api/certification/{id}")]
         public JsonResult Delete(long id)
         {
-            Certification certification = _repository.GetCertificationById(id);
+            Certification certification = _service.GetCertificationById(id);
 
             if (certification != null)
             {
-                _repository.DeleteCertification(certification);
-                _repository.Save();
+                _service.DeleteCertification(certification);
 
                 return Json(Ok());
             }

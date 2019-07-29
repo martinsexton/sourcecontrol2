@@ -21,6 +21,7 @@ using doneillspa.Services.Calendar;
 using doneillspa.Services.Document;
 using doneillspa.Services;
 using doneillspa.Services.Holiday;
+using doneillspa.Services.Certification;
 
 namespace doneillspa
 {
@@ -62,6 +63,8 @@ namespace doneillspa
 
             //Setup Holiday Service and inject the required repositories
             services.AddScoped<IHolidayService>(_ => new HolidayService(_.GetService<IHolidayRequestRepository>()));
+
+            services.AddScoped<ICertificationService>(_ => new CertificationService(_.GetService<ICertificationRepository>()));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
