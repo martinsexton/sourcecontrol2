@@ -29,29 +29,29 @@ namespace doneillspa.Controllers
     public class LabourDetailsController : Controller
     {
         private readonly ITimesheetService _timesheetService;
-        private readonly IRateRepository _rateRepository;
+        private readonly IProjectService _projectService;
         private List<LabourRate> Rates = new List<LabourRate>();
         private readonly IEmailService _emailService;
         private readonly IDocumentService _documentService;
 
-        public LabourDetailsController(ITimesheetService tss, IRateRepository rateRepository, IEmailService emailService, IDocumentService docService)
+        public LabourDetailsController(ITimesheetService tss, IProjectService ps, IEmailService emailService, IDocumentService docService)
         {
             _timesheetService = tss;
-            _rateRepository = rateRepository;
+            _projectService = ps;
             _emailService = emailService;
             _documentService = docService;
 
-            Rates = _rateRepository.GetRates().ToList<LabourRate>();
+            Rates = _projectService.GetRates().ToList<LabourRate>();
         }
 
         [Route("api/labourdetails/rates/{id}")]
         public JsonResult Delete(long id)
         {
-            var existingRate = _rateRepository.GetRateById(id);
+            var existingRate = _projectService.GetRateById(id);
 
             if (existingRate != null)
             {
-                _rateRepository.DeleteRate(existingRate);
+                _projectService.DeleteRate(existingRate);
 
                 return Json(Ok());
             }
@@ -68,19 +68,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            var existingRate = _rateRepository.GetRateById(r.Id);
-
-            if (existingRate == null)
-            {
-                return NotFound();
-            }
-
-            existingRate.EffectiveFrom = r.EffectiveFrom;
-            existingRate.EffectiveTo = r.EffectiveTo;
-            existingRate.RatePerHour = r.RatePerHour;
-            existingRate.OverTimeRatePerHour = r.OverTimeRatePerHour;
-
-            _rateRepository.UpdateRate(existingRate);
+            _projectService.UpdateRate(r);
 
             return new NoContentResult();
         }
@@ -94,7 +82,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-           long id = _rateRepository.InsertRate(rate);
+           long id = _projectService.SaveRate(rate);
 
             return Ok(id);
         }
@@ -103,7 +91,7 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/rates")]
         public IEnumerable<LabourRate> GetRates()
         {
-            IEnumerable<LabourRate> rates = _rateRepository.GetRates();
+            IEnumerable<LabourRate> rates = _projectService.GetRates();
             return rates;
         }
 

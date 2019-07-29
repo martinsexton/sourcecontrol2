@@ -19,14 +19,54 @@ namespace doneillspa.Services
             _clientRepository = cr;
             _rateRepository = rr;
         }
+
+        public long SaveProject(Project b)
+        {
+            return _projectRepository.InsertProject(b);
+        }
+
+        public void UpdateProject(Project proj)
+        {
+            if (proj != null)
+            {
+                Project existingProject = GetProjectById(proj.Id);
+                if (existingProject != null)
+                {
+                    existingProject.Name = proj.Name;
+                    existingProject.Details = proj.Details;
+                    existingProject.IsActive = proj.IsActive;
+                    existingProject.Code = proj.Code;
+
+                    _projectRepository.UpdateProject(existingProject);
+                }
+            }
+        }
+
         public void DeleteProject(Project b)
         {
             _projectRepository.DeleteProject(b);
         }
 
-        public void DeleteRate(LabourRate r)
+        public Project GetProjectById(long id)
         {
-            _rateRepository.DeleteRate(r);
+            return _projectRepository.GetProjectById(id);
+        }
+
+        public IEnumerable<Project> GetProjects()
+        {
+            return _projectRepository.GetProjects();
+        }
+
+        public long SaveClient(Client b)
+        {
+            return _clientRepository.InsertClient(b);
+        }
+
+        public void AddProject(long clientId, Project proj)
+        {
+            Client c = GetClientById(clientId);
+            c.AddProject(proj);
+            _clientRepository.UpdateClient(c);
         }
 
         public Client GetClientById(long id)
@@ -39,14 +79,29 @@ namespace doneillspa.Services
             return _clientRepository.GetClients();
         }
 
-        public Project GetProjectById(long id)
+        public long SaveRate(LabourRate r)
         {
-            return _projectRepository.GetProjectById(id);
+            return _rateRepository.InsertRate(r);
         }
 
-        public IEnumerable<Project> GetProjects()
+        public void UpdateRate(LabourRate r)
         {
-            return _projectRepository.GetProjects();
+            LabourRate existingRate = GetRateById(r.Id);
+
+            if(existingRate != null)
+            {
+                existingRate.EffectiveFrom = r.EffectiveFrom;
+                existingRate.EffectiveTo = r.EffectiveTo;
+                existingRate.RatePerHour = r.RatePerHour;
+                existingRate.OverTimeRatePerHour = r.OverTimeRatePerHour;
+            }
+
+            _rateRepository.UpdateRate(existingRate);
+        }
+
+        public void DeleteRate(LabourRate r)
+        {
+            _rateRepository.DeleteRate(r);
         }
 
         public LabourRate GetRate(string role, DateTime date)
@@ -62,36 +117,6 @@ namespace doneillspa.Services
         public IEnumerable<LabourRate> GetRates()
         {
             return _rateRepository.GetRates();
-        }
-
-        public long InsertClient(Client b)
-        {
-            return _clientRepository.InsertClient(b);
-        }
-
-        public long InsertProject(Project b)
-        {
-            return _projectRepository.InsertProject(b);
-        }
-
-        public long InsertRate(LabourRate r)
-        {
-            return _rateRepository.InsertRate(r);
-        }
-
-        public void UpdateClient(Client b)
-        {
-            _clientRepository.UpdateClient(b);
-        }
-
-        public void UpdateProject(Project b)
-        {
-            _projectRepository.UpdateProject(b);
-        }
-
-        public void UpdateRate(LabourRate r)
-        {
-            _rateRepository.UpdateRate(r);
         }
     }
 }

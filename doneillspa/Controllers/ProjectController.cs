@@ -84,7 +84,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-           long id = _service.InsertProject(project);
+           long id = _service.SaveProject(project);
 
             return Ok(id);
         }
@@ -93,25 +93,7 @@ namespace doneillspa.Controllers
         [Route("api/project")]
         public IActionResult Put([FromBody]Project p)
         {
-            if (p == null)
-            {
-                return BadRequest();
-            }
-
-            var existingProject = _service.GetProjectById(p.Id);
-
-            if (existingProject == null)
-            {
-                return NotFound();
-            }
-
-            existingProject.Name = p.Name;
-            existingProject.Details = p.Details;
-            existingProject.IsActive = p.IsActive;
-            existingProject.Code = p.Code;
-
-            _service.UpdateProject(existingProject);
-
+            _service.UpdateProject(p);
             return new NoContentResult();
         }
     }
