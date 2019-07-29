@@ -30,14 +30,7 @@ namespace doneillspa.Controllers
         [Route("api/certification/{id}")]
         public JsonResult Delete(long id)
         {
-            Certification certification = _service.GetCertificationById(id);
-
-            if (certification != null)
-            {
-                _service.DeleteCertification(certification);
-
-                return Json(Ok());
-            }
+            _service.DeleteCertification(id);
             return Json(Ok());
         }
     }

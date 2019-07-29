@@ -10,6 +10,6 @@ namespace doneillspa.Services
     {
         IEnumerable<EmailNotification> GetEmailNotificationsByUserId(string userId);
         EmailNotification GetEmailNotificationById(long id);
-        void DeleteNotification(Notification not);
+        void DeleteNotification(long not);
     }
 }

@@ -16,9 +16,10 @@ namespace doneillspa.Services
             _holidayRepository = repository;
         }
 
-        public void Delete(HolidayRequest request)
+        public void Delete(long id)
         {
-            _holidayRepository.Delete(request);
+            HolidayRequest holiday = GetHolidayRequestById(id);
+            _holidayRepository.Delete(holiday);
         }
 
         public HolidayRequest GetHolidayRequestById(long id)

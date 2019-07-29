@@ -15,9 +15,10 @@ namespace doneillspa.Services
         {
             _repository = nr;
         }
-        public void DeleteNotification(Notification not)
+        public void DeleteNotification(long id)
         {
-            _repository.DeleteNotification(not);
+            EmailNotification notification = GetEmailNotificationById(id);
+            _repository.DeleteNotification(notification);
         }
 
         public EmailNotification GetEmailNotificationById(long id)

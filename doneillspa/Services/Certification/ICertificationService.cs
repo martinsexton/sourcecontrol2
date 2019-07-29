@@ -10,6 +10,6 @@ namespace doneillspa.Services
     {
         IEnumerable<doneillspa.Models.Certification> GetCertificationsByUserId(string userId);
         doneillspa.Models.Certification GetCertificationById(long id);
-        void DeleteCertification(doneillspa.Models.Certification cert);
+        void DeleteCertification(long id);
     }
 }

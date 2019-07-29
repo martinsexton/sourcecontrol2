@@ -25,14 +25,7 @@ namespace doneillspa.Controllers
         [Route("api/notification/{id}")]
         public JsonResult Delete(long id)
         {
-            EmailNotification not = _service.GetEmailNotificationById(id);
-
-            if (not != null)
-            {
-                _service.DeleteNotification(not);
-
-                return Json(Ok());
-            }
+            _service.DeleteNotification(id);
             return Json(Ok());
         }
     }

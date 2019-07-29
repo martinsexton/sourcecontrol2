@@ -45,14 +45,7 @@ namespace doneillspa.Controllers
         [Route("api/holidayrequest/{id}")]
         public JsonResult Delete(long id)
         {
-            HolidayRequest request = _holidayService.GetHolidayRequestById(id);
-
-            if (request != null)
-            {
-                _holidayService.Delete(request);
-
-                return Json(Ok());
-            }
+            _holidayService.Delete(id);
             return Json(Ok());
         }
     }

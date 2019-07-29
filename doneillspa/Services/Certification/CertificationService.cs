@@ -15,8 +15,9 @@ namespace doneillspa.Services
         {
             _repository = repository;
         }
-        public void DeleteCertification(Certification cert)
+        public void DeleteCertification(long id)
         {
+            Certification cert = GetCertificationById(id);
             _repository.DeleteCertification(cert);
             _repository.Save();
         }

@@ -12,8 +12,7 @@ namespace doneillspa.Services
         IEnumerable<HolidayRequest> GetHolidayRequestsForUser(string userId);
         IEnumerable<HolidayRequest> GetHolidayRequestsForApprover(string userId);
 
-        //Try move these into relevant business method
-        void Delete(HolidayRequest request);
+        void Delete(long id);
         void Update(HolidayRequest request);
     }
 }
