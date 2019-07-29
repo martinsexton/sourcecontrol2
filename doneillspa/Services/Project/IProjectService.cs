@@ -18,5 +18,12 @@ namespace doneillspa.Services
         void UpdateClient(Client b);
         Client GetClientById(long id);
         IEnumerable<Client> GetClients();
+
+        LabourRate GetRate(string role, DateTime date);
+        IEnumerable<LabourRate> GetRates();
+        LabourRate GetRateById(long id);
+        long InsertRate(LabourRate r);
+        void UpdateRate(LabourRate r);
+        void DeleteRate(LabourRate r);
     }
 }

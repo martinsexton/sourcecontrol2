@@ -62,7 +62,8 @@ namespace doneillspa
             //Setup Holiday Service and inject the required repositories
             services.AddScoped<IHolidayService>(_ => new HolidayService(_.GetService<IHolidayRequestRepository>()));
             services.AddScoped<ICertificationService>(_ => new CertificationService(_.GetService<ICertificationRepository>()));
-            services.AddScoped<IProjectService>(_ => new ProjectService(_.GetService<IProjectRepository>(), _.GetService<IClientRepository>()));
+            services.AddScoped<IProjectService>(_ => new ProjectService(_.GetService<IProjectRepository>(), 
+                _.GetService<IClientRepository>(), _.GetService<IRateRepository>()));
             services.AddScoped<INotificationService>(_ => new NotificationService(_.GetService<INotificationRepository>()));
             services.AddScoped<ITimesheetService>(_ => new TimesheetService(_.GetService<ITimesheetRepository>(), 
                 _.GetService<ITimesheetEntryRepository>(), _.GetService<INoteRepository>()));
