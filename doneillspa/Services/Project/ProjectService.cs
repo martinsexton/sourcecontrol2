@@ -20,11 +20,6 @@ namespace doneillspa.Services
             _rateRepository = rr;
         }
 
-        public long SaveProject(Project b)
-        {
-            return _projectRepository.InsertProject(b);
-        }
-
         public void UpdateProject(Project proj)
         {
             if (proj != null)

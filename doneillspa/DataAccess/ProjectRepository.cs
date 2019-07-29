@@ -35,13 +35,6 @@ namespace doneillspa.DataAccess
             _context.SaveChanges();
         }
 
-        public long InsertProject(Project p)
-        {
-            _context.Project.Add(p);
-            _context.SaveChanges();
-            return p.Id;
-        }
-
         public void UpdateProject(Project p)
         {
             _context.Entry(p).State = EntityState.Modified;

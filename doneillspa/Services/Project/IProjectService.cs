@@ -8,7 +8,6 @@ namespace doneillspa.Services
 {
     public interface IProjectService
     {
-        long SaveProject(Project b);
         void UpdateProject(Project b);
         void DeleteProject(Project b);
         IEnumerable<Project> GetProjects();

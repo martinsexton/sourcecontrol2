@@ -45,20 +45,6 @@ namespace doneillspa.Controllers
             return projectDtos;
         }
 
-        [HttpGet]
-        [Route("api/project/{id}")]
-        public JsonResult Get(long id)
-        {
-            var item = _service.GetProjectById(id);
-
-            if (item == null)
-            {
-                return Json(Ok());
-            }
-            JsonResult result = new JsonResult(item);
-            return result;
-        }
-
         [HttpDelete]
         [Route("api/project/{id}")]
         public JsonResult Delete(long id)
@@ -73,20 +59,6 @@ namespace doneillspa.Controllers
             }
 
             return Json(Ok());
-        }
-
-        [HttpPost]
-        [Route("api/project")]
-        public IActionResult Post([FromBody]Project project)
-        {
-            if (project == null)
-            {
-                return BadRequest();
-            }
-
-           long id = _service.SaveProject(project);
-
-            return Ok(id);
         }
 
         [HttpPut]

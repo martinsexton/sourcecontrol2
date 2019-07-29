@@ -8,7 +8,6 @@ namespace doneillspa.DataAccess
 {
     public interface IProjectRepository
     {
-        long InsertProject(Project b);
         void UpdateProject(Project b);
         void DeleteProject(Project b);
         IEnumerable<Project> GetProjects();
