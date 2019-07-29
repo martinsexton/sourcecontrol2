@@ -19,6 +19,8 @@ using System.Security.Cryptography;
 using doneillspa.Services.Email;
 using doneillspa.Services.Calendar;
 using doneillspa.Services.Document;
+using doneillspa.Services;
+using doneillspa.Services.Holiday;
 
 namespace doneillspa
 {
@@ -57,6 +59,9 @@ namespace doneillspa
 
             //Calendar Services
             services.AddScoped<ICalendarService>(_ => new GoogleCalendarService(Configuration));
+
+            //Setup Holiday Service and inject the required repositories
+            services.AddScoped<IHolidayService>(_ => new HolidayService(_.GetService<IHolidayRequestRepository>()));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();

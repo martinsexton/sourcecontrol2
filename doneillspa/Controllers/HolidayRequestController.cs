@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using doneillspa.Services.Email;
 using doneillspa.Dtos;
 using doneillspa.Services.Calendar;
+using doneillspa.Services;
 
 namespace doneillspa.Controllers
 {
@@ -21,22 +22,22 @@ namespace doneillspa.Controllers
     {
         private readonly IEmailService _emailService;
         private readonly ICalendarService _calendarService;
-        private readonly IHolidayRequestRepository _repository;
+        private readonly IHolidayService _holidayService;
 
-        public HolidayRequestController(IEmailService emailService, ICalendarService calendarService, IHolidayRequestRepository holidayRepository)
+        public HolidayRequestController(IEmailService emailService, ICalendarService calendarService, IHolidayService hservice)
         {
             _emailService = emailService;
             _calendarService = calendarService;
-            _repository = holidayRepository;
+            _holidayService = hservice;
         }
         [HttpPut]
         [Route("api/holidayrequest")]
         public IActionResult Put([FromBody]HolidayRequestDto hr)
         {
-            HolidayRequest request = _repository.GetHolidayRequestById(hr.Id);
+            HolidayRequest request = _holidayService.GetHolidayRequestById(hr.Id);
             request.Updated(hr, _calendarService, _emailService);
 
-            _repository.Update(request);
+            _holidayService.Update(request);
             return new NoContentResult();
         }
 
@@ -44,11 +45,11 @@ namespace doneillspa.Controllers
         [Route("api/holidayrequest/{id}")]
         public JsonResult Delete(long id)
         {
-            HolidayRequest request = _repository.GetHolidayRequestById(id);
+            HolidayRequest request = _holidayService.GetHolidayRequestById(id);
 
             if (request != null)
             {
-                _repository.Delete(request);
+                _holidayService.Delete(request);
 
                 return Json(Ok());
             }

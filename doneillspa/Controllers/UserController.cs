@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using doneillspa.Services.Email;
 using doneillspa.Dtos;
+using doneillspa.Services;
 
 namespace doneillspa.Controllers
 {
@@ -22,15 +23,17 @@ namespace doneillspa.Controllers
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly ITimesheetRepository _repository;
         private readonly IEmailService _emailService;
-        private readonly IHolidayRequestRepository _holidayRepository;
+        private readonly IHolidayService _holidayService;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, ITimesheetRepository repository, IHolidayRequestRepository holidayRepository, IEmailService emailService)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, 
+            ITimesheetRepository repository, IEmailService emailService,
+            IHolidayService hservice)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _repository = repository;
             _emailService = emailService;
-            _holidayRepository = holidayRepository;
+            _holidayService = hservice;
         }
 
         [HttpGet]
@@ -184,8 +187,7 @@ namespace doneillspa.Controllers
         public IEnumerable<HolidayRequestDto> GetHolidayRequestsForUser(string id)
         {
             List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
-
-            IEnumerable<HolidayRequest> holidayRequests = _holidayRepository.GetHolidayRequestsForUser(id);
+            IEnumerable<HolidayRequest> holidayRequests = _holidayService.GetHolidayRequestsForUser(id);
 
             foreach (HolidayRequest hr in holidayRequests)
             {
@@ -201,8 +203,7 @@ namespace doneillspa.Controllers
         public IEnumerable<HolidayRequestDto> GetHolidayRequestsForApproval(string id)
         {
             List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
-
-            IEnumerable<HolidayRequest> holidayRequests = _holidayRepository.GetHolidayRequestsForApprover(id);
+            IEnumerable<HolidayRequest> holidayRequests = _holidayService.GetHolidayRequestsForApprover(id);
 
             foreach (HolidayRequest hr in holidayRequests)
             {
