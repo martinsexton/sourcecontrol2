@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
+using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,14 +14,12 @@ namespace doneillspa.Controllers
     //Secure this Web API so that only a token provided with the roles satisfing the Policy called employee will have access
     [Authorize(AuthenticationSchemes = "Bearer", Policy = "AuthenticatedUser")]
     [Produces("application/json")]
-    //[Route("api/project")]
     public class ProjectController : Controller
     {
-        private readonly IProjectRepository _repository;
-
-        public ProjectController(IProjectRepository repository)
+        private readonly IProjectService _service;
+        public ProjectController(IProjectService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         [HttpGet]
@@ -29,7 +28,7 @@ namespace doneillspa.Controllers
         {
             List<ProjectDto> projectDtos = new List<ProjectDto>();
 
-            IEnumerable<Project> projects = _repository.GetProjects();
+            IEnumerable<Project> projects = _service.GetProjects();
             foreach(Project p in projects)
             {
                 ProjectDto dto = new ProjectDto();
@@ -50,7 +49,7 @@ namespace doneillspa.Controllers
         [Route("api/project/{id}")]
         public JsonResult Get(long id)
         {
-            var item = _repository.GetProjectById(id);
+            var item = _service.GetProjectById(id);
 
             if (item == null)
             {
@@ -64,11 +63,11 @@ namespace doneillspa.Controllers
         [Route("api/project/{id}")]
         public JsonResult Delete(long id)
         {
-            var existingProject = _repository.GetProjectById(id);
+            var existingProject = _service.GetProjectById(id);
 
             if (existingProject != null)
             {
-                _repository.DeleteProject(existingProject);
+                _service.DeleteProject(existingProject);
 
                 return Json(Ok());
             }
@@ -85,7 +84,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-           long id = _repository.InsertProject(project);
+           long id = _service.InsertProject(project);
 
             return Ok(id);
         }
@@ -99,7 +98,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            var existingProject = _repository.GetProjectById(p.Id);
+            var existingProject = _service.GetProjectById(p.Id);
 
             if (existingProject == null)
             {
@@ -111,7 +110,7 @@ namespace doneillspa.Controllers
             existingProject.IsActive = p.IsActive;
             existingProject.Code = p.Code;
 
-            _repository.UpdateProject(existingProject);
+            _service.UpdateProject(existingProject);
 
             return new NoContentResult();
         }

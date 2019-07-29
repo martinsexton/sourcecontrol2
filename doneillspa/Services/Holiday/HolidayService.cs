@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Models;
 
-namespace doneillspa.Services.Holiday
+namespace doneillspa.Services
 {
     public class HolidayService : IHolidayService
     {

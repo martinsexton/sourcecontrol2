@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace doneillspa.Services.Certification
+namespace doneillspa.Services
 {
     public interface ICertificationService
     {

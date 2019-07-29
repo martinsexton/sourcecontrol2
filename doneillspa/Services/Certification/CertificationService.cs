@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Models;
 
-namespace doneillspa.Services.Certification
+namespace doneillspa.Services
 {
     public class CertificationService : ICertificationService
     {
@@ -15,18 +15,18 @@ namespace doneillspa.Services.Certification
         {
             _repository = repository;
         }
-        public void DeleteCertification(Models.Certification cert)
+        public void DeleteCertification(Certification cert)
         {
             _repository.DeleteCertification(cert);
             _repository.Save();
         }
 
-        public Models.Certification GetCertificationById(long id)
+        public Certification GetCertificationById(long id)
         {
             return _repository.GetCertificationById(id);
         }
 
-        public IEnumerable<Models.Certification> GetCertificationsByUserId(string userId)
+        public IEnumerable<Certification> GetCertificationsByUserId(string userId)
         {
             return _repository.GetCertificationsByUserId(userId);
         }
