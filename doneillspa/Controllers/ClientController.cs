@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
+using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +16,11 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class ClientController : Controller
     {
-        private readonly IClientRepository _repository;
+        private readonly IProjectService _projectService;
 
-        public ClientController(IClientRepository repository)
+        public ClientController(IProjectService ps)
         {
-            _repository = repository;
+            _projectService = ps;
         }
 
         [HttpPost]
@@ -31,7 +32,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            long id = _repository.InsertClient(client);
+            long id = _projectService.InsertClient(client);
 
             return Ok(id);
         }
@@ -42,7 +43,7 @@ namespace doneillspa.Controllers
         {
             List<ClientDto> dtos = new List<ClientDto>();
 
-            IEnumerable<Client> clients = _repository.GetClients();
+            IEnumerable<Client> clients = _projectService.GetClients();
             foreach (Client c in clients)
             {
                 List<ProjectDto> projects = new List<ProjectDto>();
@@ -75,10 +76,10 @@ namespace doneillspa.Controllers
         [Route("api/client/{id}/projects")]
         public IActionResult Put(long id, [FromBody]Project p)
         {
-            Client c = _repository.GetClientById(id);
+            Client c = _projectService.GetClientById(id);
             c.AddProject(p);
 
-            _repository.UpdateClient(c);
+            _projectService.UpdateClient(c);
 
             return Ok(p.Id);
         }

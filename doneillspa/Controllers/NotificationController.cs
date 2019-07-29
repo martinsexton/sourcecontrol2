@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Models;
+using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,23 +14,22 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class NotificationController : Controller
     {
-        private readonly INotificationRepository _repository;
+        private readonly INotificationService _service;
 
-        public NotificationController(INotificationRepository repository)
+        public NotificationController(INotificationService ns)
         {
-            _repository = repository;
+            _service = ns;
         }
 
         [HttpDelete]
         [Route("api/notification/{id}")]
         public JsonResult Delete(long id)
         {
-            EmailNotification not = _repository.GetEmailNotificationById(id);
+            EmailNotification not = _service.GetEmailNotificationById(id);
 
             if (not != null)
             {
-                _repository.DeleteCertification(not);
-                _repository.Save();
+                _service.DeleteNotification(not);
 
                 return Json(Ok());
             }

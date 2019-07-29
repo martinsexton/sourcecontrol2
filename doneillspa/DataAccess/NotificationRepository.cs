@@ -16,9 +16,10 @@ namespace doneillspa.DataAccess
         {
             _context = context;
         }
-        public void DeleteCertification(Notification not)
+        public void DeleteNotification(Notification not)
         {
             _context.Entry(not).State = EntityState.Deleted;
+            Save();
         }
 
         public EmailNotification GetEmailNotificationById(long id)

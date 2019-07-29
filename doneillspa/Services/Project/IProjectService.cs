@@ -13,5 +13,10 @@ namespace doneillspa.Services
         void DeleteProject(Project b);
         IEnumerable<Project> GetProjects();
         Project GetProjectById(long id);
+
+        long InsertClient(Client b);
+        void UpdateClient(Client b);
+        Client GetClientById(long id);
+        IEnumerable<Client> GetClients();
     }
 }
