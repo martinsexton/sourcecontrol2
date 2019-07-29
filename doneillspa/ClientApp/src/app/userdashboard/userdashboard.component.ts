@@ -292,14 +292,17 @@ export class UserDashboardComponent {
     return ts.timesheetEntries;
   }
 
-  calculateDuration(entry: TimesheetEntry): number {
+  calculateDuration(entry: TimesheetEntry): string {
     var start = new Date("2018-01-01 " + entry.startTime);
     var end = new Date("2018-01-01 " + entry.endTime);
 
     var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
     var elapsedTimeInMins = elapsedTimeInSec / 60;
 
-    return elapsedTimeInMins;
+    var hours = Math.floor(elapsedTimeInMins / 60);
+    var minutes = elapsedTimeInMins % 60;
+
+    return hours + ':' + minutes;
   }
 
   retrieveTimesheetsForUser() {

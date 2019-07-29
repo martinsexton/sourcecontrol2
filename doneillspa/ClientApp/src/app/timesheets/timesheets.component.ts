@@ -430,25 +430,6 @@ export class TimesheetComponent {
     }
   }
 
-  calculateTotalDuration() {
-    let totalDuration: number = 0;
-
-    for (let tse of this.retrieveTimesheetsForDay(this.selectedDay)) {
-      totalDuration = totalDuration + this.calculateDuration(tse);
-    }
-    return totalDuration;
-  }
-
-  calculateDuration(entry : TimesheetEntry) : number {
-    var start = new Date("2018-01-01 " + entry.startTime);
-    var end = new Date("2018-01-01 " + entry.endTime);
-
-    var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-    var elapsedTimeInMins = elapsedTimeInSec / 60;
-
-    return elapsedTimeInMins;
-  }
-
   populateTimesheet(entries: TimesheetEntry[]) {
     for (let item of entries) {
       this.activeTimeSheet.timesheetEntries.push(item);
