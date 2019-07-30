@@ -17,7 +17,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let client of clients" data-toggle="tooltip" data-placement="right" title="Click For Details">
+                <tr *ngFor="let client of clients" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="client == selectedClient">
                   <td (click)="displayProjectsForSelectedClient(client)">{{ client.name }}</td>
                 </tr>
               </tbody>

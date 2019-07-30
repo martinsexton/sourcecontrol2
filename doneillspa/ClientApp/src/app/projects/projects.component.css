@@ -5,3 +5,8 @@
 .div-to-stand-out {
   box-shadow: 0 0 1em 1em #ccc;
 }
+
+.table tr.active td {
+  background-color: #D6EAF8;
+  color: black;
+}
