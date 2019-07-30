@@ -209,6 +209,21 @@ export class DashboardComponent {
     return hours + ':' + minutes;
   }
 
+  timesheeExceedsWeeklyLimit() {
+    let totalDuration: number = 0;
+
+    for (let tse of this.selectedTimesheet.timesheetEntries) {
+      var start = new Date("2018-01-01 " + tse.startTime);
+      var end = new Date("2018-01-01 " + tse.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+      totalDuration += elapsedTimeInMins;
+    }
+    //2250 mins = 37.5 hours.
+    return totalDuration > 2250;
+  }
+
   calculateDuration(entry: TimesheetEntry): string {
     var start = new Date("2018-01-01 " + entry.startTime);
     var end = new Date("2018-01-01 " + entry.endTime);
@@ -230,5 +245,10 @@ export class DashboardComponent {
   getTimesheetEntriesForSubmittedTimesheets(index) {
     let ts = this.retrieveSubmittedTimesheets()[index];
     return ts.timesheetEntries;
+  }
+
+  getTimesheetOwner(index) {
+    let ts = this.retrieveSubmittedTimesheets()[index];
+    return ts.username;
   }
 }
