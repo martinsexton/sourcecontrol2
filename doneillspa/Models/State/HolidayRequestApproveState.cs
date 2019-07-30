@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using doneillspa.Services;
 using doneillspa.Services.Calendar;
 using doneillspa.Services.Email;
 
@@ -15,7 +16,7 @@ namespace doneillspa.Models.State
         {
             context = request;
         }
-        public void Approve(ICalendarService _calendarService, IEmailService _emailService)
+        public void Approve(ICalendarService _calendarService, IEmailService _emailService, ITimesheetService _timesheetService)
         {
             //Holiday Request already in Approve State.
         }

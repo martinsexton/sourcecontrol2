@@ -23,19 +23,21 @@ namespace doneillspa.Controllers
         private readonly IEmailService _emailService;
         private readonly ICalendarService _calendarService;
         private readonly IHolidayService _holidayService;
+        private readonly ITimesheetService _timesheetService;
 
-        public HolidayRequestController(IEmailService emailService, ICalendarService calendarService, IHolidayService hservice)
+        public HolidayRequestController(IEmailService emailService, ICalendarService calendarService, IHolidayService hservice, ITimesheetService tss)
         {
             _emailService = emailService;
             _calendarService = calendarService;
             _holidayService = hservice;
+            _timesheetService = tss;
         }
         [HttpPut]
         [Route("api/holidayrequest")]
         public IActionResult Put([FromBody]HolidayRequestDto hr)
         {
             HolidayRequest request = _holidayService.GetHolidayRequestById(hr.Id);
-            request.Updated(hr, _calendarService, _emailService);
+            request.Updated(hr, _calendarService, _emailService, _timesheetService);
 
             _holidayService.Update(request);
             return new NoContentResult();

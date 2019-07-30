@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.Dtos;
 using doneillspa.Models.State;
+using doneillspa.Services;
 using doneillspa.Services.Calendar;
 using doneillspa.Services.Email;
 
@@ -34,11 +35,11 @@ namespace doneillspa.Models
         }
 
         //Method triggerd by controller when HolidayRequest has been updated.
-        public void Updated(HolidayRequestDto dto, ICalendarService _calendarService, IEmailService _emailService)
+        public void Updated(HolidayRequestDto dto, ICalendarService _calendarService, IEmailService _emailService, ITimesheetService tss)
         {
             if (dto.Status.Equals(HolidayRequestStatus.Approved.ToString()))
             {
-                GetState().Approve(_calendarService, _emailService);
+                GetState().Approve(_calendarService, _emailService, tss);
             }
             else if (dto.Status.Equals(HolidayRequestStatus.Rejected.ToString()))
             {

@@ -35,23 +35,6 @@ namespace doneillspa.Controllers
             return result;
         }
 
-        [HttpPost]
-        [Route("api/timesheetentry")]
-        public IActionResult Post([FromBody]TimesheetEntry tse)
-        {
-            if (tse == null)
-            {
-                return BadRequest();
-            }
-
-            //Set date created on timesheet entry
-            tse.DateCreated = DateTime.UtcNow;
-
-            _timesheetService.InsertTimesheetEntry(tse);
-
-            return Ok();
-        }
-
         [HttpPut]
         [Route("api/timesheetentry")]
         public IActionResult Put([FromBody]TimesheetEntry tse)

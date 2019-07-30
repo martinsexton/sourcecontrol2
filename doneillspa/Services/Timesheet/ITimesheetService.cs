@@ -14,9 +14,9 @@ namespace doneillspa.Services
         Timesheet GetTimsheetById(long id);
         IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting);
         IEnumerable<Timesheet> GetTimesheetsByUser(string user);
+        void RecordAnnualLeave(string userId, DateTime start, int numberOfDays);
 
         TimesheetEntry GetTimsheetEntryById(long id);
-        void InsertTimesheetEntry(TimesheetEntry tse);
         void UpdateTimesheetEntry(TimesheetEntry tse);
         void DeleteTimesheetEntry(TimesheetEntry tse);
         TimesheetNote GetNoteById(long id);

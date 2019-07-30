@@ -66,7 +66,7 @@ namespace doneillspa
                 _.GetService<IClientRepository>(), _.GetService<IRateRepository>()));
             services.AddScoped<INotificationService>(_ => new NotificationService(_.GetService<INotificationRepository>()));
             services.AddScoped<ITimesheetService>(_ => new TimesheetService(_.GetService<ITimesheetRepository>(), 
-                _.GetService<ITimesheetEntryRepository>(), _.GetService<INoteRepository>()));
+                _.GetService<ITimesheetEntryRepository>(), _.GetService<INoteRepository>(), _.GetService<UserManager<ApplicationUser>>()));
 
 
             services.AddSingleton<IJwtFactory, JwtFactory>();

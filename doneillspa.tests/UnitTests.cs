@@ -7,6 +7,7 @@ using doneillspa.Controllers;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
+using doneillspa.Services;
 using doneillspa.Services.Calendar;
 using doneillspa.Services.Email;
 using Microsoft.AspNetCore.Identity;
@@ -76,6 +77,10 @@ namespace doneillspa.tests
             mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
+            var mockTimesheetService = new Mock<ITimesheetService>();
+            mockTimesheetService.Setup(mock => mock.RecordAnnualLeave(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()));
+
+
             HolidayRequest request = new HolidayRequest();
             request.User = new ApplicationUser();
             request.User.FirstName = "Martin";
@@ -87,7 +92,7 @@ namespace doneillspa.tests
             HolidayRequestDto dto = new HolidayRequestDto();
             dto.Status = "Approved";
 
-            request.Updated(dto, mockCalendarService.Object, mockEmailService.Object);
+            request.Updated(dto, mockCalendarService.Object, mockEmailService.Object, mockTimesheetService.Object);
 
             //Verify that a call is made to create the event in calendar
             mockCalendarService.Verify(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()), Times.Once());
@@ -105,6 +110,9 @@ namespace doneillspa.tests
             mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
+            var mockTimesheetService = new Mock<ITimesheetService>();
+            mockTimesheetService.Setup(mock => mock.RecordAnnualLeave(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()));
+
             HolidayRequest request = new HolidayRequest();
             request.User = new ApplicationUser();
             request.User.FirstName = "Martin";
@@ -116,7 +124,7 @@ namespace doneillspa.tests
             HolidayRequestDto dto = new HolidayRequestDto();
             dto.Status = "Rejected";
 
-            request.Updated(dto, null, mockEmailService.Object);
+            request.Updated(dto, null, mockEmailService.Object, mockTimesheetService.Object);
 
             //Verify that an approval mail has been sent also to the user.
             mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), "user.mail@gmail.com", "Holiday Request Rejected",
@@ -133,6 +141,9 @@ namespace doneillspa.tests
             mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
+            var mockTimesheetService = new Mock<ITimesheetService>();
+            mockTimesheetService.Setup(mock => mock.RecordAnnualLeave(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()));
+
             HolidayRequest request = new HolidayRequest();
             request.Status = HolidayRequestStatus.Approved;
             request.User = new ApplicationUser();
@@ -144,7 +155,7 @@ namespace doneillspa.tests
             HolidayRequestDto dto = new HolidayRequestDto();
             dto.Status = "Approved";
 
-            request.Updated(dto, mockCalendarService.Object, mockEmailService.Object);
+            request.Updated(dto, mockCalendarService.Object, mockEmailService.Object, mockTimesheetService.Object);
 
             //Verify that a call is not made to create an event in calendar if already approved
             mockCalendarService.Verify(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()), Times.Never());
