@@ -292,6 +292,42 @@ export class UserDashboardComponent {
     return ts.timesheetEntries;
   }
 
+  calculateTotalDuration(index): string {
+    let totalDuration: number = 0;
+    let ts = this.timesheets[index];
+
+    for (let tse of ts.timesheetEntries) {
+      var start = new Date("2018-01-01 " + tse.startTime);
+      var end = new Date("2018-01-01 " + tse.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+      totalDuration += elapsedTimeInMins;
+    }
+
+    var hours = Math.floor(totalDuration / 60);
+    var minutes = totalDuration % 60;
+
+    return hours + ':' + minutes;
+  }
+
+  timesheeExceedsWeeklyLimit(index) {
+    let totalDuration: number = 0;
+
+    let ts = this.timesheets[index];
+
+    for (let tse of ts.timesheetEntries) {
+      var start = new Date("2018-01-01 " + tse.startTime);
+      var end = new Date("2018-01-01 " + tse.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+      totalDuration += elapsedTimeInMins;
+    }
+    //2250 mins = 37.5 hours.
+    return totalDuration > 2250;
+  }
+
   calculateDuration(entry: TimesheetEntry): string {
     var start = new Date("2018-01-01 " + entry.startTime);
     var end = new Date("2018-01-01 " + entry.endTime);

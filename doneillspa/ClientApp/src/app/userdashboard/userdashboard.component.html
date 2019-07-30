@@ -151,7 +151,7 @@
           <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
             <div class="col-md-4">
               <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
-                Week Beginning {{ ts.weekStarting | date:'fullDate'}}
+                {{ ts.weekStarting | date:'fullDate'}}
               </a>
             </div>
             <div class="col-md-8 collapse" id="collapseExample{{i}}">
@@ -184,6 +184,7 @@
                       <td></td>
                       <td></td>
                       <td></td>
+                      <td><span [class]="timesheeExceedsWeeklyLimit(i) ? 'badge badge-warning' : 'badge badge-primary'">Duration: {{ calculateTotalDuration(i) }} hrs</span></td>
                     </tr>
                   </tfoot>
                 </table>
