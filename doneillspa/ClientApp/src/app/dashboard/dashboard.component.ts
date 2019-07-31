@@ -44,33 +44,10 @@ export class DashboardComponent {
     this._timesheetService.getTimesheets().subscribe(result => {
       this.timesheets = result;
       if (this.timesheets.length > 0) {
-        this.refreshListOfUsers();
         this.selectedTimesheet = this.timesheets[0];
         this.selectedTsRow = 0;
       }
     }, error => this.errors = error);
-  }
-
-  refreshListOfUsers() {
-
-    //Clear array before we start
-    if (this.users) {
-      this.users = null;
-    }
-
-    for (let ts of this.timesheets) {
-      if (!this.users) {
-        this.users = [];
-        this.users.push(ts.username);
-      }
-      else {
-        for (let n of this.users) {
-          if (n.toUpperCase() != ts.username.toUpperCase()) {
-            this.users.push(ts.username);
-          }
-        }
-      }
-    }
   }
 
   addTimesheetNote(timesheet:Timesheet) {
@@ -180,7 +157,7 @@ export class DashboardComponent {
       //Clear filters
       this.filteredTimesheets = null;
       if (this.timesheets.length > 0) {
-        this.refreshListOfUsers();
+        //this.refreshListOfUsers();
         this.selectedTimesheet = this.timesheets[0];
         this.selectedTsRow = 0;
       } else {
@@ -212,17 +189,16 @@ export class DashboardComponent {
   timesheeExceedsWeeklyLimit() {
     let totalDuration: number = 0;
 
-    return false;
-    //for (let tse of this.selectedTimesheet.timesheetEntries) {
-    //  var start = new Date("2018-01-01 " + tse.startTime);
-    //  var end = new Date("2018-01-01 " + tse.endTime);
+    for (let tse of this.selectedTimesheet.timesheetEntries) {
+      var start = new Date("2018-01-01 " + tse.startTime);
+      var end = new Date("2018-01-01 " + tse.endTime);
 
-    //  var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-    //  var elapsedTimeInMins = elapsedTimeInSec / 60;
-    //  totalDuration += elapsedTimeInMins;
-    //}
-    ////2250 mins = 37.5 hours.
-    //return totalDuration > 2250;
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+      totalDuration += elapsedTimeInMins;
+    }
+    //2250 mins = 37.5 hours.
+    return totalDuration > 2250;
   }
 
   calculateDuration(entry: TimesheetEntry): string {

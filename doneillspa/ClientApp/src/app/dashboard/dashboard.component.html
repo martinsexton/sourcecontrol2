@@ -36,7 +36,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let tse of getTimesheetEntriesForSubmittedTimesheets(i)">
-                    <!--<td>{{getTimesheetOwner(i)}}</td>-->
+                    <td>{{getTimesheetOwner(i)}}</td>
                     <td>{{ tse.day }}</td>
                     <td>{{ tse.startTime }}</td>
                     <td>{{ tse.endTime }}</td>
@@ -53,7 +53,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <!--<td><span [class]="timesheeExceedsWeeklyLimit() ? 'badge badge-warning' : 'badge badge-primary'">Duration: {{ calculateTotalDuration() }} hrs</span></td>-->
+                    <td><span [class]="timesheeExceedsWeeklyLimit() ? 'badge badge-warning' : 'badge badge-primary'">Duration: {{ calculateTotalDuration() }} hrs</span></td>
                   </tr>
                 </tfoot>
               </table>
