@@ -306,8 +306,12 @@ namespace doneillspa.Controllers
                 .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
-                //For each Timesheet create a LabourDetails object.
-                details.Add(ts.BuildLabourWeekDetails(this.Rates, proj));
+                LabourWeekDetail detail = ts.BuildLabourWeekDetails(this.Rates, proj);
+                if(detail.TotalCost > 0)
+                {
+                    //Only include detail where the week has some cost associated with the project
+                    details.Add(detail);
+                }
             }
 
             return details.AsEnumerable<LabourWeekDetail>();

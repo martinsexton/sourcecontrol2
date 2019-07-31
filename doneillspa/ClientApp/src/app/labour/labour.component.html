@@ -53,12 +53,28 @@
           <td>{{lw.totalCost | currency:'EUR'}}</td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td>Totals:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><span class="badge badge badge-primary">{{ calculateTotalCostToDate() | currency:'EUR'}}</span></td>
+        </tr>
+      </tfoot>
     </table>
-    <button class="btn btn-primary" type="button" (click)="downloadReport()">
-      <span [class]="sendingReport ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
-      Download Report
-    </button>
   </div>
+  <button class="btn btn-primary" type="button" (click)="downloadReport()">
+    <span [class]="sendingReport ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
+    Download Report
+  </button>
   <!-- Toasts -->
   <div aria-live="polite" aria-atomic="true">
     <!-- Position it -->

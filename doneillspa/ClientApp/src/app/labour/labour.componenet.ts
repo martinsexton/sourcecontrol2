@@ -60,6 +60,15 @@ export class LabourComponent {
     });
   }
 
+  calculateTotalCostToDate() {
+    let totalCostToDate: number = 0;
+
+    for(let lw of this.labourWeeks){
+      totalCostToDate = totalCostToDate + lw.totalCost;
+    }
+    return totalCostToDate;
+  }
+
   // events
   public chartClicked(e: any): void {
     console.log(e);
