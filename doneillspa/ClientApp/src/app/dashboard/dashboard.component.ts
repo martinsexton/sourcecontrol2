@@ -212,16 +212,17 @@ export class DashboardComponent {
   timesheeExceedsWeeklyLimit() {
     let totalDuration: number = 0;
 
-    for (let tse of this.selectedTimesheet.timesheetEntries) {
-      var start = new Date("2018-01-01 " + tse.startTime);
-      var end = new Date("2018-01-01 " + tse.endTime);
+    return false;
+    //for (let tse of this.selectedTimesheet.timesheetEntries) {
+    //  var start = new Date("2018-01-01 " + tse.startTime);
+    //  var end = new Date("2018-01-01 " + tse.endTime);
 
-      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-      var elapsedTimeInMins = elapsedTimeInSec / 60;
-      totalDuration += elapsedTimeInMins;
-    }
-    //2250 mins = 37.5 hours.
-    return totalDuration > 2250;
+    //  var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+    //  var elapsedTimeInMins = elapsedTimeInSec / 60;
+    //  totalDuration += elapsedTimeInMins;
+    //}
+    ////2250 mins = 37.5 hours.
+    //return totalDuration > 2250;
   }
 
   calculateDuration(entry: TimesheetEntry): string {
