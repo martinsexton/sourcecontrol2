@@ -25,7 +25,7 @@
               <table class='table'>
                 <thead class="thead-light">
                   <tr>
-                    <!--<th>Employee</th>-->
+                    <th>Employee</th>
                     <th>Day</th>
                     <th>Start Time</th>
                     <th>End Time</th>
@@ -53,7 +53,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><span [class]="timesheeExceedsWeeklyLimit() ? 'badge badge-warning' : 'badge badge-primary'">Duration: {{ calculateTotalDuration() }} hrs</span></td>
+                    <td><span [class]="timesheeExceedsWeeklyLimit(i) ? 'badge badge-warning' : 'badge badge-primary'">Duration: {{ calculateTotalDuration(i) }} hrs</span></td>
                   </tr>
                 </tfoot>
               </table>

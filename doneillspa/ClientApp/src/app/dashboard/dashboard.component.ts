@@ -168,10 +168,12 @@ export class DashboardComponent {
     }, error => this.errors = error);
   }
 
-  calculateTotalDuration() : string{
+  calculateTotalDuration(index) : string{
     let totalDuration: number = 0;
 
-    for (let tse of this.selectedTimesheet.timesheetEntries) {
+    let ts = this.retrieveSubmittedTimesheets()[index];
+
+    for (let tse of ts.timesheetEntries) {
       var start = new Date("2018-01-01 " + tse.startTime);
       var end = new Date("2018-01-01 " + tse.endTime);
 
@@ -186,10 +188,12 @@ export class DashboardComponent {
     return hours + ':' + minutes;
   }
 
-  timesheeExceedsWeeklyLimit() {
+  timesheeExceedsWeeklyLimit(index) {
     let totalDuration: number = 0;
 
-    for (let tse of this.selectedTimesheet.timesheetEntries) {
+    let ts = this.retrieveSubmittedTimesheets()[index];
+
+    for (let tse of ts.timesheetEntries) {
       var start = new Date("2018-01-01 " + tse.startTime);
       var end = new Date("2018-01-01 " + tse.endTime);
 
