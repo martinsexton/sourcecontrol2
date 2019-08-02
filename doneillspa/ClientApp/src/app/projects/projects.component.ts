@@ -168,7 +168,7 @@ export class ProjectComponent {
   }
 
   removeFromArrayList(p: Project) {
-    for (let item of this.projectsToDisplay) {
+    for (let item of this.selectedClient.projects) {
       if (item.client == p.client && item.client == p.client && item.details == p.details) {
         this.projectsToDisplay.splice(this.projectsToDisplay.indexOf(item), 1);
         break;
@@ -237,7 +237,7 @@ export class ProjectComponent {
         console.error(error);
       });
   }
-  saveProject2() {
+  saveProject() {
     this._projectService.addProject(this.selectedClient.id, this.newProject).subscribe(
       res => {
         this.newProject.id = res as number;
@@ -245,8 +245,12 @@ export class ProjectComponent {
 
         console.log(res);
         this.projectSaved = true;
+        let projectToPush = new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.code, this.newProject.details, this.newProject.isActive, this.newProject.startDate);
+
         //Update the collection of projects with newly created one
-        this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.code, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
+        this.selectedClient.projects.push(projectToPush)
+        //this.projectsToDisplay.push(projectToPush);
+
         //clear down the new project model
         this.newProject = new Project(0, '', '', '', '', true, new Date);
         $("#myNewProjectModal").modal('hide');
@@ -260,24 +264,24 @@ export class ProjectComponent {
       });
   }
 
-  saveProject() {
-    this._projectService.saveProject(this.newProject).subscribe(
-      res => {
-        this.newProject.id = res as number;
-        console.log(res);
-        this.projectSaved = true;
-        //Update the collection of projects with newly created one
-        this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.code, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
-        //clear down the new project model
-        this.newProject = new Project(0, '', '', '', '', true, new Date);
-        $("#myNewProjectModal").modal('hide');
+  //saveProjectold() {
+  //  this._projectService.saveProject(this.newProject).subscribe(
+  //    res => {
+  //      this.newProject.id = res as number;
+  //      console.log(res);
+  //      this.projectSaved = true;
+  //      //Update the collection of projects with newly created one
+  //      this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.code, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
+  //      //clear down the new project model
+  //      this.newProject = new Project(0, '', '', '', '', true, new Date);
+  //      $("#myNewProjectModal").modal('hide');
 
-        this.showUserMessage("Project Saved Successfully!")
-      }, error => {
-        $("#myNewProjectModal").modal('hide');
-        this.userMessage = "Failed to save project"
-        $('.toast').toast('show');
-        console.error(error);
-      });
-  }
+  //      this.showUserMessage("Project Saved Successfully!")
+  //    }, error => {
+  //      $("#myNewProjectModal").modal('hide');
+  //      this.userMessage = "Failed to save project"
+  //      $('.toast').toast('show');
+  //      console.error(error);
+  //    });
+  //}
 }

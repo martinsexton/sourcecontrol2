@@ -53,15 +53,7 @@ namespace doneillspa.Controllers
         [Route("api/timesheetentry/{id}")]
         public JsonResult Delete(long id)
         {
-            TimesheetEntry timesheetentry = _timesheetService.GetTimsheetEntryById(id);
-           
-            if (timesheetentry != null)
-            {
-                _timesheetService.DeleteTimesheetEntry(timesheetentry);
-
-                return Json(Ok());
-            }
-
+            _timesheetService.DeleteTimesheetEntry(id);
             return Json(Ok());
         }
     }

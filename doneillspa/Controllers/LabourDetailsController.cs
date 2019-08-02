@@ -74,7 +74,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-           long id = _projectService.SaveRate(rate);
+           long id = _projectService.SaveRate(rate.EffectiveFrom, rate.EffectiveTo,rate.RatePerHour, rate.OverTimeRatePerHour, rate.Role);
 
             return Ok(id);
         }

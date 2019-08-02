@@ -23,16 +23,8 @@ namespace doneillspa.Controllers
 
         [HttpDelete]
         [Route("api/note/{id}")]
-        public JsonResult Delete(long id)
-        {
-            TimesheetNote note = _timesheetService.GetNoteById(id);
-
-            if (note != null)
-            {
-                _timesheetService.DeleteNote(note);
-
-                return Json(Ok());
-            }
+        public JsonResult Delete(long id) {
+            _timesheetService.DeleteNote(id);
             return Json(Ok());
         }
     }

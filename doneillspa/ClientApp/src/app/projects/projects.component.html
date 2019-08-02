@@ -259,7 +259,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button [disabled]="newProjectName.invalid || newProjectCode.invalid" (click)="saveProject2()" class="btn btn-primary" [disabled]="newProject.details == '' || newProject.name == ''">Save Project</button>
+              <button [disabled]="newProjectName.invalid || newProjectCode.invalid" (click)="saveProject()" class="btn btn-primary" [disabled]="newProject.details == '' || newProject.name == ''">Save Project</button>
             </div>
           </form>
         </div>

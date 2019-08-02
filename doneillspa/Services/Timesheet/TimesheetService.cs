@@ -23,13 +23,15 @@ namespace doneillspa.Services
             _userManager = userManager;
         }
 
-        public void DeleteNote(TimesheetNote note)
+        public void DeleteNote(long noteId)
         {
+            TimesheetNote note = _noteRepository.GetNoteById(noteId);
             _noteRepository.DeleteNote(note);
         }
 
-        public void DeleteTimesheetEntry(TimesheetEntry tse)
+        public void DeleteTimesheetEntry(long tseId)
         {
+            TimesheetEntry tse = _tseRepository.GetTimsheetEntryById(tseId);
             _tseRepository.DeleteTimesheetEntry(tse);
             _tseRepository.Save();
         }

@@ -13,12 +13,12 @@ namespace doneillspa.Services
         IEnumerable<Project> GetProjects();
         Project GetProjectById(long id);
 
-        long SaveClient(Client b);
-        void AddProject(long clientId, Project proj);
+        long SaveClient(string b);
+        long AddProject(long clientId, string code, string name, string details, DateTime startDate);
         Client GetClientById(long id);
         IEnumerable<Client> GetClients();
 
-        long SaveRate(LabourRate r);
+        long SaveRate(DateTime effectiveFrom, DateTime? effectiveTo, double ratePerHour, double overtimeRatePerHour, string role);
         void UpdateRate(LabourRate r);
         void DeleteRate(long id);
 

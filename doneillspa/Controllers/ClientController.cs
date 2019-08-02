@@ -32,7 +32,7 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            long id = _projectService.SaveClient(client);
+            long id = _projectService.SaveClient(client.Name);
 
             return Ok(id);
         }
@@ -76,8 +76,7 @@ namespace doneillspa.Controllers
         [Route("api/client/{id}/projects")]
         public IActionResult Put(long id, [FromBody]Project p)
         {
-            _projectService.AddProject(id, p);
-            return Ok(p.Id);
+            return Ok(_projectService.AddProject(id, p.Code, p.Name, p.Details, p.StartDate));
         }
     }
 }

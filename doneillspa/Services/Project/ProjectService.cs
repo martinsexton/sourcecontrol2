@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
+using doneillspa.Factories;
 using doneillspa.Models;
 
 namespace doneillspa.Services
@@ -53,16 +54,24 @@ namespace doneillspa.Services
             return _projectRepository.GetProjects();
         }
 
-        public long SaveClient(Client b)
+        public long SaveClient(string clientName)
         {
-            return _clientRepository.InsertClient(b);
+            Client c = new Client();
+            c.Name = clientName;
+
+            return _clientRepository.InsertClient(c);
         }
 
-        public void AddProject(long clientId, Project proj)
+        public long AddProject(long clientId, string code, string name, string details, DateTime startDate)
         {
             Client c = GetClientById(clientId);
-            c.AddProject(proj);
+
+            Project p = ProjectFactory.CreateProject(code, name, details, startDate);
+
+            c.AddProject(p);
             _clientRepository.UpdateClient(c);
+
+            return p.Id;
         }
 
         public Client GetClientById(long id)
@@ -75,9 +84,11 @@ namespace doneillspa.Services
             return _clientRepository.GetClients();
         }
 
-        public long SaveRate(LabourRate r)
+        public long SaveRate(DateTime effectiveFrom, DateTime? effectiveTo, double ratePerHour, double overtimeRatePerHour, string role)
         {
-            return _rateRepository.InsertRate(r);
+            LabourRate rate = LabourRateFactory.CreateLabourRate(effectiveFrom, effectiveTo, ratePerHour, overtimeRatePerHour, role);
+
+            return _rateRepository.InsertRate(rate);
         }
 
         public void UpdateRate(LabourRate r)
