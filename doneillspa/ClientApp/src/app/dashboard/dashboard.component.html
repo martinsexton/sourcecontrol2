@@ -90,13 +90,13 @@
             <form>
               <div class="form-group">
                 <label for="details">Details</label>
-                <input type="text" [(ngModel)]="newNote.details" name="details" class="form-control" id="details" placeholder="Enter Details">
+                <input type="text" [(ngModel)]="newNote.details" name="details" class="form-control" [ngClass]="{'is-invalid': newNoteDetails.invalid, 'is-valid': !newNoteDetails.invalid}" id="details" placeholder="Enter Details" required #newNoteDetails="ngModel">
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button (click)="saveTimesheetNote()" class="btn btn-primary">Save Note</button>
+            <button [disabled]="newNoteDetails.invalid" (click)="saveTimesheetNote()" class="btn btn-primary">Save Note</button>
           </div>
         </div>
       </div>

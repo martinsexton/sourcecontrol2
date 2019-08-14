@@ -4,7 +4,6 @@ import { NG_VALIDATORS, FormControl, Validator, AbstractControl } from '@angular
 
 function validateEndtimeFactory(startTime : string) {
   return (c: FormControl) => {
-    //Need to add some code here to cast string 08:00 to some time, so we can check if value is > or < that time
     let start = startTime.split(":");
     let end = c.value.split(":");
 

@@ -230,7 +230,7 @@
           </div>
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="newCertDescription" name="newCertDescription" class="form-control" required [(ngModel)]="newCertificate.description" #newCertDescription="ngModel"></textarea>
+            <textarea id="newCertDescription" name="newCertDescription" class="form-control" [ngClass]="{'is-invalid': newCertDescription.invalid, 'is-valid': !newCertDescription.invalid}" required [(ngModel)]="newCertificate.description" #newCertDescription="ngModel"></textarea>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -253,11 +253,11 @@
         <form>
           <div class="form-group">
             <label for="description">Subject</label>
-            <input id="newNotificationSubject" name="newNotificationSubject" class="form-control" required [(ngModel)]="newEmailNotification.subject" #newNotificationSubject="ngModel">
+            <input id="newNotificationSubject" name="newNotificationSubject" class="form-control" [ngClass]="{'is-invalid': newNotificationSubject.invalid, 'is-valid': !newNotificationSubject.invalid}" required [(ngModel)]="newEmailNotification.subject" #newNotificationSubject="ngModel">
           </div>
           <div class="form-group">
             <label for="body">Body</label>
-            <textarea id="newNotificationBody" name="newNotificationBody" class="form-control" required [(ngModel)]="newEmailNotification.body" #newNotificationBody="ngModel"></textarea>
+            <textarea id="newNotificationBody" name="newNotificationBody" class="form-control" [ngClass]="{'is-invalid': newNotificationBody.invalid, 'is-valid': !newNotificationBody.invalid}" required [(ngModel)]="newEmailNotification.body" #newNotificationBody="ngModel"></textarea>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
