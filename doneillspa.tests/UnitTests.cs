@@ -101,6 +101,9 @@ namespace doneillspa.tests
             mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), "user.mail@gmail.com", "Holiday Request Approved",
                     It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
 
+            //Verify that the approved holiday request records the annual leave as a non chargeable timesheet.
+            mockTimesheetService.Verify(mock => mock.RecordAnnualLeave(It.IsAny<string>(), request.FromDate, request.Days));
+
         }
 
         [TestMethod]

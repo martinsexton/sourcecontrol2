@@ -54,11 +54,11 @@
             </div>
             <div class="form-group">
               <label for="startTime">Start Time</label>
-              <input type="time" id="newEntryStartTime" name="newEntryStartTime" class="form-control" required [(ngModel)]="newEntry.startTime" #newEntryStartTime="ngModel">
+              <input type="time" id="newEntryStartTime" name="newEntryStartTime" class="form-control" [ngClass]="{'is-invalid': newEntryStartTime.invalid, 'is-valid': !newEntryStartTime.invalid}" required [(ngModel)]="newEntry.startTime" #newEntryStartTime="ngModel">
             </div>
             <div class="form-group">
               <label for="endTime">End Time</label>
-              <input type="time" id="newEntryEndTime" name="newEntryEndTime" class="form-control" required [(ngModel)]="newEntry.endTime" #newEntryEndTime="ngModel">
+              <input type="time" id="newEntryEndTime" name="newEntryEndTime"  class="form-control" [ngClass]="{'is-invalid': newEntryEndTime.invalid, 'is-valid': !newEntryEndTime.invalid}" required validateEndtime startTime="{{newEntryStartTime.value}}" [(ngModel)]="newEntry.endTime" #newEntryEndTime="ngModel">
             </div>
             <div class="form-group">
               <label for="details">Details</label>
@@ -86,11 +86,11 @@
           <form>
             <div class="form-group">
               <label for="startTime">Start Time</label>
-              <input type="time" id="editEntryStartTime" name="editEntryStartTime" class="form-control" required [(ngModel)]="timesheetEntryToEdit.startTime" #editEntryStartTime="ngModel">
+              <input type="time" id="editEntryStartTime" name="editEntryStartTime" class="form-control" [ngClass]="{'is-invalid': editEntryStartTime.invalid, 'is-valid': !editEntryStartTime.invalid}" required [(ngModel)]="timesheetEntryToEdit.startTime" #editEntryStartTime="ngModel">
             </div>
             <div class="form-group">
               <label for="endTime">End Time</label>
-              <input type="time" id="editEntryEndTime" name="editEntryEndTime" class="form-control" required [(ngModel)]="timesheetEntryToEdit.endTime" #editEntryEndTime="ngModel">
+              <input type="time" id="editEntryEndTime" name="editEntryEndTime" class="form-control" [ngClass]="{'is-invalid': editEntryEndTime.invalid, 'is-valid': !editEntryEndTime.invalid}" required validateEndtime startTime="{{editEntryStartTime.value}}" [(ngModel)]="timesheetEntryToEdit.endTime" #editEntryEndTime="ngModel">
             </div>
             <div class="form-group">
               <label for="details">Details</label>

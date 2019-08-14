@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
+using doneillspa.Factories;
+using doneillspa.Helpers;
 using doneillspa.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -90,15 +92,7 @@ namespace doneillspa.Services
                     timesheet = _repository.GetTimesheetsByUser(userName).Where(ts => ts.WeekStarting.Date.Equals(startOfWeek.Date)).FirstOrDefault();
                     if(timesheet == null)
                     {
-                        timesheet = new Timesheet();
-                        timesheet.DateCreated = DateTime.UtcNow;
-                        timesheet.Username = userName;
-                        timesheet.WeekStarting = startOfWeek;
-                        timesheet.Role = role;
-                        timesheet.Owner = userToVerify.Id;
-                        timesheet.TimesheetEntries = new List<TimesheetEntry>();
-                        timesheet.Status = TimesheetStatus.New;
-
+                        timesheet = TimesheetFactory.CreateTimesheet(userName, startOfWeek, role, userToVerify.Id);
                         _repository.InsertTimesheet(timesheet);
                     }
                     if (!timesheets.Contains(timesheet))
@@ -108,52 +102,29 @@ namespace doneillspa.Services
                 }
                 if(timesheet != null)
                 {
-                    if (!start.DayOfWeek.ToString().Equals("Sunday"))
+                    if (!start.DayOfWeek.Equals(DayOfWeek.Sunday))
                     {
-                        TimesheetEntry tse = new TimesheetEntry();
-                        tse.StartTime = "09:00";
-                        tse.EndTime = "17:30";
-
-                        //Anual leave is code NC1
-                        tse.Code = "NC1";
-                        tse.DateCreated = DateTime.UtcNow;
-
-                        if (start.DayOfWeek.ToString().Equals("Monday"))
-                        {
-                            tse.Day = "Mon";
-                        }
-                        else if (start.DayOfWeek.ToString().Equals("Tuesday"))
-                        {
-                            tse.Day = "Tue";
-                        }
-                        else if (start.DayOfWeek.ToString().Equals("Wednesday"))
-                        {
-                            tse.Day = "Wed";
-                        }
-                        else if (start.DayOfWeek.ToString().Equals("Thursday"))
-                        {
-                            tse.Day = "Thurs";
-                        }
-                        else if (start.DayOfWeek.ToString().Equals("Friday"))
-                        {
-                            tse.Day = "Fri";
-                        }
-                        else
-                        {
-                            tse.Day = "Sat";
-                        }
-                        timesheet.AddTimesheetEntry(tse);
+                        timesheet.AddTimesheetEntry(CreateEntryForDate(start));
                     }
                     //Increment date
                     start = start.AddDays(1);
                 }
             }
 
-            //Update timesheets with all entries added
-            foreach(Timesheet ts in timesheets)
+            SaveTimesheetEntries(timesheets);
+        }
+
+        private void SaveTimesheetEntries(List<Timesheet> timesheets)
+        {
+            foreach (Timesheet ts in timesheets)
             {
                 _repository.UpdateTimesheet(ts);
             }
+        }
+
+        private TimesheetEntry CreateEntryForDate(DateTime date)
+        {
+            return TimesheetFactory.CreateFullDayEntryForDay(Constants.Strings.Timesheets.NonChargeableCodes.AnnualLeave, date.DayOfWeek);
         }
 
         private static DateTime GetFirstDayOfWeek(DateTime dayInWeek)

@@ -14,6 +14,17 @@ namespace doneillspa.Helpers
                  public const string Rol = "rol", Id = "id"; 
              } 
  
+            public static class Timesheets
+            {
+                public static class NonChargeableCodes
+                {
+                    public const string AnnualLeave = "NC1";
+                }
+
+                public const string StartTime = "9:30";
+                public const string EndTime = "17:30";
+            }
+
  
              public static class JwtClaims
              { 

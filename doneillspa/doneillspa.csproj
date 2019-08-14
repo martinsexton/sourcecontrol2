@@ -57,6 +57,7 @@
     <None Remove="ClientApp\src\app\client.ts" />
     <None Remove="ClientApp\src\app\dashboard\dashboard.component.ts" />
     <None Remove="ClientApp\src\app\directives\email.validator.directive.ts" />
+    <None Remove="ClientApp\src\app\directives\endtime.validator.directive.ts" />
     <None Remove="ClientApp\src\app\directives\focus.directive.ts" />
     <None Remove="ClientApp\src\app\directives\password.validator.directive.ts" />
     <None Remove="ClientApp\src\app\emailnotification.ts" />
@@ -103,6 +104,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\client.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\dashboard\dashboard.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\email.validator.directive.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\directives\endtime.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\focus.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\password.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\emailnotification.ts" />
