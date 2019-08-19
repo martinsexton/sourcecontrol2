@@ -300,39 +300,30 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/project/{proj}")]
         public IEnumerable<LabourWeekDetail> GetByProject(string proj)
         {
-            List<LabourWeekDetail> details = new List<LabourWeekDetail>();
+            //List<LabourWeekDetail> details = new List<LabourWeekDetail>();
+            Dictionary<DateTime, LabourWeekDetail> labourDetailsByWeek = new Dictionary<DateTime, LabourWeekDetail>();
 
             IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r=>r.Status.ToString().Equals("Approved"))
                 .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
-                LabourWeekDetail detail = ts.BuildLabourWeekDetails(this.Rates, proj);
-                if(detail.TotalCost > 0)
+                if (!labourDetailsByWeek.ContainsKey(ts.WeekStarting.Date))
                 {
-                    //Only include detail where the week has some cost associated with the project
-                    details.Add(detail);
+                    LabourWeekDetail detail = ts.BuildLabourWeekDetails(this.Rates, proj);
+                    if(detail.TotalCost > 0)
+                    {
+                        labourDetailsByWeek.Add(ts.WeekStarting.Date, ts.BuildLabourWeekDetails(this.Rates, proj));
+                    }
+                }
+                else
+                {
+                    //Update the labout details that are present
+                    LabourWeekDetail detail = labourDetailsByWeek[ts.WeekStarting.Date];
+                    detail.ammendDetails(ts.BuildLabourWeekDetails(this.Rates, proj));
                 }
             }
 
-            return details.AsEnumerable<LabourWeekDetail>();
-        }
-
-        [HttpGet]
-        [Route("api/labourdetails")]
-        public IEnumerable<LabourWeekDetail> Get()
-        {
-            List<LabourWeekDetail> details = new List<LabourWeekDetail>();
-
-            //TODO Read rates from database at this point and pass in some dictionary of role/rate to the LabourWeekDetail when creating it, so it can be use
-            //to calculate the rate based on hours worked.
-            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved")).
-                OrderByDescending(r => r.WeekStarting);
-            foreach(Timesheet ts in timesheets)
-            {
-                details.Add(ts.BuildLabourWeekDetails(this.Rates, string.Empty));
-            }
-
-            return details.AsEnumerable<LabourWeekDetail>();
+            return labourDetailsByWeek.Values.ToList<LabourWeekDetail>();
         }
     }
 }

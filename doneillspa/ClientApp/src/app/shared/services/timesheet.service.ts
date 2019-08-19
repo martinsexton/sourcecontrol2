@@ -115,18 +115,6 @@ export class TimesheetService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
-  getLabourWeekDetails() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/labourdetails',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      })
-      .catch(this.handleError);
-  }
-
   downloadReport(weeks: LabourWeek[]) {
     let authToken = localStorage.getItem('auth_token');
 

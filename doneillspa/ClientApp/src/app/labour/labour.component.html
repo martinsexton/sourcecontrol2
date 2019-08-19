@@ -40,17 +40,17 @@
       <tbody class="tbody">
         <tr *ngFor="let lw of labourWeeks">
           <td>{{lw.week | date:'fullDate'}}</td>
-          <td>{{lw.supervisorCost | currency:'EUR'}}</td>
-          <td>{{lw.chargehandCost | currency:'EUR'}}</td>
-          <td>{{lw.elecR1Cost | currency:'EUR'}}</td>
-          <td>{{lw.elecR2Cost | currency:'EUR'}}</td>
-          <td>{{lw.elecR3Cost | currency:'EUR'}}</td>
-          <td>{{lw.tempCost | currency:'EUR'}}</td>
-          <td>{{lw.firstYearApprenticeCost | currency:'EUR'}}</td>
-          <td>{{lw.secondYearApprenticeCost | currency:'EUR'}}</td>
-          <td>{{lw.thirdYearApprenticeCost | currency:'EUR'}}</td>
-          <td>{{lw.fourthYearApprenticeCost | currency:'EUR'}}</td>
-          <td>{{lw.totalCost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.supervisorCost > 0 ? '#89CF4B' : 'white'}">{{lw.supervisorCost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.chargehandCost > 0 ? '#89CF4B' : 'white'}">{{lw.chargehandCost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.elecR1Cost > 0 ? '#89CF4B' : 'white'}">{{lw.elecR1Cost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.elecR2Cost > 0 ? '#89CF4B' : 'white'}">{{lw.elecR2Cost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.elecR3Cost > 0 ? '#89CF4B' : 'white'}">{{lw.elecR3Cost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.tempCost > 0 ? '#89CF4B' : 'white'}">{{lw.tempCost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.firstYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.firstYearApprenticeCost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.secondYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.secondYearApprenticeCost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.thirdYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.thirdYearApprenticeCost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.fourthYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.fourthYearApprenticeCost | currency:'EUR'}}</td>
+          <td [ngStyle]="{'background-color': lw.totalCost > 0 ? '#89CF4B' : 'white'}">{{lw.totalCost | currency:'EUR'}}</td>
         </tr>
       </tbody>
       <tfoot>

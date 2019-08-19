@@ -31,6 +31,25 @@ namespace doneillspa.Models
 
         public double FourthYearApprenticeCost { get; set; }
 
+        public void ammendDetails(LabourWeekDetail week)
+        {
+            if(week.TotalCost > 0)
+            {
+                //increase totals based on the labourWeekDetail provided
+                this.SupervisorCost += week.SupervisorCost;
+                this.AdministratorCost += week.AdministratorCost;
+                this.ChargehandCost += week.ChargehandCost;
+                this.ElecR1Cost += week.ElecR1Cost;
+                this.ElecR2Cost += week.ElecR2Cost;
+                this.ElecR3Cost += week.ElecR3Cost;
+                this.TempCost += week.TempCost;
+                this.FirstYearApprenticeCost += week.FirstYearApprenticeCost;
+                this.SecondYearApprenticeCost += week.SecondYearApprenticeCost;
+                this.ThirdYearApprenticeCost += week.ThirdYearApprenticeCost;
+                this.FourthYearApprenticeCost += week.FourthYearApprenticeCost;
+            }
+        }
+
         public double TotalCost
         {
             get
