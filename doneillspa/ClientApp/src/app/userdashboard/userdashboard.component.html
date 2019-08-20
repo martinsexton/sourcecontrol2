@@ -150,8 +150,8 @@
         <div class="card-body">
           <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
             <div class="col-md-4">
-              <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
-                {{ ts.weekStarting | date:'fullDate'}}
+              <a [ngClass]="{'text-warning': ts.status == 'New', 'text-success': ts.status == 'Approved', 'text-primary': ts.status == 'Submitted', 'text-danger': ts.status == 'Rejected'}" data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
+                {{ ts.weekStarting | date:'fullDate'}} : {{ts.status}}
               </a>
             </div>
             <div class="col-md-8 collapse" id="collapseExample{{i}}">

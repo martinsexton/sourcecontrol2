@@ -451,6 +451,7 @@ namespace doneillspa.Controllers
             tsdto.Role = ts.Role;
             tsdto.Username = ts.Username;
             tsdto.WeekStarting = ts.WeekStarting;
+            tsdto.Status = ts.Status.ToString();
 
             tsdto.TimesheetEntries = new List<TimesheetEntryDto>();
             foreach (TimesheetEntry tse in ts.TimesheetEntries)
