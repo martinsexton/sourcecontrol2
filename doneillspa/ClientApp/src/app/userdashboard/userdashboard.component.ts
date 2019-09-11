@@ -41,6 +41,7 @@ export class UserDashboardComponent {
   //public passwordReset: boolean = false;
   public loadingTimesheets: boolean = false;
   public resettingPassword: boolean = false;
+  public userImage: string = "user.png";
  
 
   public filterName: string;
@@ -90,6 +91,19 @@ export class UserDashboardComponent {
 
   showAddUser() {
     $("#myRegistrationModal").modal('show');
+  }
+
+  GetImageName() {
+    if (this.selectedUser) {
+      if (this.selectedUser.role == "Administrator") {
+        return "admin.png";
+      }
+      else {
+        return "user.png";
+      }
+    } else {
+      return "";
+    }
   }
 
   registerUser({ value, valid }: { value: UserRegistration, valid: boolean }) {

@@ -22,7 +22,7 @@
   <div class="row">
     <div class="col-md-2">
       <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
-        <img class="card-img-top" src="assets/images/user.png" alt="Card image cap">
+        <img *ngIf="selectedUser" class="card-img-top" src="assets/images/{{GetImageName()}}" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">Details</h5>
           <p class="card-text">{{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}</p>
@@ -49,14 +49,14 @@
                   <thead class="thead">
                     <tr>
                       <th>From Date</th>
-                      <th>Number Of Days</th>
+                      <th>Days</th>
                       <th>Status</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let hol of selectedUsersHolidayRequests">
-                      <td>{{hol.fromDate | date : "fullDate"}}</td>
+                      <td>{{hol.fromDate | date : "mediumDate"}}</td>
                       <td>{{hol.days}}</td>
                       <td>{{hol.status}}</td>
                     </tr>
@@ -146,7 +146,7 @@
               <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
                 <div class="col-md-2">
                   <a [ngClass]="{'text-warning': ts.status == 'New', 'text-success': ts.status == 'Approved', 'text-primary': ts.status == 'Submitted', 'text-danger': ts.status == 'Rejected'}" data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
-                    {{ ts.weekStarting | date:'shortDate'}}
+                    {{ ts.weekStarting | date:'mediumDate'}}
                   </a>
                 </div>
                 <div class="col-md-10 collapse" id="collapseExample{{i}}">
