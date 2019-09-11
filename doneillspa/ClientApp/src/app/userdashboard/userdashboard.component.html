@@ -20,22 +20,17 @@
 </nav>
 <div class="container-fluid" *ngIf="selectedUser">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-2">
       <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
-        <div class="card-header">
-          {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}
-        </div>
+        <img class="card-img-top" src="assets/images/user.png" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">Details</h5>
+          <p class="card-text">Name: {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}</p>
           <p class="card-text">Email: {{selectedUser.email}}</p>
           <p class="card-text">Phone: {{selectedUser.phoneNumber}}</p>
           <p class="card-text">Role: {{selectedUser.role}}</p>
-          <button class="btn btn-primary" type="button" (click)="retrieveTimesheetsForUser()">
-            <span [class]="loadingTimesheets ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
-            Load Timesheets
-          </button>
           <button *ngIf="selectedUser.isEnabled == false" class="btn btn-primary" type="button" (click)="enableUser()">
-              Enable User
+            Enable User
           </button>
           <button *ngIf="selectedUser.isEnabled == null || selectedUser.isEnabled == true" class="btn btn-primary" type="button" (click)="disableUser()">
             Disable User
@@ -43,152 +38,158 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
-        <div class="card-header">Holiday Requests</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class='table'>
-              <thead class="thead">
-                <tr>
-                  <th>From Date</th>
-                  <th>Number Of Days</th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let hol of selectedUsersHolidayRequests">
-                  <td>{{hol.fromDate | date : "fullDate"}}</td>
-                  <td>{{hol.days}}</td>
-                  <td>{{hol.status}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
-        <div class="card-header">CertificationDetails</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class='table'>
-              <thead class="thead">
-                <tr>
-                  <th>Description</th>
-                  <th>Expiry Date</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'text-danger': hasCertExpired(crt)}">
-                  <td>{{ crt.description }}</td>
-                  <td>{{ crt.expiry | date : "fullDate"}}</td>
-                  <td><span aria-hidden="true" (click)="deleteCertification(crt)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button type="button" [disabled]="selectedUser.isEnabled == false" class="btn btn-primary" (click)="toggleDisplayAddCertificate()">Add Certificate</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
-        <div class="card-header">Notification Details</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class='table'>
-              <thead class="thead">
-                <tr>
-                  <th>Subject</th>
-                  <th>Body</th>
-                  <th>Date Sent</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let not of selectedUserNotifications">
-                  <td>{{ not.subject }}</td>
-                  <td>{{ not.body}}</td>
-                  <td>{{ not.activationDate | date : "fullDate"}}</td>
-                  <td><span aria-hidden="true" (click)="deleteNotification(not)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button type="button" [disabled]="selectedUser.isEnabled == false" class="btn btn-primary" (click)="toggleDisplayAddEmailNotification()">Add Notification</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
-        <div class="card-header">Reset Password For {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}</div>
-        <div class="card-body">
-          <form>
-            <div class="form-group">
-              <label for="resetPasswordDetails.password">Password</label>
-              <input type="text" [(ngModel)]="resetPasswordDetails.password" name="password" class="form-control" id="password">
-            </div>
-            <button class="btn btn-primary" type="button" (click)="resetPassword()">
-              <span [class]="resettingPassword ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
-              Reset Password
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-8">
-      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'" *ngIf="timesheets">
-        <div class="card-header">Timesheets</div>
-        <div class="card-body">
-          <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
-            <div class="col-md-4">
-              <a [ngClass]="{'text-warning': ts.status == 'New', 'text-success': ts.status == 'Approved', 'text-primary': ts.status == 'Submitted', 'text-danger': ts.status == 'Rejected'}" data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
-                {{ ts.weekStarting | date:'fullDate'}} : {{ts.status}}
-              </a>
-            </div>
-            <div class="col-md-8 collapse" id="collapseExample{{i}}">
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col">
+          <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
+            <div class="card-header">Holiday Requests</div>
+            <div class="card-body">
               <div class="table-responsive">
                 <table class='table'>
-                  <thead class="thead-light">
+                  <thead class="thead">
                     <tr>
-                      <th>Day</th>
-                      <th>Start Time</th>
-                      <th>End Time</th>
-                      <th>Code</th>
-                      <th>Details</th>
-                      <th>Duration</th>
+                      <th>From Date</th>
+                      <th>Number Of Days</th>
+                      <th>Status</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let tse of getTimesheetEntriesForTimesheet(i)">
-                      <td>{{ tse.day }}</td>
-                      <td>{{ tse.startTime }}</td>
-                      <td>{{ tse.endTime }}</td>
-                      <td>{{ tse.code }}</td>
-                      <td>{{ tse.details }}</td>
-                      <td>{{ calculateDuration(tse) }} hours</td>
+                    <tr *ngFor="let hol of selectedUsersHolidayRequests">
+                      <td>{{hol.fromDate | date : "fullDate"}}</td>
+                      <td>{{hol.days}}</td>
+                      <td>{{hol.status}}</td>
                     </tr>
                   </tbody>
-                  <tfoot>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td><span [class]="timesheeExceedsWeeklyLimit(i) ? 'badge badge-warning' : 'badge badge-primary'">Duration: {{ calculateTotalDuration(i) }} hrs</span></td>
-                    </tr>
-                  </tfoot>
                 </table>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
+            <div class="card-header">CertificationDetails</div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class='table'>
+                  <thead class="thead">
+                    <tr>
+                      <th>Description</th>
+                      <th>Expiry Date</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'text-danger': hasCertExpired(crt)}">
+                      <td>{{ crt.description }}</td>
+                      <td>{{ crt.expiry | date : "fullDate"}}</td>
+                      <td><span aria-hidden="true" (click)="deleteCertification(crt)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button type="button" [disabled]="selectedUser.isEnabled == false" class="btn btn-primary" (click)="toggleDisplayAddCertificate()">Add Certificate</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
+            <div class="card-header">Reset Password For {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}</div>
+            <div class="card-body">
+              <form>
+                <div class="form-group">
+                  <label for="resetPasswordDetails.password">Password</label>
+                  <input type="text" [(ngModel)]="resetPasswordDetails.password" name="password" class="form-control" id="password">
+                </div>
+                <button class="btn btn-primary" type="button" (click)="resetPassword()">
+                  <span [class]="resettingPassword ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
+                  Reset Password
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
+            <div class="card-header">Notification Details</div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class='table'>
+                  <thead class="thead">
+                    <tr>
+                      <th>Subject</th>
+                      <th>Body</th>
+                      <th>Date Sent</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let not of selectedUserNotifications">
+                      <td>{{ not.subject }}</td>
+                      <td>{{ not.body}}</td>
+                      <td>{{ not.activationDate | date : "fullDate"}}</td>
+                      <td><span aria-hidden="true" (click)="deleteNotification(not)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button type="button" [disabled]="selectedUser.isEnabled == false" class="btn btn-primary" (click)="toggleDisplayAddEmailNotification()">Add Notification</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
+            <div class="card-header">Timesheets</div>
+            <div class="card-body">
+              <div class="row" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
+                <div class="col-md-2">
+                  <a [ngClass]="{'text-warning': ts.status == 'New', 'text-success': ts.status == 'Approved', 'text-primary': ts.status == 'Submitted', 'text-danger': ts.status == 'Rejected'}" data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
+                    {{ ts.weekStarting | date:'shortDate'}}
+                  </a>
+                </div>
+                <div class="col-md-10 collapse" id="collapseExample{{i}}">
+                  <div class="table-responsive">
+                    <table class='table'>
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Day</th>
+                          <th>Start Time</th>
+                          <th>End Time</th>
+                          <th>Code</th>
+                          <th>Details</th>
+                          <th>Duration</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let tse of getTimesheetEntriesForTimesheet(i)">
+                          <td>{{ tse.day }}</td>
+                          <td>{{ tse.startTime }}</td>
+                          <td>{{ tse.endTime }}</td>
+                          <td>{{ tse.code }}</td>
+                          <td>{{ tse.details }}</td>
+                          <td>{{ calculateDuration(tse) }} hours</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td><span [class]="timesheeExceedsWeeklyLimit(i) ? 'badge badge-warning' : 'badge badge-primary'">Duration: {{ calculateTotalDuration(i) }} hrs</span></td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-primary mt-3" type="button" (click)="retrieveTimesheetsForUser()">
+                <span [class]="loadingTimesheets ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
+                Load Timesheets
+              </button>
             </div>
           </div>
         </div>
