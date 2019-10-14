@@ -60,7 +60,6 @@ export class TimesheetComponent {
   public sat: DayOfWeek;
 
   displayAddTimesheet = false;
-  displayEditTimesheet = false;
 
   //declare var $: any;
 
@@ -330,15 +329,8 @@ export class TimesheetComponent {
   }
 
   showEditTimesheet(entry: TimesheetEntry) {
-    if (this.activeTimeSheet.status == 'New' || this.activeTimeSheet.status == 'Rejected') {
-      this.timesheetEntryToEdit = entry;
-      this.displayEditTimesheet = true;
-      if (this.displayEditTimesheet) {
-        $("#myEditTimesheetModal").modal('show');
-      } else {
-        $("#myEditTimesheetModal").modal('hide');
-      }
-    }
+    this.timesheetEntryToEdit = entry;
+    $("#myEditTimesheetModal").modal('show');
   }
 
   updateTimesheetEntry() {
@@ -406,7 +398,7 @@ export class TimesheetComponent {
       this.saveTimesheet();
     }
 
-    $("#myNewTimesheetModal").modal('hide');
+    this.toggleDisplayAddTimesheet();
   }
 
   pushTimesheetToCalendarDays(entry:TimesheetEntry) {

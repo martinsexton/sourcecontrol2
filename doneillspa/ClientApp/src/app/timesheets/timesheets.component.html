@@ -5,7 +5,7 @@
   <div class="buttonHolder" *ngIf="activeProjects">
     <form class="form-inline my-2 my-lg-0">
       <span class="mr-3" (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
-      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet(entry)">Add Entry</button>
+      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
       <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="submitTimesheet()">Submit</button>
       <span class="ml-3" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
     </form>
@@ -41,7 +41,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="toggleDisplayAddTimesheet()"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel">New Timesheet Entry</h4>
         </div>
         <div class="modal-body">
@@ -65,7 +65,7 @@
               <textarea [(ngModel)]="newEntry.details" name="details" class="form-control" id="details" rows="3"></textarea>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="toggleDisplayAddTimesheet()">Close</button>
               <button [disabled]="newEntryStartTime.invalid || newEntryEndTime.invalid" (click)="addTimesheetEntry()" class="btn btn-secondary">Save Entry</button>
             </div>
           </form>
@@ -75,7 +75,7 @@
   </div>
 
   <!-- Edit Timesheet Details Modal -->
-  <div *ngIf="displayEditTimesheet" class="modal fade" id="myEditTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div *ngIf="timesheetEntryToEdit" class="modal fade" id="myEditTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
