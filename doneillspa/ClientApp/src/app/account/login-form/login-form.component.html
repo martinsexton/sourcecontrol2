@@ -22,7 +22,7 @@
             <small [hidden]="password.valid || (password.pristine && !submitted)" class="text-muted">Please enter a valid Password</small>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary" [disabled]="f.invalid || isRequesting">
+            <button type="submit" class="btn btn-primary" [disabled]="f.invalid || loginProgress">
               <span [class]="loginProgress ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
               Log in
             </button>

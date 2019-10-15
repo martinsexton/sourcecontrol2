@@ -19,7 +19,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
   brandNew: boolean;
   errors: string;
-  isRequesting: boolean;
   submitted: boolean = false;
   credentials: Credentials = { firstname: '', surname: '', password: '' };
   public loginProgress = false;
@@ -50,7 +49,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   login({ value, valid }: { value: Credentials, valid: boolean }) {
     this.loginProgress = true;
     this.submitted = true;
-    this.isRequesting = true;
     this.errors = '';
     if (valid) {
       this.userService.login(value.firstname, value.surname, value.password)
