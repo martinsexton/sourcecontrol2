@@ -26,6 +26,7 @@ export class ProjectComponent {
   public filteredRates: LabourRate[] = [];
   public userMessage: string;
   public selectedRole: string;
+  public loading = true;
 
   newProject: Project = new Project(0, '', '', '', '', true, new Date);
   newClient: Client = new Client(0, "");
@@ -63,6 +64,7 @@ export class ProjectComponent {
 
   retrieveClients() {
     this._projectService.getClients().subscribe(result => {
+      this.loading = false;
       this.clients = result;
       if (this.clients) {
         //By default select first client
