@@ -148,7 +148,11 @@ export class UserDashboardComponent {
         this.resettingPassword = false;
         this.resetPasswordDetails.password = '';
         //this.passwordReset = true;
-      }, responseError => this.userMessage = responseError);
+        }, error => {
+          this.resettingPassword = false;
+          this.userMessage = error
+          this.showUserMessage('Failed to reset password. Please ensure password is at least 6 characters long including upper and lower case letters.');
+        });
   }
 
   retrieveUsersToDisplay() {
@@ -174,7 +178,11 @@ export class UserDashboardComponent {
           }
         }
         this.showUserMessage("Certificate Deleted!");
-      }, error => this.userMessage = error)
+      },
+      error => {
+        this.userMessage = error
+        this.showUserMessage('Failed to delete certification');
+      });
   }
 
   deleteNotification(not) {
@@ -191,7 +199,10 @@ export class UserDashboardComponent {
           }
         }
         this.showUserMessage("Notification Deleted!");
-      }, error => this.userMessage = error)
+      }, error => {
+        this.userMessage = error
+        this.showUserMessage('Failed to delete Notification');
+      });
   }
 
   removeFromArrayList(list :Certificate[], crt: Certificate) {

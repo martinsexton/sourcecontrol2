@@ -22,6 +22,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   isRequesting: boolean;
   submitted: boolean = false;
   credentials: Credentials = { firstname: '', surname: '', password: '' };
+  public loginProgress = false;
 
 
   constructor(private userService: MsUserService, private router: Router, private activatedRoute: ActivatedRoute) {}
@@ -47,6 +48,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
 
   login({ value, valid }: { value: Credentials, valid: boolean }) {
+    this.loginProgress = true;
     this.submitted = true;
     this.isRequesting = true;
     this.errors = '';
@@ -54,6 +56,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
       this.userService.login(value.firstname, value.surname, value.password)
         .subscribe(
         result => {
+          this.loginProgress = false;
           if (result) {
             if (result.error) {
               this.errors = result.error;

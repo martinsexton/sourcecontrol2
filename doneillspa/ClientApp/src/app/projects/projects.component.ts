@@ -226,7 +226,10 @@ export class ProjectComponent {
         this.newClient.id = res as number;
         console.log(res);
         //Update the collection of projects with newly created one
-        this.clients.push(new Client(this.newClient.id, this.newClient.name));
+        var clientJustAdded = new Client(this.newClient.id, this.newClient.name);
+        this.clients.push(clientJustAdded);
+        this.displayProjectsForSelectedClient(clientJustAdded);
+
         //clear down the new project model
         this.newClient = new Client(0, '');
         $("#myNewClientModal").modal('hide');
