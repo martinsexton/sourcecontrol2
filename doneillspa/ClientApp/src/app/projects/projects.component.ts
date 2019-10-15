@@ -27,6 +27,7 @@ export class ProjectComponent {
   public userMessage: string;
   public selectedRole: string;
   public loading = true;
+  public existingCodes: string[] = [];
 
   newProject: Project = new Project(0, '', '', '', '', true, new Date);
   newClient: Client = new Client(0, "");
@@ -70,6 +71,12 @@ export class ProjectComponent {
         //By default select first client
         this.selectedClient = this.clients[0];
         this.projectsToDisplay = this.selectedClient.projects;
+
+        for (let client of this.clients) {
+          for (let p of client.projects) {
+            this.existingCodes.push(p.code.toUpperCase());
+          }
+        }
       }
     }, error => {
       this.userMessage = "Failed to retrieve Client Details"

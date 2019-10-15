@@ -60,6 +60,7 @@
     <None Remove="ClientApp\src\app\directives\endtime.validator.directive.ts" />
     <None Remove="ClientApp\src\app\directives\focus.directive.ts" />
     <None Remove="ClientApp\src\app\directives\password.validator.directive.ts" />
+    <None Remove="ClientApp\src\app\directives\projectcode.validator.directive.ts" />
     <None Remove="ClientApp\src\app\emailnotification.ts" />
     <None Remove="ClientApp\src\app\holidayrequest.ts" />
     <None Remove="ClientApp\src\app\holidays\holidays.component.ts" />
@@ -107,6 +108,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\directives\endtime.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\focus.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\password.validator.directive.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\directives\projectcode.validator.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\emailnotification.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\holidayrequest.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\holidays\holidays.component.ts" />

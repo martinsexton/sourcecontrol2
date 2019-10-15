@@ -25,6 +25,7 @@ import { LabourComponent } from './labour/labour.componenet';
 import { EmailValidator } from './directives/email.validator.directive';
 import { PasswordValidator } from './directives/password.validator.directive';
 import { EndtimeValidator } from './directives/endtime.validator.directive';
+import { ProjectCodeValidator } from './directives/projectcode.validator.directive';
 import { myFocus } from './directives/focus.directive';
 
 /* Import Services */
@@ -57,6 +58,7 @@ import { AuthGuard } from './auth.guard';
     EmailValidator,
     PasswordValidator,
     EndtimeValidator,
+    ProjectCodeValidator,
     myFocus
   ],
   imports: [
