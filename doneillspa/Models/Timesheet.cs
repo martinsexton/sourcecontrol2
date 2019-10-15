@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using doneillspa.Services.Email;
 using Microsoft.AspNetCore.Identity;
 
 namespace doneillspa.Models
@@ -56,11 +57,14 @@ namespace doneillspa.Models
             }
         }
 
-        public void AddTimesheetNote(TimesheetNote note)
+        public void AddTimesheetNote(UserManager<ApplicationUser> userManager, IEmailService _emailService, TimesheetNote note)
         {
             //Set date created on timesheet entry
             note.DateCreated = DateTime.UtcNow;
             TimesheetNotes.Add(note);
+
+            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
+            _emailService.SendMail("doneill@hotmail.com", user.Email, "New Timesheet Note Created", note.Details, "", string.Empty, string.Empty);
         }
 
         public void AddTimesheetEntry(TimesheetEntry entry)

@@ -6,7 +6,9 @@ using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
 using doneillspa.Services;
+using doneillspa.Services.Email;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace doneillspa.Controllers
@@ -17,10 +19,14 @@ namespace doneillspa.Controllers
     public class TimesheetController : Controller
     {
         private readonly ITimesheetService _service;
+        private readonly IEmailService _emailService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TimesheetController(ITimesheetService tss)
+        public TimesheetController(UserManager<ApplicationUser> userManager, ITimesheetService tss, IEmailService emailService)
         {
             _service = tss;
+            _emailService = emailService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -135,7 +141,7 @@ namespace doneillspa.Controllers
             if(note != null)
             {
                 var existingTimesheet = _service.GetTimsheetById(id);
-                existingTimesheet.AddTimesheetNote(note);
+                existingTimesheet.AddTimesheetNote(_userManager, _emailService, note);
 
                 _service.UpdateTimesheet(existingTimesheet);
 
