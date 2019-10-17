@@ -31,7 +31,7 @@
                     <th>End Time</th>
                     <th>Code</th>
                     <th>Details</th>
-                    <th>Duration</th>
+                    <!--<th>Duration</th>-->
                   </tr>
                 </thead>
                 <tbody>
@@ -42,7 +42,7 @@
                     <td>{{ tse.endTime }}</td>
                     <td>{{ tse.code }}</td>
                     <td>{{ tse.details }}</td>
-                    <td>{{ calculateDuration(tse) }} hrs</td>
+                    <!--<td>{{ calculateDuration(tse) }} hrs</td>-->
                   </tr>
                 </tbody>
                 <tfoot>
@@ -52,8 +52,8 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td><span [class]="timesheeExceedsWeeklyLimit(i) ? 'badge badge-warning' : 'badge badge-primary'">Duration: {{ calculateTotalDuration(i) }} hrs</span></td>
+                    <!--<td></td>-->
+                    <td><span [class]="timesheeExceedsWeeklyLimit(i) ? 'badge badge-warning' : 'badge badge-success'">Hours Worked: {{ calculateTotalDuration(i) }}</span></td>
                   </tr>
                 </tfoot>
               </table>
