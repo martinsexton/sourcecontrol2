@@ -5,9 +5,9 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }' class="nav-item">
+      <!--<li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }' class="nav-item">
         <a [routerLink]='["/"]' class="nav-link">Home <span class="sr-only">(current)</span></a>
-      </li>
+      </li>-->
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/projects"]' class="nav-link">Configuration</a>
       </li>

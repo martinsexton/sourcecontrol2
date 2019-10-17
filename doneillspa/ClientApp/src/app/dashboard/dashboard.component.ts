@@ -173,14 +173,63 @@ export class DashboardComponent {
 
     let ts = this.retrieveSubmittedTimesheets()[index];
 
+    //We will need to separate timesheets into the differnt days and add
+    //totals for each day and if >= 5 hours substract 30 minutes for lunch breaks
+    let mondayMins: number = 0;
+    let tueMins: number = 0;
+    let wedMins: number = 0;
+    let thursMins: number = 0;
+    let friMins: number = 0;
+    let satMins: number = 0;
+
     for (let tse of ts.timesheetEntries) {
+      let day = tse.day;
       var start = new Date("2018-01-01 " + tse.startTime);
       var end = new Date("2018-01-01 " + tse.endTime);
 
       var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
       var elapsedTimeInMins = elapsedTimeInSec / 60;
-      totalDuration += elapsedTimeInMins;
+
+      if (day == "Mon") {
+        mondayMins += elapsedTimeInMins;
+      }
+      else if (day == "Tue") {
+        tueMins += elapsedTimeInMins;
+      }
+      else if (day == "Wed") {
+        wedMins += elapsedTimeInMins;
+      }
+      else if (day == "Thurs") {
+        thursMins += elapsedTimeInMins;
+      }
+      else if (day == "Fri") {
+        friMins += elapsedTimeInMins;
+      }
+      else {
+        satMins += elapsedTimeInMins;
+      }
     }
+
+    //If worked >= 5 hours for a day subtract 30 mins.
+    if (mondayMins >= (5 * 60)) {
+      mondayMins = mondayMins - 30;
+    }
+    if (tueMins >= (5 * 60)) {
+      tueMins = tueMins - 30;
+    }
+    if (wedMins >= (5 * 60)) {
+      wedMins = wedMins - 30;
+    }
+    if (thursMins >= (5 * 60)) {
+      thursMins = thursMins - 30;
+    }
+    if (friMins >= (5 * 60)) {
+      friMins = friMins - 30;
+    }
+    if (satMins >= (5 * 60)) {
+      satMins = satMins - 30;
+    }
+    totalDuration = mondayMins + tueMins + wedMins + thursMins + friMins + satMins;
 
     var hours = Math.floor(totalDuration / 60);
     var minutes = totalDuration % 60;

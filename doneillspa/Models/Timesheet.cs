@@ -81,23 +81,110 @@ namespace doneillspa.Models
 
             detail.Week = this.WeekStarting;
 
-            foreach (TimesheetEntry tse in this.TimesheetEntries)
-            {
-                if (!String.IsNullOrEmpty(proj))
-                {
-                    //Only populate details for relevant project
-                    if (tse.Code.Equals(proj))
-                    {
-                        tse.PopulateLabourDetail(detail, Rates);
-                    }
-                }
-                else
-                {
-                    tse.PopulateLabourDetail(detail, Rates);
-                }
-            }
+            double rate = GetRate(Role, DateTime.UtcNow, Rates);
+
+            Dictionary<string, double> hoursPerDay = RetrieveBreakdownOfHoursPerDay(proj);
+
+            PopulateLabourDetail(Rates, detail, hoursPerDay);
 
             return detail;
+        }
+
+        public void PopulateLabourDetail(List<LabourRate> Rates, LabourWeekDetail detail, Dictionary<string,double> hoursPerDay)
+        {
+            double rate = GetRate(Role, DateTime.UtcNow, Rates);
+
+            foreach (var item in hoursPerDay)
+            {
+                double minutesWorked = item.Value;
+                switch (Role)
+                {
+                    case "Administrator":
+                        detail.AdministratorCost += ((minutesWorked / 60) * 10);
+                        break;
+                    case "Supervisor":
+                        detail.SupervisorCost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "ChargeHand":
+                        detail.ChargehandCost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "ElectR1":
+                        detail.ElecR1Cost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "ElectR2":
+                        detail.ElecR2Cost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "ElectR3":
+                        detail.ElecR3Cost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "Temp":
+                        detail.TempCost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "First Year Apprentice":
+                        detail.FirstYearApprenticeCost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "Second Year Apprentice":
+                        detail.SecondYearApprenticeCost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "Third Year Apprentice":
+                        detail.ThirdYearApprenticeCost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "Fourth Year Apprentice":
+                        detail.FourthYearApprenticeCost += ((minutesWorked / 60) * rate);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private double GetRate(string role, DateTime onDate, List<LabourRate> Rates)
+        {
+            foreach (LabourRate r in Rates)
+            {
+                if (r.Role.Equals(role) && r.EffectiveFrom <= onDate && (r.EffectiveTo == null || r.EffectiveTo >= onDate))
+                {
+                    return r.RatePerHour;
+                }
+            }
+            //Default Value
+            return 0.0;
+        }
+
+        public Dictionary<string,double> RetrieveBreakdownOfHoursPerDay(string proj)
+        {
+            Dictionary<string, double> hoursPerDay = new Dictionary<string, double>();
+            foreach (TimesheetEntry tse in this.TimesheetEntries)
+            {
+                if (tse.Code.Equals(proj))
+                {
+                    TimeSpan startTimespan = TimeSpan.Parse(tse.StartTime);
+                    TimeSpan endTimespan = TimeSpan.Parse(tse.EndTime);
+                    TimeSpan result = endTimespan - startTimespan;
+
+                    if (!hoursPerDay.ContainsKey(tse.Day))
+                    {
+                        hoursPerDay.Add(tse.Day, result.TotalMinutes);
+                    }
+                    else
+                    {
+                        double totalMins = hoursPerDay[tse.Day];
+                        totalMins += result.TotalMinutes;
+                        hoursPerDay[tse.Day] = totalMins;
+                    }
+                }
+            }
+            //Update each of the entries to remove 30 mins for days where engineer worked >= 5 hours
+            foreach (string key in hoursPerDay.Keys.ToList())
+            {
+                double minutesWorked = hoursPerDay[key];
+                if (minutesWorked >= (5 * 60))
+                {
+                    minutesWorked = minutesWorked - 30;
+                    hoursPerDay[key] = minutesWorked;
+                }
+            }
+            return hoursPerDay;
         }
     }
 
