@@ -5,7 +5,7 @@
   <div class="buttonHolder" *ngIf="activeProjects">
     <form class="form-inline my-2 my-lg-0">
       <span class="mr-3" (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
-      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add Entry</button>
+      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add</button>
       <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="submitTimesheet()">Submit</button>
       <span class="ml-3" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
     </form>
@@ -42,7 +42,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="toggleDisplayAddTimesheet()"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">New Timesheet Entry</h4>
+          <h4 class="modal-title" id="myModalLabel">New Entry</h4>
         </div>
         <div class="modal-body">
           <form>
@@ -80,7 +80,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Edit Timesheet Entry</h4>
+          <h4 class="modal-title" id="myModalLabel">Edit Entry</h4>
         </div>
         <div class="modal-body">
           <form>
@@ -98,8 +98,8 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button [disabled]="editEntryStartTime.invalid || editEntryEndTime.invalid" (click)="updateTimesheetEntry()" class="btn btn-secondary">Update Entry</button>
-              <button (click)="removeTimesheetEntry(timesheetEntryToEdit)" class="btn btn-secondary">Delete Entry</button>
+              <button [disabled]="editEntryStartTime.invalid || editEntryEndTime.invalid" (click)="updateTimesheetEntry()" class="btn btn-secondary">Update</button>
+              <button (click)="removeTimesheetEntry(timesheetEntryToEdit)" class="btn btn-secondary">Delete</button>
             </div>
           </form>
         </div>
