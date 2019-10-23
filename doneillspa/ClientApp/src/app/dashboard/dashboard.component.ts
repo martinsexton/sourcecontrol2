@@ -35,6 +35,7 @@ export class DashboardComponent {
   public selectedTimesheetUser: string;
   public filterusername: string;
   public errors: string;
+  public filterOnSubmittedTimesheets: boolean = false;
 
   public loading = true;
 
@@ -48,6 +49,28 @@ export class DashboardComponent {
         this.selectedTsRow = 0;
       }
     }, error => this.errors = error);
+  }
+
+  toggleTimesheetView() {
+    this.filterOnSubmittedTimesheets = !this.filterOnSubmittedTimesheets;
+  }
+
+  nameForButton() {
+    if (this.filterOnSubmittedTimesheets) {
+      return "All Timesheets";
+    }
+    else {
+      return "Submitted Timesheets Only";
+    }
+  }
+
+  retrieveTimesheetsForDisplay() {
+    if (this.filterOnSubmittedTimesheets) {
+      return this.retrieveSubmittedTimesheets();
+    }
+    else {
+      return this.timesheets;
+    }
   }
 
   addTimesheetNote(timesheet:Timesheet) {
@@ -134,14 +157,14 @@ export class DashboardComponent {
       error => this.errors = error);
   }
 
-  retrieveTimesheetsForDisplay() {
-    if (this.filteredTimesheets) {
-      return this.filteredTimesheets;
-    }
-    else {
-      return this.timesheets;
-    }
-  }
+  //retrieveTimesheetsForDisplay() {
+  //  if (this.filteredTimesheets) {
+  //    return this.filteredTimesheets;
+  //  }
+  //  else {
+  //    return this.timesheets;
+  //  }
+  //}
 
   setSelectedDate() {
     let newDate = new Date(this.selectedDate);
@@ -171,7 +194,7 @@ export class DashboardComponent {
   calculateTotalDuration(index) : string{
     let totalDuration: number = 0;
 
-    let ts = this.retrieveSubmittedTimesheets()[index];
+    let ts = this.retrieveTimesheetsForDisplay()[index];
 
     //We will need to separate timesheets into the differnt days and add
     //totals for each day and if >= 5 hours substract 30 minutes for lunch breaks
@@ -247,7 +270,7 @@ export class DashboardComponent {
   timesheeExceedsWeeklyLimit(index) {
     let totalDuration: number = 0;
 
-    let ts = this.retrieveSubmittedTimesheets()[index];
+    let ts = this.retrieveTimesheetsForDisplay()[index];
 
     for (let tse of ts.timesheetEntries) {
       var start = new Date("2018-01-01 " + tse.startTime);
@@ -279,13 +302,20 @@ export class DashboardComponent {
     this.selectedTsRow = index
   }
 
-  getTimesheetEntriesForSubmittedTimesheets(index) {
-    let ts = this.retrieveSubmittedTimesheets()[index];
+  getTimesheetEntries(index) {
+    let ts = this.retrieveTimesheetsForDisplay()[index];
     return ts.timesheetEntries;
   }
 
+  canApproveTimesheet(ts: Timesheet) {
+    return ts.status.toUpperCase() == 'SUBMITTED';
+  }
+  canRejectTimesheet(ts: Timesheet) {
+    return ts.status.toUpperCase() == 'SUBMITTED';
+  }
+
   getTimesheetOwner(index) {
-    let ts = this.retrieveSubmittedTimesheets()[index];
+    let ts = this.retrieveTimesheetsForDisplay()[index];
     return ts.username;
   }
 }
