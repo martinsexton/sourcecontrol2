@@ -60,6 +60,7 @@ export class UserDashboardComponent {
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService,
     private _timesheetService: TimesheetService, private _msuserService: MsUserService, private _certificationService: CertificateService,
     private _notificationService: NotificationService) {
+    $('[data-toggle="tooltip"]').tooltip();
     this._msuserService.getUsers().subscribe(result => {
       this.users = result;
       this.loading = false;
