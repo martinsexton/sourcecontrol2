@@ -114,7 +114,7 @@ namespace doneillspa.Controllers
         public IActionResult Put(int id, [FromBody]TimesheetDto ts)
         {
             Timesheet timesheet = _service.GetTimsheetById(ts.Id);
-            timesheet.Updated(ts);
+            timesheet.Updated(_userManager, _emailService, ts);
 
             _service.UpdateTimesheet(timesheet);
 

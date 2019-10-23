@@ -36,20 +36,24 @@ namespace doneillspa.Models
             }
         }
 
-        public void Updated(TimesheetDto ts)
+        public void Updated(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetDto ts)
         {
-            UpdateStatus(ts);
+            UpdateStatus(userManager, emailService, ts);
         }
 
-        private void UpdateStatus(TimesheetDto ts)
+        private void UpdateStatus(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetDto ts)
         {
             if (ts.Status.Equals("Approved"))
             {
                 Status = TimesheetStatus.Approved;
+                SendMail(userManager, emailService, "Timesheet Approved", 
+                    String.Format("Your timesheet for week beginning {0} has been approved", this.WeekStarting.ToShortDateString()));
             }
             else if (ts.Status.Equals("Rejected"))
             {
                 Status = TimesheetStatus.Rejected;
+                SendMail(userManager, emailService, "Timesheet Rejected",
+                    String.Format("Your timesheet for week beginning {0} has been Rejected", this.WeekStarting.ToShortDateString()));
             }
             else if (ts.Status.Equals("Submitted"))
             {
@@ -57,14 +61,13 @@ namespace doneillspa.Models
             }
         }
 
-        public void AddTimesheetNote(UserManager<ApplicationUser> userManager, IEmailService _emailService, TimesheetNote note)
+        public void AddTimesheetNote(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetNote note)
         {
             //Set date created on timesheet entry
             note.DateCreated = DateTime.UtcNow;
             TimesheetNotes.Add(note);
 
-            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
-            _emailService.SendMail("doneill@hotmail.com", user.Email, "New Timesheet Note Created", note.Details, "", string.Empty, string.Empty);
+            SendMail(userManager, emailService, "New Timesheet Note Created", note.Details);
         }
 
         public void AddTimesheetEntry(TimesheetEntry entry)
@@ -185,6 +188,12 @@ namespace doneillspa.Models
                 }
             }
             return hoursPerDay;
+        }
+
+        private void SendMail(UserManager<ApplicationUser> userManager, IEmailService _emailService, string subject, string message)
+        {
+            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
+            _emailService.SendMail("doneill@hotmail.com", user.Email, subject, message, "", string.Empty, string.Empty);
         }
     }
 
