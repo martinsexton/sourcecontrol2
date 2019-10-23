@@ -42,6 +42,7 @@ export class TimesheetComponent {
   public thursEntries: Array<TimesheetEntry> = new Array();
   public friEntries: Array<TimesheetEntry> = new Array();
   public satEntries: Array<TimesheetEntry> = new Array();
+  public sunEntries: Array<TimesheetEntry> = new Array();
 
   public daysOfWeek: Array<string> = new Array();
 
@@ -58,6 +59,7 @@ export class TimesheetComponent {
   public thurs: DayOfWeek;
   public fri: DayOfWeek;
   public sat: DayOfWeek;
+  public sun: DayOfWeek;
 
   displayAddTimesheet = false;
 
@@ -165,6 +167,7 @@ export class TimesheetComponent {
     this.daysOfWeek.push("Thurs");
     this.daysOfWeek.push("Fri");
     this.daysOfWeek.push("Sat");
+    this.daysOfWeek.push("Sun");
   }
 
   nextWeek() {
@@ -213,8 +216,11 @@ export class TimesheetComponent {
     else if (day == "Fri") {
       return this.friEntries;
     }
-    else {
+    else if (day == "Sat") {
       return this.satEntries;
+    }
+    else {
+      return this.sunEntries;
     }
   }
 
@@ -226,6 +232,7 @@ export class TimesheetComponent {
     this.thursEntries.length = 0;
     this.friEntries.length = 0;
     this.satEntries.length = 0;
+    this.sunEntries.length = 0;
 
     //reset flag that determines if timesheet exists or not for the given date
     this.timesheetExists = false;
@@ -260,8 +267,11 @@ export class TimesheetComponent {
           else if (item.day == "Fri") {
             this.friEntries.push(item);
           }
-          else {
+          else if (item.day == "Sat") {
             this.satEntries.push(item);
+          }
+          else {
+            this.sunEntries.push(item);
           }
         }
         break;
@@ -285,8 +295,11 @@ export class TimesheetComponent {
     else if (day == "Fri") {
       return this.fri.date;
     }
-    else {
+    else if (day == "Sat") {
       return this.sat.date;
+    }
+    else {
+      return this.sun.date;
     }
   }
 
@@ -317,6 +330,10 @@ export class TimesheetComponent {
     var saturday = new Date(this.selectedMoment.toDate());
     saturday.setDate(friday.getDate() + 1);
     this.sat = new DayOfWeek("Sat", saturday);
+
+    var sunday = new Date(this.selectedMoment.toDate());
+    sunday.setDate(saturday.getDate() + 1);
+    this.sun = new DayOfWeek("Sun", sunday);
   }
 
   toggleDisplayAddTimesheet() {
@@ -363,8 +380,11 @@ export class TimesheetComponent {
           else if (this.selectedDay == "Fri") {
             this.removeFromArrayList(this.friEntries, ts);
           }
-          else {
+          else if (this.selectedDay == "Sat") {
             this.removeFromArrayList(this.satEntries, ts);
+          }
+          else {
+            this.removeFromArrayList(this.sunEntries, ts);
           }
         }, error => this.errors = error);
     }
@@ -417,8 +437,11 @@ export class TimesheetComponent {
     else if (this.selectedDay == "Fri") {
       this.friEntries.push(entry);
     }
-    else {
+    else if (this.selectedDay == "Sat") {
       this.satEntries.push(entry);
+    }
+    else {
+      this.sunEntries.push(entry);
     }
   }
 
@@ -435,6 +458,7 @@ export class TimesheetComponent {
     this.populateTimesheet(this.thursEntries);
     this.populateTimesheet(this.friEntries);
     this.populateTimesheet(this.satEntries);
+    this.populateTimesheet(this.sunEntries);
     
     this._timesheetService.saveTimesheet(this.activeTimeSheet).subscribe(
       res => {

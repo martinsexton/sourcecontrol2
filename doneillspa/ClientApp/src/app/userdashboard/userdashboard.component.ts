@@ -329,6 +329,7 @@ export class UserDashboardComponent {
     let thursMins: number = 0;
     let friMins: number = 0;
     let satMins: number = 0;
+    let sunMins: number = 0;
 
     for (let tse of ts.timesheetEntries) {
       var start = new Date("2018-01-01 " + tse.startTime);
@@ -353,8 +354,11 @@ export class UserDashboardComponent {
       else if (day == "Fri") {
         friMins += elapsedTimeInMins;
       }
-      else {
+      else if (day == "Sat") {
         satMins += elapsedTimeInMins;
+      }
+      else {
+        sunMins += elapsedTimeInMins;
       }
     }
 
@@ -377,7 +381,10 @@ export class UserDashboardComponent {
     if (satMins >= (5 * 60)) {
       satMins = satMins - 30;
     }
-    totalDuration = mondayMins + tueMins + wedMins + thursMins + friMins + satMins;
+    if (sunMins >= (5 * 60)) {
+      sunMins = sunMins - 30;
+    }
+    totalDuration = mondayMins + tueMins + wedMins + thursMins + friMins + satMins + sunMins;
 
     var hours = Math.floor(totalDuration / 60);
     var minutes = totalDuration % 60;
