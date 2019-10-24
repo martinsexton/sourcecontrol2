@@ -158,17 +158,16 @@
                           <th>Start Time</th>
                           <th>End Time</th>
                           <th>Code</th>
-                          <!--<th>Details</th>-->
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr data-toggle="tooltip" title="{{tse.details}}" *ngFor="let tse of getTimesheetEntriesForTimesheet(i)">
+                        <tr *ngFor="let tse of getTimesheetEntriesForTimesheet(i)">
                           <td>{{ tse.day }}</td>
                           <td>{{ tse.startTime }}</td>
                           <td>{{ tse.endTime }}</td>
                           <td>{{ tse.code }}</td>
-                          <!--<td>{{ tse.details }}</td>-->
-                          <!--<td>{{ calculateDuration(tse) }} hours</td>-->
+                          <td><div *ngIf="tse.details" data-container="body" data-toggle="tooltip" title="{{tse.details}}"><span><img src="assets/images/note.png" class="img-responsive" alt="..."></span></div></td>
                         </tr>
                       </tbody>
                       <tfoot>
