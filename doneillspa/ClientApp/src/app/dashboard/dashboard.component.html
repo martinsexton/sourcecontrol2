@@ -31,7 +31,7 @@
                     <th>Start Time</th>
                     <th>End Time</th>
                     <th>Code</th>
-                    <th></th>
+                    <th>Details</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,8 @@
                     <td>{{ tse.startTime }}</td>
                     <td>{{ tse.endTime }}</td>
                     <td>{{ tse.code }}</td>
-                    <td><div *ngIf="tse.details" data-container="body" data-toggle="tooltip" title="{{tse.details}}"><span><img src="assets/images/note.png" class="img-responsive" alt="..."></span></div></td>
+                    <!--<td><div *ngIf="tse.details" data-container="body" data-toggle="tooltip" title="{{tse.details}}"><span><img src="assets/images/note.png" class="img-responsive" alt="..."></span></div></td>-->
+                    <td>{{tse.details}}</td>
                     <!--<td>{{ calculateDuration(tse) }} hrs</td>-->
                   </tr>
                 </tbody>
