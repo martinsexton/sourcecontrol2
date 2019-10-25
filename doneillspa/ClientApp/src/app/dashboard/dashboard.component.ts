@@ -319,4 +319,9 @@ export class DashboardComponent {
     let ts = this.retrieveTimesheetsForDisplay()[index];
     return ts.username;
   }
+
+  getTimesheetStatus(index) {
+    let ts = this.retrieveTimesheetsForDisplay()[index];
+    return ts.status;
+  }
 }

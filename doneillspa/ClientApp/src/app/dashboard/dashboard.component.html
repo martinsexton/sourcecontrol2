@@ -22,11 +22,12 @@
         </div>
         <div class="col-md-6">
           <div class="collapse" id="collapseExample{{i}}">
+            <p><strong>Status:    </strong>{{getTimesheetStatus(i)}}  <strong>Employee:  </strong>{{getTimesheetOwner(i)}}</p>
             <div class="table-responsive">
               <table class='table'>
                 <thead class="thead-light">
                   <tr>
-                    <th>Employee</th>
+                    <!--<th>Employee</th>-->
                     <th>Day</th>
                     <th>Start Time</th>
                     <th>End Time</th>
@@ -36,7 +37,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let tse of getTimesheetEntries(i)">
-                    <td>{{getTimesheetOwner(i)}}</td>
+                    <!--<td>{{getTimesheetOwner(i)}}</td>-->
                     <td>{{ tse.day }}</td>
                     <td>{{ tse.startTime }}</td>
                     <td>{{ tse.endTime }}</td>
