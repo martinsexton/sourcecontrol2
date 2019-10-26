@@ -3,6 +3,7 @@
     <input class="form-control mr-sm-2" type="date" placeholder="Search" aria-label="Search" name="selectedDate" [(ngModel)]="selectedDate">
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="setSelectedDate()">Search Timesheets</button>
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="toggleTimesheetView()">{{nameForButton()}}</button>
+    <div class="ml-5" data-container="body" data-toggle="tooltip" title="New Timesheets Received" style="display: block" *ngIf='signalRService._certcreatedmessage'><span (click)="clearSignalRMessages()"><img src="assets/images/schedule.png" class="img-responsive" alt="..."></span></div>
   </form>
 </nav>
 <div *ngIf="errors" class="alert alert-danger alert-dismissible">
@@ -78,29 +79,29 @@
         </div>
       </div>
     </div>
- </div>
+  </div>
 
-    <!-- New Timesheet Note -->
-    <div class="modal fade" id="myNewNoteModal" tabindex="-1" role="dialog" aria-labelledby="myNewNoteModal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myNewNoteModal">New Note</h4>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="details">Details</label>
-                <input type="text" [(ngModel)]="newNote.details" name="details" class="form-control" [ngClass]="{'is-invalid': newNoteDetails.invalid, 'is-valid': !newNoteDetails.invalid}" id="details" placeholder="Enter Details" required #newNoteDetails="ngModel">
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button [disabled]="newNoteDetails.invalid" (click)="saveTimesheetNote()" class="btn btn-primary">Save Note</button>
-          </div>
+  <!-- New Timesheet Note -->
+  <div class="modal fade" id="myNewNoteModal" tabindex="-1" role="dialog" aria-labelledby="myNewNoteModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myNewNoteModal">New Note</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="details">Details</label>
+              <input type="text" [(ngModel)]="newNote.details" name="details" class="form-control" [ngClass]="{'is-invalid': newNoteDetails.invalid, 'is-valid': !newNoteDetails.invalid}" id="details" placeholder="Enter Details" required #newNoteDetails="ngModel">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button [disabled]="newNoteDetails.invalid" (click)="saveTimesheetNote()" class="btn btn-primary">Save Note</button>
         </div>
       </div>
     </div>
   </div>
+</div>

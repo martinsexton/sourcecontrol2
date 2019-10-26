@@ -20,6 +20,7 @@ using doneillspa.Services.Email;
 using doneillspa.Services.Calendar;
 using doneillspa.Services.Document;
 using doneillspa.Services;
+using hub;
 
 namespace doneillspa
 {
@@ -71,6 +72,7 @@ namespace doneillspa
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
+            services.AddSignalR().AddAzureSignalR();
             services.AddCors();
 
             //Enable Session
@@ -139,7 +141,11 @@ namespace doneillspa
             app.UseCors(builder =>
                 builder.WithOrigins("http://doneillspa.azurewebsites.net"));
 
-            app.UseStaticFiles();
+            app.UseFileServer();
+            app.UseAzureSignalR(routes =>
+            {
+                routes.MapHub<Chat>("/signalr");
+            });
             app.UseSpaStaticFiles();
             app.UseAuthentication();
             app.UseSession();

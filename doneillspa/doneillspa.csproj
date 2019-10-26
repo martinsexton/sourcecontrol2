@@ -31,6 +31,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Azure.SignalR" Version="1.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
     <PackageReference Include="MimeKit" Version="2.1.4" />
     <PackageReference Include="Moq" Version="4.10.1" />
@@ -82,6 +83,7 @@
     <None Remove="ClientApp\src\app\shared\services\httpservicebase.ts" />
     <None Remove="ClientApp\src\app\shared\services\msuser.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\notification.service.ts" />
+    <None Remove="ClientApp\src\app\shared\services\signalrservice.ts" />
     <None Remove="ClientApp\src\app\shared\services\timesheet.service.ts" />
     <None Remove="ClientApp\src\app\shared\utils\config.service.ts" />
     <None Remove="ClientApp\src\app\supervisor\supervisor.component.ts" />
@@ -131,6 +133,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\loginresponse.interface.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\user.registration.interface.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\msuser.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\signalrservice.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\timesheet.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\utils\config.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\supervisor\supervisor.component.ts" />

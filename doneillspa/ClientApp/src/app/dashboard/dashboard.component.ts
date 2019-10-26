@@ -1,9 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
 import { TimesheetNote } from '../timesheetnote';
 import { Project } from '../project';
+import { SignalRService } from '../shared/services/signalrservice';
 
 import {
   ProjectService
@@ -22,7 +23,7 @@ declare var $: any;
   styleUrls: ['./dashboard.component.css']
 })
 
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
   public timesheets: Timesheet[];
   public timesheetToAddNoteTo: Timesheet;
   public filteredTimesheets: Timesheet[];
@@ -39,7 +40,7 @@ export class DashboardComponent {
 
   public loading = true;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
+  constructor(public signalRService: SignalRService, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
     this.loading = false;
     $('[data-toggle="tooltip"]').tooltip();
     //Retrieve Default list of tui Timesheets For display 
@@ -50,6 +51,15 @@ export class DashboardComponent {
         this.selectedTsRow = 0;
       }
     }, error => this.errors = error);
+  }
+
+  ngOnInit(): void {
+    this.signalRService.startConnection();
+    this.signalRService.addCertificateCreatedListener();
+  }
+
+  clearSignalRMessages(){
+    this.signalRService.clearMessages();
   }
 
   toggleTimesheetView() {
