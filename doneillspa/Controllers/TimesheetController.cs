@@ -85,12 +85,14 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
-        [Route("api/timesheet/name/{user}")]
-        public IEnumerable<TimesheetDto> Get(string user)
+        [Route("api/timesheet/name/{user}/week/{year}/{month}/{day}")]
+        public IEnumerable<TimesheetDto> Get(string user, int year, int month, int day)
         {
+            DateTime weekStarting = new DateTime(year, month, day);
+
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _service.GetTimesheetsByUser(user);
+            IEnumerable<Timesheet> timesheets = _service.GetTimesheetsByUserAndDate(user, weekStarting);
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));

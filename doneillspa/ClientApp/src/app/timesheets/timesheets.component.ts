@@ -123,8 +123,8 @@ export class TimesheetComponent {
     return this.activeTimeSheet.timesheetNotes
   }
 
-  retrieveTimeSheetsForDate(startOfWeek:Date) {
-    this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
+  retrieveTimeSheetsForDate(startOfWeek: Date) {
+    this._timesheetService.getTimesheetForUser(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate(), localStorage.getItem('username')).subscribe(result => {
       this.loading = false;
       this.timesheets = result;
       this.populateEntriesForDaysOfWeek(this.timesheets, startOfWeek);
@@ -185,7 +185,7 @@ export class TimesheetComponent {
 
     var startOfWeek = this.getStartOfWeek();
 
-    this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
+    this._timesheetService.getTimesheetForUser(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate(), localStorage.getItem('username')).subscribe(result => {
       this.loading = false;
       this.timesheets = result;
       this.populateEntriesForDaysOfWeek(this.timesheets, startOfWeek);
@@ -244,38 +244,36 @@ export class TimesheetComponent {
     this.activeTimeSheet.timesheetNotes.length = 0;
 
     for (let ts of array) {
-      if (ts.owner == localStorage.getItem("client_id")) {
-        this.activeTimeSheet.weekStarting = ts.weekStarting;
-        this.activeTimeSheet.id = ts.id;
-        this.activeTimeSheet.status = ts.status;
-        this.activeTimeSheet.timesheetNotes = ts.timesheetNotes;
-        this.timesheetExists = true;
+      this.activeTimeSheet.weekStarting = ts.weekStarting;
+      this.activeTimeSheet.id = ts.id;
+      this.activeTimeSheet.status = ts.status;
+      this.activeTimeSheet.timesheetNotes = ts.timesheetNotes;
+      this.timesheetExists = true;
 
-        for (let item of ts.timesheetEntries) {
-          if (item.day == "Mon") {
-            this.monEntries.push(item);
-          }
-          else if (item.day == "Tue") {
-            this.tueEntries.push(item);
-          }
-          else if (item.day == "Wed") {
-            this.wedEntries.push(item);
-          }
-          else if (item.day == "Thurs") {
-            this.thursEntries.push(item);
-          }
-          else if (item.day == "Fri") {
-            this.friEntries.push(item);
-          }
-          else if (item.day == "Sat") {
-            this.satEntries.push(item);
-          }
-          else {
-            this.sunEntries.push(item);
-          }
+      for (let item of ts.timesheetEntries) {
+        if (item.day == "Mon") {
+          this.monEntries.push(item);
         }
-        break;
+        else if (item.day == "Tue") {
+          this.tueEntries.push(item);
+        }
+        else if (item.day == "Wed") {
+          this.wedEntries.push(item);
+        }
+        else if (item.day == "Thurs") {
+          this.thursEntries.push(item);
+        }
+        else if (item.day == "Fri") {
+          this.friEntries.push(item);
+        }
+        else if (item.day == "Sat") {
+          this.satEntries.push(item);
+        }
+        else {
+          this.sunEntries.push(item);
+        }
       }
+      break;
     }
   }
 

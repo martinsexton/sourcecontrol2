@@ -168,13 +168,13 @@ export class TimesheetService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
-  getTimesheetForUser(user:string) {
+  getTimesheetForUser(year: number, month: number, day: number, user:string) {
     let authToken = localStorage.getItem('auth_token');
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/json');
     headers = headers.append('Authorization', 'Bearer ' + authToken);
 
-    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/timesheet/name/' + user,
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/timesheet/name/' + user + '/week/' + year + '/' + month + '/' + day,
       {
         headers
       });

@@ -14,5 +14,6 @@ namespace doneillspa.DataAccess
         Timesheet GetTimsheetById(long id);
         IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting);
         IEnumerable<Timesheet> GetTimesheetsByUser(string user);
+        IEnumerable<Timesheet> GetTimesheetsByUserAndDate(string user, DateTime weekStarting);
     }
 }

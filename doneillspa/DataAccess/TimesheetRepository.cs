@@ -43,6 +43,15 @@ namespace doneillspa.DataAccess
                 .ToList();
         }
 
+        public IEnumerable<Timesheet> GetTimesheetsByUserAndDate(string user, DateTime weekStarting)
+        {
+            return _context.Timesheet
+                .Where(b => b.Username.ToUpper().Equals(user.ToUpper()) && b.WeekStarting.Date == weekStarting.Date)
+                .Include(b => b.TimesheetEntries)
+                .Include(b => b.TimesheetNotes)
+                .ToList();
+        }
+
         public Timesheet GetTimsheetById(long id)
         {
             return _context.Timesheet

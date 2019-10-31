@@ -58,6 +58,11 @@ namespace doneillspa.Services
             return _repository.GetTimesheetsByUser(user);
         }
 
+        public IEnumerable<Timesheet> GetTimesheetsByUserAndDate(string user, DateTime weekStarting)
+        {
+            return _repository.GetTimesheetsByUserAndDate(user, weekStarting);
+        }
+
         public Timesheet GetTimsheetById(long id)
         {
             return _repository.GetTimsheetById(id);
