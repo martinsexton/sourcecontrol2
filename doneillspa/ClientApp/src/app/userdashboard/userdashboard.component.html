@@ -343,7 +343,6 @@
           <div class="form-group">
             <label for="role">Role In Organization</label>
             <select class="form-control form-control-sm" id="contractorrole" name="role" [(ngModel)]="contractorRole">
-              <option [value]="ElectXR1" selected>ElectXR1</option>
               <option *ngFor="let role of retrieveListOfRoles().slice(1)">{{role}}</option>
             </select>
           </div>
