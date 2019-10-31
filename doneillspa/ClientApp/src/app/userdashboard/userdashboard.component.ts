@@ -42,11 +42,20 @@ export class UserDashboardComponent {
   public loadingTimesheets: boolean = false;
   public resettingPassword: boolean = false;
   public userImage: string = "user.png";
+  public contractorRole: string = "ElectXR1";
+  public fulltimeStaffRole: string = "ChargeHand";
  
 
   public filterName: string;
 
   public timesheets: Timesheet[];
+
+  public roles: string[] = ["Administrator", "Supervisor", "ChargeHand", "ElectR1", "ElectR2",
+    "ElectR3", "Temp", "First Year Apprentice", "Second Year Apprentice",
+    "Third Year Apprentice", "Fourth Year Apprentice"];
+
+  public contractorRoles: string[] = ["ElectXR1", "ElectXR2",
+    "ElectXR3"];
 
   public users: ApplicationUser[];
   public filteredUsers: ApplicationUser[];
@@ -56,6 +65,7 @@ export class UserDashboardComponent {
   displayAddCert = false;
   displayAddNotification = false;
   public loading = true;
+  public addingContractor = false;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService,
     private _timesheetService: TimesheetService, private _msuserService: MsUserService, private _certificationService: CertificateService,
@@ -91,7 +101,31 @@ export class UserDashboardComponent {
   }
 
   showAddUser() {
+    this.addingContractor = false;
     $("#myRegistrationModal").modal('show');
+  }
+
+  isContractor() {
+    if (!this.selectedUser) {
+      return false;
+    }
+    else {
+      return (this.selectedUser.role == "ElectXR1" || this.selectedUser.role == "ElectXR2" || this.selectedUser.role == "ElectXR3");
+    }
+  }
+
+  showAddContractUser() {
+    this.addingContractor = true;
+    $("#myContractorRegistrationModal").modal('show');
+  }
+
+  retrieveListOfRoles() {
+    if (this.addingContractor == false) {
+      return this.roles
+    }
+    else {
+      return this.contractorRoles;
+    }
   }
 
   GetImageName() {
@@ -115,6 +149,7 @@ export class UserDashboardComponent {
         result => {
           if (result) {
             $("#myRegistrationModal").modal('hide');
+            $("#myContractorRegistrationModal").modal('hide');
           }
         },
         errors => this.userMessage = errors);

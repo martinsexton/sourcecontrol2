@@ -14,8 +14,11 @@ namespace doneillspa.Data
         private const string _supervisorRoleName = "Supervisor";
         private const string _chargeHandRoleName = "ChargeHand";
         private const string _electR1RoleName = "ElectR1";
+        private const string _electXR1RoleName = "ElectXR1";
         private const string _electR2RoleName = "ElectR2";
+        private const string _electXR2RoleName = "ElectXR2";
         private const string _electR3RoleName = "ElectR3";
+        private const string _electXR3RoleName = "ElectXR3";
         private const string _tempRoleName = "Temp";
         private const string _firstYearApprenticeRoleName = "First Year Apprentice";
         private const string _secondYearApprenticeRoleName = "Second Year Apprentice";
@@ -28,7 +31,7 @@ namespace doneillspa.Data
 
         private string[] _defaultRoles = new string[] { _adminRoleName, _supervisorRoleName, _chargeHandRoleName,
             _electR1RoleName, _electR2RoleName, _electR3RoleName, _tempRoleName, _firstYearApprenticeRoleName,
-            _secondYearApprenticeRoleName, _thirdYearApprenticeRoleName, _fourthYearApprenticeRoleName};
+            _secondYearApprenticeRoleName, _thirdYearApprenticeRoleName, _fourthYearApprenticeRoleName,  _electXR1RoleName, _electXR2RoleName, _electXR3RoleName };
 
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;

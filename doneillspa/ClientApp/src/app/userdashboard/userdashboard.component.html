@@ -16,6 +16,7 @@
       </li>
     </ul>
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="showAddUser()">Add User</button>
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="showAddContractUser()">Add Contract User</button>
   </form>
 </nav>
 <div class="container-fluid" *ngIf="selectedUser">
@@ -40,7 +41,7 @@
     </div>
     <div class="col-md-10">
       <div class="row">
-        <div class="col">
+        <div *ngIf="!isContractor()" class="col">
           <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
             <div class="card-header">Holiday Requests</div>
             <div class="card-body">
@@ -66,7 +67,7 @@
             </div>
           </div>
         </div>
-        <div class="col">
+        <div *ngIf="!isContractor()" class="col">
           <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
             <div class="card-header">CertificationDetails</div>
             <div class="card-body">
@@ -111,7 +112,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4">
+        <div *ngIf="!isContractor()" class="col-md-4">
           <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
             <div class="card-header">Notification Details</div>
             <div class="card-body">
@@ -278,7 +279,7 @@
         <h4 class="modal-title" id="myModalLabel">Register</h4>
       </div>
       <div class="modal-body">
-        <form #f="ngForm" novalidate (ngSubmit)="registerUser(f)">
+        <form #rf="ngForm" novalidate (ngSubmit)="registerUser(rf)">
           <div class="form-group">
             <label for="firstname">First Name</label>
             <input id="firstname" type="text" required name="firstname" class="form-control" placeholder="Your Firstname" tmFocus ngModel>
@@ -303,21 +304,47 @@
           </div>
           <div class="form-group">
             <label for="role">Role In Organization</label>
-            <!--<select class="form-control form-control-sm" id="role" name="role" ngModel>
-        <option selected *ngFor="let role of roles">{{role.name}}</option>
-        </select>-->
-            <select class="form-control form-control-sm" id="role" name="role" ngModel>
-              <option>Administrator</option>
-              <option>Supervisor</option>
-              <option>ChargeHand</option>
-              <option>ElectR1</option>
-              <option>ElectR2</option>
-              <option>ElectR3</option>
-              <option>Temp</option>
-              <option>First Year Apprentice</option>
-              <option>Second Year Apprentice</option>
-              <option>Third Year Apprentice</option>
-              <option>Fourth Year Apprentice</option>
+            <select class="form-control form-control-sm" id="role" name="role" [(ngModel)]="fulltimeStaffRole">
+              <option *ngFor="let role of retrieveListOfRoles()">{{role}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+          </div>
+          <div *ngIf="userMessage" class="alert alert-danger" role="alert">
+            <strong>Oops!</strong> {{userMessage}}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Register Contractor Modal -->
+<div class="modal fade" id="myContractorRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Register Contractor</h4>
+      </div>
+      <div class="modal-body">
+        <form #crf="ngForm" novalidate (ngSubmit)="registerUser(crf)">
+          <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input id="contractorfirstname" type="text" required name="firstname" class="form-control" placeholder="Your Firstname" tmFocus ngModel>
+          </div>
+          <div class="form-group">
+            <label for="surname">Surname</label>
+            <input id="contractorsurname" type="text" required name="surname" class="form-control" placeholder="Your Surname" tmFocus ngModel>
+          </div>
+          <div class="form-group">
+            <label for="role">Role In Organization</label>
+            <select class="form-control form-control-sm" id="contractorrole" name="role" [(ngModel)]="contractorRole">
+              <option [value]="ElectXR1" selected>ElectXR1</option>
+              <option *ngFor="let role of retrieveListOfRoles().slice(1)">{{role}}</option>
             </select>
           </div>
           <div class="form-group">

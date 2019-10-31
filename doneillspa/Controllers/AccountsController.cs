@@ -39,8 +39,17 @@ namespace doneillspa.Controllers
             };
 
             //Password supplied must have non numeric, uppercase and digits in them in order to be saved
-            var result = await _userManager.CreateAsync(newUser, details.Password);
 
+            IdentityResult result = null;
+            if (String.IsNullOrEmpty(details.Password))
+            {
+                result = await _userManager.CreateAsync(newUser);
+            }
+            else
+            {
+                result = await _userManager.CreateAsync(newUser, details.Password);
+            }
+            
             //If user created successfully then add role to user if provided
             if (result.Succeeded)
             {
