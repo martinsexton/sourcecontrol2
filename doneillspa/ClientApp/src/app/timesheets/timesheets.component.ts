@@ -310,27 +310,27 @@ export class TimesheetComponent {
     this.monday = new DayOfWeek("Mon", monday);
 
     var tuesday = new Date(this.selectedMoment.toDate());
-    tuesday.setDate(monday.getDate() + 1);
+    tuesday.setDate(baseDate.getDate() - (day - 2));
     this.tues = new DayOfWeek("Tue", tuesday);
 
     var wednesday = new Date(this.selectedMoment.toDate());
-    wednesday.setDate(tuesday.getDate() + 1);
+    wednesday.setDate(baseDate.getDate() - (day - 3));
     this.wed = new DayOfWeek("Wed", wednesday);
 
     var thursday = new Date(this.selectedMoment.toDate());
-    thursday.setDate(wednesday.getDate() + 1);
+    thursday.setDate(baseDate.getDate() - (day - 4));
     this.thurs = new DayOfWeek("Thurs", thursday);
 
     var friday = new Date(this.selectedMoment.toDate());
-    friday.setDate(thursday.getDate() + 1);
+    friday.setDate(baseDate.getDate() - (day - 5));
     this.fri = new DayOfWeek("Fri", friday);
 
     var saturday = new Date(this.selectedMoment.toDate());
-    saturday.setDate(friday.getDate() + 1);
+    saturday.setDate(baseDate.getDate() - (day - 6));
     this.sat = new DayOfWeek("Sat", saturday);
 
     var sunday = new Date(this.selectedMoment.toDate());
-    sunday.setDate(saturday.getDate() + 1);
+    sunday.setDate(baseDate.getDate() - (day - 7));
     this.sun = new DayOfWeek("Sun", sunday);
   }
 
