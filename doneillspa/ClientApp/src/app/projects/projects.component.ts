@@ -107,6 +107,9 @@ export class ProjectComponent {
     roles.push("Second Year Apprentice");
     roles.push("Third Year Apprentice");
     roles.push("Fourth Year Apprentice");
+    roles.push("ElectXR1");
+    roles.push("ElectXR2");
+    roles.push("ElectXR3");
 
     return roles;
   }
