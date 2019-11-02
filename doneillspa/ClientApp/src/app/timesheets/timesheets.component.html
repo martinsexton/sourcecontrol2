@@ -1,20 +1,18 @@
 <div class="container-fluid">
   <div class="buttonHolder" *ngIf="activeProjects">
     <form class="form-inline my-2 my-lg-0">
-      <span class="mr-3" (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
-      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add</button>
-      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0" (click)="submitTimesheet()">Submit</button>
+      <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
+      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="ml-3 btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add</button>
+      <div *ngIf="isSupervisor()" class="btn-group ml-3">
+        <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          User
+        </button>
+        <div class="dropdown-menu">
+          <a *ngFor="let u of retrieveListOfUsers(); let i = index" class="dropdown-item" (click)="setUser(u)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
+        </div>
+      </div>
+      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0 ml-3" (click)="submitTimesheet()">Submit</button>
       <span class="ml-3" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
-      <ul *ngIf="isSupervisor()" class="navbar-nav mr-auto ml-3">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Users
-          </a>
-          <div *ngIf="contractors" class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a *ngFor="let u of retrieveListOfUsers(); let i = index" class="dropdown-item" (click)="setUser(u)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
-          </div>
-        </li>
-      </ul>
     </form>
   </div>
   <div *ngIf="loading" class="d-flex justify-content-center">
