@@ -193,7 +193,11 @@ namespace doneillspa.Models
         private void SendMail(UserManager<ApplicationUser> userManager, IEmailService _emailService, string subject, string message)
         {
             ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
-            _emailService.SendMail("doneill@hotmail.com", user.Email, subject, message, "", string.Empty, string.Empty);
+            //Contractors will not have an email, so check against sending email for these users.
+            if (!String.IsNullOrEmpty(user.Email))
+            {
+                _emailService.SendMail("doneill@hotmail.com", user.Email, subject, message, "", string.Empty, string.Empty);
+            }
         }
     }
 
