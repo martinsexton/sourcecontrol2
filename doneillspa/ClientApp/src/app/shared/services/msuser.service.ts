@@ -94,6 +94,19 @@ export class MsUserService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
+  getContractors() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/contractor/',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
   getUser(name:string) {
     let authToken = localStorage.getItem('auth_token');
 

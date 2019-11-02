@@ -65,6 +65,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               localStorage.setItem('role', result.role);
               localStorage.setItem('client_id', result.id);
               localStorage.setItem('username', value.firstname + value.surname);
+              localStorage.setItem('firstname', value.firstname);
+              localStorage.setItem('surname', value.surname);
               this.router.navigate(['/']);
             }
           }

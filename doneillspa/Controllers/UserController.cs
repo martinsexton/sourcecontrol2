@@ -158,6 +158,41 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
+        [Route("api/contractor")]
+        public IEnumerable<ApplicationUserDto> GetContractors()
+        {
+            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).Include(r => r.HolidayRequests).ToList();
+
+            List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
+            List<string> contractorRoles = new List<string>();
+            contractorRoles.Add("ElectXR1");
+            contractorRoles.Add("ElectXR2");
+            contractorRoles.Add("ElectXR3");
+
+            foreach (ApplicationUser user in users)
+            {
+                IList<string> roles = _userManager.GetRolesAsync(user).Result;
+                if(roles.Count > 0)
+                {
+                    if (contractorRoles.Contains(roles.First()))
+                    {
+                        ApplicationUserDto dtouser = new ApplicationUserDto();
+                        dtouser.Id = user.Id;
+                        dtouser.FirstName = user.FirstName;
+                        dtouser.Surname = user.Surname;
+                        dtouser.PhoneNumber = user.PhoneNumber;
+                        dtouser.Email = user.Email;
+                        dtouser.IsEnabled = user.IsEnabled;
+                        dtouser.Role = roles.First();
+
+                        dtousers.Add(dtouser);
+                    }
+                }
+            }
+            return dtousers;
+        }
+
+        [HttpGet]
         [Route("api/user/{id}")]
         public JsonResult Get(string id)
         {

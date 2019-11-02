@@ -14,6 +14,8 @@ import {
 import {
   TimesheetService
 } from '../shared/services/timesheet.service';
+import { ApplicationUser } from '../applicationuser';
+import { MsUserService } from '../shared/services/msuser.service';
 
 declare var $: any;
 
@@ -33,6 +35,8 @@ export class TimesheetComponent {
   public selectedDate: string = null;
   public errors: string;
 
+  public selectedUser: ApplicationUser = null;
+
   //Default to Monday
   public selectedDay: string = "Mon";
 
@@ -51,7 +55,8 @@ export class TimesheetComponent {
   selectedMoment: moment.Moment = moment();
 
   public newEntry: TimesheetEntry;
-  public timesheetEntryToEdit: TimesheetEntry
+  public timesheetEntryToEdit: TimesheetEntry;
+  public contractors: ApplicationUser[];
 
   public monday: DayOfWeek;
   public tues: DayOfWeek;
@@ -65,7 +70,13 @@ export class TimesheetComponent {
 
   //declare var $: any;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService : TimesheetService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _msuserService: MsUserService) {
+    //Retrieve list of contractors
+    this.retrieveContrators();
+
+    //Setup the user to user in retrieving and saving timesheets
+    this.setDefaultUser();
+
     //Populate available days of the week for entering timesheets
     this.populateDaysOfWeek();
 
@@ -81,11 +92,48 @@ export class TimesheetComponent {
     var startOfWeek = this.getStartOfWeek();
 
     //Setting up default timesheet and timesheet entries
-    this.activeTimeSheet = new Timesheet(0, localStorage.getItem('username'), localStorage.getItem('client_id'), localStorage.getItem('role'), startOfWeek,'New');
+    this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek,'New');
     this.newEntry = new TimesheetEntry("", "", "", "", "");
 
     //Retrieve timesheets for given date
     this.retrieveTimeSheetsForDate(startOfWeek);
+  }
+
+  retrieveContrators() {
+    this._msuserService.getContractors().subscribe(result => {
+      this.contractors = result;
+    })
+  }
+
+  retrieveListOfUsers() {
+    let users: Array<ApplicationUser> = new Array();
+    //Need to create an application user to represent the logged on user.
+    let defaultUser: ApplicationUser = new ApplicationUser(localStorage.getItem('client_id'), localStorage.getItem('firstname'), localStorage.getItem('surname'), "", "", localStorage.getItem('role'), true);
+    users.push(defaultUser);
+    if (this.contractors) {
+      for (let c of this.contractors) {
+        users.push(c);
+      }
+    }
+    return users;
+  }
+
+  setDefaultUser() {
+    this.selectedUser = new ApplicationUser(localStorage.getItem('client_id'), localStorage.getItem('firstname'), localStorage.getItem('surname'), "", "", localStorage.getItem('role'), true);
+  }
+
+  setUser(user: ApplicationUser) {
+    this.selectedUser = user;
+
+    //Update active timesheet with details of switched user
+    this.activeTimeSheet.owner = this.selectedUser.id;
+    this.activeTimeSheet.role = this.selectedUser.role;
+    this.activeTimeSheet.username = this.selectedUser.firstName + this.selectedUser.surname;
+
+    //Get the start of this working week
+    var startOfWeek = this.getStartOfWeek();
+    this.retrieveTimeSheetsForDate(startOfWeek);
+    this.LoadWeek();
   }
 
   ngOnInit() {
@@ -124,7 +172,7 @@ export class TimesheetComponent {
   }
 
   retrieveTimeSheetsForDate(startOfWeek: Date) {
-    this._timesheetService.getTimesheetForUser(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate(), localStorage.getItem('username')).subscribe(result => {
+    this._timesheetService.getTimesheetForUser(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate(), this.selectedUser.firstName + this.selectedUser.surname).subscribe(result => {
       this.loading = false;
       this.timesheets = result;
       this.populateEntriesForDaysOfWeek(this.timesheets, startOfWeek);
@@ -180,12 +228,16 @@ export class TimesheetComponent {
     this.LoadWeek();
   }
 
+  isSupervisor() {
+    return this._msuserService.isLoggedIn() && this._msuserService.isSupervisor();
+  }
+
   LoadWeek() {
     this.refreshCalendarDates();
 
     var startOfWeek = this.getStartOfWeek();
 
-    this._timesheetService.getTimesheetForUser(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate(), localStorage.getItem('username')).subscribe(result => {
+    this._timesheetService.getTimesheetForUser(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate(), this.selectedUser.firstName + this.selectedUser.surname).subscribe(result => {
       this.loading = false;
       this.timesheets = result;
       this.populateEntriesForDaysOfWeek(this.timesheets, startOfWeek);
