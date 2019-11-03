@@ -21,14 +21,13 @@
             {{ts.weekStarting | date:'fullDate'}}
           </a>
         </div>
-        <div class="col-md-6">
+        <div [ngClass]="{'col-md-6': ts.timesheetNotes.length > 0, 'col-md-8': !ts.timesheetNotes.length > 0}">
           <div class="collapse" id="collapseExample{{i}}">
             <p><strong>Status:    </strong>{{getTimesheetStatus(i)}}  <strong>Employee:  </strong>{{getTimesheetOwner(i)}}</p>
             <div class="table-responsive">
               <table class='table'>
                 <thead class="thead-light">
                   <tr>
-                    <!--<th>Employee</th>-->
                     <th>Day</th>
                     <th>Start Time</th>
                     <th>End Time</th>
@@ -38,14 +37,11 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let tse of getTimesheetEntries(i)">
-                    <!--<td>{{getTimesheetOwner(i)}}</td>-->
                     <td>{{ tse.day }}</td>
                     <td>{{ tse.startTime }}</td>
                     <td>{{ tse.endTime }}</td>
                     <td>{{ tse.code }}</td>
-                    <!--<td><div *ngIf="tse.details" data-container="body" data-toggle="tooltip" title="{{tse.details}}"><span><img src="assets/images/note.png" class="img-responsive" alt="..."></span></div></td>-->
                     <td>{{tse.details}}</td>
-                    <!--<td>{{ calculateDuration(tse) }} hrs</td>-->
                   </tr>
                 </tbody>
                 <tfoot>
@@ -54,8 +50,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <!--<td></td>-->
                     <td><span [class]="timesheeExceedsWeeklyLimit(i) ? 'badge badge-warning' : 'badge badge-success'">Hours Worked: {{ calculateTotalDuration(i) }}</span></td>
                   </tr>
                 </tfoot>
@@ -68,8 +62,8 @@
         </div>
         <div class="col-md-3">
           <div class="collapse" id="collapseExample{{i}}">
-            <h3>Notes</h3>
-            <div class="card mb-3 mt-3 bg-light div-to-stand-out" *ngFor="let note of retrieveNotesToDisplay(ts)">
+            <!--<h3>Notes</h3>-->
+            <div class="card mb-3 mt-3 bg-light div-to-stand-out" *ngFor="let note of ts.timesheetNotes">
               <div class="card-body">
                 <p class="card-text">{{note.details}}</p>
                 <a class="text-primary" (click)="deleteNote(note,ts)">Delete</a>

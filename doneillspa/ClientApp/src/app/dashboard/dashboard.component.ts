@@ -168,15 +168,6 @@ export class DashboardComponent implements OnInit{
       error => this.errors = error);
   }
 
-  //retrieveTimesheetsForDisplay() {
-  //  if (this.filteredTimesheets) {
-  //    return this.filteredTimesheets;
-  //  }
-  //  else {
-  //    return this.timesheets;
-  //  }
-  //}
-
   setSelectedDate() {
     let newDate = new Date(this.selectedDate);
 
@@ -306,11 +297,6 @@ export class DashboardComponent implements OnInit{
     var minutes = elapsedTimeInMins % 60;
 
     return hours+ ':' + minutes;
-  }
-
-  displaySelectedTimesheetDetails(timesheet, index) {
-    this.selectedTimesheet = timesheet;
-    this.selectedTsRow = index
   }
 
   getTimesheetEntries(index) {
