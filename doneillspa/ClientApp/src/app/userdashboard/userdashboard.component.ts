@@ -58,7 +58,6 @@ export class UserDashboardComponent {
     "ElectXR3"];
 
   public users: ApplicationUser[];
-  public filteredUsers: ApplicationUser[];
   public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
   public newEmailNotification: EmailNotification = new EmailNotification(0, '', '', '',new Date());
 
@@ -192,12 +191,7 @@ export class UserDashboardComponent {
   }
 
   retrieveUsersToDisplay() {
-    if (this.filteredUsers) {
-      return this.filteredUsers;
-    }
-    else {
-      return this.users;
-    }
+    return this.users;
   }
 
   deleteCertification(crt) {
