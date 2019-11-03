@@ -2,8 +2,8 @@
   <div class="buttonHolder" *ngIf="activeProjects">
     <form class="form-inline my-2 my-lg-0">
       <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
-      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="ml-3 btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add</button>
-      <div *ngIf="isSupervisor()" class="btn-group ml-3">
+      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="ml-2 btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add</button>
+      <div *ngIf="isSupervisor()" class="btn-group ml-2">
         <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           User
         </button>
@@ -11,8 +11,8 @@
           <a *ngFor="let u of retrieveListOfUsers(); let i = index" class="dropdown-item" (click)="setUser(u)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
         </div>
       </div>
-      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0 ml-3" (click)="submitTimesheet()">Submit</button>
-      <span class="ml-3" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
+      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0 ml-2" (click)="submitTimesheet()">Submit</button>
+      <span class="ml-2" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
     </form>
   </div>
   <div *ngIf="loading" class="d-flex justify-content-center">
@@ -39,7 +39,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!loading && retrieveNotesToDisplay()">
+  <div *ngIf="!loading && retrieveNotesToDisplay().length > 0">
     <h3>Notes</h3>
     <div class="card mb-3 mt-3" *ngFor="let note of retrieveNotesToDisplay()">
       <div class="card-body">{{note.details}}</div>
