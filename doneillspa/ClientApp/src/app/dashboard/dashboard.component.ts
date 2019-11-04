@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit{
   public filterOnSubmittedTimesheets: boolean = false;
 
   public loading = true;
+  public activeTab: string = "New";
 
   constructor(public signalRService: SignalRService, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
     this.loading = false;
@@ -58,6 +59,22 @@ export class DashboardComponent implements OnInit{
     this.signalRService.addCertificateCreatedListener();
   }
 
+  newTabClicked() {
+    this.activeTab = "New";
+  }
+
+  submittedTabClicked() {
+    this.activeTab = "Submitted";
+  }
+
+  approvedTabClicked() {
+    this.activeTab = "Approved";
+  }
+
+  rejectedTabClicked() {
+    this.activeTab = "Rejected";
+  }
+
   clearSignalRMessages(){
     this.signalRService.clearMessages();
   }
@@ -72,15 +89,6 @@ export class DashboardComponent implements OnInit{
     }
     else {
       return "Submitted Timesheets Only";
-    }
-  }
-
-  retrieveTimesheetsForDisplay() {
-    if (this.filterOnSubmittedTimesheets) {
-      return this.retrieveSubmittedTimesheets();
-    }
-    else {
-      return this.timesheets;
     }
   }
 
@@ -135,10 +143,10 @@ export class DashboardComponent implements OnInit{
     return timesheet.timesheetNotes
   }
 
-  retrieveSubmittedTimesheets() {
+  retrieveTimesheetsByState() {
     this.filteredTimesheets = [];
     for (let item of this.timesheets) {
-      if (item.status.toUpperCase() == 'SUBMITTED') {
+      if (item.status.toUpperCase() == this.activeTab.toUpperCase()) {
         this.filteredTimesheets.push(item);
       }
     }
@@ -196,7 +204,7 @@ export class DashboardComponent implements OnInit{
   calculateTotalDuration(index) : string{
     let totalDuration: number = 0;
 
-    let ts = this.retrieveTimesheetsForDisplay()[index];
+    let ts = this.retrieveTimesheetsByState()[index];
 
     //We will need to separate timesheets into the differnt days and add
     //totals for each day and if >= 5 hours substract 30 minutes for lunch breaks
@@ -272,7 +280,7 @@ export class DashboardComponent implements OnInit{
   timesheeExceedsWeeklyLimit(index) {
     let totalDuration: number = 0;
 
-    let ts = this.retrieveTimesheetsForDisplay()[index];
+    let ts = this.retrieveTimesheetsByState()[index];
 
     for (let tse of ts.timesheetEntries) {
       var start = new Date("2018-01-01 " + tse.startTime);
@@ -300,7 +308,7 @@ export class DashboardComponent implements OnInit{
   }
 
   getTimesheetEntries(index) {
-    let ts = this.retrieveTimesheetsForDisplay()[index];
+    let ts = this.retrieveTimesheetsByState()[index];
     return ts.timesheetEntries;
   }
 
@@ -312,12 +320,12 @@ export class DashboardComponent implements OnInit{
   }
 
   getTimesheetOwner(index) {
-    let ts = this.retrieveTimesheetsForDisplay()[index];
+    let ts = this.retrieveTimesheetsByState()[index];
     return ts.username;
   }
 
   getTimesheetStatus(index) {
-    let ts = this.retrieveTimesheetsForDisplay()[index];
+    let ts = this.retrieveTimesheetsByState()[index];
     return ts.status;
   }
 }

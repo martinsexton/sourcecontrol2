@@ -2,7 +2,7 @@
   <form class="form-inline my-2 my-lg-0">
     <input class="form-control mr-sm-2" type="date" placeholder="Search" aria-label="Search" name="selectedDate" [(ngModel)]="selectedDate">
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="setSelectedDate()">Search Timesheets</button>
-    <button class="btn btn-outline-success my-2 my-sm-0" (click)="toggleTimesheetView()">{{nameForButton()}}</button>
+    <!--<button class="btn btn-outline-success my-2 my-sm-0" (click)="toggleTimesheetView()">{{nameForButton()}}</button>-->
     <div class="ml-5" data-container="body" data-toggle="tooltip" title="New Timesheets Received" style="display: block" *ngIf='signalRService._certcreatedmessage'><span (click)="clearSignalRMessages()"><img src="assets/images/schedule.png" class="img-responsive" alt="..."></span></div>
   </form>
 </nav>
@@ -14,8 +14,22 @@
     <div class="card-header">
       Work Sheets
     </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="new-tab" data-toggle="tab" href="#new" role="tab" aria-controls="new" aria-selected="true" (click)="newTabClicked()">New</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="submitted-tab" data-toggle="tab" href="#submitted" role="tab" aria-controls="submitted" aria-selected="false" (click)="submittedTabClicked()">Submitted</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="approved-tab" data-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false" (click)="approvedTabClicked()">Approved</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="rejected-tab" data-toggle="tab" href="#rejected" role="tab" aria-controls="rejected" aria-selected="false" (click)="rejectedTabClicked()">Rejected</a>
+      </li>
+    </ul>
     <div class="card-body" *ngIf="timesheets">
-      <div class="row mt-3" *ngFor="let ts of retrieveTimesheetsForDisplay(); let i = index">
+      <div class="row mt-3" *ngFor="let ts of retrieveTimesheetsByState(); let i = index">
         <div class="col-md-3">
           <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
             {{ts.weekStarting | date:'fullDate'}}
@@ -62,7 +76,6 @@
         </div>
         <div class="col-md-3">
           <div class="collapse" id="collapseExample{{i}}">
-            <!--<h3>Notes</h3>-->
             <div class="card mb-3 mt-3 bg-light div-to-stand-out" *ngFor="let note of ts.timesheetNotes">
               <div class="card-body">
                 <p class="card-text">{{note.details}}</p>
@@ -74,7 +87,6 @@
       </div>
     </div>
   </div>
-
   <!-- New Timesheet Note -->
   <div class="modal fade" id="myNewNoteModal" tabindex="-1" role="dialog" aria-labelledby="myNewNoteModal">
     <div class="modal-dialog" role="document">
