@@ -124,6 +124,15 @@ namespace doneillspa.Models
                     case "ElectR3":
                         detail.ElecR3Cost += ((minutesWorked / 60) * rate);
                         break;
+                    case "ElectXR1":
+                        detail.ElecR1Cost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "ElectXR2":
+                        detail.ElecR2Cost += ((minutesWorked / 60) * rate);
+                        break;
+                    case "ElectXR3":
+                        detail.ElecR3Cost += ((minutesWorked / 60) * rate);
+                        break;
                     case "Temp":
                         detail.TempCost += ((minutesWorked / 60) * rate);
                         break;
