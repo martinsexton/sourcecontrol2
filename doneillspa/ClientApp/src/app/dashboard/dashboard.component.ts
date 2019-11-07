@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit{
 
   ngOnInit(): void {
     this.signalRService.startConnection();
-    this.signalRService.addCertificateCreatedListener();
+    this.signalRService.addTimesheetSubmittedListener();
   }
 
   newTabClicked() {

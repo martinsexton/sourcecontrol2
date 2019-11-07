@@ -3,7 +3,7 @@
     <input class="form-control mr-sm-2" type="date" placeholder="Search" aria-label="Search" name="selectedDate" [(ngModel)]="selectedDate">
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="setSelectedDate()">Search Timesheets</button>
     <!--<button class="btn btn-outline-success my-2 my-sm-0" (click)="toggleTimesheetView()">{{nameForButton()}}</button>-->
-    <div class="ml-5" data-container="body" data-toggle="tooltip" title="New Timesheets Received" style="display: block" *ngIf='signalRService._certcreatedmessage'><span (click)="clearSignalRMessages()"><img src="assets/images/schedule.png" class="img-responsive" alt="..."></span></div>
+    <div class="ml-5" data-container="body" data-toggle="tooltip" title="New Timesheets Received" style="display: block" *ngIf='signalRService._timsheetsubmittedmessage'><span (click)="clearSignalRMessages()"><img src="assets/images/schedule.png" class="img-responsive" alt="..."></span></div>
   </form>
 </nav>
 <div *ngIf="errors" class="alert alert-danger alert-dismissible">

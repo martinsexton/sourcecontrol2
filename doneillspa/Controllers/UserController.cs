@@ -24,21 +24,19 @@ namespace doneillspa.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly ITimesheetService _timesheetService;
-        private IHubContext<Chat> _hub;
 
         private readonly IEmailService _emailService;
         private readonly IHolidayService _holidayService;
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,
             ITimesheetService tss, IEmailService emailService,
-            IHolidayService hservice, IHubContext<Chat> hub)
+            IHolidayService hservice)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _timesheetService = tss;
             _emailService = emailService;
             _holidayService = hservice;
-            _hub = hub;
         }
 
         [HttpGet]
@@ -264,7 +262,6 @@ namespace doneillspa.Controllers
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             if (result.Result.Succeeded)
             {
-                _hub.Clients.All.SendAsync("certificatecreated", "Certificate Created For " + cert.User.UserName);
                 return Ok(cert.Id);
             }
             else

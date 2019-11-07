@@ -7,7 +7,7 @@ import { HttpServiceBase } from './httpservicebase';
 @Injectable()
 export class SignalRService extends HttpServiceBase {
   private hubConnection: signalR.HubConnection
-  public _certcreatedmessage: string;
+  public _timsheetsubmittedmessage: string;
 
   constructor(_httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     super(_httpClient, baseUrl);
@@ -24,14 +24,14 @@ export class SignalRService extends HttpServiceBase {
       .catch(err => console.log('Error while starting connection: ' + err))
   }
 
-  public addCertificateCreatedListener = () => {
-    this.hubConnection.on('certificatecreated', (data) => {
-      this._certcreatedmessage = data;
+  public addTimesheetSubmittedListener = () => {
+    this.hubConnection.on('timesheetsubmitted', (data) => {
+      this._timsheetsubmittedmessage = data;
       console.log(data);
     });
   }
 
   public clearMessages() {
-    this._certcreatedmessage = null;
+    this._timsheetsubmittedmessage = null;
   }
 }

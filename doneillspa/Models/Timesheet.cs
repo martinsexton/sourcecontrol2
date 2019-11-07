@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.Services.Email;
+using hub;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 
 namespace doneillspa.Models
 {
@@ -36,12 +38,12 @@ namespace doneillspa.Models
             }
         }
 
-        public void Updated(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetDto ts)
+        public void Updated(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetDto ts, IHubContext<Chat> hub)
         {
-            UpdateStatus(userManager, emailService, ts);
+            UpdateStatus(userManager, emailService, ts, hub);
         }
 
-        private void UpdateStatus(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetDto ts)
+        private void UpdateStatus(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetDto ts, IHubContext<Chat> hub)
         {
             if (ts.Status.Equals("Approved"))
             {
@@ -58,6 +60,8 @@ namespace doneillspa.Models
             else if (ts.Status.Equals("Submitted"))
             {
                 Status = TimesheetStatus.Submitted;
+                //Send message to any client to inform that a timesheet has been approved.
+                hub.Clients.All.SendAsync("timesheetsubmitted", "Timesheet Submitted For " + this.Username);
             }
         }
 

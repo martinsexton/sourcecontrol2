@@ -7,9 +7,11 @@ using doneillspa.Dtos;
 using doneillspa.Models;
 using doneillspa.Services;
 using doneillspa.Services.Email;
+using hub;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace doneillspa.Controllers
 {
@@ -21,12 +23,14 @@ namespace doneillspa.Controllers
         private readonly ITimesheetService _service;
         private readonly IEmailService _emailService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private IHubContext<Chat> _hub;
 
-        public TimesheetController(UserManager<ApplicationUser> userManager, ITimesheetService tss, IEmailService emailService)
+        public TimesheetController(UserManager<ApplicationUser> userManager, ITimesheetService tss, IEmailService emailService, IHubContext<Chat> hub)
         {
             _service = tss;
             _emailService = emailService;
             _userManager = userManager;
+            _hub = hub;
         }
 
         [HttpGet]
@@ -116,7 +120,7 @@ namespace doneillspa.Controllers
         public IActionResult Put(int id, [FromBody]TimesheetDto ts)
         {
             Timesheet timesheet = _service.GetTimsheetById(ts.Id);
-            timesheet.Updated(_userManager, _emailService, ts);
+            timesheet.Updated(_userManager, _emailService, ts, this._hub);
 
             _service.UpdateTimesheet(timesheet);
 
