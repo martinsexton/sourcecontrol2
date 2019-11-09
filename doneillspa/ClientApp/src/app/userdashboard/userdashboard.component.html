@@ -16,7 +16,7 @@
       </li>
     </ul>
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="showAddUser()">Add User</button>
-    <button class="btn btn-outline-success my-2 my-sm-0 ml-2" (click)="showAddContractUser()">Add Contract User</button>
+    <button class="btn btn-outline-success my-2 my-sm-0 ml-2" (click)="showAddContractUser()">Add LOC User</button>
   </form>
 </nav>
 <div class="container-fluid" *ngIf="selectedUser">
@@ -328,7 +328,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Register Contractor</h4>
+        <h4 class="modal-title" id="myModalLabel">Register LOC</h4>
       </div>
       <div class="modal-body">
         <form #crf="ngForm" novalidate (ngSubmit)="registerUser(crf)">
