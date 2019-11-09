@@ -91,64 +91,70 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/report")]
         public IActionResult Download([FromBody]LabourWeekDetail[] labourDetails)
         {
-            string usermail = HttpContext.Session.GetString("UserEmail");
-
-            MemoryStream spreadSheetStream = new MemoryStream();
-            using (SpreadsheetDocument document = SpreadsheetDocument.Create(spreadSheetStream, SpreadsheetDocumentType.Workbook))
+            if(labourDetails.Count() > 0)
             {
-                // Add a WorkbookPart to the document.
-                WorkbookPart workbookPart = document.AddWorkbookPart();
-                workbookPart.Workbook = new Workbook();
+                //Get Project Name to send in subject of email.
+                string projectName = labourDetails[0].Project;
 
-                // Add a WorksheetPart to the WorkbookPart.
-                WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
-                worksheetPart.Worksheet = new Worksheet(new SheetData());
+                string usermail = HttpContext.Session.GetString("UserEmail");
 
-                Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
-
-                Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = " Labour Costs" };
-                sheets.Append(sheet);
-
-                Columns lstColumns = worksheetPart.Worksheet.GetFirstChild<Columns>();
-                if (lstColumns == null)
+                MemoryStream spreadSheetStream = new MemoryStream();
+                using (SpreadsheetDocument document = SpreadsheetDocument.Create(spreadSheetStream, SpreadsheetDocumentType.Workbook))
                 {
-                    lstColumns = new Columns();
+                    // Add a WorkbookPart to the document.
+                    WorkbookPart workbookPart = document.AddWorkbookPart();
+                    workbookPart.Workbook = new Workbook();
 
-                    lstColumns.Append(new Column() { Min = 1, Max = 1, Width = 20, CustomWidth = true });
-                    lstColumns.Append(new Column() { Min = 2, Max = 2, Width = 20, CustomWidth = true });
-                    lstColumns.Append(new Column() { Min = 3, Max = 3, Width = 20, CustomWidth = true });
-                    lstColumns.Append(new Column() { Min = 4, Max = 4, Width = 20, CustomWidth = true });
-                    lstColumns.Append(new Column() { Min = 5, Max = 5, Width = 20, CustomWidth = true });
-                    lstColumns.Append(new Column() { Min = 6, Max = 6, Width = 20, CustomWidth = true });
-                    lstColumns.Append(new Column() { Min = 7, Max = 7, Width = 20, CustomWidth = true });
-                    lstColumns.Append(new Column() { Min = 8, Max = 11, Width = 30, CustomWidth = true });
-                    lstColumns.Append(new Column() { Min = 12, Max = 12, Width = 20, CustomWidth = true });
+                    // Add a WorksheetPart to the WorkbookPart.
+                    WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+                    worksheetPart.Worksheet = new Worksheet(new SheetData());
 
-                    worksheetPart.Worksheet.InsertAt(lstColumns, 0);
+                    Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
+
+                    Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = " Labour Costs" };
+                    sheets.Append(sheet);
+
+                    Columns lstColumns = worksheetPart.Worksheet.GetFirstChild<Columns>();
+                    if (lstColumns == null)
+                    {
+                        lstColumns = new Columns();
+
+                        lstColumns.Append(new Column() { Min = 1, Max = 1, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 2, Max = 2, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 3, Max = 3, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 4, Max = 4, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 5, Max = 5, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 6, Max = 6, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 7, Max = 7, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 8, Max = 11, Width = 30, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 12, Max = 12, Width = 20, CustomWidth = true });
+
+                        worksheetPart.Worksheet.InsertAt(lstColumns, 0);
+                    }
+
+                    // Get the sheetData cell table.
+                    SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+                    SetupExcelHeader(worksheetPart.Worksheet.GetFirstChild<SheetData>());
+                    int rowIndex = 2;
+                    foreach (LabourWeekDetail week in labourDetails)
+                    {
+                        WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), week, rowIndex);
+                        rowIndex += 1;
+                    }
+
+                    document.Save();
+                    document.Close();
+
+                    string filename = projectName + "_labour_costs_" + DateTime.Now.Ticks + ".xlsx";
+
+                    _emailService.SendMail("doneill@hotmail.com", usermail, "Labour Cost For "+ projectName,
+                            "Please find attached labout cost reports", "<strong>Project Labour Cost Reports</strong>",
+                            filename, Convert.ToBase64String(spreadSheetStream.ToArray()));
+
+                    //Save Document to document service
+                    _documentService.SaveDocument(filename, spreadSheetStream.ToArray());
                 }
-
-                // Get the sheetData cell table.
-                SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
-
-                SetupExcelHeader(worksheetPart.Worksheet.GetFirstChild<SheetData>());
-                int rowIndex = 2;
-                foreach (LabourWeekDetail week in labourDetails)
-                {
-                    WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), week, rowIndex);
-                    rowIndex += 1;
-                }
-
-                document.Save();
-                document.Close();
-
-                string filename = "labour_costs_" + DateTime.Now.Ticks + ".xlsx";
-
-                _emailService.SendMail("doneill@hotmail.com", usermail, "Project Labour Cost",
-                        "Please find attached labout cost reports", "<strong>Project Labour Cost Reports</strong>",
-                        filename, Convert.ToBase64String(spreadSheetStream.ToArray()));
-
-                //Save Document to document service
-                _documentService.SaveDocument(filename, spreadSheetStream.ToArray());
             }
 
             return Ok();
@@ -300,7 +306,6 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/project/{proj}")]
         public IEnumerable<LabourWeekDetail> GetByProject(string proj)
         {
-            //List<LabourWeekDetail> details = new List<LabourWeekDetail>();
             Dictionary<DateTime, LabourWeekDetail> labourDetailsByWeek = new Dictionary<DateTime, LabourWeekDetail>();
 
             IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r=>r.Status.ToString().Equals("Approved"))

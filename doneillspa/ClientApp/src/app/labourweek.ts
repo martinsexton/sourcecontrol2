@@ -1,6 +1,7 @@
 export class LabourWeek {
   constructor(
     public week: Date,
+    public project: string,
     public administratorMinutes: number,
     public administratorCost: number,
     public supervisorMinutes: number,

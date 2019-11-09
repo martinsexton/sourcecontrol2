@@ -86,6 +86,8 @@ namespace doneillspa.Models
             //Retrieve details from timesheet and populate the LabourWeekDetail object
             LabourWeekDetail detail = new LabourWeekDetail();
 
+            detail.Project = proj;
+
             detail.Week = this.WeekStarting;
 
             double rate = GetRate(Role, DateTime.UtcNow, Rates);

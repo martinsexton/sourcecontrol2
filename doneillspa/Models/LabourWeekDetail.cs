@@ -9,6 +9,8 @@ namespace doneillspa.Models
     {
         public DateTime Week { get; set; }
 
+        public string Project { get; set; }
+
         public double AdministratorCost { get; set; }
 
         public double SupervisorCost { get; set; }
