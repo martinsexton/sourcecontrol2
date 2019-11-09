@@ -6,3 +6,7 @@
   box-shadow: 0 0 1em 1em #ccc;
 }
 
+.list-group-item-action.active {
+  background: #e6f2ff;
+}
+
