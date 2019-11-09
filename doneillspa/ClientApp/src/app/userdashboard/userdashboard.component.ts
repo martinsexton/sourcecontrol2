@@ -33,8 +33,6 @@ declare var $: any;
 export class UserDashboardComponent {
   public selectedUser: ApplicationUser;
   public selectedUserRow: number;
-  public selectedUserCertifications: Certificate[] = [];
-  public selectedUserNotifications: EmailNotification[] = [];
   public selectedUsersHolidayRequests: HolidayRequest[] = [];
   public userMessage: string;
   public resetPasswordDetails: PasswordReset = new PasswordReset('', '');
@@ -77,18 +75,6 @@ export class UserDashboardComponent {
         this.selectedUser = this.users[0];
         this.resetPasswordDetails.userid = this.selectedUser.id;
         this.selectedUserRow = 0;
-        if (this.selectedUser.certifications) {
-          this.selectedUserCertifications = this.selectedUser.certifications;
-        }
-        else {
-          this.selectedUserCertifications = new Array<Certificate>();
-        }
-        if (this.selectedUser.emailNotifications) {
-          this.selectedUserNotifications = this.selectedUser.emailNotifications;
-        }
-        else {
-          this.selectedUserNotifications = new Array<EmailNotification>();
-        }
         if (this.selectedUser.holidayRequests) {
           this.selectedUsersHolidayRequests = this.selectedUser.holidayRequests;
         }
@@ -198,7 +184,6 @@ export class UserDashboardComponent {
     this._certificationService.deleteCertification(crt).subscribe(
       res => {
         console.log(res);
-        this.removeFromArrayList(this.selectedUserCertifications, crt);
         //Need to reflect the change in the user also.
         for (let u of this.users) {
           if ((u.firstName + u.surname) == (this.selectedUser.firstName + this.selectedUser.surname)) {
@@ -219,7 +204,6 @@ export class UserDashboardComponent {
     this._notificationService.deleteNotification(not).subscribe(
       res => {
         console.log(res);
-        this.removeFromNotificationArrayList(this.selectedUserNotifications, not);
         //Need to reflect the change in the user also.
         for (let u of this.users) {
           if ((u.firstName + u.surname) == (this.selectedUser.firstName + this.selectedUser.surname)) {
@@ -296,18 +280,6 @@ export class UserDashboardComponent {
     //Clear Timesheets
     this.timesheets = new Array<Timesheet>();
 
-    if (this.selectedUser.certifications) {
-      this.selectedUserCertifications = this.selectedUser.certifications;
-    }
-    else {
-      this.selectedUserCertifications = new Array<Certificate>();
-    }
-    if (this.selectedUser.emailNotifications) {
-      this.selectedUserNotifications = this.selectedUser.emailNotifications;
-    }
-    else {
-      this.selectedUserNotifications = new Array<EmailNotification>();
-    }
     if (this.selectedUser.holidayRequests) {
       this.selectedUsersHolidayRequests = this.selectedUser.holidayRequests;
     }
@@ -321,7 +293,16 @@ export class UserDashboardComponent {
       $("#myNewCertificateModal").modal('hide');
       //Update the identifier of the newly created cert so if we delete it, it will be deleted on database
       this.newCertificate.id = result as number;
-      this.selectedUserCertifications.push(this.newCertificate);
+
+      for (let u of this.users) {
+        if (u.id == this.selectedUser.id) {
+          if (!u.certifications) {
+            u.certifications = [];
+          }
+          u.certifications.push(this.newCertificate)
+        }
+      }
+
       this.newCertificate = new Certificate(0, new Date(), new Date(), "")
       this.showUserMessage("Certificate Added Successfully!");
     }, error => console.error(error));
@@ -332,7 +313,18 @@ export class UserDashboardComponent {
       $("#myNewEmailNotificationModal").modal('hide');
       //Update the identifier of the newly created cert so if we delete it, it will be deleted on database
       this.newEmailNotification.id = result as number;
-      this.selectedUserNotifications.push(this.newEmailNotification);
+
+      for (let u of this.users) {
+        if (u.id  == this.selectedUser.id) {
+          if (!u.emailNotifications) {
+            u.emailNotifications = [];
+          }
+          u.emailNotifications.push(this.newEmailNotification)
+        }
+      }
+
+
+      //this.selectedUserNotifications.push(this.newEmailNotification);
       this.newEmailNotification = new EmailNotification(0, '', '', '', new Date());
       this.showUserMessage("Notification Added Successfully!");
     }, error => console.error(error));

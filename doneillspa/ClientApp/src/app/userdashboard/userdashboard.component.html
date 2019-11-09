@@ -5,16 +5,6 @@
 </div>
 <nav *ngIf="selectedUser" class="navbar navbar-expand-lg navbar-light bg-light">
   <form class="form-inline my-2 my-lg-0">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Filter Users
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a *ngFor="let u of retrieveUsersToDisplay(); let i = index" class="dropdown-item" (click)="displaySelectedUserDetails(u, i)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
-        </div>
-      </li>
-    </ul>
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="showAddUser()">Add User</button>
     <button class="btn btn-outline-success my-2 my-sm-0 ml-2" (click)="showAddContractUser()">Add LOC User</button>
   </form>
@@ -22,25 +12,29 @@
 <div class="container-fluid" *ngIf="selectedUser">
   <div class="row">
     <div class="col-md-2">
-      <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
-        <img *ngIf="selectedUser" class="card-img-top" src="assets/images/{{GetImageName()}}" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Details</h5>
-          <p class="card-text">{{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}</p>
-          <p class="card-text">{{selectedUser.email}}</p>
-          <p class="card-text">{{selectedUser.phoneNumber}}</p>
-          <p class="card-text">{{selectedUser.role}}</p>
-          <button *ngIf="selectedUser.isEnabled == false" class="btn btn-primary" type="button" (click)="enableUser()">
-            Enable User
-          </button>
-          <button *ngIf="selectedUser.isEnabled == null || selectedUser.isEnabled == true" class="btn btn-primary" type="button" (click)="disableUser()">
-            Disable User
-          </button>
-        </div>
+      <div class="list-group">
+        <a *ngFor="let u of retrieveUsersToDisplay(); let i = index" class="list-group-item list-group-item-action" [class.active]="selectedUserRow === i" (click)="displaySelectedUserDetails(u, i)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
       </div>
     </div>
     <div class="col-md-10">
       <div class="row">
+        <div *ngIf="!isContractor()" class="col">
+          <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
+            <div class="card-body">
+              <h5 class="card-title">Details</h5>
+              <p class="card-text">{{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}</p>
+              <p class="card-text">{{selectedUser.email}}</p>
+              <p class="card-text">{{selectedUser.phoneNumber}}</p>
+              <p class="card-text">{{selectedUser.role}}</p>
+              <button *ngIf="selectedUser.isEnabled == false" class="btn btn-primary" type="button" (click)="enableUser()">
+                Enable User
+              </button>
+              <button *ngIf="selectedUser.isEnabled == null || selectedUser.isEnabled == true" class="btn btn-primary" type="button" (click)="disableUser()">
+                Disable User
+              </button>
+            </div>
+          </div>
+        </div>
         <div *ngIf="!isContractor()" class="col">
           <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
             <div class="card-header">Holiday Requests</div>
@@ -81,7 +75,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let crt of selectedUserCertifications" [ngClass]="{'text-danger': hasCertExpired(crt)}">
+                    <tr *ngFor="let crt of selectedUser.certifications" [ngClass]="{'text-danger': hasCertExpired(crt)}">
                       <td>{{ crt.description }}</td>
                       <td>{{ crt.expiry | date : "fullDate"}}</td>
                       <td><span aria-hidden="true" (click)="deleteCertification(crt)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
@@ -127,7 +121,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let not of selectedUserNotifications">
+                    <tr *ngFor="let not of selectedUser.emailNotifications">
                       <td>{{ not.subject }}</td>
                       <td>{{ not.body}}</td>
                       <td>{{ not.activationDate | date : "fullDate"}}</td>
@@ -357,4 +351,3 @@
     </div>
   </div>
 </div>
-
