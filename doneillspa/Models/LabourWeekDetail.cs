@@ -23,6 +23,12 @@ namespace doneillspa.Models
 
         public double ElecR3Cost { get; set; }
 
+        public double Loc1Cost { get; set; }
+
+        public double Loc2Cost { get; set; }
+
+        public double Loc3Cost { get; set; }
+
         public double TempCost { get; set; }
 
         public double FirstYearApprenticeCost { get; set; }

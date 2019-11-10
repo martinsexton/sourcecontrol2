@@ -163,9 +163,9 @@ namespace doneillspa.Controllers
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
             List<string> contractorRoles = new List<string>();
-            contractorRoles.Add("ElectXR1");
-            contractorRoles.Add("ElectXR2");
-            contractorRoles.Add("ElectXR3");
+            contractorRoles.Add("Loc1");
+            contractorRoles.Add("Loc2");
+            contractorRoles.Add("Loc3");
 
             foreach (ApplicationUser user in users)
             {

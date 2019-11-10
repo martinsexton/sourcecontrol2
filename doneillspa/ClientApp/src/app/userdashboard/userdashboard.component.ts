@@ -40,7 +40,7 @@ export class UserDashboardComponent {
   public loadingTimesheets: boolean = false;
   public resettingPassword: boolean = false;
   public userImage: string = "user.png";
-  public contractorRole: string = "ElectXR1";
+  public contractorRole: string = "Loc1";
   public fulltimeStaffRole: string = "ChargeHand";
  
 
@@ -52,8 +52,8 @@ export class UserDashboardComponent {
     "ElectR3", "Temp", "First Year Apprentice", "Second Year Apprentice",
     "Third Year Apprentice", "Fourth Year Apprentice"];
 
-  public contractorRoles: string[] = ["ElectXR1", "ElectXR2",
-    "ElectXR3"];
+  public contractorRoles: string[] = ["Loc1", "Loc2",
+    "Loc3"];
 
   public users: ApplicationUser[];
   public newCertificate: Certificate = new Certificate(0, new Date(), new Date(), "");
@@ -95,7 +95,7 @@ export class UserDashboardComponent {
       return false;
     }
     else {
-      return (this.selectedUser.role == "ElectXR1" || this.selectedUser.role == "ElectXR2" || this.selectedUser.role == "ElectXR3");
+      return (this.selectedUser.role == "Loc1" || this.selectedUser.role == "Loc2" || this.selectedUser.role == "Loc3");
     }
   }
 
