@@ -50,6 +50,9 @@ namespace doneillspa.Models
                 this.ElecR1Cost += week.ElecR1Cost;
                 this.ElecR2Cost += week.ElecR2Cost;
                 this.ElecR3Cost += week.ElecR3Cost;
+                this.Loc1Cost += week.Loc1Cost;
+                this.Loc2Cost += week.Loc2Cost;
+                this.Loc3Cost += week.Loc3Cost;
                 this.TempCost += week.TempCost;
                 this.FirstYearApprenticeCost += week.FirstYearApprenticeCost;
                 this.SecondYearApprenticeCost += week.SecondYearApprenticeCost;
@@ -62,7 +65,7 @@ namespace doneillspa.Models
         {
             get
             {
-                return this.SupervisorCost + this.ChargehandCost + this.ElecR1Cost + this.ElecR2Cost + this.ElecR3Cost + this.FirstYearApprenticeCost + this.SecondYearApprenticeCost + this.ThirdYearApprenticeCost + this.FourthYearApprenticeCost;
+                return this.SupervisorCost + this.ChargehandCost + this.ElecR1Cost + this.ElecR2Cost + this.ElecR3Cost + this.Loc1Cost + this.Loc2Cost + this.Loc3Cost + this.FirstYearApprenticeCost + this.SecondYearApprenticeCost + this.ThirdYearApprenticeCost + this.FourthYearApprenticeCost;
             }
         }
     }
