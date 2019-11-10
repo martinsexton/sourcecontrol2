@@ -80,7 +80,7 @@ export class LabourComponent {
 
   public downloadReport() {
     this.sendingReport = true;
-    this._timesheetService.downloadReport(this.labourWeeks).subscribe(result => {
+    this._timesheetService.downloadReport(this.selectedProject.name).subscribe(result => {
       console.log("uploaded");
       this.sendingReport = false;
     }, error => {

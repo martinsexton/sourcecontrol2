@@ -87,15 +87,13 @@ namespace doneillspa.Controllers
             return rates;
         }
 
-        [HttpPost]
-        [Route("api/labourdetails/report")]
-        public IActionResult Download([FromBody]LabourWeekDetail[] labourDetails)
+        [HttpGet]
+        [Route("api/labourdetails/report/{projectName}")]
+        public IActionResult Download(string projectName)
         {
-            if(labourDetails.Count() > 0)
+            IEnumerable<LabourWeekDetail> labourDetails = LabourDetailsForWeek(projectName);
+            if (labourDetails.Count() > 0)
             {
-                //Get Project Name to send in subject of email.
-                string projectName = labourDetails[0].Project;
-
                 string usermail = HttpContext.Session.GetString("UserEmail");
 
                 MemoryStream spreadSheetStream = new MemoryStream();
@@ -148,7 +146,7 @@ namespace doneillspa.Controllers
 
                     string filename = projectName + "_labour_costs_" + DateTime.Now.Ticks + ".xlsx";
 
-                    _emailService.SendMail("doneill@hotmail.com", usermail, "Labour Cost For "+ projectName,
+                    _emailService.SendMail("doneill@hotmail.com", usermail, "Labour Cost For " + projectName,
                             "Please find attached labout cost reports", "<strong>Project Labour Cost Reports</strong>",
                             filename, Convert.ToBase64String(spreadSheetStream.ToArray()));
 
@@ -306,16 +304,21 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/project/{proj}")]
         public IEnumerable<LabourWeekDetail> GetByProject(string proj)
         {
+            return LabourDetailsForWeek(proj);
+        }
+
+        private IEnumerable<LabourWeekDetail> LabourDetailsForWeek(string proj)
+        {
             Dictionary<DateTime, LabourWeekDetail> labourDetailsByWeek = new Dictionary<DateTime, LabourWeekDetail>();
 
-            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r=>r.Status.ToString().Equals("Approved"))
+            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved"))
                 .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
                 if (!labourDetailsByWeek.ContainsKey(ts.WeekStarting.Date))
                 {
                     LabourWeekDetail detail = ts.BuildLabourWeekDetails(this.Rates, proj);
-                    if(detail.TotalCost > 0)
+                    if (detail.TotalCost > 0)
                     {
                         labourDetailsByWeek.Add(ts.WeekStarting.Date, ts.BuildLabourWeekDetails(this.Rates, proj));
                     }
