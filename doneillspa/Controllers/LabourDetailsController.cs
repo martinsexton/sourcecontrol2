@@ -188,6 +188,18 @@ namespace doneillspa.Controllers
             electrR3Cell.CellValue = new CellValue(detail.ElecR3Cost.ToString());
             electrR3Cell.DataType = new EnumValue<CellValues>(CellValues.Number);
 
+            Cell loc1Cell = new Cell();
+            loc1Cell.CellValue = new CellValue(detail.Loc1Cost.ToString());
+            loc1Cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+
+            Cell loc2Cell = new Cell();
+            loc2Cell.CellValue = new CellValue(detail.Loc2Cost.ToString());
+            loc2Cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+
+            Cell loc3Cell = new Cell();
+            loc3Cell.CellValue = new CellValue(detail.Loc3Cost.ToString());
+            loc3Cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+
             Cell tempCell = new Cell();
             tempCell.CellValue = new CellValue(detail.TempCost.ToString());
             tempCell.DataType = new EnumValue<CellValues>(CellValues.Number);
@@ -218,12 +230,17 @@ namespace doneillspa.Controllers
             row.InsertAt(electrR1Cell, 3);
             row.InsertAt(electrR2Cell, 4);
             row.InsertAt(electrR3Cell, 5);
-            row.InsertAt(tempCell, 6);
-            row.InsertAt(firstYearCell, 7);
-            row.InsertAt(secondYearCell, 8);
-            row.InsertAt(thirdYearCell, 9);
-            row.InsertAt(fourthYearCell, 10);
-            row.InsertAt(totalLabourCell, 11);
+
+            row.InsertAt(loc1Cell, 6);
+            row.InsertAt(loc2Cell, 7);
+            row.InsertAt(loc3Cell, 8);
+
+            row.InsertAt(tempCell, 9);
+            row.InsertAt(firstYearCell, 10);
+            row.InsertAt(secondYearCell, 11);
+            row.InsertAt(thirdYearCell, 12);
+            row.InsertAt(fourthYearCell, 13);
+            row.InsertAt(totalLabourCell, 14);
         }
         private void SetupExcelHeader(SheetData sheetData)
         {
@@ -261,6 +278,19 @@ namespace doneillspa.Controllers
             electR3CostCell.CellValue = new CellValue("ElectR3 Cost");
             electR3CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
 
+
+            Cell loc1CostCell = new Cell();
+            loc1CostCell.CellValue = new CellValue("Loc1 Cost");
+            loc1CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell loc2CostCell = new Cell();
+            loc2CostCell.CellValue = new CellValue("Loc2 Cost");
+            loc2CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell loc3CostCell = new Cell();
+            loc3CostCell.CellValue = new CellValue("Loc3 Cost");
+            loc3CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
             Cell tempCostCell = new Cell();
             tempCostCell.CellValue = new CellValue("Temp Cost");
             tempCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
@@ -292,12 +322,15 @@ namespace doneillspa.Controllers
             row.InsertAt(electR1CostCell, 3);
             row.InsertAt(electR2CostCell, 4);
             row.InsertAt(electR3CostCell, 5);
-            row.InsertAt(tempCostCell, 6);
-            row.InsertAt(firstYearApprenticeCostCell, 7);
-            row.InsertAt(secondYearApprenticeCostCell, 8);
-            row.InsertAt(thirdYearApprenticeCostCell, 9);
-            row.InsertAt(fourthYearApprenticeCostCell, 10);
-            row.InsertAt(totalLabourCostCell, 11);
+            row.InsertAt(loc1CostCell, 6);
+            row.InsertAt(loc2CostCell, 7);
+            row.InsertAt(loc3CostCell, 8);
+            row.InsertAt(tempCostCell, 9);
+            row.InsertAt(firstYearApprenticeCostCell, 10);
+            row.InsertAt(secondYearApprenticeCostCell, 11);
+            row.InsertAt(thirdYearApprenticeCostCell, 12);
+            row.InsertAt(fourthYearApprenticeCostCell, 13);
+            row.InsertAt(totalLabourCostCell, 14);
         }
 
         [HttpGet]
