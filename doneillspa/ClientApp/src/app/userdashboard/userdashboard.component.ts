@@ -207,7 +207,7 @@ export class UserDashboardComponent {
         //Need to reflect the change in the user also.
         for (let u of this.users) {
           if ((u.firstName + u.surname) == (this.selectedUser.firstName + this.selectedUser.surname)) {
-            if (u.certifications) {
+            if (u.emailNotifications) {
               this.removeFromNotificationArrayList(u.emailNotifications, not);
             }
           }

@@ -30,6 +30,8 @@ namespace doneillspa.Services.Email
             var from = new EmailAddress(fromAddress);
             var to = new EmailAddress(toAddress);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            msg.TemplateId = "d-4db3811e764f484fb9c0082304543975";
+            msg.SetTemplateData(new { content = plainTextContent });
 
             if (!String.IsNullOrEmpty(attachmentContent))
             {
