@@ -25,15 +25,15 @@ namespace doneillspa.Services.Email
             client.SendEmailAsync(msg);
         }
 
-        private SendGridMessage BuildMessage(string fromAddress, string toAddress, string subject, string plainTextContent, string htmlContent, string attachmentName, string attachmentContent)
+        private SendGridMessage BuildMessage(string fromAddress, string toAddress, string s, string plainTextContent, string htmlContent, string attachmentName, string attachmentContent)
         {
             var from = new EmailAddress(fromAddress);
             var to = new EmailAddress(toAddress);
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var msg = MailHelper.CreateSingleEmail(from, to, s, plainTextContent, htmlContent);
             
             //Code to use SendGrid Templates
             msg.TemplateId = "d-4db3811e764f484fb9c0082304543975";
-            msg.SetTemplateData(new { content = plainTextContent });
+            msg.SetTemplateData(new { content = plainTextContent, subject = s });
 
             if (!String.IsNullOrEmpty(attachmentContent))
             {
