@@ -28,8 +28,10 @@ export class ProjectComponent {
   public selectedRole: string;
   public loading = true;
   public existingCodes: string[] = [];
-  public clientsForCurrentPage: Client[] = [];
+  public clientsForCurrentPage: Client[];
+  public projectsForCurrentPage: Project[];
   public clientsCurrentPage: number = 1;
+  public projectsCurrentPage: number = 1;
   public pageLimit: number = 10;
 
   newProject: Project = new Project(0, '', '', '', '', true, new Date);
@@ -47,18 +49,36 @@ export class ProjectComponent {
 
   displayProjectsForSelectedClient(client) {
     this.selectedClient = client;
+    this.projectsCurrentPage = 1;
     this.projectsToDisplay = this.selectedClient.projects;
+    this.setupProjectsForCurrentPage();
   }
 
   determinePageCount() {
-    var numberOfClients = this.clients.length;
+    var pageCount = 1;
+    if (this.clients) {
+      var numberOfClients = this.clients.length;
+
+      if (numberOfClients > 0) {
+        var totalPages_pre = Math.floor((numberOfClients / this.pageLimit));
+        pageCount = (numberOfClients % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
+      }
+      return pageCount;
+    }
+  }
+
+  determineProjectsPageCount() {
     var pageCount = 1;
 
-    if (numberOfClients > 0) {
-      var totalPages_pre = Math.floor((numberOfClients / this.pageLimit));
-      pageCount = (numberOfClients % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
+    if (this.selectedClient) {
+      var numberOfProjects = this.selectedClient.projects.length;
+
+      if (numberOfProjects > 0) {
+        var totalPages_pre = Math.floor((numberOfProjects / this.pageLimit));
+        pageCount = (numberOfProjects % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
+      }
+      return pageCount;
     }
-    return pageCount;
   }
 
   setupClientsForCurrentPage() {
@@ -88,14 +108,43 @@ export class ProjectComponent {
     }
   }
 
+  setupProjectsForCurrentPage() {
+    var startingIndex = 0;
+    var index = 0;
+
+    //reset client current page array
+    this.projectsForCurrentPage = [];
+
+    if (this.projectsCurrentPage > 1) {
+      startingIndex = (this.projectsCurrentPage - 1) * this.pageLimit;
+    }
+
+    for (let p of this.projectsToDisplay) {
+      if (index >= startingIndex && index < (startingIndex + this.pageLimit)) {
+        this.projectsForCurrentPage.push(p);
+      }
+      index = index + 1;
+    }
+  }
+
   previousPage() {
     this.clientsCurrentPage = this.clientsCurrentPage - 1;
     this.setupClientsForCurrentPage();
   }
 
+  previousProjectPage() {
+    this.projectsCurrentPage = this.projectsCurrentPage - 1;
+    this.setupProjectsForCurrentPage();
+  }
+
   nextPage() {
     this.clientsCurrentPage = this.clientsCurrentPage + 1;
     this.setupClientsForCurrentPage();
+  }
+
+  nextProjectPage() {
+    this.projectsCurrentPage = this.projectsCurrentPage + 1;
+    this.setupProjectsForCurrentPage();
   }
 
   retrieveRates() {
@@ -237,6 +286,7 @@ export class ProjectComponent {
     for (let item of this.selectedClient.projects) {
       if (item.client == p.client && item.client == p.client && item.details == p.details) {
         this.projectsToDisplay.splice(this.projectsToDisplay.indexOf(item), 1);
+        this.projectsForCurrentPage.splice(this.projectsToDisplay.indexOf(item), 1);
         break;
       }
     }
@@ -319,7 +369,7 @@ export class ProjectComponent {
 
         //Update the collection of projects with newly created one
         this.selectedClient.projects.push(projectToPush)
-        //this.projectsToDisplay.push(projectToPush);
+        this.projectsForCurrentPage.push(projectToPush);
 
         //clear down the new project model
         this.newProject = new Project(0, '', '', '', '', true, new Date);
