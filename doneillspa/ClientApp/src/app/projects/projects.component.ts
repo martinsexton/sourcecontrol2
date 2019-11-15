@@ -33,6 +33,7 @@ export class ProjectComponent {
   public clientsCurrentPage: number = 1;
   public projectsCurrentPage: number = 1;
   public pageLimit: number = 10;
+  public projectPageLimit: number = 5;
 
   newProject: Project = new Project(0, '', '', '', '', true, new Date);
   newClient: Client = new Client(0, "");
@@ -74,8 +75,8 @@ export class ProjectComponent {
       var numberOfProjects = this.selectedClient.projects.length;
 
       if (numberOfProjects > 0) {
-        var totalPages_pre = Math.floor((numberOfProjects / this.pageLimit));
-        pageCount = (numberOfProjects % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
+        var totalPages_pre = Math.floor((numberOfProjects / this.projectPageLimit));
+        pageCount = (numberOfProjects % this.projectPageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
       }
       return pageCount;
     }
@@ -116,11 +117,11 @@ export class ProjectComponent {
     this.projectsForCurrentPage = [];
 
     if (this.projectsCurrentPage > 1) {
-      startingIndex = (this.projectsCurrentPage - 1) * this.pageLimit;
+      startingIndex = (this.projectsCurrentPage - 1) * this.projectPageLimit;
     }
 
     for (let p of this.projectsToDisplay) {
-      if (index >= startingIndex && index < (startingIndex + this.pageLimit)) {
+      if (index >= startingIndex && index < (startingIndex + this.projectPageLimit)) {
         this.projectsForCurrentPage.push(p);
       }
       index = index + 1;
