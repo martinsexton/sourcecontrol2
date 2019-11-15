@@ -17,7 +17,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let client of clients" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="client == selectedClient">
+                <tr *ngFor="let client of clientsForCurrentPage" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="client == selectedClient">
                   <td (click)="displayProjectsForSelectedClient(client)">{{ client.name }}</td>
                 </tr>
               </tbody>
@@ -26,6 +26,22 @@
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myNewClientModal">Add Client</button>
         </div>
       </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li [ngClass]="{'page-item': clientsCurrentPage > 1, 'page-item disabled': clientsCurrentPage == 1}">
+            <a class="page-link" aria-label="Previous" (click)="previousPage()">
+              <span aria-hidden="true">&laquo; Back</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <li [ngClass]="{'page-item': clientsCurrentPage < determinePageCount(), 'page-item disabled': clientsCurrentPage >= determinePageCount()}">
+            <a class="page-link" aria-label="Next" (click)="nextPage()">
+              <span aria-hidden="true">Next &raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
     <div class="col" *ngIf="projectsToDisplay">
       <div class="card mb-3 mt-3 div-to-stand-out">

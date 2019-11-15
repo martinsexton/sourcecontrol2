@@ -28,6 +28,9 @@ export class ProjectComponent {
   public selectedRole: string;
   public loading = true;
   public existingCodes: string[] = [];
+  public clientsForCurrentPage: Client[] = [];
+  public clientsCurrentPage: number = 1;
+  public pageLimit: number = 10;
 
   newProject: Project = new Project(0, '', '', '', '', true, new Date);
   newClient: Client = new Client(0, "");
@@ -45,6 +48,54 @@ export class ProjectComponent {
   displayProjectsForSelectedClient(client) {
     this.selectedClient = client;
     this.projectsToDisplay = this.selectedClient.projects;
+  }
+
+  determinePageCount() {
+    var numberOfClients = this.clients.length;
+    var pageCount = 1;
+
+    if (numberOfClients > 0) {
+      var totalPages_pre = Math.floor((numberOfClients / this.pageLimit));
+      pageCount = (numberOfClients % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
+    }
+    return pageCount;
+  }
+
+  setupClientsForCurrentPage() {
+    var startingIndex = 0;
+    var index = 0;
+
+    //Need to reset selectedClient
+    this.selectedClient = null;
+
+    //reset client current page array
+    this.clientsForCurrentPage = [];
+
+    if (this.clientsCurrentPage > 1) {
+      startingIndex = (this.clientsCurrentPage - 1) * this.pageLimit;
+    }
+
+    for (let client of this.clients) {
+      if (index >= startingIndex && index < (startingIndex + this.pageLimit)) {
+        this.clientsForCurrentPage.push(client);
+
+        //Setup selected client as the firt client on current page.
+        if (this.selectedClient == null) {
+          this.displayProjectsForSelectedClient(client);
+        }
+      }
+      index = index + 1;
+    }
+  }
+
+  previousPage() {
+    this.clientsCurrentPage = this.clientsCurrentPage - 1;
+    this.setupClientsForCurrentPage();
+  }
+
+  nextPage() {
+    this.clientsCurrentPage = this.clientsCurrentPage + 1;
+    this.setupClientsForCurrentPage();
   }
 
   retrieveRates() {
@@ -69,6 +120,9 @@ export class ProjectComponent {
       this.clients = result;
       if (this.clients) {
         //By default select first client
+        this.setupClientsForCurrentPage();
+
+        //Will need to set the two below based on first client on current page.
         this.selectedClient = this.clients[0];
         this.projectsToDisplay = this.selectedClient.projects;
 
@@ -237,6 +291,7 @@ export class ProjectComponent {
         console.log(res);
         //Update the collection of projects with newly created one
         var clientJustAdded = new Client(this.newClient.id, this.newClient.name);
+        this.clientsForCurrentPage.push(clientJustAdded);
         this.clients.push(clientJustAdded);
         this.displayProjectsForSelectedClient(clientJustAdded);
 
@@ -278,25 +333,4 @@ export class ProjectComponent {
         console.error(error);
       });
   }
-
-  //saveProjectold() {
-  //  this._projectService.saveProject(this.newProject).subscribe(
-  //    res => {
-  //      this.newProject.id = res as number;
-  //      console.log(res);
-  //      this.projectSaved = true;
-  //      //Update the collection of projects with newly created one
-  //      this.projectsToDisplay.push(new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.code, this.newProject.details, this.newProject.isActive, this.newProject.startDate));
-  //      //clear down the new project model
-  //      this.newProject = new Project(0, '', '', '', '', true, new Date);
-  //      $("#myNewProjectModal").modal('hide');
-
-  //      this.showUserMessage("Project Saved Successfully!")
-  //    }, error => {
-  //      $("#myNewProjectModal").modal('hide');
-  //      this.userMessage = "Failed to save project"
-  //      $('.toast').toast('show');
-  //      console.error(error);
-  //    });
-  //}
 }
