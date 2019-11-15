@@ -84,7 +84,7 @@
               <span class="sr-only">Previous</span>
             </a>
           </li>
-          <li [ngClass]="{'page-item': projectsCurrentPage < determineProjectsPageCount(), 'page-item disabled': projectsCurrentPage >= determinePageCount()}">
+          <li [ngClass]="{'page-item': projectsCurrentPage < determineProjectsPageCount(), 'page-item disabled': projectsCurrentPage >= determineProjectsPageCount()}">
             <a class="page-link" aria-label="Next" (click)="nextProjectPage()">
               <span aria-hidden="true">Next &raquo;</span>
               <span class="sr-only">Next</span>
