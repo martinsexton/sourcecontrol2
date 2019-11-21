@@ -10,73 +10,110 @@
   <strong>{{ errors }}</strong>
 </div>
 <div class="container-fluid">
-  <div class="card mb-3 mt-3">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link active" id="new-tab" data-toggle="tab" href="#new" role="tab" aria-controls="new" aria-selected="true" (click)="newTabClicked()">New</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="submitted-tab" data-toggle="tab" href="#submitted" role="tab" aria-controls="submitted" aria-selected="false" (click)="submittedTabClicked()">Submitted</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="approved-tab" data-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false" (click)="approvedTabClicked()">Approved</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="rejected-tab" data-toggle="tab" href="#rejected" role="tab" aria-controls="rejected" aria-selected="false" (click)="rejectedTabClicked()">Rejected</a>
-      </li>
-    </ul>
-    <div class="card-body" *ngIf="timesheets">
-      <div class="row mt-3" *ngFor="let ts of retrieveTimesheetsByState(); let i = index">
-        <div class="col-md-3">
-          <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}">
-            {{ts.weekStarting | date:'fullDate'}}
-          </a>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="new-tab" data-toggle="tab" href="#new" role="tab" aria-controls="new" aria-selected="true" (click)="newTabClicked()">New</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="submitted-tab" data-toggle="tab" href="#submitted" role="tab" aria-controls="submitted" aria-selected="false" (click)="submittedTabClicked()">Submitted</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="approved-tab" data-toggle="tab" href="#approved" role="tab" aria-controls="approved" aria-selected="false" (click)="approvedTabClicked()">Approved</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="rejected-tab" data-toggle="tab" href="#rejected" role="tab" aria-controls="rejected" aria-selected="false" (click)="rejectedTabClicked()">Rejected</a>
+    </li>
+  </ul>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-3 mt-3 div-to-stand-out">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="thead">
+                <tr>
+                  <th>Date</th>
+                  <th>User</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="filteredTimesheets">
+                <tr *ngFor="let ts of filteredTimesheets let i = index" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="ts == selectedTimesheet" (click)="displayEntriesForSelectedTimesheet(ts)">
+                  <td>{{ts.weekStarting | date:'fullDate'}}</td>
+                  <td>{{ts.username}}</td>
+                  <td>{{ts.status}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div [ngClass]="{'col-md-6': ts.timesheetNotes.length > 0, 'col-md-8': !ts.timesheetNotes.length > 0}">
-          <div class="collapse" id="collapseExample{{i}}">
-            <p><strong>Status:    </strong>{{getTimesheetStatus(i)}}  <strong>Employee:  </strong>{{getTimesheetOwner(i)}}</p>
-            <div class="table-responsive">
-              <table class='table'>
-                <thead class="thead-light">
-                  <tr>
-                    <th>Day</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Code</th>
-                    <th>Details</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let tse of getTimesheetEntries(i)">
-                    <td>{{ tse.day }}</td>
-                    <td>{{ tse.startTime }}</td>
-                    <td>{{ tse.endTime }}</td>
-                    <td>{{ tse.code }}</td>
-                    <td>{{tse.details}}</td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span [class]="timesheeExceedsWeeklyLimit(i) ? 'badge badge-warning' : 'badge badge-success'">Hours Worked: {{ calculateTotalDuration(i) }}</span></td>
-                  </tr>
-                </tfoot>
-              </table>
-              <button type="button" class="btn btn-primary" data-toggle="modal" (click)="addTimesheetNote(ts)">Add Note</button>
-              <button *ngIf="canApproveTimesheet(ts)" (click)="approveTimesheet(ts)" class="btn btn-primary">Approve Timesheet</button>
-              <button *ngIf="canRejectTimesheet(ts)" (click)="rejectTimesheet(ts)" class="btn btn-primary">Reject Timesheet</button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card mb-3 mt-3 div-to-stand-out">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class='table'>
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Day</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
+                      <th>Code</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="selectedTimesheet">
+                    <tr *ngFor="let tse of getTimesheetEntries()">
+                      <td>{{ tse.day }}</td>
+                      <td>{{ tse.startTime }}</td>
+                      <td>{{ tse.endTime }}</td>
+                      <td>{{ tse.code }}</td>
+                      <td>{{tse.details}}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot *ngIf="selectedTimesheet">
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td><span [class]="timesheeExceedsWeeklyLimit() ? 'badge badge-warning' : 'badge badge-success'">Hours Worked: {{ calculateTotalDuration() }}</span></td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <button *ngIf="selectedTimesheet" type="button" class="btn btn-primary" data-toggle="modal" (click)="addTimesheetNote()">Add Note</button>
+                <button *ngIf="canApproveTimesheet()" (click)="approveTimesheet()" class="btn btn-primary">Approve Timesheet</button>
+                <button *ngIf="canRejectTimesheet()" (click)="rejectTimesheet()" class="btn btn-primary">Reject Timesheet</button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="collapse" id="collapseExample{{i}}">
-            <div class="card mb-3 mt-3 bg-light div-to-stand-out" *ngFor="let note of ts.timesheetNotes">
-              <div class="card-body">
-                <p class="card-text">{{note.details}}</p>
-                <a class="text-primary" (click)="deleteNote(note,ts)">Delete</a>
+      </div>
+      <div class="row" *ngIf="selectedTimesheet">
+        <div class="col-md-12" *ngIf="selectedTimesheet.timesheetNotes.length > 0">
+          <div class="card mb-3 mt-3 bg-light div-to-stand-out">
+            <div class="card-header">Timesheet Notes</div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class='table'>
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Date Created</th>
+                      <th>Note</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let note of selectedTimesheet.timesheetNotes">
+                      <td>{{ note.dateCreated | date : "fullDate"}}</td>
+                      <td>{{ note.details }}</td>
+                      <td><a class="text-primary" (click)="deleteNote(note)">Delete</a></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

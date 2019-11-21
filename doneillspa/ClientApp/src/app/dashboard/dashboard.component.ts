@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit{
   public timesheetToAddNoteTo: Timesheet;
   public filteredTimesheets: Timesheet[];
   public users: string[];
-  public newNote: TimesheetNote = new TimesheetNote('');
+  public newNote: TimesheetNote = new TimesheetNote('', new Date());
   public selectedTimesheet: Timesheet;
   public selectedTsRow: number;
   public selectedUserRow: number;
@@ -47,8 +47,9 @@ export class DashboardComponent implements OnInit{
     //Retrieve Default list of tui Timesheets For display 
     this._timesheetService.getTimesheets().subscribe(result => {
       this.timesheets = result;
+      this.newTabClicked();
       if (this.timesheets.length > 0) {
-        this.selectedTimesheet = this.timesheets[0];
+        this.setTimesheetsByState();
         this.selectedTsRow = 0;
       }
     }, error => this.errors = error);
@@ -61,18 +62,22 @@ export class DashboardComponent implements OnInit{
 
   newTabClicked() {
     this.activeTab = "New";
+    this.setTimesheetsByState();
   }
 
   submittedTabClicked() {
     this.activeTab = "Submitted";
+    this.setTimesheetsByState();
   }
 
   approvedTabClicked() {
     this.activeTab = "Approved";
+    this.setTimesheetsByState();
   }
 
   rejectedTabClicked() {
     this.activeTab = "Rejected";
+    this.setTimesheetsByState();
   }
 
   clearSignalRMessages(){
@@ -92,16 +97,16 @@ export class DashboardComponent implements OnInit{
     }
   }
 
-  addTimesheetNote(timesheet:Timesheet) {
+  addTimesheetNote() {
     $("#myNewNoteModal").modal('show');
-    this.timesheetToAddNoteTo = timesheet;
+    this.timesheetToAddNoteTo = this.selectedTimesheet;
   }
 
-  deleteNote(note: TimesheetNote, ts : Timesheet) {
+  deleteNote(note: TimesheetNote) {
     this._timesheetService.deleteNote(note).subscribe(
       res => {
         //Remove note from array list
-        this.removeFromArrayList(ts.timesheetNotes, note);
+        this.removeFromArrayList(this.selectedTimesheet.timesheetNotes, note);
       }, error => this.errors = error);
   }
 
@@ -120,7 +125,7 @@ export class DashboardComponent implements OnInit{
         //Update the entry with the primary key that has come back from server
         this.newNote.id = res as number;
 
-        var notetosubmit = new TimesheetNote(this.newNote.details);
+        var notetosubmit = new TimesheetNote(this.newNote.details, new Date());
         notetosubmit.id = this.newNote.id;
 
         //Error with undefined timesheetnotes here.
@@ -132,7 +137,7 @@ export class DashboardComponent implements OnInit{
           this.timesheetToAddNoteTo.timesheetNotes.push(notetosubmit);
         }
         
-        this.newNote = new TimesheetNote('');
+        this.newNote = new TimesheetNote('', new Date());
 
         $("#myNewNoteModal").modal('hide');
 
@@ -143,34 +148,34 @@ export class DashboardComponent implements OnInit{
     return timesheet.timesheetNotes
   }
 
-  retrieveTimesheetsByState() {
+  setTimesheetsByState() {
     this.filteredTimesheets = [];
     for (let item of this.timesheets) {
       if (item.status.toUpperCase() == this.activeTab.toUpperCase()) {
         this.filteredTimesheets.push(item);
       }
     }
+    this.selectedTimesheet = null;
     if (this.filteredTimesheets) {
-      return this.filteredTimesheets;
-    }
-    else {
-      return this.timesheets;
+      this.selectedTimesheet = this.filteredTimesheets[0];
     }
   }
 
-  rejectTimesheet(ts: Timesheet) {
-    ts.status = 'Rejected';
-    this._timesheetService.updateTimesheet(ts).subscribe(
+  rejectTimesheet() {
+    this.selectedTimesheet.status = 'Rejected';
+    this._timesheetService.updateTimesheet(this.selectedTimesheet).subscribe(
       res => {
+        this.setTimesheetsByState();
         console.log(res);
       },
       error => this.errors = error);
   }
 
-  approveTimesheet(ts: Timesheet) {
-    ts.status = 'Approved';
-    this._timesheetService.updateTimesheet(ts).subscribe(
+  approveTimesheet() {
+    this.selectedTimesheet.status = 'Approved';
+    this._timesheetService.updateTimesheet(this.selectedTimesheet).subscribe(
       res => {
+        this.setTimesheetsByState();
         console.log(res);
       },
       error => this.errors = error);
@@ -201,10 +206,10 @@ export class DashboardComponent implements OnInit{
     }, error => this.errors = error);
   }
 
-  calculateTotalDuration(index) : string{
+  calculateTotalDuration(): string{
     let totalDuration: number = 0;
 
-    let ts = this.retrieveTimesheetsByState()[index];
+    let ts = this.selectedTimesheet;
 
     //We will need to separate timesheets into the differnt days and add
     //totals for each day and if >= 5 hours substract 30 minutes for lunch breaks
@@ -277,10 +282,10 @@ export class DashboardComponent implements OnInit{
     return hours + ':' + minutes;
   }
 
-  timesheeExceedsWeeklyLimit(index) {
+  timesheeExceedsWeeklyLimit() {
     let totalDuration: number = 0;
 
-    let ts = this.retrieveTimesheetsByState()[index];
+    let ts = this.selectedTimesheet;
 
     for (let tse of ts.timesheetEntries) {
       var start = new Date("2018-01-01 " + tse.startTime);
@@ -307,46 +312,54 @@ export class DashboardComponent implements OnInit{
     return hours+ ':' + minutes;
   }
 
-  getTimesheetEntries(index) {
-    let orderedTimesheetEntries: TimesheetEntry[] = [];
+  getTimesheetEntries() {
+    if (this.selectedTimesheet) {
+      const sorter = {
+        "mon": 1,
+        "tue": 2,
+        "wed": 3,
+        "thurs": 4,
+        "fri": 5,
+        "sat": 6,
+        "sun": 7
+      }
 
-    const sorter = {
-      "mon": 1,
-      "tue": 2,
-      "wed": 3,
-      "thurs": 4,
-      "fri": 5,
-      "sat": 6,
-      "sun": 7
+      let ts = this.selectedTimesheet
+
+      //Order timesheet entries
+      ts.timesheetEntries.sort(function sortByDay(a, b) {
+        let day1 = a.day.toLowerCase();
+        let day2 = b.day.toLowerCase();
+        return sorter[day1] - sorter[day2];
+      });
+
+      //Return the sorted timesheet entries
+      return ts.timesheetEntries;
     }
-
-    let ts = this.retrieveTimesheetsByState()[index];
-
-    //Order timesheet entries
-    ts.timesheetEntries.sort(function sortByDay(a, b) {
-      let day1 = a.day.toLowerCase();
-      let day2 = b.day.toLowerCase();
-      return sorter[day1] - sorter[day2];
-    });
-
-    //Return the sorted timesheet entries
-    return ts.timesheetEntries;
   }
 
-  canApproveTimesheet(ts: Timesheet) {
-    return ts.status.toUpperCase() == 'SUBMITTED';
-  }
-  canRejectTimesheet(ts: Timesheet) {
-    return ts.status.toUpperCase() == 'SUBMITTED';
+  displayEntriesForSelectedTimesheet(ts) {
+    this.selectedTimesheet = ts;
   }
 
-  getTimesheetOwner(index) {
-    let ts = this.retrieveTimesheetsByState()[index];
-    return ts.username;
+  canApproveTimesheet() {
+    if (this.selectedTimesheet) {
+      return this.selectedTimesheet.status.toUpperCase() == 'SUBMITTED';
+    }
+  }
+  canRejectTimesheet() {
+    if (this.selectedTimesheet) {
+      return this.selectedTimesheet.status.toUpperCase() == 'SUBMITTED';
+    }
   }
 
-  getTimesheetStatus(index) {
-    let ts = this.retrieveTimesheetsByState()[index];
-    return ts.status;
-  }
+  //getTimesheetOwner(index) {
+  //  let ts = this.retrieveTimesheetsByState()[index];
+  //  return ts.username;
+  //}
+
+  //getTimesheetStatus(index) {
+  //  let ts = this.retrieveTimesheetsByState()[index];
+  //  return ts.status;
+  //}
 }

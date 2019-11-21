@@ -9,5 +9,6 @@ namespace doneillspa.Dtos
     {
         public long Id { get; set; }
         public string Details { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

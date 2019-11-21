@@ -189,6 +189,7 @@ namespace doneillspa.Controllers
                 TimesheetNoteDto ndto = new TimesheetNoteDto();
                 ndto.Id = note.Id;
                 ndto.Details = note.Details;
+                ndto.DateCreated = note.DateCreated;
 
                 tsdto.TimesheetNotes.Add(ndto);
             }
