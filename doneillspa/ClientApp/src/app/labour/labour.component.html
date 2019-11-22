@@ -20,65 +20,71 @@
     <p class="h3">Labour Costs For {{selectedProject.name}}</p>
   </div>
   <div *ngIf="selectedProject" class="div-to-stand-out">
-    <table class="table table-bordered" *ngIf="labourWeeks">
-      <thead>
-        <tr>
-          <th>Week</th>
-          <th>Supervisor</th>
-          <th>Charge Hand</th>
-          <th>Elect R1</th>
-          <th>Elect R2</th>
-          <th>Elect R3</th>
-          <th>Loc 1</th>
-          <th>Loc 2</th>
-          <th>Loc 3</th>
-          <th>Temp</th>
-          <th>First Year Apprentice</th>
-          <th>Second Year Apprentice</th>
-          <th>Third Year Apprentice</th>
-          <th>Fourth Year Apprentice</th>
-          <th>Total Labour Cost</th>
-        </tr>
-      </thead>
-      <tbody class="tbody">
-        <tr *ngFor="let lw of labourWeeks">
-          <td>{{lw.week | date:'fullDate'}}</td>
-          <td [ngStyle]="{'background-color': lw.supervisorCost > 0 ? '#89CF4B' : 'white'}">{{lw.supervisorCost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.chargehandCost > 0 ? '#89CF4B' : 'white'}">{{lw.chargehandCost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.elecR1Cost > 0 ? '#89CF4B' : 'white'}">{{lw.elecR1Cost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.elecR2Cost > 0 ? '#89CF4B' : 'white'}">{{lw.elecR2Cost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.elecR3Cost > 0 ? '#89CF4B' : 'white'}">{{lw.elecR3Cost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.loc1Cost > 0 ? '#89CF4B' : 'white'}">{{lw.loc1Cost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.loc2Cost > 0 ? '#89CF4B' : 'white'}">{{lw.loc2Cost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.loc3Cost > 0 ? '#89CF4B' : 'white'}">{{lw.loc3Cost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.tempCost > 0 ? '#89CF4B' : 'white'}">{{lw.tempCost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.firstYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.firstYearApprenticeCost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.secondYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.secondYearApprenticeCost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.thirdYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.thirdYearApprenticeCost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.fourthYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.fourthYearApprenticeCost | currency:'EUR'}}</td>
-          <td [ngStyle]="{'background-color': lw.totalCost > 0 ? '#89CF4B' : 'white'}">{{lw.totalCost | currency:'EUR'}}</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td>Totals:</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><span class="badge badge badge-primary">{{ calculateTotalCostToDate() | currency:'EUR'}}</span></td>
-        </tr>
-      </tfoot>
-    </table>
+    <div class="card mb-3 mt-3 div-to-stand-out">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" *ngIf="labourWeeks">
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Supervisor</th>
+                <th>Charge Hand</th>
+                <th>Elect R1</th>
+                <th>Elect R2</th>
+                <th>Elect R3</th>
+                <th>Loc 1</th>
+                <th>Loc 2</th>
+                <th>Loc 3</th>
+                <th>Temp</th>
+                <th>First Year Apprentice</th>
+                <th>Second Year Apprentice</th>
+                <th>Third Year Apprentice</th>
+                <th>Fourth Year Apprentice</th>
+                <th>Total Labour Cost</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr *ngFor="let lw of labourWeeks">
+                <td>{{lw.week | date:'fullDate'}}</td>
+                <td [ngStyle]="{'background-color': lw.supervisorCost > 0 ? '#89CF4B' : 'white'}">{{lw.supervisorCost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.chargehandCost > 0 ? '#89CF4B' : 'white'}">{{lw.chargehandCost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.elecR1Cost > 0 ? '#89CF4B' : 'white'}">{{lw.elecR1Cost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.elecR2Cost > 0 ? '#89CF4B' : 'white'}">{{lw.elecR2Cost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.elecR3Cost > 0 ? '#89CF4B' : 'white'}">{{lw.elecR3Cost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.loc1Cost > 0 ? '#89CF4B' : 'white'}">{{lw.loc1Cost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.loc2Cost > 0 ? '#89CF4B' : 'white'}">{{lw.loc2Cost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.loc3Cost > 0 ? '#89CF4B' : 'white'}">{{lw.loc3Cost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.tempCost > 0 ? '#89CF4B' : 'white'}">{{lw.tempCost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.firstYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.firstYearApprenticeCost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.secondYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.secondYearApprenticeCost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.thirdYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.thirdYearApprenticeCost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.fourthYearApprenticeCost > 0 ? '#89CF4B' : 'white'}">{{lw.fourthYearApprenticeCost | currency:'EUR'}}</td>
+                <td [ngStyle]="{'background-color': lw.totalCost > 0 ? '#89CF4B' : 'white'}">{{lw.totalCost | currency:'EUR'}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Totals:</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><span class="badge badge badge-primary">{{ calculateTotalCostToDate() | currency:'EUR'}}</span></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
   <button class="btn btn-primary" type="button" (click)="downloadReport()">
     <span [class]="sendingReport ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
