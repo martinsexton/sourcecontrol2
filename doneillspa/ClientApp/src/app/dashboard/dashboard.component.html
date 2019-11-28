@@ -63,6 +63,7 @@
                       <th>End Time</th>
                       <th>Code</th>
                       <th>Details</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody *ngIf="selectedTimesheet">
@@ -72,6 +73,7 @@
                       <td>{{ tse.endTime }}</td>
                       <td>{{ tse.code }}</td>
                       <td>{{tse.details}}</td>
+                      <td><span *ngIf="editable && selectedTimesheet.status == 'Approved'" aria-hidden="true" (click)="removeTimesheetEntry(tse)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
                     </tr>
                   </tbody>
                   <tfoot *ngIf="selectedTimesheet">
@@ -81,6 +83,14 @@
                       <td></td>
                       <td></td>
                       <td><span [class]="timesheeExceedsWeeklyLimit() ? 'badge badge-warning' : 'badge badge-success'">Hours Worked: {{ calculateTotalDuration() }}</span></td>
+                      <td>
+                        <div *ngIf="selectedTimesheet.status == 'Approved'" class="form-group">
+                          <div class="custom-control custom-switch">
+                            <input type="checkbox" [checked]="editable" class="custom-control-input" id="CanEdit" name="CanEdit" [(ngModel)]="editable">
+                            <label class="custom-control-label" for="CanEdit">Make Corrections</label>
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                   </tfoot>
                 </table>

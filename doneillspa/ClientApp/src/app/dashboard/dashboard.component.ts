@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit{
   public filterusername: string;
   public errors: string;
   public filterOnSubmittedTimesheets: boolean = false;
+  public editable = false;
 
   public loading = true;
   public activeTab: string = "New";
@@ -97,6 +98,16 @@ export class DashboardComponent implements OnInit{
     }
   }
 
+  removeTimesheetEntry(ts) {
+      this._timesheetService.deleteTimesheetEntry(ts).subscribe(
+        res => {
+          $("#myEditTimesheetModal").modal('hide');
+
+          this.removeFromTimesheetEntries(this.selectedTimesheet.timesheetEntries, ts);
+
+        }, error => this.errors = error);
+  }
+
   addTimesheetNote() {
     $("#myNewNoteModal").modal('show');
     this.timesheetToAddNoteTo = this.selectedTimesheet;
@@ -108,6 +119,15 @@ export class DashboardComponent implements OnInit{
         //Remove note from array list
         this.removeFromArrayList(this.selectedTimesheet.timesheetNotes, note);
       }, error => this.errors = error);
+  }
+
+  removeFromTimesheetEntries(array: TimesheetEntry[], entry: TimesheetEntry) {
+    for (let item of array) {
+      if (item.id == entry.id) {
+        array.splice(array.indexOf(item), 1);
+        break;
+      }
+    }
   }
 
   removeFromArrayList(array: TimesheetNote[], note: TimesheetNote) {
