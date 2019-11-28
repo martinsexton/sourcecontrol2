@@ -31,6 +31,8 @@ namespace doneillspa.Controllers
             IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets();
             foreach(Timesheet ts in timesheets.AsQueryable())
             {
+                bool weekFound = false;
+
                 if(!(ts.Status == TimesheetStatus.Approved))
                 {
                     continue;
@@ -47,6 +49,7 @@ namespace doneillspa.Controllers
 
                     if (!costs.weekAlreadyRecorded(ts.WeekStarting.ToShortDateString()))
                     {
+                        weekFound = true;
                         costs.addWeek(ts.WeekStarting.ToShortDateString());
                     }
 
@@ -54,7 +57,10 @@ namespace doneillspa.Controllers
                     projectcost += this.CalculateCosts(tse);
                 }
 
-                costs.addCost(projectcost);
+                if (weekFound)
+                {
+                    costs.addCost(projectcost);
+                }
             }
 
             return costs;
