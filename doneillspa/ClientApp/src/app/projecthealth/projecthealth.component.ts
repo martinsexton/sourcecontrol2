@@ -16,7 +16,21 @@ declare var $: any;
 export class ProjectHealthComponent {
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
+    scales: {
+      xAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Weeks'
+        }
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Euro'
+        }
+      }]
+    }//END scales
   };
   public loading = true;
   public dataToPresent = false;
