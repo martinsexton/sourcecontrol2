@@ -72,7 +72,7 @@
     <None Remove="ClientApp\src\app\nonchargeabletime.ts" />
     <None Remove="ClientApp\src\app\passwordreset.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
-    <None Remove="ClientApp\src\app\projecteffortdto.ts" />
+    <None Remove="ClientApp\src\app\projectcostdto.ts" />
     <None Remove="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
     <None Remove="ClientApp\src\app\projects\projects.component.ts" />
     <None Remove="ClientApp\src\app\shared\models\credentials.interface.ts" />
@@ -121,7 +121,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\nonchargeabletime.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\passwordreset.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\projecteffortdto.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\projectcostdto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\certificate.service.ts" />

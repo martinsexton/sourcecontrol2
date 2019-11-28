@@ -5,7 +5,7 @@ import { TimesheetService } from '../shared/services/timesheet.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Project } from '../project';
 import { Timesheet } from '../timesheet';
-import { ProjectEffortDto } from '../projecteffortdto';
+import { ProjectCostDto } from '../projectcostdto';
 
 declare var $: any;
 
@@ -19,41 +19,68 @@ export class ProjectHealthComponent {
     responsive: true
   };
   public loading = true;
+  public dataToPresent = false;
   public timesheets: Timesheet[];
+  //public barChartLabels: string[] = ['January', 'February', 'Mars', 'April'];
   public barChartLabels: string[] = [];
+
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
 
   public projects: Project[];
+  public selectedProject: Project;
 
-  public efforts: ProjectEffortDto[];
+  public costsGraphData: ProjectCostDto;
 
-  public barChartData: any[] = [
-    { data: [], label: 'Hours Worked' }
-  ];
+  public barChartData: any[] = [];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService) {
-    this._projectService.getProjectEffort().subscribe(result => {
-      this.loading = false;
-      this.efforts = result;
+    this._projectService.getProjects().subscribe(result => {
+      this.projects = result;
+      this.selectedProject = this.projects[0];
 
-        if (this.efforts) {
-          let data: number[] = [];
-          let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
-          let index: number = 0;
+      //Retrive Graph Details for selected project
+      this._projectService.getProjectEffort(this.selectedProject.code).subscribe(result => {
+        this.setupGraph(result);
 
-          for (let effort of this.efforts) {
-            cloneLabels.push(effort.projectName);
-            data.push(effort.totalEffort);
-            index = index + 1;
-          }
-          this.barChartLabels = cloneLabels;
-
-          let clone = JSON.parse(JSON.stringify(this.barChartData));
-          clone[0].data = data;
-          this.barChartData = clone;
-        }
       }, error => console.error(error));
+    }, error => {
+      });
+  }
+
+  refreshGraphForProject(project: Project) {
+    this.loading = true;
+    this.dataToPresent = false;
+
+    this.selectedProject = project;
+
+    //Retrive Graph Details for selected project
+    this._projectService.getProjectEffort(this.selectedProject.code).subscribe(result => {
+      this.setupGraph(result);
+      this.loading = false;
+    }, error => console.error(error));
+  }
+
+  setupGraph(result: ProjectCostDto) {
+    this.costsGraphData = result;
+    this.barChartLabels = [];
+    this.barChartData = [];
+
+    if (result == null || result.weeks == null || result.weeks.length == 0) {
+      return;
+    }
+    this.dataToPresent = true;
+
+    for (let wk of this.costsGraphData.weeks) {
+      this.barChartLabels.push(wk);
+    }
+    let d: number[] = [];
+    for (let cost of this.costsGraphData.costs) {
+      d.push(cost);
+    }
+    console.log('populating data');
+    this.barChartData.push({ data: d, label: this.costsGraphData.projectName });
+    this.loading = false;
   }
 
   // events
@@ -65,64 +92,64 @@ export class ProjectHealthComponent {
     console.log(e);
   }
 
-  public displayEffortGraph() {
-    if (!this.efforts) {
-      this._projectService.getProjectEffort().subscribe(result => {
-        this.efforts = result;
+  //public displayEffortGraph() {
+  //  if (!this.efforts) {
+  //    this._projectService.getProjectEffort().subscribe(result => {
+  //      this.efforts = result;
 
-        if (this.efforts) {
-          let data: number[] = [];
-          let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
-          let index: number = 0;
+  //      if (this.efforts) {
+  //        let data: number[] = [];
+  //        let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
+  //        let index: number = 0;
 
-          for (let effort of this.efforts) {
-            cloneLabels.push(effort.projectName);
-            data.push(effort.totalEffort);
-            index = index + 1;
-          }
-          this.barChartLabels = cloneLabels;
+  //        for (let effort of this.efforts) {
+  //          cloneLabels.push(effort.projectName);
+  //          data.push(effort.totalEffort);
+  //          index = index + 1;
+  //        }
+  //        this.barChartLabels = cloneLabels;
 
-          let clone = JSON.parse(JSON.stringify(this.barChartData));
-          clone[0].data = data;
-          clone[0].label = "Project Effort";
-          this.barChartData = clone;
-        }
-      }, error => console.error(error));
-    }
-    else {
-      let data: number[] = [];
-      let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
-      let index: number = 0;
+  //        let clone = JSON.parse(JSON.stringify(this.barChartData));
+  //        clone[0].data = data;
+  //        clone[0].label = "Project Effort";
+  //        this.barChartData = clone;
+  //      }
+  //    }, error => console.error(error));
+  //  }
+  //  else {
+  //    let data: number[] = [];
+  //    let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
+  //    let index: number = 0;
 
-      for (let effort of this.efforts) {
-        cloneLabels.push(effort.projectName);
-        data.push(effort.totalEffort);
-        index = index + 1;
-      }
-      this.barChartLabels = cloneLabels;
+  //    for (let effort of this.efforts) {
+  //      cloneLabels.push(effort.projectName);
+  //      data.push(effort.totalEffort);
+  //      index = index + 1;
+  //    }
+  //    this.barChartLabels = cloneLabels;
 
-      let clone = JSON.parse(JSON.stringify(this.barChartData));
-      clone[0].data = data;
-      clone[0].label = "Project Effort";
-      this.barChartData = clone;
-    }
-  }
+  //    let clone = JSON.parse(JSON.stringify(this.barChartData));
+  //    clone[0].data = data;
+  //    clone[0].label = "Project Effort";
+  //    this.barChartData = clone;
+  //  }
+  //}
 
-  public displayCostsGraph() {
-    let data: number[] = [];
-    let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
-    let index: number = 0;
+  //public displayCostsGraph() {
+  //  let data: number[] = [];
+  //  let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
+  //  let index: number = 0;
 
-    for (let effort of this.efforts) {
-      cloneLabels.push(effort.projectName);
-      data.push(effort.totalCost);
-      index = index + 1;
-    }
-    this.barChartLabels = cloneLabels;
+  //  for (let effort of this.efforts) {
+  //    cloneLabels.push(effort.projectName);
+  //    data.push(effort.totalCost);
+  //    index = index + 1;
+  //  }
+  //  this.barChartLabels = cloneLabels;
 
-    let clone = JSON.parse(JSON.stringify(this.barChartData));
-    clone[0].data = data;
-    clone[0].label = "Project Cost";
-    this.barChartData = clone;
-  }
+  //  let clone = JSON.parse(JSON.stringify(this.barChartData));
+  //  clone[0].data = data;
+  //  clone[0].label = "Project Cost";
+  //  this.barChartData = clone;
+  //}
 }

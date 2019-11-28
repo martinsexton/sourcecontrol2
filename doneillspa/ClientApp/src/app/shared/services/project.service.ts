@@ -5,7 +5,7 @@ import { Project } from '../../project';
 import { Client } from '../../client';
 import { Certificate } from '../../certificate';
 import { Observable } from 'rxjs/Observable';
-import { ProjectEffortDto } from '../../projecteffortdto';
+import { ProjectCostDto } from '../../projectcostdto';
 import { HttpServiceBase } from './httpservicebase';
 import { LabourRate } from '../../labourrate';
 import { NonChargeableTime } from '../../nonchargeabletime';
@@ -70,10 +70,10 @@ export class ProjectService extends HttpServiceBase  {
       .catch(this.handleError);
   }
 
-  getProjectEffort() {
+  getProjectEffort(code : string) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<ProjectEffortDto[]>(this._baseurl + 'api/projecteffort',
+    return this._httpClient.get<ProjectCostDto[]>(this._baseurl + 'api/projectcost/'+code,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

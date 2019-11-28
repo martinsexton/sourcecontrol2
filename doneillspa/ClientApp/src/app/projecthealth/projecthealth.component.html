@@ -1,17 +1,59 @@
 <div>
-  <div style="display: block" *ngIf="!loading">
-    <canvas baseChart
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [chartType]="barChartType"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-3 mt-3 div-to-stand-out">
+        <div *ngIf="selectedProject" class="card-header">Projects</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class='table'>
+              <thead class="thead">
+                <tr>
+                  <th>Name</th>
+                  <th>Code</th>
+                  <th>Description</th>
+                  <th>Start Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let project of projects"  data-toggle="tooltip" data-placement="right" (click)="refreshGraphForProject(project)">
+                  <td>{{ project.name }}</td>
+                  <td>{{ project.code }}</td>
+                  <td>{{ project.details }}</td>
+                  <td>{{ project.startDate | date : "fullDate"}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div *ngIf="dataToPresent" class="'card mb-3 mt-3 div-to-stand-out'">
+        <div class="card-header">Project Costs For {{selectedProject.name}}</div>
+        <div class="card-body">
+          <div style="display: block">
+            <canvas baseChart
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [chartType]="barChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6">
+    </div>
   </div>
 </div>
 <!-- Split button -->
-<div class="btn-group" *ngIf="!loading">
+<!--<div class="btn-group" *ngIf="!loading">
   <button type="button" class="btn btn-primary">Select Graph</button>
   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <span class="caret"></span>
@@ -21,4 +63,4 @@
     <li><a (click)="displayEffortGraph()">Project Effort Graph</a></li>
     <li><a (click)="displayCostsGraph()">Project Cost Graph</a></li>
   </ul>
-</div>
+</div>-->

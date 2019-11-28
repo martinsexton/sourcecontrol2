@@ -22,44 +22,42 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
-        [Route("api/projecteffort")]
-        public IEnumerable<ProjectEffortDto> GetEfforts()
+        [Route("api/projectcost/{code}")]
+        public ProjectCostDto GetProjectCosts(string code)
         {
-            Dictionary<string, ProjectEffortDto> effort = new Dictionary<string, ProjectEffortDto>();
+            ProjectCostDto costs = new ProjectCostDto();
+            costs.ProjectName = code;
 
             IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets();
             foreach(Timesheet ts in timesheets.AsQueryable())
             {
-                foreach(TimesheetEntry tse in ts.TimesheetEntries)
+                if(!(ts.Status == TimesheetStatus.Approved))
                 {
-                    if (!effort.ContainsKey(tse.Code))
-                    {
-                        ProjectEffortDto effortDto = new ProjectEffortDto();
-                        effortDto.ProjectName = tse.Code;
-                        effortDto.TotalEffort = CalculateDurationInHours(tse);
-                        effortDto.TotalCost = CalculateCosts(tse);
-                        effort.Add(tse.Code, effortDto);
-                    }
-                    else
-                    {
-                        foreach (KeyValuePair<string, ProjectEffortDto> effortDto in effort)
-                        {
-                            if (effortDto.Key.Equals(tse.Code))
-                            {
-                                ProjectEffortDto tmp = effortDto.Value;
-                                tmp.TotalEffort = tmp.TotalEffort + CalculateDurationInHours(tse);
-                            }
-                        }
-                    }
+                    continue;
                 }
-            }
-            List<ProjectEffortDto> dtos = new List<ProjectEffortDto>();
-            foreach (KeyValuePair<string, ProjectEffortDto> effortDto in effort)
-            {
-                dtos.Add(effortDto.Value);
+                //Gets reset for each timesheet
+                decimal projectcost = 0m;
+
+                foreach (TimesheetEntry tse in ts.TimesheetEntries)
+                {
+                    if (!tse.Code.Equals(code))
+                    {
+                        continue;
+                    }
+
+                    if (!costs.weekAlreadyRecorded(ts.WeekStarting.ToShortDateString()))
+                    {
+                        costs.addWeek(ts.WeekStarting.ToShortDateString());
+                    }
+
+                    //Increment cost for each timesheet entry in timesheet for given week.
+                    projectcost += this.CalculateCosts(tse);
+                }
+
+                costs.addCost(projectcost);
             }
 
-            return dtos;
+            return costs;
         }
 
         private decimal CalculateCosts(TimesheetEntry tse)
