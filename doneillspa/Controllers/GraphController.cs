@@ -14,11 +14,30 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class GraphController : Controller
     {
-        private readonly ITimesheetService _timesheetService;
+        private List<LabourRate> Rates = new List<LabourRate>();
 
-        public GraphController(ITimesheetService tss)
+        private readonly ITimesheetService _timesheetService;
+        private readonly IProjectService _projectService;
+
+        public GraphController(ITimesheetService tss, IProjectService ps)
         {
             _timesheetService = tss;
+            _projectService = ps;
+
+            Rates = _projectService.GetRates().ToList<LabourRate>();
+        }
+
+        private double GetRate(string role, DateTime onDate, List<LabourRate> Rates)
+        {
+            foreach (LabourRate r in Rates)
+            {
+                if (r.Role.Equals(role) && r.EffectiveFrom <= onDate && (r.EffectiveTo == null || r.EffectiveTo >= onDate))
+                {
+                    return r.RatePerHour;
+                }
+            }
+            //Default Value
+            return 0.0;
         }
 
         [HttpGet]
@@ -69,7 +88,8 @@ namespace doneillspa.Controllers
         private decimal CalculateCosts(TimesheetEntry tse)
         {
             int hrsWorked = CalculateDurationInHours(tse);
-            return hrsWorked * 32;
+            double rate = GetRate(tse.Timesheet.Role,DateTime.UtcNow, Rates);
+            return hrsWorked * (decimal)rate;
         }
 
         //Method to determine duration of tse
