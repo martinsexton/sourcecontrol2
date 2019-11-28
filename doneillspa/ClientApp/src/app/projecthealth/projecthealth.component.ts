@@ -11,7 +11,8 @@ declare var $: any;
 
 @Component({
   selector: 'projecthealth',
-  templateUrl: './projecthealth.component.html'
+  templateUrl: './projecthealth.component.html',
+  styleUrls: ['./projecthealth.component.css']
 })
 export class ProjectHealthComponent {
   public barChartOptions: any = {
