@@ -49,10 +49,15 @@ export class ProjectHealthComponent {
 
   public barChartData: any[] = [];
 
+  public projectsCurrentPage: number = 1;
+  public projectsForCurrentPage: Project[];
+  public pageLimit: number = 10;
+
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService) {
     this._projectService.getProjects().subscribe(result => {
       this.projects = result;
-      this.selectedProject = this.projects[0];
+      //By default select first client
+      this.setupProjectsForCurrentPage();
 
       //Retrive Graph Details for selected project
       this._projectService.getProjectEffort(this.selectedProject.code).subscribe(result => {
@@ -61,6 +66,56 @@ export class ProjectHealthComponent {
       }, error => console.error(error));
     }, error => {
       });
+  }
+
+  setupProjectsForCurrentPage() {
+    var startingIndex = 0;
+    var index = 0;
+
+    //Need to reset selectedClient
+    this.selectedProject = null;
+
+    //reset client current page array
+    this.projectsForCurrentPage = [];
+
+    if (this.projectsCurrentPage > 1) {
+      startingIndex = (this.projectsCurrentPage - 1) * this.pageLimit;
+    }
+
+    for (let proj of this.projects) {
+      if (index >= startingIndex && index < (startingIndex + this.pageLimit)) {
+        this.projectsForCurrentPage.push(proj);
+
+        if (this.selectedProject == null) {
+          this.selectedProject = proj;
+          this.refreshGraphForProject(this.selectedProject);
+        }
+      }
+      index = index + 1;
+    }
+  }
+
+  previousPage() {
+    this.projectsCurrentPage = this.projectsCurrentPage - 1;
+    this.setupProjectsForCurrentPage();
+  }
+
+  nextPage() {
+    this.projectsCurrentPage = this.projectsCurrentPage + 1;
+    this.setupProjectsForCurrentPage();
+  }
+
+  determinePageCount() {
+    var pageCount = 1;
+    if (this.projects) {
+      var numberOfProjects = this.projects.length;
+
+      if (numberOfProjects > 0) {
+        var totalPages_pre = Math.floor((numberOfProjects / this.pageLimit));
+        pageCount = (numberOfProjects % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
+      }
+      return pageCount;
+    }
   }
 
   refreshGraphForProject(project: Project) {
