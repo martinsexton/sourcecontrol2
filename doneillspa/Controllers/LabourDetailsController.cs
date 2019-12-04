@@ -112,7 +112,24 @@ namespace doneillspa.Controllers
         public IActionResult DownloadFullReport()
         {
             List<string> projects = RetrieveProjectsWithTimesheets();
+            GenerateExcelForProjects(projects);
 
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("api/labourdetails/report/{projectName}")]
+        public IActionResult Download(string projectName)
+        {
+            List<string> projects = new List<string>();
+            projects.Add(projectName);
+            GenerateExcelForProjects(projects);
+
+            return Ok();
+        }
+
+        private void GenerateExcelForProjects(List<string> projects)
+        {
             string usermail = HttpContext.Session.GetString("UserEmail");
 
             MemoryStream spreadSheetStream = new MemoryStream();
@@ -173,88 +190,29 @@ namespace doneillspa.Controllers
 
                 document.Close();
 
-                string filename = "labour_costs_" + DateTime.Now.Ticks + ".xlsx";
+                string fileName = "";
+                string subject = "";
 
-                _emailService.SendMail("doneill@hotmail.com", usermail, "Labour Costs",
+                if(projects.Count == 1)
+                {
+                    fileName = projects[0] + "_labour_costs_" + DateTime.Now.Ticks + ".xlsx";
+                    subject = "Labour Costs For "+ projects[0];
+                }
+                else
+                {
+                    fileName = "labour_costs_" + DateTime.Now.Ticks + ".xlsx";
+                    subject = "Labour Costs";
+                }
+
+                _emailService.SendMail("doneill@hotmail.com", usermail, subject,
                         "Please find attached labour cost reports", "<strong>Project Labour Cost Reports</strong>",
-                        filename, Convert.ToBase64String(spreadSheetStream.ToArray()));
+                        fileName, Convert.ToBase64String(spreadSheetStream.ToArray()));
 
                 //Save Document to document service
-                _documentService.SaveDocument(filename, spreadSheetStream.ToArray());
+                _documentService.SaveDocument(fileName, spreadSheetStream.ToArray());
             }
-            return Ok();
         }
 
-        [HttpGet]
-        [Route("api/labourdetails/report/{projectName}")]
-        public IActionResult Download(string projectName)
-        {
-            IEnumerable<LabourWeekDetail> labourDetails = LabourDetailsForWeek(projectName);
-            if (labourDetails.Count() > 0)
-            {
-                string usermail = HttpContext.Session.GetString("UserEmail");
-
-                MemoryStream spreadSheetStream = new MemoryStream();
-                using (SpreadsheetDocument document = SpreadsheetDocument.Create(spreadSheetStream, SpreadsheetDocumentType.Workbook))
-                {
-                    // Add a WorkbookPart to the document.
-                    WorkbookPart workbookPart = document.AddWorkbookPart();
-                    workbookPart.Workbook = new Workbook();
-
-                    // Add a WorksheetPart to the WorkbookPart.
-                    WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
-                    worksheetPart.Worksheet = new Worksheet(new SheetData());
-
-                    Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
-
-                    Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = " Labour Costs" };
-                    sheets.Append(sheet);
-
-                    Columns lstColumns = worksheetPart.Worksheet.GetFirstChild<Columns>();
-                    if (lstColumns == null)
-                    {
-                        lstColumns = new Columns();
-
-                        lstColumns.Append(new Column() { Min = 1, Max = 1, Width = 20, CustomWidth = true });
-                        lstColumns.Append(new Column() { Min = 2, Max = 2, Width = 20, CustomWidth = true });
-                        lstColumns.Append(new Column() { Min = 3, Max = 3, Width = 20, CustomWidth = true });
-                        lstColumns.Append(new Column() { Min = 4, Max = 4, Width = 20, CustomWidth = true });
-                        lstColumns.Append(new Column() { Min = 5, Max = 5, Width = 20, CustomWidth = true });
-                        lstColumns.Append(new Column() { Min = 6, Max = 6, Width = 20, CustomWidth = true });
-                        lstColumns.Append(new Column() { Min = 7, Max = 7, Width = 20, CustomWidth = true });
-                        lstColumns.Append(new Column() { Min = 8, Max = 11, Width = 30, CustomWidth = true });
-                        lstColumns.Append(new Column() { Min = 12, Max = 12, Width = 20, CustomWidth = true });
-
-                        worksheetPart.Worksheet.InsertAt(lstColumns, 0);
-                    }
-
-                    // Get the sheetData cell table.
-                    SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
-
-                    SetupExcelHeader(worksheetPart.Worksheet.GetFirstChild<SheetData>());
-                    int rowIndex = 2;
-                    foreach (LabourWeekDetail week in labourDetails)
-                    {
-                        WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), week, rowIndex);
-                        rowIndex += 1;
-                    }
-
-                    document.Save();
-                    document.Close();
-
-                    string filename = projectName + "_labour_costs_" + DateTime.Now.Ticks + ".xlsx";
-
-                    _emailService.SendMail("doneill@hotmail.com", usermail, "Labour Cost For " + projectName,
-                            "Please find attached labour cost report for "+projectName, "<strong>Project Labour Cost Reports</strong>",
-                            filename, Convert.ToBase64String(spreadSheetStream.ToArray()));
-
-                    //Save Document to document service
-                    _documentService.SaveDocument(filename, spreadSheetStream.ToArray());
-                }
-            }
-
-            return Ok();
-        }
 
         private void WriteRow(SheetData sheetData, LabourWeekDetail detail, int rowIndex)
         {
