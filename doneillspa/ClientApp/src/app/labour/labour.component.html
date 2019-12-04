@@ -88,7 +88,11 @@
   </div>
   <button class="btn btn-primary" type="button" (click)="downloadReport()">
     <span [class]="sendingReport ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
-    Download Report
+    Download Report For Project
+  </button>
+  <button class="btn btn-primary" type="button" (click)="downloadFullReport()">
+    <span [class]="sendingFullReport ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
+    Download Full Report
   </button>
   <!-- Toasts -->
   <div aria-live="polite" aria-atomic="true">

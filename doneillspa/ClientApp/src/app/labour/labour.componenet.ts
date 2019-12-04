@@ -33,6 +33,7 @@ export class LabourComponent {
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
   public sendingReport: boolean = false;
+  public sendingFullReport: boolean = false;
 
   public barChartData: any[] = [
     { data: [], label: 'Week 1' }, { data: [], label: 'Week 2' }, { data: [], label: 'Week 3' }, { data: [], label: 'Week 4' }, { data: [], label: 'Week 5' }
@@ -76,6 +77,18 @@ export class LabourComponent {
 
   public chartHovered(e: any): void {
     console.log(e);
+  }
+
+  public downloadFullReport() {
+    this.sendingFullReport = true;
+    this._timesheetService.downloadFullReport().subscribe(result => {
+      this.sendingFullReport = false;
+    }, error => {
+      this.loadingLabourDetails = false;
+      this.sendingFullReport = false;
+      this.errors = "Failed to download report"
+      $('.toast').toast('show');
+    });
   }
 
   public downloadReport() {

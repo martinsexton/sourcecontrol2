@@ -87,6 +87,104 @@ namespace doneillspa.Controllers
             return rates;
         }
 
+        private List<string> RetrieveProjectsWithTimesheets()
+        {
+            List<string> projects = new List<string>();
+            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved"))
+                        .OrderByDescending(r => r.WeekStarting);
+
+            foreach (Timesheet ts in timesheets)
+            {
+                foreach (TimesheetEntry tse in ts.TimesheetEntries)
+                {
+                    if (!projects.Contains(tse.Code))
+                    {
+                        projects.Add(tse.Code);
+                    }
+                }
+            }
+
+            return projects;
+        }
+
+        [HttpGet]
+        [Route("api/labourdetails/report")]
+        public IActionResult DownloadFullReport()
+        {
+            List<string> projects = RetrieveProjectsWithTimesheets();
+
+            string usermail = HttpContext.Session.GetString("UserEmail");
+
+            MemoryStream spreadSheetStream = new MemoryStream();
+            using (SpreadsheetDocument document = SpreadsheetDocument.Create(spreadSheetStream, SpreadsheetDocumentType.Workbook))
+            {
+                // Add a WorkbookPart to the document.
+                WorkbookPart workbookPart = document.AddWorkbookPart();
+                workbookPart.Workbook = new Workbook();
+                Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
+
+                DocumentFormat.OpenXml.UInt32Value sheetId = 1;
+                foreach (string name in projects)
+                {
+                    IEnumerable<LabourWeekDetail> labourDetails = LabourDetailsForWeek(name);
+
+                    // Add a WorksheetPart to the WorkbookPart.
+                    WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+                    worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+                    Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = sheetId, Name = name };
+                    sheets.Append(sheet);
+
+                    Columns lstColumns = worksheetPart.Worksheet.GetFirstChild<Columns>();
+                    if (lstColumns == null)
+                    {
+                        lstColumns = new Columns();
+
+                        lstColumns.Append(new Column() { Min = 1, Max = 1, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 2, Max = 2, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 3, Max = 3, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 4, Max = 4, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 5, Max = 5, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 6, Max = 6, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 7, Max = 7, Width = 20, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 8, Max = 11, Width = 30, CustomWidth = true });
+                        lstColumns.Append(new Column() { Min = 12, Max = 12, Width = 20, CustomWidth = true });
+
+                        worksheetPart.Worksheet.InsertAt(lstColumns, 0);
+                    }
+
+                    // Get the sheetData cell table.
+                    SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+                    SetupExcelHeader(worksheetPart.Worksheet.GetFirstChild<SheetData>());
+                    int rowIndex = 2;
+                    foreach (LabourWeekDetail week in labourDetails)
+                    {
+                        WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), week, rowIndex);
+                        rowIndex += 1;
+                    }
+
+                    document.Save();
+
+                    //Increment SheetID
+                    sheetId++;
+
+                }
+
+                document.Close();
+
+                string filename = "labour_costs_" + DateTime.Now.Ticks + ".xlsx";
+
+                _emailService.SendMail("doneill@hotmail.com", usermail, "Labour Costs",
+                        "Please find attached labour cost reports", "<strong>Project Labour Cost Reports</strong>",
+                        filename, Convert.ToBase64String(spreadSheetStream.ToArray()));
+
+                //Save Document to document service
+                _documentService.SaveDocument(filename, spreadSheetStream.ToArray());
+            }
+            return Ok();
+        }
+
         [HttpGet]
         [Route("api/labourdetails/report/{projectName}")]
         public IActionResult Download(string projectName)
@@ -147,7 +245,7 @@ namespace doneillspa.Controllers
                     string filename = projectName + "_labour_costs_" + DateTime.Now.Ticks + ".xlsx";
 
                     _emailService.SendMail("doneill@hotmail.com", usermail, "Labour Cost For " + projectName,
-                            "Please find attached labout cost reports", "<strong>Project Labour Cost Reports</strong>",
+                            "Please find attached labour cost report for "+projectName, "<strong>Project Labour Cost Reports</strong>",
                             filename, Convert.ToBase64String(spreadSheetStream.ToArray()));
 
                     //Save Document to document service
