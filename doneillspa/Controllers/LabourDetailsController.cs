@@ -390,7 +390,7 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
-        [Route("api/labourdetails/project/timesheetentries/{proj}/{day}/{month}/{year}")]
+        [Route("api/labourdetails/project/timesheetentries/{proj}/{month}/{day}/{year}")]
         public IEnumerable<TimesheetEntryDto> GetTimesheetsForProjectOnDate(string proj, int month, int day, int year)
         {
             List<TimesheetEntryDto> entries = new List<TimesheetEntryDto>();
