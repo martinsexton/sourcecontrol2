@@ -14,5 +14,6 @@ namespace doneillspa.Models
         public string EndTime { get; set; }
         public string Code { get; set; }
         public string Details { get; set; }
+        public string Username { get; set; }
     }
 }

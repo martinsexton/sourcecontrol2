@@ -70,15 +70,6 @@ export class LabourComponent {
     return totalCostToDate;
   }
 
-  // events
-  public chartClicked(e: any): void {
-    console.log(e);
-  }
-
-  public chartHovered(e: any): void {
-    console.log(e);
-  }
-
   public downloadFullReport() {
     this.sendingFullReport = true;
     this._timesheetService.downloadFullReport().subscribe(result => {
@@ -94,7 +85,6 @@ export class LabourComponent {
   public downloadReport() {
     this.sendingReport = true;
     this._timesheetService.downloadReport(this.selectedProject.code).subscribe(result => {
-      console.log("uploaded");
       this.sendingReport = false;
     }, error => {
       this.loadingLabourDetails = false;

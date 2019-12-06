@@ -5,6 +5,7 @@ export class TimesheetEntry {
     public day:string,
     public startTime: string,
     public endTime: string,
-    public details:string
+    public details: string,
+    public userName: string
   ) { }
 }

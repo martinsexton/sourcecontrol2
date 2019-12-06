@@ -83,6 +83,20 @@ export class ProjectService extends HttpServiceBase  {
       .catch(this.handleError);
   }
 
+  getTimesheetEntriesForProjectAndWeek(code : string, week : string) {
+    console.log('Find timesheet entries for ' + code + ' and week: ' + week);
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<ProjectCostDto[]>(this._baseurl + 'api/labourdetails/project/timesheetentries/' + code + '/' + week,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
   saveRate(rate: LabourRate) {
     let authToken = localStorage.getItem('auth_token');
 

@@ -6,6 +6,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Project } from '../project';
 import { Timesheet } from '../timesheet';
 import { ProjectCostDto } from '../projectcostdto';
+import { TimesheetEntry } from '../timesheetentry';
 
 declare var $: any;
 
@@ -52,6 +53,8 @@ export class ProjectHealthComponent {
   public projectsCurrentPage: number = 1;
   public projectsForCurrentPage: Project[];
   public pageLimit: number = 10;
+
+  public timesheetsEntries: TimesheetEntry[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService) {
     this._projectService.getProjects().subscribe(result => {
@@ -148,78 +151,40 @@ export class ProjectHealthComponent {
     for (let cost of this.costsGraphData.costs) {
       d.push(cost);
     }
-    console.log('populating data');
     this.barChartData.push({ data: d, label: this.costsGraphData.projectName });
     this.loading = false;
   }
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
+    if (e.active.length > 0) {
+      let week = e.active[0]._model.label;
+      //Retrive Graph Details for selected project
+      this._projectService.getTimesheetEntriesForProjectAndWeek(this.selectedProject.code, week).subscribe(result => {
+        this.timesheetsEntries = result;
+        const sorter = {
+          "mon": 1,
+          "tue": 2,
+          "wed": 3,
+          "thurs": 4,
+          "fri": 5,
+          "sat": 6,
+          "sun": 7
+        }
+
+        //Order timesheet entries
+        this.timesheetsEntries.sort(function sortByDay(a, b) {
+          let day1 = a.day.toLowerCase();
+          let day2 = b.day.toLowerCase();
+          return sorter[day1] - sorter[day2];
+        });
+
+        $("#myModal").modal('show');
+      }, error => console.error(error));
+    }
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
+    //console.log(e);
   }
-
-  //public displayEffortGraph() {
-  //  if (!this.efforts) {
-  //    this._projectService.getProjectEffort().subscribe(result => {
-  //      this.efforts = result;
-
-  //      if (this.efforts) {
-  //        let data: number[] = [];
-  //        let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
-  //        let index: number = 0;
-
-  //        for (let effort of this.efforts) {
-  //          cloneLabels.push(effort.projectName);
-  //          data.push(effort.totalEffort);
-  //          index = index + 1;
-  //        }
-  //        this.barChartLabels = cloneLabels;
-
-  //        let clone = JSON.parse(JSON.stringify(this.barChartData));
-  //        clone[0].data = data;
-  //        clone[0].label = "Project Effort";
-  //        this.barChartData = clone;
-  //      }
-  //    }, error => console.error(error));
-  //  }
-  //  else {
-  //    let data: number[] = [];
-  //    let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
-  //    let index: number = 0;
-
-  //    for (let effort of this.efforts) {
-  //      cloneLabels.push(effort.projectName);
-  //      data.push(effort.totalEffort);
-  //      index = index + 1;
-  //    }
-  //    this.barChartLabels = cloneLabels;
-
-  //    let clone = JSON.parse(JSON.stringify(this.barChartData));
-  //    clone[0].data = data;
-  //    clone[0].label = "Project Effort";
-  //    this.barChartData = clone;
-  //  }
-  //}
-
-  //public displayCostsGraph() {
-  //  let data: number[] = [];
-  //  let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
-  //  let index: number = 0;
-
-  //  for (let effort of this.efforts) {
-  //    cloneLabels.push(effort.projectName);
-  //    data.push(effort.totalCost);
-  //    index = index + 1;
-  //  }
-  //  this.barChartLabels = cloneLabels;
-
-  //  let clone = JSON.parse(JSON.stringify(this.barChartData));
-  //  clone[0].data = data;
-  //  clone[0].label = "Project Cost";
-  //  this.barChartData = clone;
-  //}
 }

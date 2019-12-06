@@ -390,6 +390,45 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
+        [Route("api/labourdetails/project/timesheetentries/{proj}/{day}/{month}/{year}")]
+        public IEnumerable<TimesheetEntryDto> GetTimesheetsForProjectOnDate(string proj, int day, int month, int year)
+        {
+            List<TimesheetEntryDto> entries = new List<TimesheetEntryDto>();
+            DateTime weekStaring = new DateTime(year, month, day);
+
+            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved"))
+                .OrderByDescending(r => r.WeekStarting);
+            foreach (Timesheet ts in timesheets)
+            {
+                if (!ts.WeekStarting.Date.Equals(weekStaring.Date))
+                {
+                    continue;
+                }
+                else
+                {
+                    foreach(TimesheetEntry tse in ts.TimesheetEntries)
+                    {
+                        if (tse.Code.Equals(proj))
+                        {
+                            TimesheetEntryDto tsedto = new TimesheetEntryDto();
+                            tsedto.DateCreated = tse.DateCreated;
+                            tsedto.Day = tse.Day;
+                            tsedto.Details = tse.Details;
+                            tsedto.EndTime = tse.EndTime;
+                            tsedto.Id = tse.Id;
+                            tsedto.Code = tse.Code;
+                            tsedto.StartTime = tse.StartTime;
+                            tsedto.Username = tse.Timesheet.Username;
+
+                            entries.Add(tsedto);
+                        }
+                    }
+                }
+            }
+            return entries;
+        }
+
+        [HttpGet]
         [Route("api/labourdetails/project/{proj}")]
         public IEnumerable<LabourWeekDetail> GetByProject(string proj)
         {

@@ -180,6 +180,7 @@ namespace doneillspa.Controllers
                 tsedto.Id = tse.Id;
                 tsedto.Code = tse.Code;
                 tsedto.StartTime = tse.StartTime;
+                tsedto.Username = tse.Timesheet.Username;
 
                 tsdto.TimesheetEntries.Add(tsedto);
             }

@@ -93,7 +93,7 @@ export class TimesheetComponent {
 
     //Setting up default timesheet and timesheet entries
     this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek,'New');
-    this.newEntry = new TimesheetEntry("", "", "", "", "");
+    this.newEntry = new TimesheetEntry("", "", "", "", "","");
 
     //Retrieve timesheets for given date
     this.retrieveTimeSheetsForDate(startOfWeek);
@@ -450,7 +450,7 @@ export class TimesheetComponent {
   }
 
   addTimesheetEntry() {
-    let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details);
+    let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details, '');
     if (this.timesheetExists) {
       this._timesheetService.addTimesheetEntry(this.activeTimeSheet.id, entry).subscribe(
         res => {
