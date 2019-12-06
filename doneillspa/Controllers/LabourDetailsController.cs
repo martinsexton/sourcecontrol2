@@ -400,7 +400,7 @@ namespace doneillspa.Controllers
                 .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
-                if (!ts.WeekStarting.Date.Equals(weekStaring.Date))
+                if (!ts.WeekStarting.Date.ToString("d").Equals(weekStaring.Date.ToString("d")))
                 {
                     continue;
                 }
