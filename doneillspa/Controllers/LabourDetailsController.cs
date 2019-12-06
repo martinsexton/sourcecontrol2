@@ -391,7 +391,7 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/labourdetails/project/timesheetentries/{proj}/{day}/{month}/{year}")]
-        public IEnumerable<TimesheetEntryDto> GetTimesheetsForProjectOnDate(string proj, int day, int month, int year)
+        public IEnumerable<TimesheetEntryDto> GetTimesheetsForProjectOnDate(string proj, int month, int day, int year)
         {
             List<TimesheetEntryDto> entries = new List<TimesheetEntryDto>();
             DateTime weekStaring = new DateTime(year, month, day);
