@@ -32,8 +32,8 @@ namespace doneillspa.Services.Email
             var msg = MailHelper.CreateSingleEmail(from, to, s, plainTextContent, htmlContent);
             
             //Code to use SendGrid Templates
-            msg.TemplateId = "d-4db3811e764f484fb9c0082304543975";
-            msg.SetTemplateData(new { content = plainTextContent, subject = s });
+            //msg.TemplateId = "d-4db3811e764f484fb9c0082304543975";
+            //msg.SetTemplateData(new { content = plainTextContent, subject = s });
 
             if (!String.IsNullOrEmpty(attachmentContent))
             {
