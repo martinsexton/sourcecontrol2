@@ -45,19 +45,19 @@ namespace doneillspa.Models
 
         private void UpdateStatus(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetDto ts, IHubContext<Chat> hub)
         {
-            if (ts.Status.Equals(Enumerations.TimesheetStatus.Approved.ToString()))
+            if (ts.Status.Equals(TimesheetStatus.Approved.ToString()))
             {
                 Status = TimesheetStatus.Approved;
                 SendMail(userManager, emailService, "Timesheet Approved", 
                     String.Format("Your timesheet for week beginning {0} has been approved", this.WeekStarting.ToShortDateString()));
             }
-            else if (ts.Status.Equals(Enumerations.TimesheetStatus.Rejected.ToString()))
+            else if (ts.Status.Equals(TimesheetStatus.Rejected.ToString()))
             {
                 Status = TimesheetStatus.Rejected;
                 SendMail(userManager, emailService, "Timesheet Rejected",
                     String.Format("Your timesheet for week beginning {0} has been Rejected", this.WeekStarting.ToShortDateString()));
             }
-            else if (ts.Status.Equals(Enumerations.TimesheetStatus.Submitted.ToString()))
+            else if (ts.Status.Equals(TimesheetStatus.Submitted.ToString()))
             {
                 Status = TimesheetStatus.Submitted;
                 //Send message to any client to inform that a timesheet has been approved.
