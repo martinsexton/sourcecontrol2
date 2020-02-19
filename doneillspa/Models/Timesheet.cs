@@ -24,7 +24,7 @@ namespace doneillspa.Models
 
         public void OnCreation()
         {
-            //Setup new timesheets with a default value of New.
+            //Setup new timesheets with a default value of New. 
             Status = TimesheetStatus.New;
 
             DateTime todaysDate = DateTime.UtcNow;
