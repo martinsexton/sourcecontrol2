@@ -421,7 +421,7 @@ export class UserDashboardComponent {
     if (satMins >= (5 * 60)) {
       satMins = satMins - 30;
     }
-    if (sunMins >= (5 * 60)) {
+    if (sunMins > (5 * 60)) {
       sunMins = sunMins - 30;
     }
     totalDuration = mondayMins + tueMins + wedMins + thursMins + friMins + satMins + sunMins;

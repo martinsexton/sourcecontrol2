@@ -196,7 +196,8 @@ namespace doneillspa.Models
             foreach (string key in hoursPerDay.Keys.ToList())
             {
                 double minutesWorked = hoursPerDay[key];
-                if (minutesWorked >= (5 * 60))
+                if ((key.Equals("Sun") && minutesWorked > (5 * 60))
+                    || (!key.Equals("Sun") && minutesWorked >= (5 * 60)))
                 {
                     minutesWorked = minutesWorked - 30;
                     hoursPerDay[key] = minutesWorked;
