@@ -418,7 +418,7 @@ export class UserDashboardComponent {
     if (friMins >= (5 * 60)) {
       friMins = friMins - 30;
     }
-    if (satMins >= (5 * 60)) {
+    if (satMins > (5 * 60)) {
       satMins = satMins - 30;
     }
     if (sunMins > (5 * 60)) {
