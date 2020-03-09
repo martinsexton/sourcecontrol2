@@ -254,24 +254,59 @@ export class TimesheetComponent {
   }
   retrieveTimesheetsForDay(day:string) {
     if (day == "Mon") {
+      this.monEntries.sort(function sortByStartTime(a, b) {
+        let day1 = parseInt(a.startTime.split(':')[0]);
+        let day2 = parseInt(b.startTime.split(':')[0]);
+        return day1 - day2;
+      });
       return this.monEntries;
     }
     else if (day == "Tue") {
+      this.tueEntries.sort(function sortByStartTime(a, b) {
+        let day1 = parseInt(a.startTime.split(':')[0]);
+        let day2 = parseInt(b.startTime.split(':')[0]);
+        return day1 - day2;
+      });
       return this.tueEntries;
     }
     else if (day == "Wed") {
+      this.wedEntries.sort(function sortByStartTime(a, b) {
+        let day1 = parseInt(a.startTime.split(':')[0]);
+        let day2 = parseInt(b.startTime.split(':')[0]);
+        return day1 - day2;
+      });
       return this.wedEntries;
     }
     else if (day == "Thurs") {
+      this.thursEntries.sort(function sortByStartTime(a, b) {
+        let day1 = parseInt(a.startTime.split(':')[0]);
+        let day2 = parseInt(b.startTime.split(':')[0]);
+        return day1 - day2;
+      });
       return this.thursEntries;
     }
     else if (day == "Fri") {
+      this.friEntries.sort(function sortByStartTime(a, b) {
+        let day1 = parseInt(a.startTime.split(':')[0]);
+        let day2 = parseInt(b.startTime.split(':')[0]);
+        return day1 - day2;
+      });
       return this.friEntries;
     }
     else if (day == "Sat") {
+      this.satEntries.sort(function sortByStartTime(a, b) {
+        let day1 = parseInt(a.startTime.split(':')[0]);
+        let day2 = parseInt(b.startTime.split(':')[0]);
+        return day1 - day2;
+      });
       return this.satEntries;
     }
     else {
+      this.sunEntries.sort(function sortByStartTime(a, b) {
+        let day1 = parseInt(a.startTime.split(':')[0]);
+        let day2 = parseInt(b.startTime.split(':')[0]);
+        return day1 - day2;
+      });
       return this.sunEntries;
     }
   }
