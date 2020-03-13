@@ -75,6 +75,11 @@ namespace doneillspa.Services
 
         public long InsertTimesheet(Timesheet b)
         {
+            foreach(TimesheetEntry tse in b.TimesheetEntries)
+            {
+                //Update whether timesheet entry is chargeable or not
+                tse.Chargeable = b.IsEntryChargeable(tse);
+            }
             return _repository.InsertTimesheet(b);
         }
 

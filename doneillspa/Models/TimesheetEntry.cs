@@ -15,6 +15,7 @@ namespace doneillspa.Models
         public string EndTime { get; set; }
         public string Code { get; set; }
         public string Details { get; set; }
+        public bool Chargeable { get; set; }
         public Timesheet Timesheet { get; set; }
     }
 }

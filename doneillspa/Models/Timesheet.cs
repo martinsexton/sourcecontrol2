@@ -78,7 +78,16 @@ namespace doneillspa.Models
         {
             //Set date created on timesheet entry
             entry.DateCreated = DateTime.UtcNow;
+            //Determine if timesheet entry is chargeable or not.
+            entry.Chargeable = IsEntryChargeable(entry);
+
             TimesheetEntries.Add(entry);
+        }
+
+        public bool IsEntryChargeable(TimesheetEntry entry)
+        {
+            //Always true right now, but we can add logic here later to control if its chargeable or not.
+            return true;
         }
 
         public LabourWeekDetail BuildLabourWeekDetails(List<LabourRate> Rates, string proj)
@@ -174,6 +183,10 @@ namespace doneillspa.Models
             Dictionary<string, double> hoursPerDay = new Dictionary<string, double>();
             foreach (TimesheetEntry tse in this.TimesheetEntries)
             {
+                if (!tse.Chargeable)
+                {
+                    continue;
+                }
                 if (tse.Code.Equals(proj))
                 {
                     TimeSpan startTimespan = TimeSpan.Parse(tse.StartTime);

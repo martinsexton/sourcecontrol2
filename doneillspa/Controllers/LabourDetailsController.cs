@@ -408,6 +408,11 @@ namespace doneillspa.Controllers
                 {
                     foreach(TimesheetEntry tse in ts.TimesheetEntries)
                     {
+                        //If Timesheet Entry not chargeable, ignore.
+                        if (!tse.Chargeable)
+                        {
+                            continue;
+                        }
                         if (tse.Code.Equals(proj))
                         {
                             TimesheetEntryDto tsedto = new TimesheetEntryDto();
