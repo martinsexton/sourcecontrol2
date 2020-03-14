@@ -16,6 +16,7 @@ declare var $: any;
 export class ProjectsListComponent {
   @Input() selectedClient: Client;
   @Input() projects: Project[];
+  @Input() projectCodes: string[];
   selectedProject: Project;
   newProject: Project = new Project(0, '', '', '', '', true, new Date);
 

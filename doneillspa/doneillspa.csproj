@@ -76,6 +76,7 @@
     <None Remove="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
     <None Remove="ClientApp\src\app\projectlist\projectlist.component.ts" />
     <None Remove="ClientApp\src\app\projects\projects.component.ts" />
+    <None Remove="ClientApp\src\app\rates\rates.component.ts" />
     <None Remove="ClientApp\src\app\shared\models\credentials.interface.ts" />
     <None Remove="ClientApp\src\app\shared\models\loginresponse.interface.ts" />
     <None Remove="ClientApp\src\app\shared\models\user.registration.interface.ts" />
@@ -128,6 +129,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projectlist\projectlist.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\rates\rates.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\certificate.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\holiday.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\httpservicebase.ts" />

@@ -86,7 +86,7 @@
           </div>
           <div class="form-group">
             <label for="projectCode">Project Code</label>
-            <input id="newProjectCode" name="newProjectCode" class="form-control" [ngClass]="{'is-invalid': newProjectCode.invalid, 'is-valid': !newProjectCode.invalid}" required validateProjectCode codes="{{existingCodes}}" [(ngModel)]="newProject.code" #newProjectCode="ngModel">
+            <input id="newProjectCode" name="newProjectCode" class="form-control" [ngClass]="{'is-invalid': newProjectCode.invalid, 'is-valid': !newProjectCode.invalid}" required validateProjectCode codes="{{projectCodes}}" [(ngModel)]="newProject.code" #newProjectCode="ngModel">
           </div>
           <div class="form-group">
             <label for="projectDetails">Details</label>

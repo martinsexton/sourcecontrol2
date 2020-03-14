@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
+import { RatesComponent } from './rates/rates.component';
 import { TimesheetComponent } from './timesheets/timesheets.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -57,6 +58,7 @@ import { AuthGuard } from './auth.guard';
     ProjectHealthComponent,
     LoginFormComponent,
     ProjectComponent,
+    RatesComponent,
     TimesheetComponent,
     HolidaysComponent,
     DashboardComponent,
