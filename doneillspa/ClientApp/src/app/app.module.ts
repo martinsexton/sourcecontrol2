@@ -21,6 +21,7 @@ import { RegistrationFormComponent } from './account/registration-form/registrat
 import { LoginFormComponent } from './account/login-form/login-form.component';
 import { ProjectHealthComponent } from './projecthealth/projecthealth.component';
 import { LabourComponent } from './labour/labour.componenet';
+import { TimeSheetEntryListComponent } from './timesheetentrylist/timesheetentrylist.component';
 
 import { EmailValidator } from './directives/email.validator.directive';
 import { PasswordValidator } from './directives/password.validator.directive';
@@ -46,6 +47,7 @@ import { AuthGuard } from './auth.guard';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
+    TimeSheetEntryListComponent,
     RegistrationFormComponent,
     ProjectHealthComponent,
     LoginFormComponent,
