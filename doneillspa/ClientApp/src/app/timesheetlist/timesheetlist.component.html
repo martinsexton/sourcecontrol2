@@ -10,7 +10,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let ts of timesheets let i = index" data-toggle="tooltip" data-placement="right" title="Click For Details" (click)="setSelectedTimesheet(ts)">
+          <tr *ngFor="let ts of timesheets let i = index" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="ts == selectedTimesheet" (click)="setSelectedTimesheet(ts)">
             <td>{{ts.weekStarting | date:'fullDate'}}</td>
             <td>{{ts.username}}</td>
             <td>{{ts.status}}</td>
