@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit{
 
   public timesheetsForCurrentPage: Timesheet[];
   public timesheetsCurrentPage: number = 1;
-  public pageLimit: number = 10;
+  public pageLimit: number = 2;
 
   constructor(public signalRService: SignalRService, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
     this.loading = false;
@@ -58,6 +58,10 @@ export class DashboardComponent implements OnInit{
         this.selectedTsRow = 0;
       }
     }, error => this.errors = error);
+  }
+
+  onTimesheetSelected(ts: Timesheet) {
+    this.selectedTimesheet = ts;
   }
 
   ngOnInit(): void {

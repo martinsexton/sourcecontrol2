@@ -1,0 +1,22 @@
+<div class="card mb-3 mt-3 div-to-stand-out">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table">
+        <thead class="thead">
+          <tr>
+            <th>Date</th>
+            <th>User</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ts of timesheets let i = index" data-toggle="tooltip" data-placement="right" title="Click For Details" (click)="setSelectedTimesheet(ts)">
+            <td>{{ts.weekStarting | date:'fullDate'}}</td>
+            <td>{{ts.username}}</td>
+            <td>{{ts.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

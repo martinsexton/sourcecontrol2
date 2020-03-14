@@ -25,28 +25,8 @@
   </ul>
   <div class="row">
     <div class="col-md-6">
-      <div class="card mb-3 mt-3 div-to-stand-out">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead class="thead">
-                <tr>
-                  <th>Date</th>
-                  <th>User</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody *ngIf="timesheetsForCurrentPage">
-                <tr *ngFor="let ts of timesheetsForCurrentPage let i = index" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="ts == selectedTimesheet" (click)="displayEntriesForSelectedTimesheet(ts)">
-                  <td>{{ts.weekStarting | date:'fullDate'}}</td>
-                  <td>{{ts.username}}</td>
-                  <td>{{ts.status}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <!--Display List Of Timesheets-->
+      <timesheet-list [timesheets]="timesheetsForCurrentPage" (eventPublisher)="onTimesheetSelected($event)"></timesheet-list>
       <nav aria-label="Timesheet Navigation">
         <ul class="pagination">
           <li [ngClass]="{'page-item': timesheetsCurrentPage > 1, 'page-item disabled': timesheetsCurrentPage == 1}">
@@ -69,6 +49,7 @@
         <div class="col-md-12">
           <div class="card mb-3 mt-3 div-to-stand-out">
             <div class="card-body">
+              <!--Display List Of Timesheets Entries-->
               <timesheet-entry-list [owner]="selectedTimesheet"></timesheet-entry-list>
               <button *ngIf="selectedTimesheet" type="button" class="btn btn-primary" data-toggle="modal" (click)="addTimesheetNote()">Add Note</button>
               <button *ngIf="canApproveTimesheet()" (click)="approveTimesheet()" class="btn btn-primary">Approve Timesheet</button>
