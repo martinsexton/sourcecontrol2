@@ -42,6 +42,10 @@ export class DashboardComponent implements OnInit{
   public loading = true;
   public activeTab: string = "New";
 
+  public timesheetsForCurrentPage: Timesheet[];
+  public timesheetsCurrentPage: number = 1;
+  public pageLimit: number = 10;
+
   constructor(public signalRService: SignalRService, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
     this.loading = false;
     $('[data-toggle="tooltip"]').tooltip();
@@ -59,6 +63,55 @@ export class DashboardComponent implements OnInit{
   ngOnInit(): void {
     this.signalRService.startConnection();
     this.signalRService.addTimesheetSubmittedListener();
+  }
+
+  determinePageCount() {
+    var pageCount = 1;
+    if (this.filteredTimesheets) {
+      var numberOfTimesheets = this.filteredTimesheets.length;
+
+      if (numberOfTimesheets > 0) {
+        var totalPages_pre = Math.floor((numberOfTimesheets / this.pageLimit));
+        pageCount = (numberOfTimesheets % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
+      }
+      return pageCount;
+    }
+  }
+
+  setupTimehseetsForCurrentPage() {
+    var startingIndex = 0;
+    var index = 0;
+
+    this.selectedTimesheet = null;
+
+    //reset client current page array
+    this.timesheetsForCurrentPage = [];
+
+    if (this.timesheetsCurrentPage > 1) {
+      startingIndex = (this.timesheetsCurrentPage - 1) * this.pageLimit;
+    }
+
+    for (let ts of this.filteredTimesheets) {
+      if (index >= startingIndex && index < (startingIndex + this.pageLimit)) {
+        this.timesheetsForCurrentPage.push(ts);
+
+        //Setup selected client as the firt client on current page.
+        if (this.selectedTimesheet == null) {
+          this.selectedTimesheet = ts;
+        }
+      }
+      index = index + 1;
+    }
+  }
+
+  previousPage() {
+    this.timesheetsCurrentPage = this.timesheetsCurrentPage - 1;
+    this.setupTimehseetsForCurrentPage();
+  }
+
+  nextPage() {
+    this.timesheetsCurrentPage = this.timesheetsCurrentPage + 1;
+    this.setupTimehseetsForCurrentPage();
   }
 
   newTabClicked() {
@@ -179,6 +232,9 @@ export class DashboardComponent implements OnInit{
     if (this.filteredTimesheets) {
       this.selectedTimesheet = this.filteredTimesheets[0];
     }
+    //Reset page count and refresh.
+    this.timesheetsCurrentPage = 1;
+    this.setupTimehseetsForCurrentPage();
   }
 
   rejectTimesheet() {
