@@ -45,36 +45,8 @@
     </div>
     <div class="col" *ngIf="projectsForCurrentPage">
       <div class="card mb-3 mt-3 div-to-stand-out">
-        <div *ngIf="selectedClient" class="card-header">Projects For {{selectedClient.name}}</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class='table'>
-              <thead class="thead">
-                <tr>
-                  <th>Client</th>
-                  <th>Name</th>
-                  <th>Code</th>
-                  <th>Description</th>
-                  <th>Start Date</th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let project of projectsForCurrentPage" [ngClass]="{'text-danger': !isProjectActive(project)}" data-toggle="tooltip" data-placement="right" title="Click For Details">
-                  <td>{{ project.client }}</td>
-                  <td>{{ project.name }}</td>
-                  <td>{{ project.code }}</td>
-                  <td>{{ project.details }}</td>
-                  <td>{{ project.startDate | date : "fullDate"}}</td>
-                  <td><span aria-hidden="true" (click)="deleteProject(project)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
-                  <td><span aria-hidden="true" (click)="displaySelectedProject(project)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myNewProjectModal">Add Project</button>
-        </div>
+        <!--Project List Component Here-->
+        <project-list [selectedClient]="selectedClient" [projects]="projectsForCurrentPage"></project-list>
       </div>
       <nav aria-label="Project Navigation">
         <ul class="pagination">
@@ -161,48 +133,6 @@
   </div>
 </div>
 
-<!-- Display Project Details Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Project Details</h4>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="client">Client</label>
-            <input type="text" [(ngModel)]="selectedProject.client" name="client" class="form-control" id="client">
-          </div>
-          <div class="form-group">
-            <label for="projectName">Project Name</label>
-            <input type="text" [(ngModel)]="selectedProject.name" name="projectName" class="form-control" id="projectName">
-          </div>
-          <div class="form-group">
-            <label for="projectCode">Project Code</label>
-            <input type="text" [(ngModel)]="selectedProject.code" name="projectCode" class="form-control" id="projectCode">
-          </div>
-          <div class="form-group">
-            <label for="projectDetails">Details</label>
-            <input type="text" [(ngModel)]="selectedProject.details" name="projectDetails" class="form-control" id="projectDescription">
-          </div>
-          <div class="form-group">
-            <div class="custom-control custom-switch">
-              <input type="checkbox" [checked]="selectedProject.isActive" class="custom-control-input" id="isActive" name="isActive" [(ngModel)]="selectedProject.isActive">
-              <label class="custom-control-label" for="isActive">Active</label>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button (click)="updateProject()" class="btn btn-primary">Update Project</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Display Selected Rate Details -->
 <div class="modal fade" id="myDisplayRateModal" tabindex="-1" role="dialog" aria-labelledby="myDisplayRateModal">
   <div class="modal-dialog" role="document">
@@ -263,41 +193,6 @@
   </div>
 </div>
 
-  <!-- New Project Details Modal -->
-<div class="modal fade" id="myNewProjectModal" tabindex="-1" role="dialog" aria-labelledby="myNewProjectModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myNewProjectModal">New Project</h4>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="projectName">Project Name</label>
-              <input id="newProjectName" name="newProjectName" class="form-control" [ngClass]="{'is-invalid': newProjectName.invalid, 'is-valid': !newProjectName.invalid}" required [(ngModel)]="newProject.name" #newProjectName="ngModel">
-            </div>
-            <div class="form-group">
-              <label for="projectCode">Project Code</label>
-              <input id="newProjectCode" name="newProjectCode" class="form-control" [ngClass]="{'is-invalid': newProjectCode.invalid, 'is-valid': !newProjectCode.invalid}" required validateProjectCode codes="{{existingCodes}}" [(ngModel)]="newProject.code" #newProjectCode="ngModel">
-            </div>
-            <div class="form-group">
-              <label for="projectDetails">Details</label>
-              <input type="text" [(ngModel)]="newProject.details" name="projectDetails" class="form-control" id="projectDescription" placeholder="Enter Project Description Here">
-            </div>
-            <div class="form-group">
-              <label for="projectStartDate">StartDate</label>
-              <input type="date" [(ngModel)]="newProject.startDate" name="projectStartDate" class="form-control" id="projectStartDate">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button [disabled]="newProjectName.invalid || newProjectCode.invalid" (click)="saveProject()" class="btn btn-primary">Save Project</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 
 <!-- New Rate Details Modal-->
 <div class="modal fade" id="myNewRateModal" tabindex="-1" role="dialog" aria-labelledby="myNewRateModal">

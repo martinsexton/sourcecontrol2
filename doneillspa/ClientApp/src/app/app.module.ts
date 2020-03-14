@@ -23,6 +23,8 @@ import { ProjectHealthComponent } from './projecthealth/projecthealth.component'
 import { LabourComponent } from './labour/labour.componenet';
 import { TimeSheetEntryListComponent } from './timesheetentrylist/timesheetentrylist.component';
 import { TimeSheetListComponent } from './timesheetlist/timesheetlist.component';
+import { ProjectsListComponent } from './projectlist/projectlist.component';
+
 
 import { EmailValidator } from './directives/email.validator.directive';
 import { PasswordValidator } from './directives/password.validator.directive';
@@ -50,6 +52,7 @@ import { AuthGuard } from './auth.guard';
     FetchDataComponent,
     TimeSheetEntryListComponent,
     TimeSheetListComponent,
+    ProjectsListComponent,
     RegistrationFormComponent,
     ProjectHealthComponent,
     LoginFormComponent,
