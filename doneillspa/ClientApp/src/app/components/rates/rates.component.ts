@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { LabourRate } from '../labourrate';
+import { LabourRate } from '../../labourrate';
 
 import {
   ProjectService
-} from '../shared/services/project.service';
+} from '../../shared/services/project.service';
 
 declare var $: any;
 

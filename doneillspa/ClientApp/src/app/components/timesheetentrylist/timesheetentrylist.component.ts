@@ -1,10 +1,10 @@
 import { Component, Inject, Input } from '@angular/core';
-import { Timesheet } from '../timesheet';
+import { Timesheet } from '../../timesheet';
 
 import {
   TimesheetService
-} from '../shared/services/timesheet.service';
-import { TimesheetEntry } from '../timesheetentry';
+} from '../../shared/services/timesheet.service';
+import { TimesheetEntry } from '../../timesheetentry';
 
 @Component({
   selector: 'timesheet-entry-list',

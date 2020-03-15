@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 
-import { Certificate } from '../certificate';
-import { ApplicationUser } from '../applicationuser';
-import { CertificateService } from '../shared/services/certificate.service';
-import { MsUserService } from '../shared/services/msuser.service';
+import { Certificate } from '../../certificate';
+import { ApplicationUser } from '../../applicationuser';
+import { CertificateService } from '../../shared/services/certificate.service';
+import { MsUserService } from '../../shared/services/msuser.service';
 
 declare var $: any;
 

@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { Client } from '../client';
-import { Project } from '../project';
+import { Client } from '../../client';
+import { Project } from '../../project';
 import {
   ProjectService
-} from '../shared/services/project.service';
+} from '../../shared/services/project.service';
 
 declare var $: any;
 

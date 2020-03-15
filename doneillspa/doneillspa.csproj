@@ -55,7 +55,7 @@
     <None Remove="ClientApp\src\app\ApplicationUser.ts" />
     <None Remove="ClientApp\src\app\auth.guard.ts" />
     <None Remove="ClientApp\src\app\certificate.ts" />
-    <None Remove="ClientApp\src\app\certification\certification.component.ts" />
+    <None Remove="ClientApp\src\app\components\certification\certification.component.ts" />
     <None Remove="ClientApp\src\app\client.ts" />
     <None Remove="ClientApp\src\app\dashboard\dashboard.component.ts" />
     <None Remove="ClientApp\src\app\directives\email.validator.directive.ts" />
@@ -76,9 +76,9 @@
     <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projectcostdto.ts" />
     <None Remove="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
-    <None Remove="ClientApp\src\app\projectlist\projectlist.component.ts" />
+    <None Remove="ClientApp\src\app\components\projectlist\projectlist.component.ts" />
     <None Remove="ClientApp\src\app\projects\projects.component.ts" />
-    <None Remove="ClientApp\src\app\rates\rates.component.ts" />
+    <None Remove="ClientApp\src\app\components\rates\rates.component.ts" />
     <None Remove="ClientApp\src\app\shared\models\credentials.interface.ts" />
     <None Remove="ClientApp\src\app\shared\models\loginresponse.interface.ts" />
     <None Remove="ClientApp\src\app\shared\models\user.registration.interface.ts" />
@@ -94,8 +94,8 @@
     <None Remove="ClientApp\src\app\Timesheet.ts" />
     <None Remove="ClientApp\src\app\timesheetcode.ts" />
     <None Remove="ClientApp\src\app\timesheetentry.ts" />
-    <None Remove="ClientApp\src\app\timesheetentrylist\timesheetentrylist.component.ts" />
-    <None Remove="ClientApp\src\app\timesheetlist\timesheetlist.component.ts" />
+    <None Remove="ClientApp\src\app\components\timesheetentrylist\timesheetentrylist.component.ts" />
+    <None Remove="ClientApp\src\app\components\timesheetlist\timesheetlist.component.ts" />
     <None Remove="ClientApp\src\app\timesheetnote.ts" />
     <None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
     <None Remove="ClientApp\src\app\userdashboard\userdashboard.component.ts" />
@@ -110,7 +110,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\applicationuser.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\certificate.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\certification\certification.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\certification\certification.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\client.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\dashboard\dashboard.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directives\email.validator.directive.ts" />
@@ -131,9 +131,9 @@
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projectcostdto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\projectlist\projectlist.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\projectlist\projectlist.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\rates\rates.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\rates\rates.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\certificate.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\holiday.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\httpservicebase.ts" />
@@ -150,8 +150,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\timesheet.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheetcode.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheetentry.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\timesheetentrylist\timesheetentrylist.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\timesheetlist\timesheetlist.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\timesheetentrylist\timesheetentrylist.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\timesheetlist\timesheetlist.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheetnote.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheets\timesheets.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\userdashboard\userdashboard.component.ts" />

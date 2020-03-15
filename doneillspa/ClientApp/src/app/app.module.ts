@@ -12,13 +12,13 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
-import { RatesComponent } from './rates/rates.component';
+import { RatesComponent } from './components/rates/rates.component';
 import { TimesheetComponent } from './timesheets/timesheets.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SupervisorComponent } from './supervisor/supervisor.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
-import { CertificationComponent } from './certification/certification.component';
+import { CertificationComponent } from './components/certification/certification.component';
 import { NotificationComponent } from './notification/notification.component';
 
 
@@ -26,9 +26,9 @@ import { RegistrationFormComponent } from './account/registration-form/registrat
 import { LoginFormComponent } from './account/login-form/login-form.component';
 import { ProjectHealthComponent } from './projecthealth/projecthealth.component';
 import { LabourComponent } from './labour/labour.componenet';
-import { TimeSheetEntryListComponent } from './timesheetentrylist/timesheetentrylist.component';
-import { TimeSheetListComponent } from './timesheetlist/timesheetlist.component';
-import { ProjectsListComponent } from './projectlist/projectlist.component';
+import { TimeSheetEntryListComponent } from './components/timesheetentrylist/timesheetentrylist.component';
+import { TimeSheetListComponent } from './components/timesheetlist/timesheetlist.component';
+import { ProjectsListComponent } from './components/projectlist/projectlist.component';
 
 
 import { EmailValidator } from './directives/email.validator.directive';

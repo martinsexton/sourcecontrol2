@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Timesheet } from '../timesheet';
+import { Timesheet } from '../../timesheet';
 
 @Component({
   selector: 'timesheet-list',
