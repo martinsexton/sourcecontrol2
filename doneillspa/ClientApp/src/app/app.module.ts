@@ -19,6 +19,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SupervisorComponent } from './supervisor/supervisor.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
 import { CertificationComponent } from './certification/certification.component';
+import { NotificationComponent } from './notification/notification.component';
+
 
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
@@ -68,6 +70,7 @@ import { AuthGuard } from './auth.guard';
     LabourComponent,
     UserDashboardComponent,
     CertificationComponent,
+    NotificationComponent,
     EmailValidator,
     PasswordValidator,
     EndtimeValidator,

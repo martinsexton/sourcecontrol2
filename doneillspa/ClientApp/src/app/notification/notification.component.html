@@ -1,0 +1,49 @@
+<div class="table-responsive">
+  <table class='table'>
+    <thead class="thead">
+      <tr>
+        <th>Subject</th>
+        <th>Body</th>
+        <th>Date Sent</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let not of user.emailNotifications">
+        <td>{{ not.subject }}</td>
+        <td>{{ not.body}}</td>
+        <td>{{ not.activationDate | date : "fullDate"}}</td>
+        <td><span aria-hidden="true" (click)="deleteNotification(not)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<button type="button" [disabled]="isUserEnabled() == false" class="btn btn-primary" (click)="toggleDisplayAddEmailNotification()">Add Notification</button>
+
+<!-- New Email Notification Details Modal-->
+<div class="modal fade" id="myNewEmailNotificationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Email Notification</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="description">Subject</label>
+            <input id="newNotificationSubject" name="newNotificationSubject" class="form-control" [ngClass]="{'is-invalid': newNotificationSubject.invalid, 'is-valid': !newNotificationSubject.invalid}" required [(ngModel)]="newEmailNotification.subject" #newNotificationSubject="ngModel">
+          </div>
+          <div class="form-group">
+            <label for="body">Body</label>
+            <textarea id="newNotificationBody" name="newNotificationBody" class="form-control" [ngClass]="{'is-invalid': newNotificationBody.invalid, 'is-valid': !newNotificationBody.invalid}" required [(ngModel)]="newEmailNotification.body" #newNotificationBody="ngModel"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button [disabled]="newNotificationSubject.invalid || newNotificationBody.invalid" (click)="addNotification()" class="btn btn-primary">Save Notification</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
