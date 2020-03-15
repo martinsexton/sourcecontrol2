@@ -1,0 +1,15 @@
+<div [class]="isUserEnabled() ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
+  <div class="card-body">
+    <h5 class="card-title">Details</h5>
+    <p class="card-text">{{user.firstName | uppercase}} {{user.surname | uppercase}}</p>
+    <p class="card-text">{{user.email}}</p>
+    <p class="card-text">{{user.phoneNumber}}</p>
+    <p class="card-text">{{user.role}}</p>
+    <button *ngIf="isUserEnabled() == false" class="btn btn-primary" type="button" (click)="enableUser()">
+      Enable User
+    </button>
+    <button *ngIf="isUserEnabled() == true" class="btn btn-primary" type="button" (click)="disableUser()">
+      Disable User
+    </button>
+  </div>
+</div>

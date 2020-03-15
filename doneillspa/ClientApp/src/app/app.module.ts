@@ -20,7 +20,7 @@ import { SupervisorComponent } from './supervisor/supervisor.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
 import { CertificationComponent } from './components/certification/certification.component';
 import { NotificationComponent } from './notification/notification.component';
-
+import { UserDetailsComponent } from './components/userdetails/userdetails.component';
 
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
@@ -59,6 +59,7 @@ import { AuthGuard } from './auth.guard';
     TimeSheetListComponent,
     ProjectsListComponent,
     RegistrationFormComponent,
+    UserDetailsComponent,
     ProjectHealthComponent,
     LoginFormComponent,
     ProjectComponent,

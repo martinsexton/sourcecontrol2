@@ -135,22 +135,6 @@ export class UserDashboardComponent {
     $('.toast').toast('show');
   }
 
-  enableUser() {
-    this.selectedUser.isEnabled = true;
-    this._msuserService.updateUser(this.selectedUser).subscribe(
-      result => {
-        console.info(result);
-      }, responseError => this.userMessage = responseError);
-  }
-
-  disableUser() {
-    this.selectedUser.isEnabled = false;
-    this._msuserService.updateUser(this.selectedUser).subscribe(
-      result => {
-        console.info(result);
-      }, responseError => this.userMessage = responseError);
-  }
-
   resetPassword() {
       this.resettingPassword = true;
       this._msuserService.resetPassword(localStorage.getItem('client_id'), this.resetPasswordDetails).subscribe(
