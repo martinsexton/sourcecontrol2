@@ -145,39 +145,8 @@
                   </a>
                 </div>
                 <div class="col-md-8 collapse" id="collapseExample{{i}}">
-                  <div class="table-responsive">
-                    <table class='table'>
-                      <thead class="thead-light">
-                        <tr>
-                          <th>Day</th>
-                          <th>Start Time</th>
-                          <th>End Time</th>
-                          <th>Code</th>
-                          <th>Details</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let tse of getTimesheetEntriesForTimesheet(i)">
-                          <td>{{ tse.day }}</td>
-                          <td>{{ tse.startTime }}</td>
-                          <td>{{ tse.endTime }}</td>
-                          <td>{{ tse.code }}</td>
-                          <!--<td><div *ngIf="tse.details" data-container="body" data-toggle="tooltip" title="{{tse.details}}"><span><img src="assets/images/note.png" class="img-responsive" alt="..."></span></div></td>-->
-                          <td>{{tse.details}}</td>
-                        </tr>
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <!--<td></td>-->
-                          <!--<td></td>-->
-                          <td><span [class]="timesheeExceedsWeeklyLimit(i) ? 'badge badge-warning' : 'badge badge-success'">Hours Worked: {{ calculateTotalDuration(i) }}</span></td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
+                  <!--List timesheet Entries-->
+                  <timesheet-entry-list [owner]="getActiveTimesheet(i)"></timesheet-entry-list>
                 </div>
               </div>
               <button class="btn btn-primary mt-3" type="button" (click)="retrieveTimesheetsForUser()">

@@ -91,6 +91,29 @@ export class TimeSheetEntryListComponent {
     return hours + ':' + minutes;
   }
 
+  getSortedTimesheetEntries() {
+      const sorter = {
+        "mon": 1,
+        "tue": 2,
+        "wed": 3,
+        "thurs": 4,
+        "fri": 5,
+        "sat": 6,
+        "sun": 7
+      }
+      let ts = this.owner;
+
+      //Order timesheet entries
+      ts.timesheetEntries.sort(function sortByDay(a, b) {
+        let day1 = a.day.toLowerCase();
+        let day2 = b.day.toLowerCase();
+        return sorter[day1] - sorter[day2];
+      });
+
+      //Return the sorted timesheet entries
+      return ts.timesheetEntries;
+  }
+
   removeTimesheetEntry(ts) {
     this._timesheetService.deleteTimesheetEntry(ts).subscribe(
       res => {
