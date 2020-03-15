@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { ApplicationUser } from '../applicationuser';
-import { MsUserService } from '../shared/services/msuser.service';
-import { EmailNotification } from '../emailnotification';
-import { NotificationService } from '../shared/services/notification.service';
+import { ApplicationUser } from '../../applicationuser';
+import { MsUserService } from '../../shared/services/msuser.service';
+import { EmailNotification } from '../../emailnotification';
+import { NotificationService } from '../../shared/services/notification.service';
 
 declare var $: any;
 

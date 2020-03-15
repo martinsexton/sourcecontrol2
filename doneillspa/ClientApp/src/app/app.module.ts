@@ -19,7 +19,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SupervisorComponent } from './supervisor/supervisor.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
 import { CertificationComponent } from './components/certification/certification.component';
-import { NotificationComponent } from './notification/notification.component';
+import { NotificationComponent } from './components/notification/notification.component';
 import { UserDetailsComponent } from './components/userdetails/userdetails.component';
 
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';

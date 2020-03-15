@@ -72,7 +72,7 @@
     <None Remove="ClientApp\src\app\labourweek.ts" />
     <None Remove="ClientApp\src\app\labour\labour.componenet.ts" />
     <None Remove="ClientApp\src\app\nonchargeabletime.ts" />
-    <None Remove="ClientApp\src\app\notification\notification.component.ts" />
+    <None Remove="ClientApp\src\app\components\notification\notification.component.ts" />
     <None Remove="ClientApp\src\app\passwordreset.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
     <None Remove="ClientApp\src\app\projectcostdto.ts" />
@@ -128,7 +128,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\labourweek.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\labour\labour.componenet.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\nonchargeabletime.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\notification\notification.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\notification\notification.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\passwordreset.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projectcostdto.ts" />
