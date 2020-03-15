@@ -18,6 +18,8 @@ import { HolidaysComponent } from './holidays/holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SupervisorComponent } from './supervisor/supervisor.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
+import { CertificationComponent } from './certification/certification.component';
+
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
 import { ProjectHealthComponent } from './projecthealth/projecthealth.component';
@@ -65,6 +67,7 @@ import { AuthGuard } from './auth.guard';
     SupervisorComponent,
     LabourComponent,
     UserDashboardComponent,
+    CertificationComponent,
     EmailValidator,
     PasswordValidator,
     EndtimeValidator,
