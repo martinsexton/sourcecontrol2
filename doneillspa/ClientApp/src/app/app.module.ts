@@ -25,6 +25,8 @@ import { UserDetailsComponent } from './components/userdetails/userdetails.compo
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
 import { ProjectHealthComponent } from './projecthealth/projecthealth.component';
+import { ProjectGraphComponent } from './components/projectgraph/projectgraph.component';
+
 import { LabourComponent } from './labour/labour.componenet';
 import { TimeSheetEntryListComponent } from './components/timesheetentrylist/timesheetentrylist.component';
 import { TimeSheetListComponent } from './components/timesheetlist/timesheetlist.component';
@@ -61,6 +63,7 @@ import { AuthGuard } from './auth.guard';
     RegistrationFormComponent,
     UserDetailsComponent,
     ProjectHealthComponent,
+    ProjectGraphComponent,
     LoginFormComponent,
     ProjectComponent,
     RatesComponent,

@@ -1,0 +1,58 @@
+<div *ngIf="loading" class="d-flex justify-content-center">
+  <div class="spinner-grow" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<div *ngIf="dataToPresent" class="'card mb-3 mt-3 div-to-stand-out'">
+  <div class="card-header">Project Costs For {{selectedProject.name}}</div>
+  <div class="card-body">
+    <div style="display: block">
+      <canvas baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Display Timesheet Details -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Timesheet Entries</h4>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="timesheetsEntries" class="card mb-3 mt-3">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class='table'>
+                <thead class="thead-light">
+                  <tr>
+                    <th>User</th>
+                    <th>Day</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let tse of timesheetsEntries">
+                    <td>{{tse.username}}</td>
+                    <td>{{ tse.day }}</td>
+                    <td>{{ tse.startTime }}</td>
+                    <td>{{ tse.endTime }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
