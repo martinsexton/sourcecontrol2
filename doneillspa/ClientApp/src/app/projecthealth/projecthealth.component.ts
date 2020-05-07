@@ -25,8 +25,6 @@ export class ProjectHealthComponent {
   public projectsForCurrentPage: Project[];
   public pageLimit: number = 10;
 
-  //public timesheetsEntries: TimesheetEntry[];
-
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService) {
     this._projectService.getProjects().subscribe(result => {
       this.projects = result;

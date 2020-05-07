@@ -255,12 +255,9 @@ namespace doneillspa.Controllers
         public IActionResult Put(string id, [FromBody]CertificationDto t)
         {
             ApplicationUser user = GetUserIncludingCerts(id);
+            Certification cert = user.AddCertification(t, _userManager).Result;
 
-            Certification cert = CertificationFromDto(user, t);
-            user.Certifications.Add(cert);
-
-            Task<IdentityResult> result = _userManager.UpdateAsync(user);
-            if (result.Result.Succeeded)
+            if (cert != null)
             {
                 return Ok(cert.Id);
             }
@@ -275,16 +272,11 @@ namespace doneillspa.Controllers
         public IActionResult Put(string id, [FromBody]HolidayRequestDto t)
         {
             ApplicationUser user = GetUserIncludingCerts(id);
+            HolidayRequest hol = user.AddHolidayRequest(t, _userManager).Result;
 
-            HolidayRequest holiday = HolidayFromDto(user,t);
-            user.HolidayRequests.Add(holiday);
-
-            Task<IdentityResult> result = _userManager.UpdateAsync(user);
-            IdentityResult r = result.Result;
-            if (result.Result.Succeeded)
+            if (hol != null)
             {
-                holiday.Created(_emailService);
-                return Ok(holiday.Id);
+                return Ok(hol.Id);
             }
             else
             {
@@ -315,18 +307,10 @@ namespace doneillspa.Controllers
         public IActionResult Put(string id, [FromBody]EmailNotificationDto t)
         {
             ApplicationUser user = GetUserIncludingCerts(id);
+            EmailNotification notification = user.AddNotification(t, _userManager, _emailService).Result;
 
-            EmailNotification notification = NotificationFromDto(user, t);
-
-            //Default Activation Date to right now for the time being.
-            notification.ActivationDate = DateTime.UtcNow;
-
-            user.EmailNotifications.Add(notification);
-            Task<IdentityResult> result = _userManager.UpdateAsync(user);
-
-            if (result.Result.Succeeded)
+            if (notification != null)
             {
-                notification.Created(_emailService);
                 return Ok(notification.Id);
             }
             else
@@ -405,19 +389,6 @@ namespace doneillspa.Controllers
             return await Task.FromResult<ApplicationUser>(null);
         }
 
-        private EmailNotification NotificationFromDto(ApplicationUser user, EmailNotificationDto dto)
-        {
-            EmailNotification notification = new EmailNotification();
-            notification.DestinationEmail = user.Email;
-            notification.Body = dto.Body;
-            notification.Subject = dto.Subject;
-            notification.User = user;
-            notification.UserId = user.Id;
-            notification.ActivationDate = new DateTime();
-
-            return notification;
-        }
-
         private EmailNotificationDto NotificationToDto(EmailNotification not)
         {
             EmailNotificationDto notdto = new EmailNotificationDto();
@@ -428,19 +399,6 @@ namespace doneillspa.Controllers
             notdto.ActivationDate = not.ActivationDate;
 
             return notdto;
-        }
-
-
-        private HolidayRequest HolidayFromDto(ApplicationUser user, HolidayRequestDto dto)
-        {
-            HolidayRequest holiday = new HolidayRequest();
-            holiday.FromDate = dto.FromDate;
-            holiday.Days = dto.Days;
-            holiday.RequestedDate = DateTime.UtcNow;
-            holiday.Approver = GetUserById(dto.ApproverId).Result;
-            holiday.User = user;
-
-            return holiday;
         }
 
         private HolidayRequestDto HolidayToDto(HolidayRequest hol)
@@ -454,18 +412,6 @@ namespace doneillspa.Controllers
             dto.RequestedDate = hol.RequestedDate;
 
             return dto;
-        }
-
-        private Certification CertificationFromDto(ApplicationUser user, CertificationDto dto)
-        {
-            Certification cert = new Certification();
-            cert.CreatedDate = dto.CreatedDate;
-            cert.Description = dto.Description;
-            cert.Expiry = dto.Expiry;
-            cert.User = user;
-            cert.UserId = user.Id;
-
-            return cert;
         }
 
         private CertificationDto CertificationToDto(Certification cert)
