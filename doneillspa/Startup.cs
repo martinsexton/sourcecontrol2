@@ -40,7 +40,6 @@ namespace doneillspa
             services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             
             services.AddScoped<IProjectRepository>(_ => new ProjectRepository(_.GetService<ApplicationContext>()));
-            services.AddScoped<IClientRepository>(_ => new ClientRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<ITimesheetRepository>(_ => new TimesheetRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<IRateRepository>(_ => new RateRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));
@@ -63,8 +62,7 @@ namespace doneillspa
             //Setup Holiday Service and inject the required repositories
             services.AddScoped<IHolidayService>(_ => new HolidayService(_.GetService<IHolidayRequestRepository>()));
             services.AddScoped<ICertificationService>(_ => new CertificationService(_.GetService<ICertificationRepository>()));
-            services.AddScoped<IProjectService>(_ => new ProjectService(_.GetService<IProjectRepository>(), 
-                _.GetService<IClientRepository>(), _.GetService<IRateRepository>()));
+            services.AddScoped<IProjectService>(_ => new ProjectService(_.GetService<IProjectRepository>(), _.GetService<IRateRepository>()));
             services.AddScoped<INotificationService>(_ => new NotificationService(_.GetService<INotificationRepository>()));
             services.AddScoped<ITimesheetService>(_ => new TimesheetService(_.GetService<ITimesheetRepository>(), 
                 _.GetService<ITimesheetEntryRepository>(), _.GetService<INoteRepository>(), _.GetService<UserManager<ApplicationUser>>()));

@@ -9,7 +9,15 @@ namespace doneillspa.Models
     {
         public long Id { get; set; }
         public string Name { get; set; }
+
         public ICollection<Project> Projects { get; set; }
+
+        private Client(){}
+
+        public Client(string name)
+        {
+            Name = name;
+        }
 
         public void AddProject(Project proj)
         {

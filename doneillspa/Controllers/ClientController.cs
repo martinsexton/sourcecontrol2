@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
+using doneillspa.Factories;
 using doneillspa.Models;
 using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace doneillspa.Controllers
 {
@@ -16,25 +18,25 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class ClientController : Controller
     {
-        private readonly IProjectService _projectService;
+        ApplicationContext _context;
 
-        public ClientController(IProjectService ps)
+        public ClientController(ApplicationContext context)
         {
-            _projectService = ps;
+            _context = context;
         }
 
         [HttpPost]
         [Route("api/client")]
-        public IActionResult Post([FromBody]Client client)
+        public IActionResult Post([FromBody]ClientDto client)
         {
-            if (client == null)
-            {
-                return BadRequest();
-            }
+            if (client == null) return BadRequest();
 
-            long id = _projectService.SaveClient(client.Name);
+            Client c = new Client(client.Name);
+            _context.Client.Add(c);
 
-            return Ok(id);
+            _context.SaveChanges();
+
+            return Ok(c.Id);
         }
 
         [HttpGet]
@@ -43,7 +45,7 @@ namespace doneillspa.Controllers
         {
             List<ClientDto> dtos = new List<ClientDto>();
 
-            IEnumerable<Client> clients = _projectService.GetClients();
+            IEnumerable<Client> clients = _context.Client.Include(b => b.Projects).ToList();
             foreach (Client c in clients)
             {
                 List<ProjectDto> projects = new List<ProjectDto>();
@@ -75,9 +77,16 @@ namespace doneillspa.Controllers
 
         [HttpPut()]
         [Route("api/client/{id}/projects")]
-        public IActionResult Put(long id, [FromBody]Project p)
+        public IActionResult Put(long id, [FromBody]ProjectDto p)
         {
-            return Ok(_projectService.AddProject(id, p.Code, p.Name, p.Details, p.StartDate));
+            Client client = _context.Client.Include(b => b.Projects).Where(b => b.Id == id).FirstOrDefault();
+
+            Project proj = new Project(p.Code, p.Name, p.Details, p.StartDate);
+            client.AddProject(proj);
+
+            _context.SaveChanges();
+
+            return Ok(proj.Id);
         }
     }
 }
