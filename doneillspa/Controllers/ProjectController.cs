@@ -8,6 +8,7 @@ using doneillspa.Models;
 using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace doneillspa.Controllers
 {
@@ -16,10 +17,11 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class ProjectController : Controller
     {
-        private readonly IProjectService _service;
-        public ProjectController(IProjectService service)
+        ApplicationContext _context;
+
+        public ProjectController(ApplicationContext context)
         {
-            _service = service;
+            _context = context;
         }
 
         [HttpGet]
@@ -28,8 +30,8 @@ namespace doneillspa.Controllers
         {
             List<ProjectDto> projectDtos = new List<ProjectDto>();
 
-            IEnumerable<Project> projects = _service.GetProjects();
-            foreach(Project p in projects)
+            IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).ToList();
+            foreach (Project p in projects)
             {
                 ProjectDto dto = new ProjectDto();
                 dto.Client = p.OwningClient.Name;
@@ -49,15 +51,33 @@ namespace doneillspa.Controllers
         [Route("api/project/{id}")]
         public JsonResult Delete(long id)
         {
-            _service.DeleteProject(id);
+            Project proj = _context.Project
+                        .Include(b => b.OwningClient)
+                        .Where(b => b.Id == id)
+                        .FirstOrDefault();
+
+            _context.Entry(proj).State = EntityState.Deleted;
+            _context.SaveChanges();
+
             return Json(Ok());
         }
 
         [HttpPut]
         [Route("api/project")]
-        public IActionResult Put([FromBody]Project p)
+        public IActionResult Put([FromBody]ProjectDto p)
         {
-            _service.UpdateProject(p);
+            Project proj = _context.Project
+                        .Include(b => b.OwningClient)
+                        .Where(b => b.Id == p.Id)
+                        .FirstOrDefault();
+
+            //Update fields
+            proj.Name = p.Name;
+            proj.Details = p.Details;
+            proj.IsActive = p.IsActive;
+            proj.Code = p.Code;
+
+            _context.SaveChanges();
             return new NoContentResult();
         }
     }

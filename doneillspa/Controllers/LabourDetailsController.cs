@@ -21,6 +21,8 @@ using Microsoft.AspNetCore.Http;
 using System.Collections;
 using doneillspa.Services.Document;
 using doneillspa.Services;
+using Microsoft.EntityFrameworkCore;
+using doneillspa.Dtos;
 
 namespace doneillspa.Controllers
 {
@@ -29,62 +31,79 @@ namespace doneillspa.Controllers
     public class LabourDetailsController : Controller
     {
         private readonly ITimesheetService _timesheetService;
-        private readonly IProjectService _projectService;
         private List<LabourRate> Rates = new List<LabourRate>();
         private readonly IEmailService _emailService;
         private readonly IDocumentService _documentService;
 
-        public LabourDetailsController(ITimesheetService tss, IProjectService ps, IEmailService emailService, IDocumentService docService)
+        private ApplicationContext _context;
+
+        public LabourDetailsController(ApplicationContext context, ITimesheetService tss, IEmailService emailService, IDocumentService docService)
         {
+            _context = context;
             _timesheetService = tss;
-            _projectService = ps;
+            //_projectService = ps;
             _emailService = emailService;
             _documentService = docService;
 
-            Rates = _projectService.GetRates().ToList<LabourRate>();
+            Rates = _context.LabourRate.ToList();
         }
 
         [Route("api/labourdetails/rates/{id}")]
         public JsonResult Delete(long id)
         {
-            _projectService.DeleteRate(id);
+            LabourRate rate = _context.LabourRate.Where(b => b.Id == id).FirstOrDefault();
+
+            _context.Entry(rate).State = EntityState.Deleted;
+            _context.SaveChanges();
+
             return Json(Ok());
         }
 
         [HttpPut]
         [Route("api/labourdetails/rates")]
-        public IActionResult Put([FromBody]LabourRate r)
+        public IActionResult Put([FromBody]LabourRateDto r)
         {
             if (r == null)
             {
                 return BadRequest();
             }
+            LabourRate rate = _context.LabourRate.Where(b => b.Id == r.Id).FirstOrDefault();
 
-            _projectService.UpdateRate(r);
+            if(rate != null)
+            {
+                rate.EffectiveFrom = r.EffectiveFrom;
+                rate.EffectiveTo = r.EffectiveTo;
+                rate.RatePerHour = r.RatePerHour;
+                rate.OverTimeRatePerHour = r.OverTimeRatePerHour;
+
+                _context.SaveChanges();
+            }
 
             return new NoContentResult();
         }
 
         [HttpPost]
         [Route("api/labourdetails/rates")]
-        public IActionResult Post([FromBody]LabourRate rate)
+        public IActionResult Post([FromBody]LabourRateDto r)
         {
-            if (rate == null)
+            if (r == null)
             {
                 return BadRequest();
             }
 
-           long id = _projectService.SaveRate(rate.EffectiveFrom, rate.EffectiveTo,rate.RatePerHour, rate.OverTimeRatePerHour, rate.Role);
+            LabourRate rate = new LabourRate(r.EffectiveFrom, r.EffectiveTo, r.RatePerHour, r.OverTimeRatePerHour, r.Role);
 
-            return Ok(id);
+            _context.LabourRate.Add(rate);
+            _context.SaveChanges();
+
+            return Ok(rate.Id);
         }
 
         [HttpGet]
         [Route("api/labourdetails/rates")]
         public IEnumerable<LabourRate> GetRates()
         {
-            IEnumerable<LabourRate> rates = _projectService.GetRates();
-            return rates;
+            return _context.LabourRate.ToList();
         }
 
         private List<string> RetrieveProjectsWithTimesheets()
