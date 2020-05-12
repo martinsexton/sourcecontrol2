@@ -7,6 +7,7 @@ using doneillspa.Models;
 using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace doneillspa.Controllers
 {
@@ -14,11 +15,11 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class CertificationController : Controller
     {
-        private readonly ICertificationService _service;
+        ApplicationContext _context;
 
-        public CertificationController(ICertificationService service)
+        public CertificationController(ApplicationContext context)
         {
-            _service = service;
+            _context = context;
         }
 
         public bool ShouldICertify()
@@ -30,7 +31,13 @@ namespace doneillspa.Controllers
         [Route("api/certification/{id}")]
         public JsonResult Delete(long id)
         {
-            _service.DeleteCertification(id);
+            Certification cert = _context.Certification
+                        .Where(b => b.Id == id)
+                        .FirstOrDefault();
+
+            _context.Entry(cert).State = EntityState.Deleted;
+            _context.SaveChanges();
+
             return Json(Ok());
         }
     }
