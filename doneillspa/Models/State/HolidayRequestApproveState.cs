@@ -25,10 +25,5 @@ namespace doneillspa.Models.State
         {
             //Can we reject after a holiday has been approved?
         }
-
-        public void Created(IEmailService _emailServie)
-        {
-            //Nothing to do on saving a holiday request that is already approved.
-        }
     }
 }

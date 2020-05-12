@@ -31,7 +31,7 @@ namespace doneillspa.Models
 
         public void Created(IEmailService emailService)
         {
-            GetState().Created(emailService);
+            emailService.SendMail("doneill@hotmail.com", Approver.Email, "Holiday Request", string.Format("{0} has requested holiday from {1} for {2} days.", User.FirstName, FromDate, Days), "", string.Empty, string.Empty);
         }
 
         //Method triggerd by controller when HolidayRequest has been updated.
@@ -47,6 +47,10 @@ namespace doneillspa.Models
             }
         }
 
+        public void TransitionTo(HolidayRequestStatus state)
+        {
+            Status = state;
+        }
         private IHolidayRequestState GetState()
         {
             switch (Status)

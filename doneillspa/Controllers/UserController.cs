@@ -274,6 +274,8 @@ namespace doneillspa.Controllers
             ApplicationUser user = GetUserIncludingCerts(id);
             HolidayRequest hol = user.AddHolidayRequest(t, _userManager).Result;
 
+            hol.Created(_emailService);
+
             if (hol != null)
             {
                 return Ok(hol.Id);
