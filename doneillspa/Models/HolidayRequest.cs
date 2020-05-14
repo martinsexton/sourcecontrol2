@@ -34,14 +34,13 @@ namespace doneillspa.Models
             emailService.SendMail("doneill@hotmail.com", Approver.Email, "Holiday Request", string.Format("{0} has requested holiday from {1} for {2} days.", User.FirstName, FromDate, Days), "", string.Empty, string.Empty);
         }
 
-        //Method triggerd by controller when HolidayRequest has been updated.
         public void Updated(HolidayRequestDto dto, ICalendarService _calendarService, IEmailService _emailService, ITimesheetService tss)
         {
-            if (dto.Status.Equals(HolidayRequestStatus.Approved.ToString()))
+            if (dto.IsApproved())
             {
                 GetState(_calendarService, _emailService, tss).Approve();
             }
-            else if (dto.Status.Equals(HolidayRequestStatus.Rejected.ToString()))
+            else if (dto.IsRejected())
             {
                 GetState(_calendarService, _emailService, tss).Reject();
             }
@@ -51,6 +50,7 @@ namespace doneillspa.Models
         {
             Status = state;
         }
+
         private IHolidayRequestState GetState(ICalendarService calendarService, IEmailService emailService, ITimesheetService timesheetService)
         {
             switch (Status)
@@ -63,10 +63,4 @@ namespace doneillspa.Models
         }
     }
 
-    public enum HolidayRequestStatus
-    {
-        New = 1,
-        Approved = 2,
-        Rejected = 3
-    }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using doneillspa.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,5 +14,15 @@ namespace doneillspa.Dtos
         public int Days { get; set; }
         public string ApproverId { get; set; }
         public string Status { get; set; }
+
+        public bool IsApproved()
+        {
+            return Status.Equals(HolidayRequestStatus.Approved.ToString());
+        }
+
+        public bool IsRejected()
+        {
+            return Status.Equals(HolidayRequestStatus.Rejected.ToString());
+        }
     }
 }
