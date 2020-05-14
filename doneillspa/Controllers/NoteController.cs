@@ -7,6 +7,7 @@ using doneillspa.Models;
 using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace doneillspa.Controllers
 {
@@ -14,17 +15,24 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class NoteController : Controller
     {
-        private readonly ITimesheetService _timesheetService;
+        private ApplicationContext _context;
 
-        public NoteController(ITimesheetService tss)
+        public NoteController(ApplicationContext context)
         {
-            _timesheetService = tss;
+            _context = context;
         }
 
         [HttpDelete]
         [Route("api/note/{id}")]
         public JsonResult Delete(long id) {
-            _timesheetService.DeleteNote(id);
+
+            TimesheetNote note =  _context.TimesheetNote
+                        .Where(b => b.Id == id)
+                        .FirstOrDefault();
+
+            _context.Entry(note).State = EntityState.Deleted;
+            _context.SaveChanges();
+
             return Json(Ok());
         }
     }

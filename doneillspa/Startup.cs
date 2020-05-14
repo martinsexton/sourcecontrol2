@@ -44,8 +44,6 @@ namespace doneillspa
             services.AddScoped<IRateRepository>(_ => new RateRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<IHolidayRequestRepository>(_ => new HolidayRequestRepository(_.GetService<ApplicationContext>()));
-            services.AddScoped<INotificationRepository>(_ => new NotificationRepository(_.GetService<ApplicationContext>()));
-            services.AddScoped<INoteRepository>(_ => new NoteRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<INonChargeableTimeRepository>(_ => new NonChargeableTimeRepository(_.GetService<ApplicationContext>()));
 
             //Email Services
@@ -61,9 +59,8 @@ namespace doneillspa
             //Setup Holiday Service and inject the required repositories
             services.AddScoped<IHolidayService>(_ => new HolidayService(_.GetService<IHolidayRequestRepository>()));
             services.AddScoped<IProjectService>(_ => new ProjectService(_.GetService<IRateRepository>()));
-            services.AddScoped<INotificationService>(_ => new NotificationService(_.GetService<INotificationRepository>()));
             services.AddScoped<ITimesheetService>(_ => new TimesheetService(_.GetService<ITimesheetRepository>(), 
-                _.GetService<ITimesheetEntryRepository>(), _.GetService<INoteRepository>(), _.GetService<UserManager<ApplicationUser>>()));
+                _.GetService<ITimesheetEntryRepository>(), _.GetService<UserManager<ApplicationUser>>()));
 
 
             services.AddSingleton<IJwtFactory, JwtFactory>();

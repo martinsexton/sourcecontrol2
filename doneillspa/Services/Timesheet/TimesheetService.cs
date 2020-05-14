@@ -14,21 +14,13 @@ namespace doneillspa.Services
     {
         private readonly ITimesheetRepository _repository;
         private readonly ITimesheetEntryRepository _tseRepository;
-        private readonly INoteRepository _noteRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public TimesheetService(ITimesheetRepository tsr, ITimesheetEntryRepository tser, INoteRepository nr, UserManager<ApplicationUser> userManager)
+        public TimesheetService(ITimesheetRepository tsr, ITimesheetEntryRepository tser, UserManager<ApplicationUser> userManager)
         {
             _repository = tsr;
             _tseRepository = tser;
-            _noteRepository = nr;
             _userManager = userManager;
-        }
-
-        public void DeleteNote(long noteId)
-        {
-            TimesheetNote note = _noteRepository.GetNoteById(noteId);
-            _noteRepository.DeleteNote(note);
         }
 
         public void DeleteTimesheetEntry(long tseId)
@@ -36,11 +28,6 @@ namespace doneillspa.Services
             TimesheetEntry tse = _tseRepository.GetTimsheetEntryById(tseId);
             _tseRepository.DeleteTimesheetEntry(tse);
             _tseRepository.Save();
-        }
-
-        public TimesheetNote GetNoteById(long id)
-        {
-            return _noteRepository.GetNoteById(id);
         }
 
         public IEnumerable<Timesheet> GetTimesheets()
