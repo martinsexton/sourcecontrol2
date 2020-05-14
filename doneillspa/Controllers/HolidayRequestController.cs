@@ -22,24 +22,29 @@ namespace doneillspa.Controllers
     {
         private readonly IEmailService _emailService;
         private readonly ICalendarService _calendarService;
-        private readonly IHolidayService _holidayService;
         private readonly ITimesheetService _timesheetService;
+        private ApplicationContext _context;
 
-        public HolidayRequestController(IEmailService emailService, ICalendarService calendarService, IHolidayService hservice, ITimesheetService tss)
+        public HolidayRequestController(IEmailService emailService, ICalendarService calendarService, ITimesheetService tss, ApplicationContext context)
         {
             _emailService = emailService;
             _calendarService = calendarService;
-            _holidayService = hservice;
             _timesheetService = tss;
+            _context = context;
         }
         [HttpPut]
         [Route("api/holidayrequest")]
         public IActionResult Put([FromBody]HolidayRequestDto hr)
         {
-            HolidayRequest request = _holidayService.GetHolidayRequestById(hr.Id);
+            HolidayRequest request = _context.HolidayRequest
+                        .Include(b => b.Approver)
+                        .Include(b => b.User)
+                        .Where(b => b.Id == hr.Id)
+                        .FirstOrDefault();
+
             request.Updated(hr, _calendarService, _emailService, _timesheetService);
 
-            _holidayService.Update(request);
+            _context.SaveChanges();
             return new NoContentResult();
         }
 
@@ -47,7 +52,15 @@ namespace doneillspa.Controllers
         [Route("api/holidayrequest/{id}")]
         public JsonResult Delete(long id)
         {
-            _holidayService.Delete(id);
+            HolidayRequest request = _context.HolidayRequest
+                        .Include(b => b.Approver)
+                        .Include(b => b.User)
+                        .Where(b => b.Id == id)
+                        .FirstOrDefault();
+
+            _context.Entry(request).State = EntityState.Deleted;
+            _context.SaveChanges();
+
             return Json(Ok());
         }
     }

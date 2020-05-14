@@ -16,21 +16,6 @@ namespace doneillspa.DataAccess
             _context = context;
         }
 
-        public void Delete(HolidayRequest request)
-        {
-            _context.Entry(request).State = EntityState.Deleted;
-            _context.SaveChanges();
-        }
-
-        public HolidayRequest GetHolidayRequestById(long id)
-        {
-            return _context.HolidayRequest
-                        .Include(b => b.Approver)
-                        .Include(b => b.User)
-                        .Where(b => b.Id == id)
-                        .FirstOrDefault();
-        }
-
         public IEnumerable<HolidayRequest> GetHolidayRequestsForApprover(string userId)
         {
             return _context.HolidayRequest
@@ -45,17 +30,6 @@ namespace doneillspa.DataAccess
                         .Include(b => b.Approver)
                         .Where(b => b.UserId.ToString() == userId)
                         .ToList();
-        }
-
-        //public void Save()
-        //{
-        //    _context.SaveChanges();
-        //}
-
-        public void Update(HolidayRequest request)
-        {
-            _context.Entry(request).State = EntityState.Modified;
-            _context.SaveChanges();
         }
     }
 }
