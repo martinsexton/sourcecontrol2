@@ -39,11 +39,11 @@ namespace doneillspa.Models
         {
             if (dto.Status.Equals(HolidayRequestStatus.Approved.ToString()))
             {
-                GetState().Approve(_calendarService, _emailService, tss);
+                GetState(_calendarService, _emailService, tss).Approve();
             }
             else if (dto.Status.Equals(HolidayRequestStatus.Rejected.ToString()))
             {
-                GetState().Reject(_emailService);
+                GetState(_calendarService, _emailService, tss).Reject();
             }
         }
 
@@ -51,14 +51,14 @@ namespace doneillspa.Models
         {
             Status = state;
         }
-        private IHolidayRequestState GetState()
+        private IHolidayRequestState GetState(ICalendarService calendarService, IEmailService emailService, ITimesheetService timesheetService)
         {
             switch (Status)
             {
                 case HolidayRequestStatus.New:
-                    return new HolidayRequestNewState(this);
+                    return new HolidayRequestNewState(this, calendarService, emailService, timesheetService);
                 default:
-                    return new HolidayRequestApproveState(this);
+                    return new HolidayRequestApproveState(this, calendarService, emailService, timesheetService);
             }
         }
     }

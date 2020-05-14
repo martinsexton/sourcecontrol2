@@ -11,17 +11,24 @@ namespace doneillspa.Models.State
     public class HolidayRequestApproveState : IHolidayRequestState
     {
         private HolidayRequest context;
+        private ICalendarService _calendarService;
+        private IEmailService _emailService;
+        private ITimesheetService _timesheetService;
 
-        public HolidayRequestApproveState(HolidayRequest request)
+        public HolidayRequestApproveState(HolidayRequest request, ICalendarService calendarService,
+            IEmailService emailService, ITimesheetService timesheetService)
         {
             context = request;
+            _calendarService = calendarService;
+            _emailService = emailService;
+            _timesheetService = timesheetService;
         }
-        public void Approve(ICalendarService _calendarService, IEmailService _emailService, ITimesheetService _timesheetService)
+        public void Approve()
         {
             //Holiday Request already in Approve State.
         }
 
-        public void Reject(IEmailService _emailService)
+        public void Reject()
         {
             //Can we reject after a holiday has been approved?
         }

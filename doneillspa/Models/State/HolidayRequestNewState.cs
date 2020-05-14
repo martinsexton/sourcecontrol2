@@ -11,12 +11,20 @@ namespace doneillspa.Models.State
     public class HolidayRequestNewState : IHolidayRequestState
     {
         private HolidayRequest context;
+        private ICalendarService _calendarService;
+        private IEmailService _emailService;
+        private ITimesheetService _timesheetService;
 
-        public HolidayRequestNewState(HolidayRequest request)
+        public HolidayRequestNewState(HolidayRequest request, ICalendarService calendarService, 
+            IEmailService emailService, ITimesheetService timesheetService)
         {
             context = request;
+            _calendarService = calendarService;
+            _emailService = emailService;
+            _timesheetService = timesheetService;
         }
-        public void Approve(ICalendarService _calendarService, IEmailService _emailService, ITimesheetService _timesheetService)
+
+        public void Approve()
         {
             _calendarService.CreateEvent(context.FromDate, context.Days, context.User.FirstName + " " + context.User.Surname);
             _emailService.SendMail("doneill@hotmail.com", context.User.Email, "Holiday Request Approved", string.Format("Your holiday request from {0} for {1} days, has been approved", context.FromDate, context.Days), "", string.Empty, string.Empty);
@@ -25,10 +33,9 @@ namespace doneillspa.Models.State
             context.TransitionTo(HolidayRequestStatus.Approved);
         }
 
-        public void Reject(IEmailService _emailService)
+        public void Reject()
         {
             _emailService.SendMail("doneill@hotmail.com", context.User.Email, "Holiday Request Rejected", string.Format("Your holiday request from {0} for {1} days, has been rejected", context.FromDate, context.Days), "", string.Empty, string.Empty);
-
             context.TransitionTo(HolidayRequestStatus.Rejected);
         }
     }
