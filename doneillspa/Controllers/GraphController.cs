@@ -17,14 +17,14 @@ namespace doneillspa.Controllers
         private List<LabourRate> Rates = new List<LabourRate>();
 
         private readonly ITimesheetService _timesheetService;
-        private readonly IProjectService _projectService;
+        private ApplicationContext _context;
 
-        public GraphController(ITimesheetService tss, IProjectService ps)
+        public GraphController(ITimesheetService tss, ApplicationContext context)
         {
             _timesheetService = tss;
-            _projectService = ps;
+            _context = context;
 
-            Rates = _projectService.GetRates().ToList<LabourRate>();
+            Rates = _context.LabourRate.ToList();
         }
 
         private double GetRate(string role, DateTime onDate, List<LabourRate> Rates)

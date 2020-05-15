@@ -39,12 +39,8 @@ namespace doneillspa
             //services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["Data:Baby:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             
-            services.AddScoped<IProjectRepository>(_ => new ProjectRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<ITimesheetRepository>(_ => new TimesheetRepository(_.GetService<ApplicationContext>()));
-            services.AddScoped<IRateRepository>(_ => new RateRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));
-            services.AddScoped<IHolidayRequestRepository>(_ => new HolidayRequestRepository(_.GetService<ApplicationContext>()));
-            services.AddScoped<INonChargeableTimeRepository>(_ => new NonChargeableTimeRepository(_.GetService<ApplicationContext>()));
 
             //Email Services
             services.AddScoped<IEmailService>(_ => new SendGridEmailService(Configuration));
@@ -56,9 +52,6 @@ namespace doneillspa
             //Calendar Services
             services.AddScoped<ICalendarService>(_ => new GoogleCalendarService(Configuration));
 
-            //Setup Holiday Service and inject the required repositories
-            services.AddScoped<IHolidayService>(_ => new HolidayService(_.GetService<IHolidayRequestRepository>()));
-            services.AddScoped<IProjectService>(_ => new ProjectService(_.GetService<IRateRepository>()));
             services.AddScoped<ITimesheetService>(_ => new TimesheetService(_.GetService<ITimesheetRepository>(), 
                 _.GetService<ITimesheetEntryRepository>(), _.GetService<UserManager<ApplicationUser>>()));
 

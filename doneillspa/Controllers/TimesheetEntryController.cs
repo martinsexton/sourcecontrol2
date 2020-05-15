@@ -7,6 +7,7 @@ using doneillspa.Models;
 using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace doneillspa.Controllers
 {
@@ -14,18 +15,20 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class TimesheetEntryController : Controller
     {
-        private readonly ITimesheetService _timesheetService;
+        private ApplicationContext _context;
 
-        public TimesheetEntryController(ITimesheetService tss)
+        public TimesheetEntryController(ApplicationContext context)
         {
-            _timesheetService = tss;
+            _context = context;
         }
 
         [HttpGet]
         [Route("api/timesheetentry/{id}")]
         public JsonResult Get(long id)
         {
-            var item = _timesheetService.GetTimsheetEntryById(id);
+            TimesheetEntry item = _context.TimesheetEntry
+                        .Where(b => b.Id == id)
+                        .FirstOrDefault();
 
             if (item == null)
             {
@@ -44,7 +47,15 @@ namespace doneillspa.Controllers
                 return BadRequest();
             }
 
-            _timesheetService.UpdateTimesheetEntry(tse);
+            TimesheetEntry item = _context.TimesheetEntry
+            .Where(b => b.Id == tse.Id)
+            .FirstOrDefault();
+
+            item.StartTime = tse.StartTime;
+            item.Details = tse.Details;
+            item.EndTime = tse.EndTime;
+
+            _context.SaveChanges();
 
             return Ok();
         }
@@ -53,7 +64,13 @@ namespace doneillspa.Controllers
         [Route("api/timesheetentry/{id}")]
         public JsonResult Delete(long id)
         {
-            _timesheetService.DeleteTimesheetEntry(id);
+            TimesheetEntry item = _context.TimesheetEntry
+                .Where(b => b.Id == id)
+                .FirstOrDefault();
+
+            _context.Entry(item).State = EntityState.Deleted;
+            _context.SaveChanges();
+
             return Json(Ok());
         }
     }

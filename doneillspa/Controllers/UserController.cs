@@ -26,17 +26,18 @@ namespace doneillspa.Controllers
         private readonly ITimesheetService _timesheetService;
 
         private readonly IEmailService _emailService;
-        private readonly IHolidayService _holidayService;
+
+        private ApplicationContext _context;
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,
             ITimesheetService tss, IEmailService emailService,
-            IHolidayService hservice)
+            ApplicationContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _timesheetService = tss;
             _emailService = emailService;
-            _holidayService = hservice;
+            _context = context;
         }
 
         [HttpGet]
@@ -225,7 +226,10 @@ namespace doneillspa.Controllers
         public IEnumerable<HolidayRequestDto> GetHolidayRequestsForUser(string id)
         {
             List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
-            IEnumerable<HolidayRequest> holidayRequests = _holidayService.GetHolidayRequestsForUser(id);
+            IEnumerable<HolidayRequest> holidayRequests = _context.HolidayRequest
+                        .Include(b => b.Approver)
+                        .Where(b => b.UserId.ToString() == id)
+                        .ToList();
 
             foreach (HolidayRequest hr in holidayRequests)
             {
@@ -241,7 +245,10 @@ namespace doneillspa.Controllers
         public IEnumerable<HolidayRequestDto> GetHolidayRequestsForApproval(string id)
         {
             List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
-            IEnumerable<HolidayRequest> holidayRequests = _holidayService.GetHolidayRequestsForApprover(id);
+            IEnumerable<HolidayRequest> holidayRequests = _context.HolidayRequest
+                        .Include(b => b.Approver)
+                        .Where(b => b.Approver.Id.ToString() == id)
+                        .ToList();
 
             foreach (HolidayRequest hr in holidayRequests)
             {

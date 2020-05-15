@@ -13,18 +13,18 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class NonChargeableTimeController : Controller
     {
-        private readonly INonChargeableTimeRepository _repository;
+        private ApplicationContext _context;
 
-        public NonChargeableTimeController(INonChargeableTimeRepository repository)
+        public NonChargeableTimeController(ApplicationContext context)
         {
-            _repository = repository;
+            _context = context;
         }
 
         [HttpGet]
         [Route("api/nonchargeabletime")]
         public IEnumerable<NonChargeableTime> Get()
         {
-            return _repository.GetNonChargeableTime();
+            return _context.NonChargeableTime.ToList();
         }
     }
 }
