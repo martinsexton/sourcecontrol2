@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
@@ -18,10 +19,12 @@ namespace doneillspa.Controllers
     public class ProjectController : Controller
     {
         ApplicationContext _context;
+        private readonly IMapper _mapper;
 
-        public ProjectController(ApplicationContext context)
+        public ProjectController(ApplicationContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -33,16 +36,7 @@ namespace doneillspa.Controllers
             IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).ToList();
             foreach (Project p in projects)
             {
-                ProjectDto dto = new ProjectDto();
-                dto.Client = p.OwningClient.Name;
-                dto.Id = p.Id;
-                dto.IsActive = p.IsActive;
-                dto.Name = p.Name;
-                dto.Code = p.Code;
-                dto.StartDate = p.StartDate;
-                dto.Details = p.Details;
-
-                projectDtos.Add(dto);
+                projectDtos.Add(_mapper.Map<ProjectDto>(p));
             }
             return projectDtos;
         }

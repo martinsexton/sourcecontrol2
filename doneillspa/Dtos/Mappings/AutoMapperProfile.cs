@@ -7,13 +7,17 @@ using System.Threading.Tasks;
 
 namespace doneillspa.Dtos.Mappings
 {
-    public class TimesheetProfile : Profile
+    public class AutoMapperProfile : Profile
     {
-        public TimesheetProfile()
+        public AutoMapperProfile()
         {
             CreateMap<EmailNotification, EmailNotificationDto>();
             CreateMap<Certification, CertificationDto>();
             CreateMap<TimesheetNote, TimesheetNoteDto>();
+            CreateMap<Project, ProjectDto>()
+                .ForMember(dest =>
+                dest.Client,
+                opt => opt.MapFrom(src => src.OwningClient.Name));
         }
     }
 }

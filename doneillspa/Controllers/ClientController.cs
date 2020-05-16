@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Factories;
@@ -19,10 +20,12 @@ namespace doneillspa.Controllers
     public class ClientController : Controller
     {
         ApplicationContext _context;
+        private readonly IMapper _mapper;
 
-        public ClientController(ApplicationContext context)
+        public ClientController(ApplicationContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -56,16 +59,7 @@ namespace doneillspa.Controllers
 
                 foreach(Project proj in c.Projects)
                 {
-                    ProjectDto pdto = new ProjectDto();
-                    pdto.Client = c.Name;
-                    pdto.Id = proj.Id;
-                    pdto.IsActive = proj.IsActive;
-                    pdto.StartDate = proj.StartDate;
-                    pdto.Details = proj.Details;
-                    pdto.Name = proj.Name;
-                    pdto.Code = proj.Code;
-
-                    projects.Add(pdto);
+                    projects.Add(_mapper.Map<ProjectDto>(proj));
                 }
 
                 dto.Projects = projects;
