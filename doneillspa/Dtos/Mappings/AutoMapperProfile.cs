@@ -18,6 +18,11 @@ namespace doneillspa.Dtos.Mappings
                 .ForMember(dest =>
                 dest.Client,
                 opt => opt.MapFrom(src => src.OwningClient.Name));
+            CreateMap<HolidayRequest, HolidayRequestDto>()
+                .ForMember(dest =>
+                dest.ApproverId,
+                opt => opt.MapFrom(src => src.Approver.Id.ToString()));
+
         }
     }
 }

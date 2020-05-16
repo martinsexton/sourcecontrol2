@@ -145,8 +145,7 @@ namespace doneillspa.Controllers
                     List<HolidayRequestDto> holidays = new List<HolidayRequestDto>();
                     foreach (HolidayRequest hol in user.HolidayRequests)
                     {
-                        HolidayRequestDto holdto = HolidayToDto(hol);
-                        holidays.Add(holdto);
+                        holidays.Add(_mapper.Map<HolidayRequestDto>(hol));
                     }
 
                     dtouser.HolidayRequests = holidays;
@@ -233,8 +232,7 @@ namespace doneillspa.Controllers
 
             foreach (HolidayRequest hr in holidayRequests)
             {
-                HolidayRequestDto dto = HolidayToDto(hr);
-                holidayRequestDtos.Add(dto);
+                holidayRequestDtos.Add(_mapper.Map<HolidayRequestDto>(hr));
             }
             return holidayRequestDtos;
         }
@@ -252,8 +250,7 @@ namespace doneillspa.Controllers
 
             foreach (HolidayRequest hr in holidayRequests)
             {
-                HolidayRequestDto dto = HolidayToDto(hr);
-                holidayRequestDtos.Add(dto);
+                holidayRequestDtos.Add(_mapper.Map<HolidayRequestDto>(hr));
             }
             return holidayRequestDtos;
         }
@@ -390,19 +387,6 @@ namespace doneillspa.Controllers
             }
             //User not found
             return await Task.FromResult<ApplicationUser>(null);
-        }
-
-        private HolidayRequestDto HolidayToDto(HolidayRequest hol)
-        {
-            HolidayRequestDto dto = new HolidayRequestDto();
-            dto.Id = hol.Id;
-            dto.FromDate = hol.FromDate;
-            dto.Days = hol.Days;
-            dto.ApproverId = hol.Approver.Id.ToString();
-            dto.Status = hol.Status.ToString();
-            dto.RequestedDate = hol.RequestedDate;
-
-            return dto;
         }
 
         private TimesheetDto TimesheetToDto(Timesheet ts)
