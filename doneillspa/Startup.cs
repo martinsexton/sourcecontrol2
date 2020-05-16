@@ -21,6 +21,7 @@ using doneillspa.Services.Calendar;
 using doneillspa.Services.Document;
 using doneillspa.Services;
 using hub;
+using AutoMapper;
 
 namespace doneillspa
 {
@@ -36,6 +37,8 @@ namespace doneillspa
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
+
             //services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["Data:Baby:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             

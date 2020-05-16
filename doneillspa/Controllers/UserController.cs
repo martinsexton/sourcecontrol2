@@ -14,6 +14,7 @@ using doneillspa.Dtos;
 using doneillspa.Services;
 using Microsoft.AspNetCore.SignalR;
 using hub;
+using AutoMapper;
 
 namespace doneillspa.Controllers
 {
@@ -24,20 +25,21 @@ namespace doneillspa.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly ITimesheetService _timesheetService;
-
         private readonly IEmailService _emailService;
+        private readonly IMapper _mapper;
 
         private ApplicationContext _context;
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,
             ITimesheetService tss, IEmailService emailService,
-            ApplicationContext context)
+            ApplicationContext context, IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _timesheetService = tss;
             _emailService = emailService;
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -122,8 +124,7 @@ namespace doneillspa.Controllers
                     List<CertificationDto> certs = new List<CertificationDto>();
                     foreach (Certification cert in user.Certifications)
                     {
-                        CertificationDto dtocert = CertificationToDto(cert);
-                        certs.Add(dtocert);
+                        certs.Add(_mapper.Map<CertificationDto>(cert));
                     }
                     dtouser.Certifications = certs;
                 }
@@ -133,8 +134,7 @@ namespace doneillspa.Controllers
                     List<EmailNotificationDto> notifications = new List<EmailNotificationDto>();
                     foreach (EmailNotification not in user.EmailNotifications)
                     {
-                        EmailNotificationDto notdto = NotificationToDto(not);
-                        notifications.Add(notdto);
+                        notifications.Add(_mapper.Map<EmailNotificationDto>(not));
                     }
 
                     dtouser.EmailNotifications = notifications;
@@ -356,13 +356,7 @@ namespace doneillspa.Controllers
                     List<CertificationDto> certs = new List<CertificationDto>();
                     foreach (Certification cert in user.Certifications)
                     {
-                        CertificationDto dtocert = new CertificationDto();
-                        dtocert.CreatedDate = cert.CreatedDate;
-                        dtocert.Description = cert.Description;
-                        dtocert.Expiry = cert.Expiry;
-                        dtocert.Id = cert.Id;
-
-                        certs.Add(dtocert);
+                        certs.Add(_mapper.Map<CertificationDto>(cert));
                     }
                     dtouser.Certifications = certs;
                 }
@@ -398,18 +392,6 @@ namespace doneillspa.Controllers
             return await Task.FromResult<ApplicationUser>(null);
         }
 
-        private EmailNotificationDto NotificationToDto(EmailNotification not)
-        {
-            EmailNotificationDto notdto = new EmailNotificationDto();
-            notdto.Subject = not.Subject;
-            notdto.Body = not.Body;
-            notdto.DestinationEmail = not.DestinationEmail;
-            notdto.Id = not.Id;
-            notdto.ActivationDate = not.ActivationDate;
-
-            return notdto;
-        }
-
         private HolidayRequestDto HolidayToDto(HolidayRequest hol)
         {
             HolidayRequestDto dto = new HolidayRequestDto();
@@ -421,17 +403,6 @@ namespace doneillspa.Controllers
             dto.RequestedDate = hol.RequestedDate;
 
             return dto;
-        }
-
-        private CertificationDto CertificationToDto(Certification cert)
-        {
-            CertificationDto dtocert = new CertificationDto();
-            dtocert.CreatedDate = cert.CreatedDate;
-            dtocert.Description = cert.Description;
-            dtocert.Expiry = cert.Expiry;
-            dtocert.Id = cert.Id;
-
-            return dtocert;
         }
 
         private TimesheetDto TimesheetToDto(Timesheet ts)

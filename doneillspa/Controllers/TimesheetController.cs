@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
@@ -24,13 +25,15 @@ namespace doneillspa.Controllers
         private readonly IEmailService _emailService;
         private readonly UserManager<ApplicationUser> _userManager;
         private IHubContext<Chat> _hub;
+        private readonly IMapper _mapper;
 
-        public TimesheetController(UserManager<ApplicationUser> userManager, ITimesheetService tss, IEmailService emailService, IHubContext<Chat> hub)
+        public TimesheetController(UserManager<ApplicationUser> userManager, ITimesheetService tss, IEmailService emailService, IHubContext<Chat> hub, IMapper mapper)
         {
             _service = tss;
             _emailService = emailService;
             _userManager = userManager;
             _hub = hub;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -187,12 +190,7 @@ namespace doneillspa.Controllers
 
             foreach(TimesheetNote note in ts.TimesheetNotes)
             {
-                TimesheetNoteDto ndto = new TimesheetNoteDto();
-                ndto.Id = note.Id;
-                ndto.Details = note.Details;
-                ndto.DateCreated = note.DateCreated;
-
-                tsdto.TimesheetNotes.Add(ndto);
+                tsdto.TimesheetNotes.Add(_mapper.Map<TimesheetNoteDto>(note));
             }
 
             return tsdto;
