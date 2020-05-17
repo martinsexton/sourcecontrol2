@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using doneillspa.Services.Email;
 using doneillspa.Dtos;
+using MediatR;
 
 namespace doneillspa.Models
 {
@@ -51,7 +52,7 @@ namespace doneillspa.Models
             }
         }
 
-        public async Task<EmailNotification> AddNotification(EmailNotificationDto not, UserManager<ApplicationUser> _userManager, IEmailService _emailService)
+        public async Task<EmailNotification> AddNotification(EmailNotificationDto not, UserManager<ApplicationUser> _userManager, IMediator _mediator)
         {
             EmailNotification notification = NotificationFromDto(not);
 
@@ -63,7 +64,7 @@ namespace doneillspa.Models
 
             if (result.Result.Succeeded)
             {
-                notification.Created(_emailService);
+                notification.Created(_mediator);
                 return notification;
             }
             else

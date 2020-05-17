@@ -15,6 +15,7 @@ using doneillspa.Services;
 using Microsoft.AspNetCore.SignalR;
 using hub;
 using AutoMapper;
+using MediatR;
 
 namespace doneillspa.Controllers
 {
@@ -27,12 +28,13 @@ namespace doneillspa.Controllers
         private readonly ITimesheetService _timesheetService;
         private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
         private ApplicationContext _context;
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,
             ITimesheetService tss, IEmailService emailService,
-            ApplicationContext context, IMapper mapper)
+            ApplicationContext context, IMapper mapper, IMediator mediator)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -40,6 +42,7 @@ namespace doneillspa.Controllers
             _emailService = emailService;
             _context = context;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -313,7 +316,7 @@ namespace doneillspa.Controllers
         public IActionResult Put(string id, [FromBody]EmailNotificationDto t)
         {
             ApplicationUser user = GetUserIncludingCerts(id);
-            EmailNotification notification = user.AddNotification(t, _userManager, _emailService).Result;
+            EmailNotification notification = user.AddNotification(t, _userManager, _mediator).Result;
 
             if (notification != null)
             {

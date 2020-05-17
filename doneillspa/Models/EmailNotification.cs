@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using doneillspa.Mediator.Notifications;
 using doneillspa.Services.Email;
+using MediatR;
 
 namespace doneillspa.Models
 {
@@ -12,14 +14,9 @@ namespace doneillspa.Models
         public string Body { get; set; }
         public string Subject { get; set; }
 
-        public void Created(IEmailService _emailService)
+        public void Created(IMediator _mediator)
         {
-            Send(_emailService);
-        }
-
-        private void Send(IEmailService _emailService)
-        {
-            _emailService.SendMail("doneill@hotmail.com", DestinationEmail, Subject, Body, Body, string.Empty, string.Empty);
+            _mediator.Publish(new EmailNotificationCreated { DestinationEmail = this.DestinationEmail, Body = this.Body, Subject = this.Subject });
         }
     }
 }

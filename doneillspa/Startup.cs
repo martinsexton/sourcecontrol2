@@ -22,6 +22,9 @@ using doneillspa.Services.Document;
 using doneillspa.Services;
 using hub;
 using AutoMapper;
+using MediatR;
+using System.Reflection;
+using doneillspa.Mediator.Handlers;
 
 namespace doneillspa
 {
@@ -39,11 +42,16 @@ namespace doneillspa
         {
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
             //services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["Data:Baby:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             
             services.AddScoped<ITimesheetRepository>(_ => new TimesheetRepository(_.GetService<ApplicationContext>()));
             services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));
+
+            //Register Mediator Handlers
+            services.AddScoped<HandleEmailNotificationCreated>(_ => new HandleEmailNotificationCreated(_.GetService<IEmailService>()));
 
             //Email Services
             services.AddScoped<IEmailService>(_ => new SendGridEmailService(Configuration));

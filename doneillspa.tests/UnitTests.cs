@@ -20,28 +20,28 @@ namespace doneillspa.tests
     [TestClass]
     public class UnitTests
     {
-        [TestMethod]
-        public void EnsureEmailIsSentWhenNotificationCreated()
-        {
-            string notificationBody = "gerard.sexton@gmail.com";
-            string notificationDestinationEmail = "new notification body";
-            string notificationSubject = "new notification subject";
+        //[TestMethod]
+        //public void EnsureEmailIsSentWhenNotificationCreated()
+        //{
+        //    string notificationBody = "gerard.sexton@gmail.com";
+        //    string notificationDestinationEmail = "new notification body";
+        //    string notificationSubject = "new notification subject";
 
-            var mockEmailService = new Mock<IEmailService>();
-            mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        //    var mockEmailService = new Mock<IEmailService>();
+        //    mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+        //        It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
-            EmailNotification notification = new EmailNotification();
-            notification.DestinationEmail = notificationDestinationEmail;
-            notification.Body = notificationBody;
-            notification.Subject = notificationSubject;
+        //    EmailNotification notification = new EmailNotification();
+        //    notification.DestinationEmail = notificationDestinationEmail;
+        //    notification.Body = notificationBody;
+        //    notification.Subject = notificationSubject;
 
-            notification.Created(mockEmailService.Object);
+        //    notification.Created(mockEmailService.Object);
 
-            mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), notificationDestinationEmail, notificationSubject,
-                                notificationBody, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+        //    mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), notificationDestinationEmail, notificationSubject,
+        //                        notificationBody, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
 
-        }
+        //}
         [TestMethod]
         public void EnsureMailIsSentToApproverWhenHolidayRequestCreated()
         {
