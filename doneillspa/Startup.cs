@@ -48,10 +48,7 @@ namespace doneillspa
             services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             
             services.AddScoped<ITimesheetRepository>(_ => new TimesheetRepository(_.GetService<ApplicationContext>()));
-            services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));
-
-            //Register Mediator Handlers
-            services.AddScoped<HandleEmailNotificationCreated>(_ => new HandleEmailNotificationCreated(_.GetService<IEmailService>()));
+            services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));            
 
             //Email Services
             services.AddScoped<IEmailService>(_ => new SendGridEmailService(Configuration));
@@ -66,6 +63,12 @@ namespace doneillspa
             services.AddScoped<ITimesheetService>(_ => new TimesheetService(_.GetService<ITimesheetRepository>(), 
                 _.GetService<ITimesheetEntryRepository>(), _.GetService<UserManager<ApplicationUser>>()));
 
+            //Register Mediator Handlers
+            services.AddScoped<HandleEmailNotificationCreated>(_ => new HandleEmailNotificationCreated(_.GetService<IEmailService>()));
+            services.AddScoped<HandleHolidayRequestCreated>(_ => new HandleHolidayRequestCreated(_.GetService<IEmailService>()));
+            services.AddScoped<HandleHolidayRequestApproved>(_ => new HandleHolidayRequestApproved(_.GetService<IEmailService>(), _.GetService<ICalendarService>(), _.GetService<ITimesheetService>()));
+            services.AddScoped<HandleHolidayRequestRejected>(_ => new HandleHolidayRequestRejected(_.GetService<IEmailService>()));
+            
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();

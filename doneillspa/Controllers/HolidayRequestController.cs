@@ -13,6 +13,7 @@ using doneillspa.Services.Email;
 using doneillspa.Dtos;
 using doneillspa.Services.Calendar;
 using doneillspa.Services;
+using MediatR;
 
 namespace doneillspa.Controllers
 {
@@ -20,17 +21,13 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class HolidayRequestController : Controller
     {
-        private readonly IEmailService _emailService;
-        private readonly ICalendarService _calendarService;
-        private readonly ITimesheetService _timesheetService;
         private ApplicationContext _context;
+        private readonly IMediator _mediator;
 
-        public HolidayRequestController(IEmailService emailService, ICalendarService calendarService, ITimesheetService tss, ApplicationContext context)
+        public HolidayRequestController(ApplicationContext context, IMediator mediator)
         {
-            _emailService = emailService;
-            _calendarService = calendarService;
-            _timesheetService = tss;
             _context = context;
+            _mediator = mediator;
         }
         [HttpPut]
         [Route("api/holidayrequest")]
@@ -42,7 +39,7 @@ namespace doneillspa.Controllers
                         .Where(b => b.Id == hr.Id)
                         .FirstOrDefault();
 
-            request.Updated(hr, _calendarService, _emailService, _timesheetService);
+            request.Updated(hr,_mediator);
 
             _context.SaveChanges();
             return new NoContentResult();

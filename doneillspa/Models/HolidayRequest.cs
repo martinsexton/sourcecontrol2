@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.Dtos;
-using doneillspa.Models.State;
+using doneillspa.Mediator.Notifications;
 using doneillspa.Services;
 using doneillspa.Services.Calendar;
 using doneillspa.Services.Email;
+using MediatR;
 
 namespace doneillspa.Models
 {
@@ -29,36 +30,22 @@ namespace doneillspa.Models
             Status = HolidayRequestStatus.New;
         }
 
-        public void Created(IEmailService emailService)
+        public void Created(IMediator mediator)
         {
-            emailService.SendMail("doneill@hotmail.com", Approver.Email, "Holiday Request", string.Format("{0} has requested holiday from {1} for {2} days.", User.FirstName, FromDate, Days), "", string.Empty, string.Empty);
+            mediator.Publish(new HolidayRequestCreated { ApproverEmail = this.Approver.Email, UserName = this.User.FirstName, FromDate = this.FromDate, Days = this.Days });
         }
 
-        public void Updated(HolidayRequestDto dto, ICalendarService _calendarService, IEmailService _emailService, ITimesheetService tss)
+        public void Updated(HolidayRequestDto dto, IMediator mediator)
         {
             if (dto.IsApproved())
             {
-                GetState(_calendarService, _emailService, tss).Approve();
+                mediator.Publish(new HolidayRequestApproved { UserName = this.User.FirstName + this.User.Surname, UserEmail = this.User.Email, FromDate = this.FromDate, Days = this.Days });
+                Status = HolidayRequestStatus.Approved;
             }
             else if (dto.IsRejected())
             {
-                GetState(_calendarService, _emailService, tss).Reject();
-            }
-        }
-
-        public void TransitionTo(HolidayRequestStatus state)
-        {
-            Status = state;
-        }
-
-        private IHolidayRequestState GetState(ICalendarService calendarService, IEmailService emailService, ITimesheetService timesheetService)
-        {
-            switch (Status)
-            {
-                case HolidayRequestStatus.New:
-                    return new HolidayRequestNewState(this, calendarService, emailService, timesheetService);
-                default:
-                    return new HolidayRequestApproveState(this, calendarService, emailService, timesheetService);
+                mediator.Publish(new HolidayRequestRejected { UserName = this.User.FirstName + this.User.Surname, UserEmail = this.User.Email, FromDate = this.FromDate, Days = this.Days });
+                Status = HolidayRequestStatus.Rejected;
             }
         }
     }

@@ -42,127 +42,127 @@ namespace doneillspa.tests
         //                        notificationBody, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
 
         //}
-        [TestMethod]
-        public void EnsureMailIsSentToApproverWhenHolidayRequestCreated()
-        {
-            var mockEmailService = new Mock<IEmailService>();
-            mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), 
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        //[TestMethod]
+        //public void EnsureMailIsSentToApproverWhenHolidayRequestCreated()
+        //{
+        //    var mockEmailService = new Mock<IEmailService>();
+        //    mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), 
+        //        It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
-            HolidayRequest request = new HolidayRequest();
-            request.User = new ApplicationUser();
-            request.User.FirstName = "Martin";
-            request.User.Surname = "Sexton";
+        //    HolidayRequest request = new HolidayRequest();
+        //    request.User = new ApplicationUser();
+        //    request.User.FirstName = "Martin";
+        //    request.User.Surname = "Sexton";
 
-            request.Approver = new ApplicationUser();
-            request.Approver.FirstName = "Gerard";
-            request.Approver.Surname = "Sexton";
-            request.Approver.Email = "gerard.sexton@gmail.com";
-            request.FromDate = DateTime.Now;
-            request.Days = 2;
+        //    request.Approver = new ApplicationUser();
+        //    request.Approver.FirstName = "Gerard";
+        //    request.Approver.Surname = "Sexton";
+        //    request.Approver.Email = "gerard.sexton@gmail.com";
+        //    request.FromDate = DateTime.Now;
+        //    request.Days = 2;
 
-            request.Created(mockEmailService.Object);
+        //    request.Created(mockEmailService.Object);
 
-            mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), "gerard.sexton@gmail.com", It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
-        }
+        //    mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), "gerard.sexton@gmail.com", It.IsAny<string>(),
+        //        It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+        //}
 
-        [TestMethod]
-        public void EnsureGmailCalendarUpdatedAndMailCreatedWhenHolidayApproved()
-        {
-            var mockCalendarService = new Mock<ICalendarService>();
-            mockCalendarService.Setup(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()));
+        //[TestMethod]
+        //public void EnsureGmailCalendarUpdatedAndMailCreatedWhenHolidayApproved()
+        //{
+        //    var mockCalendarService = new Mock<ICalendarService>();
+        //    mockCalendarService.Setup(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()));
 
-            var mockEmailService = new Mock<IEmailService>();
-            mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        //    var mockEmailService = new Mock<IEmailService>();
+        //    mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+        //        It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
-            var mockTimesheetService = new Mock<ITimesheetService>();
-            mockTimesheetService.Setup(mock => mock.RecordAnnualLeave(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()));
+        //    var mockTimesheetService = new Mock<ITimesheetService>();
+        //    mockTimesheetService.Setup(mock => mock.RecordAnnualLeave(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()));
 
 
-            HolidayRequest request = new HolidayRequest();
-            request.User = new ApplicationUser();
-            request.User.FirstName = "Martin";
-            request.User.Surname = "Sexton";
-            request.User.Email = "user.mail@gmail.com";
-            request.FromDate = DateTime.Now;
-            request.Days = 2;
+        //    HolidayRequest request = new HolidayRequest();
+        //    request.User = new ApplicationUser();
+        //    request.User.FirstName = "Martin";
+        //    request.User.Surname = "Sexton";
+        //    request.User.Email = "user.mail@gmail.com";
+        //    request.FromDate = DateTime.Now;
+        //    request.Days = 2;
 
-            HolidayRequestDto dto = new HolidayRequestDto();
-            dto.Status = "Approved";
+        //    HolidayRequestDto dto = new HolidayRequestDto();
+        //    dto.Status = "Approved";
 
-            request.Updated(dto, mockCalendarService.Object, mockEmailService.Object, mockTimesheetService.Object);
+        //    request.Updated(dto, mockCalendarService.Object, mockEmailService.Object, mockTimesheetService.Object);
 
-            //Verify that a call is made to create the event in calendar
-            mockCalendarService.Verify(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()), Times.Once());
+        //    //Verify that a call is made to create the event in calendar
+        //    mockCalendarService.Verify(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()), Times.Once());
 
-            //Verify that an approval mail has been sent also to the user.
-            mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), "user.mail@gmail.com", "Holiday Request Approved",
-                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+        //    //Verify that an approval mail has been sent also to the user.
+        //    mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), "user.mail@gmail.com", "Holiday Request Approved",
+        //            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
 
-            //Verify that the approved holiday request records the annual leave as a non chargeable timesheet.
-            mockTimesheetService.Verify(mock => mock.RecordAnnualLeave(It.IsAny<string>(), request.FromDate, request.Days));
+        //    //Verify that the approved holiday request records the annual leave as a non chargeable timesheet.
+        //    mockTimesheetService.Verify(mock => mock.RecordAnnualLeave(It.IsAny<string>(), request.FromDate, request.Days));
 
-        }
+        //}
 
-        [TestMethod]
-        public void EnsureRejectionMailSentToCustomerWhenHolidayRejected()
-        {
-            var mockEmailService = new Mock<IEmailService>();
-            mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        //[TestMethod]
+        //public void EnsureRejectionMailSentToCustomerWhenHolidayRejected()
+        //{
+        //    var mockEmailService = new Mock<IEmailService>();
+        //    mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+        //        It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
-            var mockTimesheetService = new Mock<ITimesheetService>();
-            mockTimesheetService.Setup(mock => mock.RecordAnnualLeave(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()));
+        //    var mockTimesheetService = new Mock<ITimesheetService>();
+        //    mockTimesheetService.Setup(mock => mock.RecordAnnualLeave(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()));
 
-            HolidayRequest request = new HolidayRequest();
-            request.User = new ApplicationUser();
-            request.User.FirstName = "Martin";
-            request.User.Surname = "Sexton";
-            request.User.Email = "user.mail@gmail.com";
-            request.FromDate = DateTime.Now;
-            request.Days = 2;
+        //    HolidayRequest request = new HolidayRequest();
+        //    request.User = new ApplicationUser();
+        //    request.User.FirstName = "Martin";
+        //    request.User.Surname = "Sexton";
+        //    request.User.Email = "user.mail@gmail.com";
+        //    request.FromDate = DateTime.Now;
+        //    request.Days = 2;
 
-            HolidayRequestDto dto = new HolidayRequestDto();
-            dto.Status = "Rejected";
+        //    HolidayRequestDto dto = new HolidayRequestDto();
+        //    dto.Status = "Rejected";
 
-            request.Updated(dto, null, mockEmailService.Object, mockTimesheetService.Object);
+        //    request.Updated(dto, null, mockEmailService.Object, mockTimesheetService.Object);
 
-            //Verify that an approval mail has been sent also to the user.
-            mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), "user.mail@gmail.com", "Holiday Request Rejected",
-                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
-        }
+        //    //Verify that an approval mail has been sent also to the user.
+        //    mockEmailService.Verify(mock => mock.SendMail(It.IsAny<string>(), "user.mail@gmail.com", "Holiday Request Rejected",
+        //            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+        //}
 
-        [TestMethod]
-        public void EnsureGmailCalendarEventNotCreatedWhenAlreadyApproved()
-        {
-            var mockCalendarService = new Mock<ICalendarService>();
-            mockCalendarService.Setup(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()));
+        //[TestMethod]
+        //public void EnsureGmailCalendarEventNotCreatedWhenAlreadyApproved()
+        //{
+        //    var mockCalendarService = new Mock<ICalendarService>();
+        //    mockCalendarService.Setup(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()));
 
-            var mockEmailService = new Mock<IEmailService>();
-            mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        //    var mockEmailService = new Mock<IEmailService>();
+        //    mockEmailService.Setup(mock => mock.SendMail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+        //        It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
-            var mockTimesheetService = new Mock<ITimesheetService>();
-            mockTimesheetService.Setup(mock => mock.RecordAnnualLeave(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()));
+        //    var mockTimesheetService = new Mock<ITimesheetService>();
+        //    mockTimesheetService.Setup(mock => mock.RecordAnnualLeave(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()));
 
-            HolidayRequest request = new HolidayRequest();
-            request.Status = HolidayRequestStatus.Approved;
-            request.User = new ApplicationUser();
-            request.User.FirstName = "Martin";
-            request.User.Surname = "Sexton";
-            request.FromDate = DateTime.Now;
-            request.Days = 2;
+        //    HolidayRequest request = new HolidayRequest();
+        //    request.Status = HolidayRequestStatus.Approved;
+        //    request.User = new ApplicationUser();
+        //    request.User.FirstName = "Martin";
+        //    request.User.Surname = "Sexton";
+        //    request.FromDate = DateTime.Now;
+        //    request.Days = 2;
 
-            HolidayRequestDto dto = new HolidayRequestDto();
-            dto.Status = "Approved";
+        //    HolidayRequestDto dto = new HolidayRequestDto();
+        //    dto.Status = "Approved";
 
-            request.Updated(dto, mockCalendarService.Object, mockEmailService.Object, mockTimesheetService.Object);
+        //    request.Updated(dto, mockCalendarService.Object, mockEmailService.Object, mockTimesheetService.Object);
 
-            //Verify that a call is not made to create an event in calendar if already approved
-            mockCalendarService.Verify(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()), Times.Never());
-        }
+        //    //Verify that a call is not made to create an event in calendar if already approved
+        //    mockCalendarService.Verify(mock => mock.CreateEvent(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()), Times.Never());
+        //}
 
         [TestMethod]
         public void TestCertificateHasNotExpired()
