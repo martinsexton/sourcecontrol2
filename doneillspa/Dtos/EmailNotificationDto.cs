@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace doneillspa.Models
+namespace doneillspa.Dtos
 {
     public class EmailNotificationDto
     {
