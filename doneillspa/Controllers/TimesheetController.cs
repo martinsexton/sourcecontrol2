@@ -153,7 +153,7 @@ namespace doneillspa.Controllers
             if(note != null)
             {
                 var existingTimesheet = _service.GetTimsheetById(id);
-                existingTimesheet.AddTimesheetNote(_userManager, _emailService, note);
+                existingTimesheet.AddTimesheetNote(_userManager, _mediator, note);
 
                 _service.UpdateTimesheet(existingTimesheet);
 

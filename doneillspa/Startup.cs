@@ -71,6 +71,7 @@ namespace doneillspa
             services.AddScoped<HandleHolidayRequestRejected>(_ => new HandleHolidayRequestRejected(_.GetService<IEmailService>()));
             services.AddScoped<HandleTimesheetApproved>(_ => new HandleTimesheetApproved(_.GetService<IEmailService>()));
             services.AddScoped<HandleTimesheetRejected>(_ => new HandleTimesheetRejected(_.GetService<IEmailService>()));
+            services.AddScoped<HandleTimesheetNoteCreated>(_ => new HandleTimesheetNoteCreated(_.GetService<IEmailService>()));
             services.AddScoped<HandleTimesheetSubmitted>(_ => new HandleTimesheetSubmitted(_.GetService<IHubContext<Chat>>()));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();

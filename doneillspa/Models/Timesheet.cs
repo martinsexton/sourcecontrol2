@@ -67,13 +67,15 @@ namespace doneillspa.Models
             }
         }
 
-        public void AddTimesheetNote(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetNote note)
+        public void AddTimesheetNote(UserManager<ApplicationUser> userManager, IMediator mediator, TimesheetNote note)
         {
+            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
+
             //Set date created on timesheet entry
             note.DateCreated = DateTime.UtcNow;
             TimesheetNotes.Add(note);
 
-            SendMail(userManager, emailService, "New Timesheet Note Created", note.Details);
+            mediator.Publish(new TimesheetNoteCreated { UserEmail = user.Email, NoteDetails = note.Details });
         }
 
         public void AddTimesheetEntry(TimesheetEntry entry)
@@ -219,16 +221,6 @@ namespace doneillspa.Models
                 }
             }
             return hoursPerDay;
-        }
-
-        private void SendMail(UserManager<ApplicationUser> userManager, IEmailService _emailService, string subject, string message)
-        {
-            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
-            //Contractors will not have an email, so check against sending email for these users.
-            if (!String.IsNullOrEmpty(user.Email))
-            {
-                _emailService.SendMail("doneill@hotmail.com", user.Email, subject, message, "", string.Empty, string.Empty);
-            }
         }
     }
 
