@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using doneillspa.Mediator.Notifications;
 using doneillspa.Services.Email;
 using hub;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 
@@ -38,30 +41,29 @@ namespace doneillspa.Models
             }
         }
 
-        public void Updated(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetDto ts, IHubContext<Chat> hub)
+        public void Updated(UserManager<ApplicationUser> userManager, TimesheetDto ts, IMediator mediator)
         {
-            UpdateStatus(userManager, emailService, ts, hub);
+            UpdateStatus(userManager, ts, mediator);
         }
 
-        private void UpdateStatus(UserManager<ApplicationUser> userManager, IEmailService emailService, TimesheetDto ts, IHubContext<Chat> hub)
+        private void UpdateStatus(UserManager<ApplicationUser> userManager, TimesheetDto ts, IMediator mediator)
         {
+            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
+
             if (ts.Status.Equals(TimesheetStatus.Approved.ToString()))
             {
                 Status = TimesheetStatus.Approved;
-                SendMail(userManager, emailService, "Timesheet Approved", 
-                    String.Format("Your timesheet for week beginning {0} has been approved", this.WeekStarting.ToShortDateString()));
+                mediator.Publish(new TimesheetApproved { UserEmail = user.Email, WeekStarting = this.WeekStarting });
             }
             else if (ts.Status.Equals(TimesheetStatus.Rejected.ToString()))
             {
                 Status = TimesheetStatus.Rejected;
-                SendMail(userManager, emailService, "Timesheet Rejected",
-                    String.Format("Your timesheet for week beginning {0} has been Rejected", this.WeekStarting.ToShortDateString()));
+                mediator.Publish(new TimesheetRejected { UserEmail = user.Email, WeekStarting = this.WeekStarting });
             }
             else if (ts.Status.Equals(TimesheetStatus.Submitted.ToString()))
             {
                 Status = TimesheetStatus.Submitted;
-                //Send message to any client to inform that a timesheet has been approved.
-                hub.Clients.All.SendAsync("timesheetsubmitted", "Timesheet Submitted For " + this.Username);
+                mediator.Publish(new TimesheetSubmitted { Username = this.Username });
             }
         }
 

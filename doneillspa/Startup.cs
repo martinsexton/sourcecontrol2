@@ -25,6 +25,7 @@ using AutoMapper;
 using MediatR;
 using System.Reflection;
 using doneillspa.Mediator.Handlers;
+using Microsoft.AspNetCore.SignalR;
 
 namespace doneillspa
 {
@@ -68,7 +69,9 @@ namespace doneillspa
             services.AddScoped<HandleHolidayRequestCreated>(_ => new HandleHolidayRequestCreated(_.GetService<IEmailService>()));
             services.AddScoped<HandleHolidayRequestApproved>(_ => new HandleHolidayRequestApproved(_.GetService<IEmailService>(), _.GetService<ICalendarService>(), _.GetService<ITimesheetService>()));
             services.AddScoped<HandleHolidayRequestRejected>(_ => new HandleHolidayRequestRejected(_.GetService<IEmailService>()));
-            
+            services.AddScoped<HandleTimesheetApproved>(_ => new HandleTimesheetApproved(_.GetService<IEmailService>()));
+            services.AddScoped<HandleTimesheetRejected>(_ => new HandleTimesheetRejected(_.GetService<IEmailService>()));
+            services.AddScoped<HandleTimesheetSubmitted>(_ => new HandleTimesheetSubmitted(_.GetService<IHubContext<Chat>>()));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
