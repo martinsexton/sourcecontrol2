@@ -39,7 +39,14 @@ namespace doneillspa.Controllers
                         .Where(b => b.Id == hr.Id)
                         .FirstOrDefault();
 
-            request.Updated(hr,_mediator);
+            if (hr.IsApproved())
+            {
+                request.Approve(_mediator);
+            }
+            else if (hr.IsRejected())
+            {
+                request.Reject(_mediator);
+            }
 
             _context.SaveChanges();
             return new NoContentResult();

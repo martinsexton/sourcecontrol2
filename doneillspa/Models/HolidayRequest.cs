@@ -13,8 +13,8 @@ namespace doneillspa.Models
 {
     public class HolidayRequest
     {
+        #region Properties
         public long Id { get; set; }
-
         public Guid UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
         public virtual ApplicationUser Approver { get; set; }
@@ -24,30 +24,32 @@ namespace doneillspa.Models
         public int Days { get; set; }
 
         public HolidayRequestStatus Status { get; set; }
+        #endregion
+
 
         public HolidayRequest()
         {
             Status = HolidayRequestStatus.New;
         }
 
+        #region Actions
         public void Created(IMediator mediator)
         {
             mediator.Publish(new HolidayRequestCreated { ApproverEmail = this.Approver.Email, UserName = this.User.FirstName, FromDate = this.FromDate, Days = this.Days });
         }
 
-        public void Updated(HolidayRequestDto dto, IMediator mediator)
+        public void Approve(IMediator mediator)
         {
-            if (dto.IsApproved())
-            {
-                mediator.Publish(new HolidayRequestApproved { UserName = this.User.FirstName + this.User.Surname, UserEmail = this.User.Email, FromDate = this.FromDate, Days = this.Days });
-                Status = HolidayRequestStatus.Approved;
-            }
-            else if (dto.IsRejected())
-            {
-                mediator.Publish(new HolidayRequestRejected { UserName = this.User.FirstName + this.User.Surname, UserEmail = this.User.Email, FromDate = this.FromDate, Days = this.Days });
-                Status = HolidayRequestStatus.Rejected;
-            }
+            mediator.Publish(new HolidayRequestApproved { UserName = this.User.FirstName + this.User.Surname, UserEmail = this.User.Email, FromDate = this.FromDate, Days = this.Days });
+            Status = HolidayRequestStatus.Approved;
         }
+
+        public void Reject(IMediator mediator)
+        {
+            mediator.Publish(new HolidayRequestRejected { UserName = this.User.FirstName + this.User.Surname, UserEmail = this.User.Email, FromDate = this.FromDate, Days = this.Days });
+            Status = HolidayRequestStatus.Rejected;
+        }
+        #endregion
     }
 
 }

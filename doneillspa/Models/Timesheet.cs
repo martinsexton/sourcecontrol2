@@ -14,6 +14,8 @@ namespace doneillspa.Models
 {
     public class Timesheet
     {
+        #region Properties
+
         public long Id { get; set; }
         public string Username { get; set; }
         public string Role { get; set; }
@@ -22,9 +24,16 @@ namespace doneillspa.Models
         public Guid Owner { get; set; }
         public TimesheetStatus Status { get; set; }
 
+        #endregion
+
+        #region Collections
+
         public ICollection<TimesheetEntry> TimesheetEntries { get; set; }
         public ICollection<TimesheetNote> TimesheetNotes { get; set; }
 
+        #endregion
+
+        #region Actions
         public void OnCreation()
         {
             //Setup new timesheets with a default value of New. 
@@ -82,6 +91,10 @@ namespace doneillspa.Models
             TimesheetEntries.Add(entry);
         }
 
+        #endregion
+
+        #region Helper Methods
+
         public bool IsEntryChargeable(TimesheetEntry entry)
         {
             //Always true right now, but we can add logic here later to control if its chargeable or not.
@@ -99,7 +112,7 @@ namespace doneillspa.Models
             return detail;
         }
 
-        private void PopulateLabourDetail(List<LabourRate> Rates, LabourWeekDetail detail, Dictionary<string,double> hoursPerDay)
+        private void PopulateLabourDetail(List<LabourRate> Rates, LabourWeekDetail detail, Dictionary<string, double> hoursPerDay)
         {
             double rate = GetRate(Role, this.WeekStarting.Date, Rates);
 
@@ -169,7 +182,7 @@ namespace doneillspa.Models
             return 0.0;
         }
 
-        public Dictionary<string,double> RetrieveBreakdownOfHoursPerDay(string proj)
+        public Dictionary<string, double> RetrieveBreakdownOfHoursPerDay(string proj)
         {
             Dictionary<string, double> hoursPerDay = new Dictionary<string, double>();
             foreach (TimesheetEntry tse in this.TimesheetEntries)
@@ -201,7 +214,7 @@ namespace doneillspa.Models
             return hoursPerDay;
         }
 
-        private void RemoveLunchBreak(Dictionary<string,double> hoursPerDay)
+        private void RemoveLunchBreak(Dictionary<string, double> hoursPerDay)
         {
             //Update each of the entries to remove 30 mins for days where engineer worked >= 5 hours
             foreach (string key in hoursPerDay.Keys.ToList())
@@ -215,5 +228,7 @@ namespace doneillspa.Models
                 }
             }
         }
+
+        #endregion
     }
 }
