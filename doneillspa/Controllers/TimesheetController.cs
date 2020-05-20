@@ -126,7 +126,18 @@ namespace doneillspa.Controllers
         public IActionResult Put(int id, [FromBody]TimesheetDto ts)
         {
             Timesheet timesheet = _service.GetTimsheetById(ts.Id);
-            timesheet.Updated(_userManager, ts, _mediator);
+            if (ts.Status.Equals(TimesheetStatus.Approved.ToString()))
+            {
+                timesheet.Approved(_userManager, _mediator);
+            }
+            else if (ts.Status.Equals(TimesheetStatus.Rejected.ToString()))
+            {
+                timesheet.Rejected(_userManager, _mediator);
+            }
+            else if (ts.Status.Equals(TimesheetStatus.Submitted.ToString()))
+            {
+                timesheet.Submitted(_userManager, _mediator);
+            }
 
             _service.UpdateTimesheet(timesheet);
 

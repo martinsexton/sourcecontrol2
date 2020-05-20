@@ -41,25 +41,24 @@ namespace doneillspa.Models
             }
         }
 
-        public void Updated(UserManager<ApplicationUser> userManager, TimesheetDto ts, IMediator mediator)
+        public void Submitted(UserManager<ApplicationUser> userManager, IMediator mediator)
         {
-            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
+            Status = TimesheetStatus.Submitted;
+            mediator.Publish(new TimesheetSubmitted { Username = this.Username });
+        }
 
-            if (ts.Status.Equals(TimesheetStatus.Approved.ToString()))
-            {
-                Status = TimesheetStatus.Approved;
-                mediator.Publish(new TimesheetApproved { UserEmail = user.Email, WeekStarting = this.WeekStarting });
-            }
-            else if (ts.Status.Equals(TimesheetStatus.Rejected.ToString()))
-            {
-                Status = TimesheetStatus.Rejected;
-                mediator.Publish(new TimesheetRejected { UserEmail = user.Email, WeekStarting = this.WeekStarting });
-            }
-            else if (ts.Status.Equals(TimesheetStatus.Submitted.ToString()))
-            {
-                Status = TimesheetStatus.Submitted;
-                mediator.Publish(new TimesheetSubmitted { Username = this.Username });
-            }
+        public void Approved(UserManager<ApplicationUser> userManager, IMediator mediator)
+        {
+            Status = TimesheetStatus.Approved;
+            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
+            mediator.Publish(new TimesheetApproved { UserEmail = user.Email, WeekStarting = this.WeekStarting });
+        }
+
+        public void Rejected(UserManager<ApplicationUser> userManager, IMediator mediator)
+        {
+            Status = TimesheetStatus.Rejected;
+            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
+            mediator.Publish(new TimesheetRejected { UserEmail = user.Email, WeekStarting = this.WeekStarting });
         }
 
         public void AddTimesheetNote(UserManager<ApplicationUser> userManager, IMediator mediator, TimesheetNote note)
