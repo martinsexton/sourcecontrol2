@@ -7,6 +7,12 @@ namespace doneillspa.Models
 {
     public class LabourWeekDetail
     {
+        public LabourWeekDetail(string project, DateTime weekStarting)
+        {
+            this.Project = project;
+            this.Week = weekStarting;
+        }
+
         public DateTime Week { get; set; }
 
         public string Project { get; set; }

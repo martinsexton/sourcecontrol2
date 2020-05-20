@@ -43,11 +43,6 @@ namespace doneillspa.Models
 
         public void Updated(UserManager<ApplicationUser> userManager, TimesheetDto ts, IMediator mediator)
         {
-            UpdateStatus(userManager, ts, mediator);
-        }
-
-        private void UpdateStatus(UserManager<ApplicationUser> userManager, TimesheetDto ts, IMediator mediator)
-        {
             ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
 
             if (ts.Status.Equals(TimesheetStatus.Approved.ToString()))
@@ -97,14 +92,7 @@ namespace doneillspa.Models
         public LabourWeekDetail BuildLabourWeekDetails(List<LabourRate> Rates, string proj)
         {
             //Retrieve details from timesheet and populate the LabourWeekDetail object
-            LabourWeekDetail detail = new LabourWeekDetail();
-
-            detail.Project = proj;
-
-            detail.Week = this.WeekStarting;
-
-            double rate = GetRate(Role, DateTime.UtcNow, Rates);
-
+            LabourWeekDetail detail = new LabourWeekDetail(proj, this.WeekStarting);
             Dictionary<string, double> hoursPerDay = RetrieveBreakdownOfHoursPerDay(proj);
 
             PopulateLabourDetail(Rates, detail, hoursPerDay);
@@ -112,9 +100,9 @@ namespace doneillspa.Models
             return detail;
         }
 
-        public void PopulateLabourDetail(List<LabourRate> Rates, LabourWeekDetail detail, Dictionary<string,double> hoursPerDay)
+        private void PopulateLabourDetail(List<LabourRate> Rates, LabourWeekDetail detail, Dictionary<string,double> hoursPerDay)
         {
-            double rate = GetRate(Role, DateTime.UtcNow, Rates);
+            double rate = GetRate(Role, this.WeekStarting.Date, Rates);
 
             foreach (var item in hoursPerDay)
             {
@@ -209,6 +197,13 @@ namespace doneillspa.Models
                     }
                 }
             }
+            RemoveLunchBreak(hoursPerDay);
+
+            return hoursPerDay;
+        }
+
+        private void RemoveLunchBreak(Dictionary<string,double> hoursPerDay)
+        {
             //Update each of the entries to remove 30 mins for days where engineer worked >= 5 hours
             foreach (string key in hoursPerDay.Keys.ToList())
             {
@@ -220,15 +215,6 @@ namespace doneillspa.Models
                     hoursPerDay[key] = minutesWorked;
                 }
             }
-            return hoursPerDay;
         }
-    }
-
-    public enum TimesheetStatus
-    {
-        New = 1,
-        Submitted = 2,
-        Approved = 3,
-        Rejected = 4
     }
 }
