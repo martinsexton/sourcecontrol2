@@ -23,13 +23,6 @@ namespace doneillspa.Services
             _userManager = userManager;
         }
 
-        public void DeleteTimesheetEntry(long tseId)
-        {
-            TimesheetEntry tse = _tseRepository.GetTimsheetEntryById(tseId);
-            _tseRepository.DeleteTimesheetEntry(tse);
-            _tseRepository.Save();
-        }
-
         public IEnumerable<Timesheet> GetTimesheets()
         {
             return _repository.GetTimesheets();

@@ -192,26 +192,26 @@ namespace doneillspa.tests
             Assert.IsTrue(cert.HasExpired());
         }
 
-        [TestMethod]
-        public void TestThatWeRemove30MinutesWhenHoursWorkedGreatherThan5()
-        {
-            Timesheet ts = new Timesheet();
-            ts.TimesheetEntries = new List<TimesheetEntry>();
+        //[TestMethod]
+        //public void TestThatWeRemove30MinutesWhenHoursWorkedGreatherThan5()
+        //{
+        //    Timesheet ts = new Timesheet();
+        //    ts.TimesheetEntries = new List<TimesheetEntry>();
 
-            TimesheetEntry tse = new TimesheetEntry();
-            tse.Day = "Mon";
-            tse.StartTime = "09:00";
-            tse.EndTime = "17:00";
-            tse.Code = "R01";
+        //    TimesheetEntry tse = new TimesheetEntry();
+        //    tse.Day = "Mon";
+        //    tse.StartTime = "09:00";
+        //    tse.EndTime = "17:00";
+        //    tse.Code = "R01";
 
-            ts.AddTimesheetEntry(tse);
-            Dictionary<string,double> hoursPerDay = ts.RetrieveBreakdownOfHoursPerDay("R01");
+        //    ts.AddTimesheetEntry(tse);
+        //    Dictionary<string,double> hoursPerDay = ts.RetrieveBreakdownOfHoursPerDay("R01");
 
-            double totalMins = hoursPerDay["Mon"];
+        //    double totalMins = hoursPerDay["Mon"];
 
-            Console.WriteLine("total mins: " + totalMins);
-            //450 mins is what the duration should be, as 30 mins will be deducted from 480 (8 * 60)
-            Assert.IsTrue(totalMins == 450); 
-        }
+        //    Console.WriteLine("total mins: " + totalMins);
+        //    //450 mins is what the duration should be, as 30 mins will be deducted from 480 (8 * 60)
+        //    Assert.IsTrue(totalMins == 450); 
+        //}
     }
 }

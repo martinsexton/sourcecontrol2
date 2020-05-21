@@ -469,17 +469,17 @@ namespace doneillspa.Controllers
             {
                 if (!labourDetailsByWeek.ContainsKey(ts.WeekStarting.Date))
                 {
-                    LabourWeekDetail detail = ts.BuildLabourWeekDetails(this.Rates, proj);
+                    LabourWeekDetail detail = TimesheetDomainService.BuildLabourWeekDetails(ts, this.Rates, proj);
                     if (detail.TotalCost > 0)
                     {
-                        labourDetailsByWeek.Add(ts.WeekStarting.Date, ts.BuildLabourWeekDetails(this.Rates, proj));
+                        labourDetailsByWeek.Add(ts.WeekStarting.Date, detail);
                     }
                 }
                 else
                 {
                     //Update the labout details that are present
                     LabourWeekDetail detail = labourDetailsByWeek[ts.WeekStarting.Date];
-                    detail.ammendDetails(ts.BuildLabourWeekDetails(this.Rates, proj));
+                    detail.ammendDetails(TimesheetDomainService.BuildLabourWeekDetails(ts, this.Rates, proj));
                 }
             }
 

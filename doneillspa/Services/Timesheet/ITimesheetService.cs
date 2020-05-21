@@ -19,6 +19,5 @@ namespace doneillspa.Services
 
         TimesheetEntry GetTimsheetEntryById(long id);
         void UpdateTimesheetEntry(TimesheetEntry tse);
-        void DeleteTimesheetEntry(long tseId);
     }
 }
