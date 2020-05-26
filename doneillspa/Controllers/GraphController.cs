@@ -16,12 +16,12 @@ namespace doneillspa.Controllers
     {
         private List<LabourRate> Rates = new List<LabourRate>();
 
-        private readonly ITimesheetService _timesheetService;
+        private readonly ITimesheetRepository _repository;
         private ApplicationContext _context;
 
-        public GraphController(ITimesheetService tss, ApplicationContext context)
+        public GraphController(ApplicationContext context, ITimesheetRepository repository)
         {
-            _timesheetService = tss;
+            _repository = repository;
             _context = context;
 
             Rates = _context.LabourRate.ToList();
@@ -47,7 +47,7 @@ namespace doneillspa.Controllers
             ProjectCostDto costs = new ProjectCostDto();
             costs.ProjectName = code;
 
-            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets();
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets();
             foreach(Timesheet ts in timesheets.AsQueryable())
             {
                 bool weekFound = false;

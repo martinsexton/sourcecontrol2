@@ -31,17 +31,18 @@ namespace doneillspa.Controllers
     public class LabourDetailsController : Controller
     {
         private readonly ITimesheetService _timesheetService;
+        private readonly ITimesheetRepository _timeSheetRepository;
         private List<LabourRate> Rates = new List<LabourRate>();
         private readonly IEmailService _emailService;
         private readonly IDocumentService _documentService;
 
         private ApplicationContext _context;
 
-        public LabourDetailsController(ApplicationContext context, ITimesheetService tss, IEmailService emailService, IDocumentService docService)
+        public LabourDetailsController(ApplicationContext context, ITimesheetService tss, IEmailService emailService, IDocumentService docService, ITimesheetRepository repository)
         {
             _context = context;
             _timesheetService = tss;
-            //_projectService = ps;
+            _timeSheetRepository = repository;
             _emailService = emailService;
             _documentService = docService;
 
@@ -109,7 +110,7 @@ namespace doneillspa.Controllers
         private List<string> RetrieveProjectsWithTimesheets()
         {
             List<string> projects = new List<string>();
-            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved"))
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved"))
                         .OrderByDescending(r => r.WeekStarting);
 
             foreach (Timesheet ts in timesheets)
@@ -415,7 +416,7 @@ namespace doneillspa.Controllers
             List<TimesheetEntryDto> entries = new List<TimesheetEntryDto>();
             DateTime weekStaring = new DateTime(year, month, day);
 
-            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved"))
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved"))
                 .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
@@ -463,7 +464,7 @@ namespace doneillspa.Controllers
         {
             Dictionary<DateTime, LabourWeekDetail> labourDetailsByWeek = new Dictionary<DateTime, LabourWeekDetail>();
 
-            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved"))
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved"))
                 .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {

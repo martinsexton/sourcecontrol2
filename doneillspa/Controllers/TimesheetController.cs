@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.CodeAnalysis;
 
 namespace doneillspa.Controllers
 {
@@ -22,21 +23,17 @@ namespace doneillspa.Controllers
     [Produces("application/json")]
     public class TimesheetController : Controller
     {
-        private readonly ITimesheetService _service;
-        private readonly IEmailService _emailService;
+        private readonly ITimesheetRepository _timeSheetRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private IHubContext<Chat> _hub;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public TimesheetController(UserManager<ApplicationUser> userManager, ITimesheetService tss, IEmailService emailService, IHubContext<Chat> hub, IMapper mapper, IMediator mediator)
+        public TimesheetController(UserManager<ApplicationUser> userManager, IMapper mapper, IMediator mediator, ITimesheetRepository repository)
         {
-            _service = tss;
-            _emailService = emailService;
             _userManager = userManager;
-            _hub = hub;
             _mapper = mapper;
             _mediator = mediator;
+            _timeSheetRepository = repository;
         }
 
         [HttpGet]
@@ -45,7 +42,7 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _service.GetTimesheets().OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().OrderByDescending(r => r.WeekStarting);
             foreach(Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
@@ -57,7 +54,7 @@ namespace doneillspa.Controllers
         [Route("api/timesheet/{id}")]
         public JsonResult Get(long id)
         {
-            Timesheet item = _service.GetTimsheetById(id);
+            Timesheet item = _timeSheetRepository.GetTimsheetById(id);
 
             if (item == null)
             {
@@ -78,12 +75,12 @@ namespace doneillspa.Controllers
             //If no date provide, then bring back all timesheets
             if (year == 0 || year == 1970)
             {
-                timesheets = _service.GetTimesheets();
+                timesheets = _timeSheetRepository.GetTimesheets();
             }
             else
             {
                 DateTime weekStarting = new DateTime(year, month, day);
-                timesheets = _service.GetTimesheetsByDate(weekStarting);
+                timesheets = _timeSheetRepository.GetTimesheetsByDate(weekStarting);
             }
 
             foreach (Timesheet ts in timesheets)
@@ -102,7 +99,7 @@ namespace doneillspa.Controllers
 
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _service.GetTimesheetsByUserAndDate(user, weekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheetsByUserAndDate(user, weekStarting);
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
@@ -116,7 +113,7 @@ namespace doneillspa.Controllers
         {
             timesheet.OnCreation();
 
-            long id = _service.InsertTimesheet(timesheet);
+            long id = _timeSheetRepository.InsertTimesheet(timesheet);
 
             return Ok(id);
         }
@@ -125,7 +122,7 @@ namespace doneillspa.Controllers
         [Route("api/timesheet")]
         public IActionResult Put(int id, [FromBody]TimesheetDto ts)
         {
-            Timesheet timesheet = _service.GetTimsheetById(ts.Id);
+            Timesheet timesheet = _timeSheetRepository.GetTimsheetById(ts.Id);
             if (ts.Status.Equals(TimesheetStatus.Approved.ToString()))
             {
                 timesheet.Approved(_mediator);
@@ -139,7 +136,7 @@ namespace doneillspa.Controllers
                 timesheet.Submitted(_mediator);
             }
 
-            _service.UpdateTimesheet(timesheet);
+            _timeSheetRepository.UpdateTimesheet(timesheet);
 
             return Ok();
         }
@@ -149,10 +146,10 @@ namespace doneillspa.Controllers
         [Route("api/timesheet/{id}/timesheetentry")]
         public IActionResult Put(int id, [FromBody]TimesheetEntry entry)
         {
-            var existingTimesheet = _service.GetTimsheetById(id);
+            var existingTimesheet = _timeSheetRepository.GetTimsheetById(id);
             existingTimesheet.AddTimesheetEntry(entry);
 
-            _service.UpdateTimesheet(existingTimesheet);
+            _timeSheetRepository.UpdateTimesheet(existingTimesheet);
 
             return Ok(entry.Id);
         }
@@ -163,10 +160,10 @@ namespace doneillspa.Controllers
         {
             if(note != null)
             {
-                var existingTimesheet = _service.GetTimsheetById(id);
+                var existingTimesheet = _timeSheetRepository.GetTimsheetById(id);
                 existingTimesheet.AddTimesheetNote(_userManager, _mediator, note);
 
-                _service.UpdateTimesheet(existingTimesheet);
+                _timeSheetRepository.UpdateTimesheet(existingTimesheet);
 
                 return Ok(note.Id);
             }

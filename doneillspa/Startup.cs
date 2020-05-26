@@ -61,8 +61,7 @@ namespace doneillspa
             //Calendar Services
             services.AddScoped<ICalendarService>(_ => new GoogleCalendarService(Configuration));
 
-            services.AddScoped<ITimesheetService>(_ => new TimesheetService(_.GetService<ITimesheetRepository>(), 
-                _.GetService<ITimesheetEntryRepository>(), _.GetService<UserManager<ApplicationUser>>()));
+            services.AddScoped<ITimesheetService>(_ => new TimesheetService(_.GetService<ITimesheetRepository>(), _.GetService<UserManager<ApplicationUser>>()));
 
             //Register Mediator Handlers
             services.AddScoped<HandleEmailNotificationCreated>(_ => new HandleEmailNotificationCreated(_.GetService<IEmailService>()));

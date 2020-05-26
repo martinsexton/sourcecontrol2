@@ -16,8 +16,8 @@ namespace doneillspa.Models
         #region Properties
         public long Id { get; set; }
         public Guid UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
-        public virtual ApplicationUser Approver { get; set; }
+        public ApplicationUser User { get; set; }
+        public ApplicationUser Approver { get; set; }
 
         public DateTime RequestedDate { get; set; }
         public DateTime FromDate { get; set; }

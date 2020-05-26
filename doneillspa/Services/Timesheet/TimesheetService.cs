@@ -13,54 +13,12 @@ namespace doneillspa.Services
     public class TimesheetService : ITimesheetService
     {
         private readonly ITimesheetRepository _repository;
-        private readonly ITimesheetEntryRepository _tseRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public TimesheetService(ITimesheetRepository tsr, ITimesheetEntryRepository tser, UserManager<ApplicationUser> userManager)
+        public TimesheetService(ITimesheetRepository tsr, UserManager<ApplicationUser> userManager)
         {
             _repository = tsr;
-            _tseRepository = tser;
             _userManager = userManager;
-        }
-
-        public IEnumerable<Timesheet> GetTimesheets()
-        {
-            return _repository.GetTimesheets();
-        }
-
-        public IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting)
-        {
-            return _repository.GetTimesheetsByDate(weekStarting);
-        }
-
-        public IEnumerable<Timesheet> GetTimesheetsByUser(string user)
-        {
-            return _repository.GetTimesheetsByUser(user);
-        }
-
-        public IEnumerable<Timesheet> GetTimesheetsByUserAndDate(string user, DateTime weekStarting)
-        {
-            return _repository.GetTimesheetsByUserAndDate(user, weekStarting);
-        }
-
-        public Timesheet GetTimsheetById(long id)
-        {
-            return _repository.GetTimsheetById(id);
-        }
-
-        public TimesheetEntry GetTimsheetEntryById(long id)
-        {
-            return _tseRepository.GetTimsheetEntryById(id);
-        }
-
-        public long InsertTimesheet(Timesheet b)
-        {
-            foreach(TimesheetEntry tse in b.TimesheetEntries)
-            {
-                //Update whether timesheet entry is chargeable or not
-                tse.Chargeable = b.IsEntryChargeable(tse);
-            }
-            return _repository.InsertTimesheet(b);
         }
 
         public void RecordAnnualLeave(string userName, DateTime start, int numberOfDays)
@@ -252,17 +210,6 @@ namespace doneillspa.Services
                 firstDayInWeek = firstDayInWeek.AddDays(-1);
 
             return firstDayInWeek;
-        }
-
-        public void UpdateTimesheet(Timesheet b)
-        {
-            _repository.UpdateTimesheet(b);
-        }
-
-        public void UpdateTimesheetEntry(TimesheetEntry tse)
-        {
-            _tseRepository.UpdateTimesheetEntry(tse);
-            _tseRepository.Save();
         }
     }
 }

@@ -25,18 +25,18 @@ namespace doneillspa.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-        private readonly ITimesheetService _timesheetService;
+        private readonly ITimesheetRepository _timeSheetRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         private ApplicationContext _context;
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,
-            ITimesheetService tss, ApplicationContext context, IMapper mapper, IMediator mediator)
+            ApplicationContext context, IMapper mapper, IMediator mediator, ITimesheetRepository repository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _timesheetService = tss;
+            _timeSheetRepository = repository;
             _context = context;
             _mapper = mapper;
             _mediator = mediator;
@@ -210,7 +210,7 @@ namespace doneillspa.Controllers
 
             JsonResult result = new JsonResult(user.Result.UserName);
 
-            IEnumerable<Timesheet> timesheets = _timesheetService.GetTimesheetsByUser(result.Value.ToString()).OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheetsByUser(result.Value.ToString()).OrderByDescending(r => r.WeekStarting);
 
             foreach (Timesheet ts in timesheets)
             {

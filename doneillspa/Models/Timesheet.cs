@@ -9,6 +9,7 @@ using hub;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 
 namespace doneillspa.Models
 {
@@ -47,6 +48,7 @@ namespace doneillspa.Models
             foreach (TimesheetEntry tse in TimesheetEntries)
             {
                 tse.DateCreated = todaysDate;
+                tse.Chargeable = this.IsEntryChargeable(tse);
             }
         }
 
