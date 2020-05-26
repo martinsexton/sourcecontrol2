@@ -8,7 +8,7 @@ namespace doneillspa.Mediator.Notifications
 {
     public class TimesheetRejected : INotification
     {
-        public string UserEmail { get; set; }
+        public string OwnerId { get; set; }
         public DateTime WeekStarting { get; set; }
     }
 }

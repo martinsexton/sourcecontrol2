@@ -15,9 +15,12 @@ namespace doneillspa.Services
         IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting);
         IEnumerable<Timesheet> GetTimesheetsByUser(string user);
         IEnumerable<Timesheet> GetTimesheetsByUserAndDate(string user, DateTime weekStarting);
-        void RecordAnnualLeave(string userId, DateTime start, int numberOfDays);
-
         TimesheetEntry GetTimsheetEntryById(long id);
         void UpdateTimesheetEntry(TimesheetEntry tse);
+
+        void RecordAnnualLeave(string userId, DateTime start, int numberOfDays);
+        LabourWeekDetail BuildLabourWeekDetails(Timesheet ts, List<LabourRate> Rates, string proj);
+
+
     }
 }

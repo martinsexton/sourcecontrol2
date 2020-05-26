@@ -50,24 +50,22 @@ namespace doneillspa.Models
             }
         }
 
-        public void Submitted(UserManager<ApplicationUser> userManager, IMediator mediator)
+        public void Submitted(IMediator mediator)
         {
             Status = TimesheetStatus.Submitted;
             mediator.Publish(new TimesheetSubmitted { Username = this.Username });
         }
 
-        public void Approved(UserManager<ApplicationUser> userManager, IMediator mediator)
+        public void Approved(IMediator mediator)
         {
             Status = TimesheetStatus.Approved;
-            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
-            mediator.Publish(new TimesheetApproved { UserEmail = user.Email, WeekStarting = this.WeekStarting });
+            mediator.Publish(new TimesheetApproved { OwnerId = this.Owner.ToString(), WeekStarting = this.WeekStarting });
         }
 
-        public void Rejected(UserManager<ApplicationUser> userManager, IMediator mediator)
+        public void Rejected(IMediator mediator)
         {
             Status = TimesheetStatus.Rejected;
-            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
-            mediator.Publish(new TimesheetRejected { UserEmail = user.Email, WeekStarting = this.WeekStarting });
+            mediator.Publish(new TimesheetRejected { OwnerId = this.Owner.ToString(), WeekStarting = this.WeekStarting });
         }
 
         public void AddTimesheetNote(UserManager<ApplicationUser> userManager, IMediator mediator, TimesheetNote note)

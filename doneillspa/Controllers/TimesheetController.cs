@@ -128,15 +128,15 @@ namespace doneillspa.Controllers
             Timesheet timesheet = _service.GetTimsheetById(ts.Id);
             if (ts.Status.Equals(TimesheetStatus.Approved.ToString()))
             {
-                timesheet.Approved(_userManager, _mediator);
+                timesheet.Approved(_mediator);
             }
             else if (ts.Status.Equals(TimesheetStatus.Rejected.ToString()))
             {
-                timesheet.Rejected(_userManager, _mediator);
+                timesheet.Rejected(_mediator);
             }
             else if (ts.Status.Equals(TimesheetStatus.Submitted.ToString()))
             {
-                timesheet.Submitted(_userManager, _mediator);
+                timesheet.Submitted(_mediator);
             }
 
             _service.UpdateTimesheet(timesheet);
