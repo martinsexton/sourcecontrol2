@@ -70,15 +70,13 @@ namespace doneillspa.Models
             mediator.Publish(new TimesheetRejected { OwnerId = this.Owner.ToString(), WeekStarting = this.WeekStarting });
         }
 
-        public void AddTimesheetNote(UserManager<ApplicationUser> userManager, IMediator mediator, TimesheetNote note)
+        public void AddTimesheetNote(IMediator mediator, TimesheetNote note)
         {
-            ApplicationUser user = userManager.FindByIdAsync(this.Owner.ToString()).Result;
-
             //Set date created on timesheet entry
             note.DateCreated = DateTime.UtcNow;
             TimesheetNotes.Add(note);
 
-            mediator.Publish(new TimesheetNoteCreated { UserEmail = user.Email, NoteDetails = note.Details });
+            mediator.Publish(new TimesheetNoteCreated { OwnerId = this.Owner.ToString(), NoteDetails = note.Details });
         }
 
         public void AddTimesheetEntry(TimesheetEntry entry)

@@ -8,7 +8,7 @@ namespace doneillspa.Mediator.Notifications
 {
     public class TimesheetNoteCreated : INotification
     {
-        public string UserEmail { get; set; }
+        public string OwnerId { get; set; }
         public string NoteDetails { get; set; }
     }
 }

@@ -24,13 +24,11 @@ namespace doneillspa.Controllers
     public class TimesheetController : Controller
     {
         private readonly ITimesheetRepository _timeSheetRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public TimesheetController(UserManager<ApplicationUser> userManager, IMapper mapper, IMediator mediator, ITimesheetRepository repository)
+        public TimesheetController(IMapper mapper, IMediator mediator, ITimesheetRepository repository)
         {
-            _userManager = userManager;
             _mapper = mapper;
             _mediator = mediator;
             _timeSheetRepository = repository;
@@ -54,15 +52,7 @@ namespace doneillspa.Controllers
         [Route("api/timesheet/{id}")]
         public JsonResult Get(long id)
         {
-            Timesheet item = _timeSheetRepository.GetTimsheetById(id);
-
-            if (item == null)
-            {
-                return Json(Ok());
-            }
-
-            JsonResult result = new JsonResult(ConvertToDto(item));
-            return result;
+            return new JsonResult(ConvertToDto(_timeSheetRepository.GetTimsheetById(id)));
         }
 
         [HttpGet]
@@ -112,10 +102,7 @@ namespace doneillspa.Controllers
         public IActionResult Post([FromBody]Timesheet timesheet)
         {
             timesheet.OnCreation();
-
-            long id = _timeSheetRepository.InsertTimesheet(timesheet);
-
-            return Ok(id);
+            return Ok(_timeSheetRepository.InsertTimesheet(timesheet));
         }
 
         [HttpPut()]
@@ -161,7 +148,7 @@ namespace doneillspa.Controllers
             if(note != null)
             {
                 var existingTimesheet = _timeSheetRepository.GetTimsheetById(id);
-                existingTimesheet.AddTimesheetNote(_userManager, _mediator, note);
+                existingTimesheet.AddTimesheetNote(_mediator, note);
 
                 _timeSheetRepository.UpdateTimesheet(existingTimesheet);
 
