@@ -55,18 +55,24 @@ namespace doneillspa.Models
         public void Submitted(IMediator mediator)
         {
             Status = TimesheetStatus.Submitted;
+
+            //Create a domain event for any side effects to register
             mediator.Publish(new TimesheetSubmitted { Username = this.Username });
         }
 
         public void Approved(IMediator mediator)
         {
             Status = TimesheetStatus.Approved;
+
+            //Create a domain event for any side effects to register
             mediator.Publish(new TimesheetApproved { OwnerId = this.Owner.ToString(), WeekStarting = this.WeekStarting });
         }
 
         public void Rejected(IMediator mediator)
         {
             Status = TimesheetStatus.Rejected;
+
+            //Create a domain event for any side effects to register
             mediator.Publish(new TimesheetRejected { OwnerId = this.Owner.ToString(), WeekStarting = this.WeekStarting });
         }
 
@@ -76,6 +82,7 @@ namespace doneillspa.Models
             note.DateCreated = DateTime.UtcNow;
             TimesheetNotes.Add(note);
 
+            //Create a domain event for any side effects to register
             mediator.Publish(new TimesheetNoteCreated { OwnerId = this.Owner.ToString(), NoteDetails = note.Details });
         }
 
@@ -97,6 +104,11 @@ namespace doneillspa.Models
         {
             //Always true right now, but we can add logic here later to control if its chargeable or not.
             return true;
+        }
+
+        public bool IsApproved()
+        {
+            return Status == TimesheetStatus.Approved;
         }
 
         #endregion

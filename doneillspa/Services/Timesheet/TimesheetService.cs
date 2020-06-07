@@ -6,6 +6,8 @@ using doneillspa.DataAccess;
 using doneillspa.Factories;
 using doneillspa.Helpers;
 using doneillspa.Models;
+using doneillspa.Specifications;
+using doneillspa.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 
 namespace doneillspa.Services
@@ -62,6 +64,46 @@ namespace doneillspa.Services
             SaveTimesheetEntries(timesheets);
         }
 
+        public ProjectCostDto DetermineProjectCosts(string code)
+        {
+            ProjectCostDto costs = new ProjectCostDto();
+            costs.ProjectName = code;
+            ApprovedTseForProject approvedForProjectSpecification = new ApprovedTseForProject(code);
+
+            IEnumerable<Timesheet> timesheets = _repository.GetTimesheets();
+            foreach (Timesheet ts in timesheets.AsQueryable())
+            {
+                bool weekFound = false;
+
+                //Gets reset for each timesheet
+                decimal projectcost = 0m;
+                double rate = _repository.GetRateForTimesheet(ts);
+
+                foreach (TimesheetEntry tse in ts.TimesheetEntries)
+                {
+                    //If timesheet entry satisfies the specification then proceed
+                    if (!approvedForProjectSpecification.IsSatisfied(tse))
+                        continue;
+
+                    if (!costs.weekAlreadyRecorded(ts.WeekStarting.ToShortDateString()))
+                    {
+                        weekFound = true;
+                        costs.addWeek(ts.WeekStarting.ToShortDateString());
+                    }
+
+                    //Increment cost for each timesheet entry in timesheet for given week.
+                    projectcost += this.CalculateCosts(tse, rate);
+                }
+
+                if (weekFound)
+                {
+                    costs.addCost(projectcost);
+                }
+            }
+
+            return costs;
+        }
+
         public LabourWeekDetail BuildLabourWeekDetails(Timesheet ts, List<LabourRate> Rates, string proj)
         {
             //Retrieve details from timesheet and populate the LabourWeekDetail object
@@ -73,16 +115,21 @@ namespace doneillspa.Services
             return detail;
         }
 
+        private decimal CalculateCosts(TimesheetEntry tse, double rate)
+        {
+            int hrsWorked = tse.DurationInHours();
+            return hrsWorked * (decimal)rate;
+        }
+
         private Dictionary<string, double> RetrieveBreakdownOfHoursPerDay(Timesheet ts, string proj)
         {
+            ChargeableTseForProject chargeableTseSpecification = new ChargeableTseForProject(proj);
+
             Dictionary<string, double> hoursPerDay = new Dictionary<string, double>();
             foreach (TimesheetEntry tse in ts.TimesheetEntries)
             {
-                if (!tse.Chargeable)
-                {
-                    continue;
-                }
-                if (tse.Code.Equals(proj))
+                //If the specification is satisfied then proceed
+                if (chargeableTseSpecification.IsSatisfied(tse))
                 {
                     TimeSpan startTimespan = TimeSpan.Parse(tse.StartTime);
                     TimeSpan endTimespan = TimeSpan.Parse(tse.EndTime);

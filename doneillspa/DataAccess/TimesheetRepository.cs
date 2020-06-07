@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.Models;
+using doneillspa.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace doneillspa.DataAccess
@@ -32,6 +33,21 @@ namespace doneillspa.DataAccess
                         .Include(b => b.TimesheetNotes)
                         .ToList();
 
+        }
+
+        public double GetRateForTimesheet(Timesheet ts)
+        {
+            List<LabourRate> rates = _context.LabourRate.ToList();
+
+            LabourRate rate = rates.Where(r => r.Role.Equals(ts.Role) && r.EffectiveFrom <= ts.WeekStarting &&
+                    (r.EffectiveTo == null || r.EffectiveTo >= ts.WeekStarting)).FirstOrDefault();
+
+            if (rate != null)
+            {
+                return rate.RatePerHour;
+            }
+
+            return 0.0;
         }
 
         public IEnumerable<Timesheet> GetTimesheetsByUser(string user)

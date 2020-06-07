@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using doneillspa.DataAccess;
 using doneillspa.Models;
+using doneillspa.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DocumentFormat.OpenXml;

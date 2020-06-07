@@ -26,5 +26,15 @@ namespace doneillspa.Models
             StartDate = startDate;
             IsActive = true;
         }
+
+        public void Activate()
+        {
+            this.IsActive = true;
+        }
+
+        public void Disable()
+        {
+            this.IsActive = false;
+        }
     }
 }

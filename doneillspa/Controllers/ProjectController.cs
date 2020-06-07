@@ -65,11 +65,28 @@ namespace doneillspa.Controllers
                         .Where(b => b.Id == p.Id)
                         .FirstOrDefault();
 
-            //Update fields
-            proj.Name = p.Name;
-            proj.Details = p.Details;
-            proj.IsActive = p.IsActive;
-            proj.Code = p.Code;
+            if(proj.IsActive != p.IsActive)
+            {
+                if (p.IsActive)
+                {
+                    //Call activate on project domain
+                    proj.Activate();
+                }
+                else
+                {
+                    //call disable on project domain
+                    proj.Disable();
+                }
+            }
+            else
+            {
+                //Update fields
+                proj.Name = p.Name;
+                proj.Details = p.Details;
+                //proj.IsActive = p.IsActive;
+                proj.Code = p.Code;
+            }
+
 
             _context.SaveChanges();
             return new NoContentResult();

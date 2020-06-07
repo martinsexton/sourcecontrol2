@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using doneillspa.Models;
+using doneillspa.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace doneillspa.DataAccess

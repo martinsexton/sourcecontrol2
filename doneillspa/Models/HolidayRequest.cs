@@ -35,17 +35,20 @@ namespace doneillspa.Models
         #region Actions
         public void Created(IMediator mediator)
         {
+            //Create a domain event for any side effects to register
             mediator.Publish(new HolidayRequestCreated { ApproverEmail = this.Approver.Email, UserName = this.User.FirstName, FromDate = this.FromDate, Days = this.Days });
         }
 
         public void Approve(IMediator mediator)
         {
+            //Create a domain event for any side effects to register
             mediator.Publish(new HolidayRequestApproved { UserName = this.User.FirstName + this.User.Surname, UserEmail = this.User.Email, FromDate = this.FromDate, Days = this.Days });
             Status = HolidayRequestStatus.Approved;
         }
 
         public void Reject(IMediator mediator)
         {
+            //Create a domain event for any side effects to register
             mediator.Publish(new HolidayRequestRejected { UserName = this.User.FirstName + this.User.Surname, UserEmail = this.User.Email, FromDate = this.FromDate, Days = this.Days });
             Status = HolidayRequestStatus.Rejected;
         }
