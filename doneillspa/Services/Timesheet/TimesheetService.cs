@@ -68,36 +68,17 @@ namespace doneillspa.Services
         {
             ProjectCostDto costs = new ProjectCostDto();
             costs.ProjectName = code;
-            ApprovedTseForProject approvedForProjectSpecification = new ApprovedTseForProject(code);
+
+            ApprovedTimesheetForProject approvedTimesheetSpecification = new ApprovedTimesheetForProject(code);
 
             IEnumerable<Timesheet> timesheets = _repository.GetTimesheets();
             foreach (Timesheet ts in timesheets.AsQueryable())
             {
-                bool weekFound = false;
-
-                //Gets reset for each timesheet
-                decimal projectcost = 0m;
-                double rate = _repository.GetRateForTimesheet(ts);
-
-                foreach (TimesheetEntry tse in ts.TimesheetEntries)
+                if (approvedTimesheetSpecification.IsSatisfied(ts) && !costs.weekAlreadyRecorded(ts.WeekStarting.ToShortDateString()))
                 {
-                    //If timesheet entry satisfies the specification then proceed
-                    if (!approvedForProjectSpecification.IsSatisfied(tse))
-                        continue;
-
-                    if (!costs.weekAlreadyRecorded(ts.WeekStarting.ToShortDateString()))
-                    {
-                        weekFound = true;
-                        costs.addWeek(ts.WeekStarting.ToShortDateString());
-                    }
-
-                    //Increment cost for each timesheet entry in timesheet for given week.
-                    projectcost += this.CalculateCosts(tse, rate);
-                }
-
-                if (weekFound)
-                {
-                    costs.addCost(projectcost);
+                    double rate = _repository.GetRateForTimesheet(ts);
+                    costs.addWeek(ts.WeekStarting.ToShortDateString());
+                    costs.addCost(this.CalculateCosts(ts, rate, code));
                 }
             }
 
@@ -115,10 +96,22 @@ namespace doneillspa.Services
             return detail;
         }
 
-        private decimal CalculateCosts(TimesheetEntry tse, double rate)
+        private decimal CalculateCosts(Timesheet ts, double rate, string code)
         {
-            int hrsWorked = tse.DurationInHours();
-            return hrsWorked * (decimal)rate;
+            decimal cost = 0;
+            ApprovedTseForProject approvedForProjectSpecification = new ApprovedTseForProject(code);
+
+            foreach (TimesheetEntry tse in ts.TimesheetEntries)
+            {
+                //If timesheet entry satisfies the specification then proceed
+                if (!approvedForProjectSpecification.IsSatisfied(tse))
+                    continue;
+
+                int hrsWorked = tse.DurationInHours();
+                //Increment cost for each timesheet entry in timesheet for given week.
+                cost += hrsWorked * (decimal)rate;
+            }
+            return cost;
         }
 
         private Dictionary<string, double> RetrieveBreakdownOfHoursPerDay(Timesheet ts, string proj)
