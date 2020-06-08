@@ -78,7 +78,7 @@ namespace doneillspa.Services
                 {
                     double rate = _repository.GetRateForTimesheet(ts);
                     costs.addWeek(ts.WeekStarting.ToShortDateString());
-                    costs.addCost(this.CalculateCosts(ts, rate, code));
+                    costs.addCost(this.CalculateHoursWorked(ts, code) * (decimal)rate);
                 }
             }
 
@@ -96,9 +96,9 @@ namespace doneillspa.Services
             return detail;
         }
 
-        private decimal CalculateCosts(Timesheet ts, double rate, string code)
+        private decimal CalculateHoursWorked(Timesheet ts, string code)
         {
-            decimal cost = 0;
+            decimal hours = 0;
             ApprovedTseForProject approvedForProjectSpecification = new ApprovedTseForProject(code);
 
             foreach (TimesheetEntry tse in ts.TimesheetEntries)
@@ -107,11 +107,9 @@ namespace doneillspa.Services
                 if (!approvedForProjectSpecification.IsSatisfied(tse))
                     continue;
 
-                int hrsWorked = tse.DurationInHours();
-                //Increment cost for each timesheet entry in timesheet for given week.
-                cost += hrsWorked * (decimal)rate;
+                hours += tse.DurationInHours();
             }
-            return cost;
+            return hours;
         }
 
         private Dictionary<string, double> RetrieveBreakdownOfHoursPerDay(Timesheet ts, string proj)
@@ -124,19 +122,15 @@ namespace doneillspa.Services
                 //If the specification is satisfied then proceed
                 if (chargeableTseSpecification.IsSatisfied(tse))
                 {
-                    TimeSpan startTimespan = TimeSpan.Parse(tse.StartTime);
-                    TimeSpan endTimespan = TimeSpan.Parse(tse.EndTime);
-                    TimeSpan result = endTimespan - startTimespan;
-
                     if (!hoursPerDay.ContainsKey(tse.Day))
                     {
-                        hoursPerDay.Add(tse.Day, result.TotalMinutes);
+                        hoursPerDay.Add(tse.Day, tse.DurationInHours());
                     }
                     else
                     {
-                        double totalMins = hoursPerDay[tse.Day];
-                        totalMins += result.TotalMinutes;
-                        hoursPerDay[tse.Day] = totalMins;
+                        double totalHours = hoursPerDay[tse.Day];
+                        totalHours += tse.DurationInHours();
+                        hoursPerDay[tse.Day] = totalHours;
                     }
                 }
             }
@@ -151,50 +145,50 @@ namespace doneillspa.Services
 
             foreach (var item in hoursPerDay)
             {
-                double minutesWorked = item.Value;
+                double hoursWorked = item.Value;
                 switch (ts.Role)
                 {
                     case "Administrator":
-                        detail.AdministratorCost += ((minutesWorked / 60) * 10);
+                        detail.AdministratorCost += ((hoursWorked) * 10);
                         break;
                     case "Supervisor":
-                        detail.SupervisorCost += ((minutesWorked / 60) * rate);
+                        detail.SupervisorCost += ((hoursWorked) * rate);
                         break;
                     case "ChargeHand":
-                        detail.ChargehandCost += ((minutesWorked / 60) * rate);
+                        detail.ChargehandCost += ((hoursWorked) * rate);
                         break;
                     case "ElectR1":
-                        detail.ElecR1Cost += ((minutesWorked / 60) * rate);
+                        detail.ElecR1Cost += ((hoursWorked) * rate);
                         break;
                     case "ElectR2":
-                        detail.ElecR2Cost += ((minutesWorked / 60) * rate);
+                        detail.ElecR2Cost += ((hoursWorked) * rate);
                         break;
                     case "ElectR3":
-                        detail.ElecR3Cost += ((minutesWorked / 60) * rate);
+                        detail.ElecR3Cost += ((hoursWorked) * rate);
                         break;
                     case "Loc1":
-                        detail.Loc1Cost += ((minutesWorked / 60) * rate);
+                        detail.Loc1Cost += ((hoursWorked) * rate);
                         break;
                     case "Loc2":
-                        detail.Loc2Cost += ((minutesWorked / 60) * rate);
+                        detail.Loc2Cost += ((hoursWorked) * rate);
                         break;
                     case "Loc3":
-                        detail.Loc3Cost += ((minutesWorked / 60) * rate);
+                        detail.Loc3Cost += ((hoursWorked) * rate);
                         break;
                     case "Temp":
-                        detail.TempCost += ((minutesWorked / 60) * rate);
+                        detail.TempCost += ((hoursWorked) * rate);
                         break;
                     case "First Year Apprentice":
-                        detail.FirstYearApprenticeCost += ((minutesWorked / 60) * rate);
+                        detail.FirstYearApprenticeCost += ((hoursWorked) * rate);
                         break;
                     case "Second Year Apprentice":
-                        detail.SecondYearApprenticeCost += ((minutesWorked / 60) * rate);
+                        detail.SecondYearApprenticeCost += ((hoursWorked) * rate);
                         break;
                     case "Third Year Apprentice":
-                        detail.ThirdYearApprenticeCost += ((minutesWorked / 60) * rate);
+                        detail.ThirdYearApprenticeCost += ((hoursWorked) * rate);
                         break;
                     case "Fourth Year Apprentice":
-                        detail.FourthYearApprenticeCost += ((minutesWorked / 60) * rate);
+                        detail.FourthYearApprenticeCost += ((hoursWorked) * rate);
                         break;
                     default:
                         break;
@@ -220,12 +214,12 @@ namespace doneillspa.Services
             //Update each of the entries to remove 30 mins for days where engineer worked >= 5 hours
             foreach (string key in hoursPerDay.Keys.ToList())
             {
-                double minutesWorked = hoursPerDay[key];
-                if (((key.Equals("Sat") || key.Equals("Sun")) && minutesWorked > (5 * 60))
-                    || (!(key.Equals("Sat") || key.Equals("Sun")) && minutesWorked >= (5 * 60)))
+                double hoursWorked = hoursPerDay[key];
+                if (((key.Equals("Sat") || key.Equals("Sun")) && hoursWorked > (5))
+                    || (!(key.Equals("Sat") || key.Equals("Sun")) && hoursWorked >= (5)))
                 {
-                    minutesWorked = minutesWorked - 30;
-                    hoursPerDay[key] = minutesWorked;
+                    hoursWorked = hoursWorked - 0.5;
+                    hoursPerDay[key] = hoursWorked;
                 }
             }
         }
