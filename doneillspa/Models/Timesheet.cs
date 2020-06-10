@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using doneillspa.Factories;
+using doneillspa.Helpers;
 using doneillspa.Mediator.Notifications;
 using doneillspa.Services.Email;
+using doneillspa.Specifications;
 using hub;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -48,7 +51,7 @@ namespace doneillspa.Models
             foreach (TimesheetEntry tse in TimesheetEntries)
             {
                 tse.DateCreated = todaysDate;
-                tse.Chargeable = this.IsEntryChargeable(tse);
+                tse.Chargeable = tse.IsEntryChargeable();
             }
         }
 
@@ -86,25 +89,42 @@ namespace doneillspa.Models
             mediator.Publish(new TimesheetNoteCreated { OwnerId = this.Owner.ToString(), NoteDetails = note.Details });
         }
 
+        public decimal CalculateHoursWorkedForProject(Timesheet ts, string code)
+        {
+            decimal hours = 0;
+            ApprovedTseForProject approvedForProjectSpecification = new ApprovedTseForProject(code);
+
+            foreach (TimesheetEntry tse in TimesheetEntries)
+            {
+                //If timesheet entry satisfies the specification then proceed
+                if (!approvedForProjectSpecification.IsSatisfied(tse))
+                    continue;
+
+                hours += tse.DurationInHours();
+            }
+            return hours;
+        }
+
+        public void RecordAnnualLeaveForDay(DayOfWeek day)
+        {
+            TimesheetEntry tse = TimesheetFactory.CreateFullDayEntryForDay(Constants.Strings.Timesheets.NonChargeableCodes.AnnualLeave, day);
+            AddTimesheetEntry(tse);
+        }
+
         public void AddTimesheetEntry(TimesheetEntry entry)
         {
             //Set date created on timesheet entry
             entry.DateCreated = DateTime.UtcNow;
             //Determine if timesheet entry is chargeable or not.
-            entry.Chargeable = IsEntryChargeable(entry);
+            entry.Chargeable = entry.IsEntryChargeable();
 
             TimesheetEntries.Add(entry);
         }
 
+
         #endregion
 
         #region Helper Methods
-
-        public bool IsEntryChargeable(TimesheetEntry entry)
-        {
-            //Always true right now, but we can add logic here later to control if its chargeable or not.
-            return true;
-        }
 
         public bool IsApproved()
         {

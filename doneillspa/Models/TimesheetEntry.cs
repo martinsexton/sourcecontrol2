@@ -18,6 +18,12 @@ namespace doneillspa.Models
         public bool Chargeable { get; set; }
         public Timesheet Timesheet { get; set; }
 
+        public bool IsEntryChargeable()
+        {
+            //Always true right now, but we can add logic here later to control if its chargeable or not.
+            return true;
+        }
+
         public int DurationInHours()
         {
             string[] hrsmins = StartTime.Split(':');

@@ -26,9 +26,7 @@ namespace doneillspa.Services
         public void RecordAnnualLeave(string userName, DateTime start, int numberOfDays)
         {
             ApplicationUser userToVerify = _userManager.FindByNameAsync(userName.ToUpper()).Result;
-            IList<string> roles = _userManager.GetRolesAsync(userToVerify).Result;
-
-            string role = roles.FirstOrDefault();
+            string role = _userManager.GetRolesAsync(userToVerify).Result.FirstOrDefault();
 
             List<DateTime> startOfWeeks = new List<DateTime>();
             List<Timesheet> timesheets = new List<Timesheet>();
@@ -37,14 +35,11 @@ namespace doneillspa.Services
             for (int i = 0; i < numberOfDays; i++)
             {
                 DateTime startOfWeek = GetFirstDayOfWeek(start);
+
                 if (!startOfWeeks.Contains(startOfWeek)){
                     startOfWeeks.Add(startOfWeek);
-                    timesheet = _repository.GetTimesheetsByUser(userName).Where(ts => ts.WeekStarting.Date.Equals(startOfWeek.Date)).FirstOrDefault();
-                    if(timesheet == null)
-                    {
-                        timesheet = TimesheetFactory.CreateTimesheet(userName, startOfWeek, role, userToVerify.Id);
-                        _repository.InsertTimesheet(timesheet);
-                    }
+
+                    timesheet = GetOrCreateTimesheet(userName, startOfWeek, role, userToVerify);
                     if (!timesheets.Contains(timesheet))
                     {
                         timesheets.Add(timesheet);
@@ -54,7 +49,7 @@ namespace doneillspa.Services
                 {
                     if (!start.DayOfWeek.Equals(DayOfWeek.Sunday))
                     {
-                        timesheet.AddTimesheetEntry(CreateEntryForDate(start));
+                        timesheet.RecordAnnualLeaveForDay(start.DayOfWeek);
                     }
                     //Increment date
                     start = start.AddDays(1);
@@ -62,6 +57,17 @@ namespace doneillspa.Services
             }
 
             SaveTimesheetEntries(timesheets);
+        }
+
+        private Timesheet GetOrCreateTimesheet(string userName, DateTime startOfWeek, string role, ApplicationUser userToVerify)
+        {
+            Timesheet timesheet = _repository.GetTimesheetsByUser(userName).Where(ts => ts.WeekStarting.Date.Equals(startOfWeek.Date)).FirstOrDefault();
+            if (timesheet == null)
+            {
+                timesheet = TimesheetFactory.CreateTimesheet(userName, startOfWeek, role, userToVerify.Id);
+                _repository.InsertTimesheet(timesheet);
+            }
+            return timesheet;
         }
 
         public ProjectCostDto DetermineProjectCosts(string code)
@@ -78,7 +84,7 @@ namespace doneillspa.Services
                 {
                     double rate = _repository.GetRateForTimesheet(ts);
                     costs.addWeek(ts.WeekStarting.ToShortDateString());
-                    costs.addCost(this.CalculateHoursWorked(ts, code) * (decimal)rate);
+                    costs.addCost(ts.CalculateHoursWorkedForProject(ts, code) * (decimal)rate);
                 }
             }
 
@@ -96,21 +102,6 @@ namespace doneillspa.Services
             return detail;
         }
 
-        private decimal CalculateHoursWorked(Timesheet ts, string code)
-        {
-            decimal hours = 0;
-            ApprovedTseForProject approvedForProjectSpecification = new ApprovedTseForProject(code);
-
-            foreach (TimesheetEntry tse in ts.TimesheetEntries)
-            {
-                //If timesheet entry satisfies the specification then proceed
-                if (!approvedForProjectSpecification.IsSatisfied(tse))
-                    continue;
-
-                hours += tse.DurationInHours();
-            }
-            return hours;
-        }
 
         private Dictionary<string, double> RetrieveBreakdownOfHoursPerDay(Timesheet ts, string proj)
         {
@@ -230,11 +221,6 @@ namespace doneillspa.Services
             {
                 _repository.UpdateTimesheet(ts);
             }
-        }
-
-        private TimesheetEntry CreateEntryForDate(DateTime date)
-        {
-            return TimesheetFactory.CreateFullDayEntryForDay(Constants.Strings.Timesheets.NonChargeableCodes.AnnualLeave, date.DayOfWeek);
         }
 
         private static DateTime GetFirstDayOfWeek(DateTime dayInWeek)
