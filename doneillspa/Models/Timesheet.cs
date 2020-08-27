@@ -89,7 +89,7 @@ namespace doneillspa.Models
             mediator.Publish(new TimesheetNoteCreated { OwnerId = this.Owner.ToString(), NoteDetails = note.Details });
         }
 
-        public decimal CalculateHoursWorkedForProject(Timesheet ts, string code)
+        public decimal CalculateHoursWorkedForProject(string code)
         {
             decimal hours = 0;
             ApprovedTseForProject approvedForProjectSpecification = new ApprovedTseForProject(code);

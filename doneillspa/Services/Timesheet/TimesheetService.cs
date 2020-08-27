@@ -84,7 +84,7 @@ namespace doneillspa.Services
                 {
                     double rate = _repository.GetRateForTimesheet(ts);
                     costs.addWeek(ts.WeekStarting.ToShortDateString());
-                    costs.addCost(ts.CalculateHoursWorkedForProject(ts, code) * (decimal)rate);
+                    costs.addCost(ts.CalculateHoursWorkedForProject(code) * (decimal)rate);
                 }
             }
 
