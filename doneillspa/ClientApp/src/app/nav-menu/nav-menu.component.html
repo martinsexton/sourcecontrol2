@@ -17,9 +17,9 @@
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/labour"]' class="nav-link">Labour Details</a>
       </li>
-      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
+      <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/supervisor"]' class="nav-link">Holiday Approval</a>
-      </li>
+      </li>-->
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/userdashboard"]' class="nav-link">Users</a>
       </li>
@@ -29,9 +29,9 @@
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
         <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
       </li>
-      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
+      <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
         <a [routerLink]='["/holidays"]' class="nav-link">Holidays</a>
-      </li>
+      </li>-->
     </ul>
     <ul class="nav navbar-nav">
       <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/login"]' class="nav-link">Login</a></li>
