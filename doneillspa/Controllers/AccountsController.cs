@@ -34,7 +34,7 @@ namespace doneillspa.Controllers
                 Surname = details.Surname,
                 Email = details.Email,
                 PhoneNumber = details.Phone,
-                UserName = details.FirstName.ToUpper() + details.Surname.ToUpper(),
+                UserName = details.FirstName.ToUpper() + details.Surname.Replace(" ", string.Empty).ToUpper(),
                 IsEnabled = true
             };
 
