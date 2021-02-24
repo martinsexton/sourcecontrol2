@@ -4,9 +4,9 @@
 <div class="ml-5" data-container="body" data-toggle="tooltip" title="New Timesheets Received" style="display: block" *ngIf='signalRService._timsheetsubmittedmessage'><span (click)="clearSignalRMessages()"><img src="assets/images/schedule.png" class="img-responsive" alt="..."></span></div>
 <div class="container-fluid">
   <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
+    <!--<li class="nav-item">
       <a class="nav-link active" id="new-tab" data-toggle="tab" href="#new" role="tab" aria-controls="new" aria-selected="true" (click)="newTabClicked()">New</a>
-    </li>
+    </li>-->
     <li class="nav-item">
       <a class="nav-link" id="submitted-tab" data-toggle="tab" href="#submitted" role="tab" aria-controls="submitted" aria-selected="false" (click)="submittedTabClicked()">Submitted</a>
     </li>

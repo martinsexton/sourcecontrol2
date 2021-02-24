@@ -52,7 +52,8 @@ export class DashboardComponent implements OnInit{
     //Retrieve Default list of tui Timesheets For display 
     this._timesheetService.getTimesheets().subscribe(result => {
       this.timesheets = result;
-      this.newTabClicked();
+      //this.newTabClicked();
+      this.submittedTabClicked();
       if (this.timesheets.length > 0) {
         this.setTimesheetsByState();
         this.selectedTsRow = 0;
