@@ -48,7 +48,7 @@ namespace doneillspa.Controllers
         {
             List<ClientDto> dtos = new List<ClientDto>();
 
-            IEnumerable<Client> clients = _context.Client.Include(b => b.Projects).ToList();
+            IEnumerable<Client> clients = _context.Client.Include(b => b.Projects).OrderBy(b => b.Name).ToList();
             foreach (Client c in clients)
             {
                 List<ProjectDto> projects = new List<ProjectDto>();

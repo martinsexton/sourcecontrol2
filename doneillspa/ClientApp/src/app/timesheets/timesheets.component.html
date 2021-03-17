@@ -39,6 +39,7 @@
             <p class="card-text" data-toggle="tooltip" title="Details: {{entry.details}}" (click)="toggleToolTip">
               {{entry.code}}: {{entry.startTime}} -> {{entry.endTime}}
               <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span>
+              <span *ngIf="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" aria-hidden="true" (click)="showViewTimesheet(entry)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span>
             </p>
           </div>
         </div>
@@ -115,6 +116,37 @@
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button [disabled]="editEntryStartTime.invalid || editEntryEndTime.invalid" (click)="updateTimesheetEntry()" class="btn btn-secondary">Update</button>
               <button (click)="removeTimesheetEntry(timesheetEntryToEdit)" class="btn btn-secondary">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Timesheet Details Modal -->
+  <div *ngIf="timesheetEntryToView" class="modal fade" id="myViewTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">View Details</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="startTime">Start Time</label>
+              <input type="time" disabled id="viewEntryStartTime" name="viewEntryStartTime" class="form-control" [(ngModel)]="timesheetEntryToView.startTime" #viewEntryStartTime="ngModel">
+            </div>
+            <div class="form-group">
+              <label for="endTime">End Time</label>
+              <input type="time" id="viewEntryEndTime"  disabled name="viewEntryEndTime" class="form-control" [(ngModel)]="timesheetEntryToView.endTime" #viewEntryEndTime="ngModel">
+            </div>
+            <div class="form-group">
+              <label for="details">Details</label>
+              <textarea disabled [(ngModel)]="timesheetEntryToView.details" name="details" class="form-control" id="details" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
           </form>
         </div>

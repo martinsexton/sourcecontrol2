@@ -24,7 +24,7 @@ export class MsUserService extends HttpServiceBase{
     super(_httpClient, baseUrl);
   }
 
-  register(email: string, password: string, firstname :string, surname:string, role:string, phone:string): Observable<UserRegistration>{
+  register(email: string, password: string, firstname :string, surname:string, role:string, phone:string) {
     let body = JSON.stringify({ email, password, firstname, surname, role, phone });
 
 

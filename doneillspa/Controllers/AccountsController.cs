@@ -62,7 +62,7 @@ namespace doneillspa.Controllers
 
             if (!result.Succeeded) return new BadRequestObjectResult(result);
             await _appDbContext.SaveChangesAsync();
-            return new OkObjectResult("Account created");
+            return Ok(newUser.Id);
         }
 
     }

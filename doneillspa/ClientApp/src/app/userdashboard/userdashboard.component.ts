@@ -37,6 +37,7 @@ export class UserDashboardComponent {
   public userImage: string = "user.png";
   public contractorRole: string = "Loc1";
   public fulltimeStaffRole: string = "ChargeHand";
+  newUser: ApplicationUser = new ApplicationUser('', '', '', '', '', '', false);
  
 
   public filterName: string;
@@ -121,7 +122,16 @@ export class UserDashboardComponent {
       this._msuserService.register(value.email, value.password, value.firstname, value.surname, value.role, value.phone)
         .subscribe(
         result => {
-          if (result) {
+            if (result) {
+              this.newUser.id = result as string;
+              this.newUser.firstName = value.firstname;
+              this.newUser.surname = value.surname;
+              this.newUser.isEnabled = true;
+              this.newUser.phoneNumber = value.phone;
+              this.newUser.role = value.role;
+
+              this.users.push(this.newUser);
+
             $("#myRegistrationModal").modal('hide');
             $("#myContractorRegistrationModal").modal('hide');
           }

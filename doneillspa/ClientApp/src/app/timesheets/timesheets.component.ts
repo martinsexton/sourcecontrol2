@@ -56,6 +56,7 @@ export class TimesheetComponent {
 
   public newEntry: TimesheetEntry;
   public timesheetEntryToEdit: TimesheetEntry;
+  public timesheetEntryToView: TimesheetEntry;
   public contractors: ApplicationUser[];
 
   public monday: DayOfWeek;
@@ -433,6 +434,11 @@ export class TimesheetComponent {
   showEditTimesheet(entry: TimesheetEntry) {
     this.timesheetEntryToEdit = entry;
     $("#myEditTimesheetModal").modal('show');
+  }
+
+  showViewTimesheet(entry: TimesheetEntry) {
+    this.timesheetEntryToView = entry;
+    $("#myViewTimesheetModal").modal('show');
   }
 
   updateTimesheetEntry() {
