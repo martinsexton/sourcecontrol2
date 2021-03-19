@@ -31,7 +31,11 @@ export class ProjectsListComponent {
   }
 
   isProjectActive(project: Project) {
-    return project.isActive;
+    return this.selectedClient.isActive && project.isActive;
+  }
+
+  canEditProject() {
+    return this.selectedClient.isActive;
   }
 
   saveProject() {

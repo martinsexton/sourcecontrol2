@@ -20,8 +20,8 @@
           <td>{{ project.code }}</td>
           <td>{{ project.details }}</td>
           <td>{{ project.startDate | date : "fullDate"}}</td>
-          <td><span aria-hidden="true" (click)="deleteProject(project)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
-          <td><span aria-hidden="true" (click)="displaySelectedProject(project)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span></td>
+          <td *ngIf="canEditProject()"><span aria-hidden="true" (click)="deleteProject(project)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
+          <td *ngIf="canEditProject()"><span aria-hidden="true" (click)="displaySelectedProject(project)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span></td>
         </tr>
       </tbody>
     </table>

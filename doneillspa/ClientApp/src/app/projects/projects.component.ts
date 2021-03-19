@@ -36,7 +36,7 @@ export class ProjectComponent {
   public projectPageLimit: number = 5;
 
   newProject: Project = new Project(0, '', '', '', '', true, new Date);
-  newClient: Client = new Client(0, "");
+  newClient: Client = new Client(0, "", true);
   projectSaved: boolean = false;
   selectedProject: Project = new Project(0, '', '', '', '', true, new Date);
   selectedRate: LabourRate = new LabourRate(0, null, null, '', 0, 0);
@@ -162,6 +162,20 @@ export class ProjectComponent {
 
   isProjectActive(project: Project) {
     return project.isActive;
+  }
+
+  displaySelectedClient(c: Client) {
+    this.selectedClient = c;
+    $("#myEditClientModal").modal('show');
+  }
+
+  getClientStatus(c: Client) {
+    if (c.isActive) {
+      return "Active";
+    }
+    else {
+      return "In Active"
+    }
   }
 
   retrieveClients() {
@@ -293,19 +307,33 @@ export class ProjectComponent {
     this.userMessage = msg;
     $('.toast').toast('show');
   }
+
+  updateClient() {
+    this._projectService.updateClient(this.selectedClient).subscribe(
+      res => {
+
+        //clear down the new project model
+        this.newClient = new Client(0, '', true);
+        $("#myEditClientModal").modal('hide');
+      }, error => {
+        $("#myEditClientModal").modal('hide');
+        console.error(error);
+      });
+  }
+
   saveClient() {
     this._projectService.saveClient(this.newClient).subscribe(
       res => {
         this.newClient.id = res as number;
         console.log(res);
         //Update the collection of projects with newly created one
-        var clientJustAdded = new Client(this.newClient.id, this.newClient.name);
+        var clientJustAdded = new Client(this.newClient.id, this.newClient.name, true);
         this.clientsForCurrentPage.push(clientJustAdded);
         this.clients.push(clientJustAdded);
         this.displayProjectsForSelectedClient(clientJustAdded);
 
         //clear down the new project model
-        this.newClient = new Client(0, '');
+        this.newClient = new Client(0, '', true);
         $("#myNewClientModal").modal('hide');
 
         this.showUserMessage("Client Saved Successfully!")

@@ -42,6 +42,34 @@ namespace doneillspa.Controllers
             return Ok(c.Id);
         }
 
+        [HttpPut]
+        [Route("api/client")]
+        public IActionResult UpdateClient([FromBody]ClientDto client)
+        {
+            Client c = _context.Client.Include(b => b.Projects)
+            .Where(b => b.Id == client.Id)
+            .FirstOrDefault();
+
+            c.Name = client.Name;
+            if (c.IsActive != client.IsActive)
+            {
+                if (client.IsActive)
+                {
+                    //Call activate on project domain
+                    c.Activate();
+                }
+                else
+                {
+                    //call disable on project domain
+                    c.Disable();
+                }
+            }
+
+            _context.SaveChanges();
+
+            return new NoContentResult();
+        }
+
         [HttpGet]
         [Route("api/client")]
         public IEnumerable<ClientDto> Get()
@@ -56,6 +84,7 @@ namespace doneillspa.Controllers
                 ClientDto dto = new ClientDto();
                 dto.Id = c.Id;
                 dto.Name = c.Name;
+                dto.IsActive = c.IsActive;
 
                 foreach(Project proj in c.Projects)
                 {

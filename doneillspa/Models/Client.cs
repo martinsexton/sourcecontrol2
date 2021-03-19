@@ -9,6 +9,7 @@ namespace doneillspa.Models
     {
         public long Id { get; set; }
         public string Name { get; set; }
+        public bool IsActive { get; set; }
 
         public ICollection<Project> Projects { get; set; }
 
@@ -22,6 +23,22 @@ namespace doneillspa.Models
         public void AddProject(Project proj)
         {
             Projects.Add(proj);
+        }
+
+        public void Activate()
+        {
+            this.IsActive = true;
+        }
+
+        public void Disable()
+        {
+            this.IsActive = false;
+
+            //If disabling a client, we need to disable projects also
+            foreach(Project p in this.Projects)
+            {
+                p.Disable();
+            }
         }
     }
 }
