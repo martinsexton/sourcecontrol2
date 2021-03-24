@@ -60,7 +60,7 @@ namespace doneillspa.Models
             Status = TimesheetStatus.Submitted;
 
             //Create a domain event for any side effects to register
-            mediator.Publish(new TimesheetSubmitted { Username = this.Username });
+            mediator.Publish(new TimesheetSubmitted { Username = this.Username, OwnerId = this.Owner.ToString(), WeekStarting = this.WeekStarting });
         }
 
         public void Approved(IMediator mediator)

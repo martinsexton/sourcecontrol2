@@ -71,7 +71,7 @@ namespace doneillspa
             services.AddScoped<HandleTimesheetApproved>(_ => new HandleTimesheetApproved(_.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
             services.AddScoped<HandleTimesheetRejected>(_ => new HandleTimesheetRejected(_.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
             services.AddScoped<HandleTimesheetNoteCreated>(_ => new HandleTimesheetNoteCreated(_.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
-            services.AddScoped<HandleTimesheetSubmitted>(_ => new HandleTimesheetSubmitted(_.GetService<IHubContext<Chat>>()));
+            services.AddScoped<HandleTimesheetSubmitted>(_ => new HandleTimesheetSubmitted(_.GetService<IHubContext<Chat>>(), _.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
