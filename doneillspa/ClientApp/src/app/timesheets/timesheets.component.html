@@ -101,6 +101,12 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
+              <label for="project">Project</label>
+              <select class="form-control form-control-sm" id="editProject" name="project" [(ngModel)]="timesheetEntryToEdit.code">
+                <option *ngFor="let c of retrieveTimeCodes()" value="{{c.code}}">{{c.description}}</option>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="startTime">Start Time</label>
               <input type="time" id="editEntryStartTime" name="editEntryStartTime" class="form-control" [ngClass]="{'is-invalid': editEntryStartTime.invalid, 'is-valid': !editEntryStartTime.invalid}" required [(ngModel)]="timesheetEntryToEdit.startTime" #editEntryStartTime="ngModel">
             </div>
@@ -134,12 +140,16 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
+              <label for="code">Project Code</label>
+              <input type="text" disabled id="viewEntryCode" name="viewEntryCode" class="form-control" [(ngModel)]="timesheetEntryToView.code" #viewEntryStartTime="ngModel">
+            </div>
+            <div class="form-group">
               <label for="startTime">Start Time</label>
               <input type="time" disabled id="viewEntryStartTime" name="viewEntryStartTime" class="form-control" [(ngModel)]="timesheetEntryToView.startTime" #viewEntryStartTime="ngModel">
             </div>
             <div class="form-group">
               <label for="endTime">End Time</label>
-              <input type="time" id="viewEntryEndTime"  disabled name="viewEntryEndTime" class="form-control" [(ngModel)]="timesheetEntryToView.endTime" #viewEntryEndTime="ngModel">
+              <input type="time" id="viewEntryEndTime" disabled name="viewEntryEndTime" class="form-control" [(ngModel)]="timesheetEntryToView.endTime" #viewEntryEndTime="ngModel">
             </div>
             <div class="form-group">
               <label for="details">Details</label>

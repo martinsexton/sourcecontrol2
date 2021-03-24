@@ -54,6 +54,7 @@ namespace doneillspa.Controllers
             item.StartTime = tse.StartTime;
             item.Details = tse.Details;
             item.EndTime = tse.EndTime;
+            item.Code = tse.Code;
 
             _context.SaveChanges();
 
