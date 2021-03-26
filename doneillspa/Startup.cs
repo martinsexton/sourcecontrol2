@@ -64,14 +64,8 @@ namespace doneillspa
             services.AddScoped<ITimesheetService>(_ => new TimesheetService(_.GetService<ITimesheetRepository>(), _.GetService<UserManager<ApplicationUser>>()));
 
             //Register Mediator Handlers
-            services.AddScoped<HandleEmailNotificationCreated>(_ => new HandleEmailNotificationCreated(_.GetService<IEmailService>()));
-            services.AddScoped<HandleHolidayRequestCreated>(_ => new HandleHolidayRequestCreated(_.GetService<IEmailService>()));
-            services.AddScoped<HandleHolidayRequestApproved>(_ => new HandleHolidayRequestApproved(_.GetService<IEmailService>(), _.GetService<ICalendarService>(), _.GetService<ITimesheetService>()));
-            services.AddScoped<HandleHolidayRequestRejected>(_ => new HandleHolidayRequestRejected(_.GetService<IEmailService>()));
-            services.AddScoped<HandleTimesheetApproved>(_ => new HandleTimesheetApproved(_.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
-            services.AddScoped<HandleTimesheetRejected>(_ => new HandleTimesheetRejected(_.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
-            services.AddScoped<HandleTimesheetNoteCreated>(_ => new HandleTimesheetNoteCreated(_.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
-            services.AddScoped<HandleTimesheetSubmitted>(_ => new HandleTimesheetSubmitted(_.GetService<IHubContext<Chat>>(), _.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
+            services.AddScoped<SendEmailHandler>(_ => new SendEmailHandler(_.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
+            services.AddScoped<SignalRNotifier>(_ => new SignalRNotifier(_.GetService<IHubContext<Chat>>()));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
