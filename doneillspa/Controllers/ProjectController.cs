@@ -33,7 +33,7 @@ namespace doneillspa.Controllers
         {
             List<ProjectDto> projectDtos = new List<ProjectDto>();
 
-            IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).ToList();
+            IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).OrderBy(b => b.Name).ToList();
             foreach (Project p in projects)
             {
                 projectDtos.Add(_mapper.Map<ProjectDto>(p));

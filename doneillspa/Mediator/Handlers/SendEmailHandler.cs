@@ -23,12 +23,15 @@ namespace doneillspa.Mediator.Handlers
             _userManager = userManager;
         }
 
+        #region Handle Email Notification Event
         public Task Handle(EmailNotificationCreated notification, CancellationToken cancellationToken)
         {
             _emailService.SendMail("doneill@hotmail.com", notification.DestinationEmail, notification.Subject, notification.Body, notification.Body, string.Empty, string.Empty);
             return Task.CompletedTask;
         }
+        #endregion
 
+        #region Handle Timmesheet Approved
         public Task Handle(TimesheetApproved notification, CancellationToken cancellationToken)
         {
             ApplicationUser user = _userManager.FindByIdAsync(notification.OwnerId).Result;
@@ -37,7 +40,9 @@ namespace doneillspa.Mediator.Handlers
 
             return Task.CompletedTask;
         }
+        #endregion
 
+        #region Handle Timmmesheet Note Create
         public Task Handle(TimesheetNoteCreated notification, CancellationToken cancellationToken)
         {
             ApplicationUser user = _userManager.FindByIdAsync(notification.OwnerId).Result;
@@ -45,7 +50,9 @@ namespace doneillspa.Mediator.Handlers
 
             return Task.CompletedTask;
         }
+        #endregion
 
+        #region Handle Timesheet Rejected
         public Task Handle(TimesheetRejected notification, CancellationToken cancellationToken)
         {
             ApplicationUser user = _userManager.FindByIdAsync(notification.OwnerId).Result;
@@ -54,7 +61,9 @@ namespace doneillspa.Mediator.Handlers
 
             return Task.CompletedTask;
         }
+        #endregion
 
+        #region Handle Timesheet Submmitted
         public Task Handle(TimesheetSubmitted notification, CancellationToken cancellationToken)
         {
             ApplicationUser user = _userManager.FindByIdAsync(notification.OwnerId).Result;
@@ -62,5 +71,7 @@ namespace doneillspa.Mediator.Handlers
             _emailService.SendMail("doneill@hotmail.com", user.Email, "Timesheet Submitted", msg, "", string.Empty, string.Empty);
             return Task.CompletedTask;
         }
+        #endregion
+
     }
 }
