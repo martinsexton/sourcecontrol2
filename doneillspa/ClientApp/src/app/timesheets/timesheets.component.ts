@@ -66,8 +66,10 @@ export class TimesheetComponent {
   public fri: DayOfWeek;
   public sat: DayOfWeek;
   public sun: DayOfWeek;
+  public userMessage: string;
 
   displayAddTimesheet = false;
+
 
   //declare var $: any;
 
@@ -246,7 +248,8 @@ export class TimesheetComponent {
   }
 
   setActiveDay(index) {
-    this.selectedDay = this.daysOfWeek[index];;
+    this.selectedDay = this.daysOfWeek[index];
+    this.newEntry.day = this.selectedDay;
   }
 
   retrieveTimesheetsForIndex(index) {
@@ -493,15 +496,21 @@ export class TimesheetComponent {
   addTimesheetEntry() {
     let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details, '');
     if (this.timesheetExists) {
-      this._timesheetService.addTimesheetEntry(this.activeTimeSheet.id, entry).subscribe(
-        res => {
-          //Update the entry with the primary key that has come back from server
-          entry.id = res as number;
-          this.activeTimeSheet.timesheetEntries.push(entry);
+      if (this.duplicateEntry(this.newEntry)) {
+        this.userMessage = "Timesheet Entry already exists with that start time"
+        $('.toast').toast('show');
+        return;
+      }
+      else {
+        this._timesheetService.addTimesheetEntry(this.activeTimeSheet.id, entry).subscribe(
+          res => {
+            //Update the entry with the primary key that has come back from server
+            entry.id = res as number;
+            this.activeTimeSheet.timesheetEntries.push(entry);
 
-          this.pushTimesheetToCalendarDays(entry);
-
-        }, error => this.errors = error);
+            this.pushTimesheetToCalendarDays(entry);
+          }, error => this.errors = error);
+      }
     }
     else {
       this.pushTimesheetToCalendarDays(entry);
@@ -510,6 +519,15 @@ export class TimesheetComponent {
     }
 
     this.toggleDisplayAddTimesheet();
+  }
+
+  duplicateEntry(entry : TimesheetEntry) {
+    for (let tse of this.activeTimeSheet.timesheetEntries) {
+      if (tse.day == entry.day && tse.startTime == entry.startTime) {
+        return true
+      }
+    }
+    return false;
   }
 
   pushTimesheetToCalendarDays(entry:TimesheetEntry) {
