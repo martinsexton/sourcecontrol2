@@ -113,12 +113,27 @@ namespace doneillspa.Models
 
         public void AddTimesheetEntry(TimesheetEntry entry)
         {
-            //Set date created on timesheet entry
-            entry.DateCreated = DateTime.UtcNow;
-            //Determine if timesheet entry is chargeable or not.
-            entry.Chargeable = entry.IsEntryChargeable();
+            if (CanAddTimesheetEntry(entry))
+            {
+                //Set date created on timesheet entry
+                entry.DateCreated = DateTime.UtcNow;
+                //Determine if timesheet entry is chargeable or not.
+                entry.Chargeable = entry.IsEntryChargeable();
 
-            TimesheetEntries.Add(entry);
+                TimesheetEntries.Add(entry);
+            }
+        }
+
+        public bool CanAddTimesheetEntry(TimesheetEntry entry)
+        {
+            foreach(TimesheetEntry tse in this.TimesheetEntries)
+            {
+                if(tse.Day == entry.Day && tse.StartTime == entry.StartTime)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
 

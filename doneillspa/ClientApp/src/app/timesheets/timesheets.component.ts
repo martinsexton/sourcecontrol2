@@ -496,12 +496,6 @@ export class TimesheetComponent {
   addTimesheetEntry() {
     let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details, '');
     if (this.timesheetExists) {
-      if (this.duplicateEntry(this.newEntry)) {
-        this.userMessage = "Timesheet Entry already exists with that start time"
-        $('.toast').toast('show');
-        return;
-      }
-      else {
         this._timesheetService.addTimesheetEntry(this.activeTimeSheet.id, entry).subscribe(
           res => {
             //Update the entry with the primary key that has come back from server
@@ -509,25 +503,22 @@ export class TimesheetComponent {
             this.activeTimeSheet.timesheetEntries.push(entry);
 
             this.pushTimesheetToCalendarDays(entry);
-          }, error => this.errors = error);
+            this.toggleDisplayAddTimesheet();
+
+          }, error => {
+            this.errors = error;
+            this.userMessage = "Failed to save entry. Please check for duplicates."
+            $('.toast').toast('show');
+          });
       }
-    }
     else {
       this.pushTimesheetToCalendarDays(entry);
       //Automatically save timesheet if it has not been saved already
       this.saveTimesheet();
+      this.toggleDisplayAddTimesheet();
     }
 
-    this.toggleDisplayAddTimesheet();
-  }
-
-  duplicateEntry(entry : TimesheetEntry) {
-    for (let tse of this.activeTimeSheet.timesheetEntries) {
-      if (tse.day == entry.day && tse.startTime == entry.startTime) {
-        return true
-      }
-    }
-    return false;
+    
   }
 
   pushTimesheetToCalendarDays(entry:TimesheetEntry) {

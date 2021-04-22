@@ -134,11 +134,20 @@ namespace doneillspa.Controllers
         public IActionResult Put(int id, [FromBody]TimesheetEntry entry)
         {
             var existingTimesheet = _timeSheetRepository.GetTimsheetById(id);
-            existingTimesheet.AddTimesheetEntry(entry);
 
-            _timeSheetRepository.UpdateTimesheet(existingTimesheet);
+            if (existingTimesheet.CanAddTimesheetEntry(entry))
+            {
+                existingTimesheet.AddTimesheetEntry(entry);
 
-            return Ok(entry.Id);
+                _timeSheetRepository.UpdateTimesheet(existingTimesheet);
+
+                return Ok(entry.Id);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
         }
 
         [HttpPut()]
