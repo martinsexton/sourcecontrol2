@@ -15,8 +15,8 @@
         <td>{{ tse.day }}</td>
         <td>{{ tse.startTime }}</td>
         <td>{{ tse.endTime }}</td>
-        <td>{{ tse.code }}</td>
-        <td>{{tse.details}}</td>
+        <td>{{ getCodeToDisplay(tse) }}</td>
+        <td>{{ tse.details }}</td>
         <td *ngIf="owner && owner.status == 'Approved'"><span *ngIf="editable" aria-hidden="true" (click)="removeTimesheetEntry(tse)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
       </tr>
     </tbody>

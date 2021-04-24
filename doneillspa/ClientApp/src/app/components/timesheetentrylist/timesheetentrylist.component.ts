@@ -91,6 +91,21 @@ export class TimeSheetEntryListComponent {
     return hours + ':' + minutes;
   }
 
+  getCodeToDisplay(tse: TimesheetEntry) {
+    if (tse.code == 'NC1') {
+      return "Annual Leave";
+    }
+    else if (tse.code == 'NC2') {
+      return "Bank Holiday";
+    }
+    else if (tse.code == 'NC3') {
+      return "DON.ELEC STAFF / MGMT MEETINGS";
+    }
+    else {
+      return tse.code;
+    }
+  }
+
   getSortedTimesheetEntries() {
       const sorter = {
         "mon": 1,

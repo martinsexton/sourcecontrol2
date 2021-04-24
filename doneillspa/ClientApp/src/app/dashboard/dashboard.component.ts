@@ -14,6 +14,7 @@ import {
   TimesheetService
 } from '../shared/services/timesheet.service';
 import { CertificateService } from '../shared/services/certificate.service';
+import * as moment from 'moment';
 
 declare var $: any;
 
@@ -139,6 +140,12 @@ export class DashboardComponent implements OnInit{
     this.setTimesheetsByState();
   }
 
+  archievedTabClicked() {
+    this.activeTab = "Archieved";
+    this.setTimesheetsByState();
+  }
+  
+
   clearSignalRMessages(){
     this.signalRService.clearMessages();
   }
@@ -228,11 +235,42 @@ export class DashboardComponent implements OnInit{
 
   setTimesheetsByState() {
     this.filteredTimesheets = [];
-    for (let item of this.timesheets) {
-      if (item.status.toUpperCase() == this.activeTab.toUpperCase()) {
-        this.filteredTimesheets.push(item);
+    if (this.activeTab == "Archieved") {
+      var monthAgo = moment().subtract(1, "months");
+
+      for (let item of this.timesheets) {
+        if (item.status.toUpperCase() == "APPROVED") {
+          //if older than x weeks let them all appear under archieved tabs
+          var weekStarting = moment(item.weekStarting);
+
+          if (moment(weekStarting).isBefore(monthAgo)) {
+            this.filteredTimesheets.push(item);
+          }
+        }
       }
     }
+    else if (this.activeTab == "Approved") {
+      var monthAgo = moment().subtract(1, "months");
+
+      for (let item of this.timesheets) {
+        if (item.status.toUpperCase() == "APPROVED") {
+          //if older than x weeks let them all appear under archieved tabs
+          var weekStarting = moment(item.weekStarting);
+
+          if (moment(weekStarting).isAfter(monthAgo)) {
+            this.filteredTimesheets.push(item);
+          }
+        }
+      }
+    }
+    else {
+      for (let item of this.timesheets) {
+        if (item.status.toUpperCase() == this.activeTab.toUpperCase()) {
+          this.filteredTimesheets.push(item);
+        }
+      }
+    }
+
     this.selectedTimesheet = null;
     if (this.filteredTimesheets) {
       this.selectedTimesheet = this.filteredTimesheets[0];
