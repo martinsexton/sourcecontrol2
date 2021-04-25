@@ -38,6 +38,10 @@ export class ProjectsListComponent {
     return this.selectedClient.isActive;
   }
 
+  canAddProject() {
+    return this.selectedClient.isActive;
+  }
+
   saveProject() {
     this._projectService.addProject(this.selectedClient.id, this.newProject).subscribe(
       res => {
