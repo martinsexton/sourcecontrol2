@@ -20,7 +20,10 @@ declare var $: any;
 export class ProjectComponent {
   public projectsToDisplay: Project[];
   public clients: Client[];
+  public clientsFilteredByState: Client[];
+
   public selectedClient: Client;
+  public activeTab: string = "Active";
 
   public labourRates: LabourRate[];
   public filteredRates: LabourRate[] = [];
@@ -57,14 +60,57 @@ export class ProjectComponent {
 
   determinePageCount() {
     var pageCount = 1;
-    if (this.clients) {
-      var numberOfClients = this.clients.length;
+    if (this.clientsFilteredByState) {
+      var numberOfClients = this.clientsFilteredByState.length;
 
       if (numberOfClients > 0) {
         var totalPages_pre = Math.floor((numberOfClients / this.pageLimit));
         pageCount = (numberOfClients % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
       }
       return pageCount;
+    }
+  }
+
+  activeTabClicked() {
+    this.activeTab = "Active";
+    this.clientsFilteredByState = [];
+    this.projectsForCurrentPage = [];
+    this.projectsToDisplay = [];
+    
+    //Setup active clients first
+    for (let client of this.clients) {
+      if (client.isActive) {
+        this.clientsFilteredByState.push(client);
+      }
+    }
+
+    //Reset page count. 
+    this.clientsCurrentPage = 1;
+    this.setupClientsForCurrentPage();
+
+    if (this.clientsFilteredByState.length > 0) {
+      this.displayProjectsForSelectedClient(this.clientsFilteredByState[0]);
+    }
+  }
+
+  inactiveTabClicked() {
+    this.activeTab = "Inactive";
+    this.clientsFilteredByState = [];
+    this.projectsForCurrentPage = [];
+    this.projectsToDisplay = [];
+
+    //Setup active clients first
+    for (let client of this.clients) {
+      if (!client.isActive) {
+        this.clientsFilteredByState.push(client);
+      }
+    }
+    //Reset page count. 
+    this.clientsCurrentPage = 1;
+    this.setupClientsForCurrentPage();
+
+    if (this.clientsFilteredByState.length > 0) {
+      this.displayProjectsForSelectedClient(this.clientsFilteredByState[0]);
     }
   }
 
@@ -96,7 +142,7 @@ export class ProjectComponent {
       startingIndex = (this.clientsCurrentPage - 1) * this.pageLimit;
     }
 
-    for (let client of this.clients) {
+    for (let client of this.clientsFilteredByState) {
       if (index >= startingIndex && index < (startingIndex + this.pageLimit)) {
         this.clientsForCurrentPage.push(client);
 
@@ -183,18 +229,29 @@ export class ProjectComponent {
       this.loading = false;
       this.clients = result;
       if (this.clients) {
+        this.clientsFilteredByState = [];
+        //Setup active clients first
+        for (let client of this.clients) {
+          if (client.isActive) {
+            this.clientsFilteredByState.push(client);
+          }
+        }
+
         //By default select first client
         this.setupClientsForCurrentPage();
 
-        //Will need to set the two below based on first client on current page.
-        this.selectedClient = this.clients[0];
-        this.projectsToDisplay = this.selectedClient.projects;
+        if (this.clientsFilteredByState) {
+          //Will need to set the two below based on first client on current page.
+          this.selectedClient = this.clientsFilteredByState[0];
+          this.projectsToDisplay = this.selectedClient.projects;
 
-        for (let client of this.clients) {
-          for (let p of client.projects) {
-            this.existingCodes.push(p.code.toUpperCase());
+          for (let client of this.clients) {
+            for (let p of client.projects) {
+              this.existingCodes.push(p.code.toUpperCase());
+            }
           }
         }
+
       }
     }, error => {
       this.userMessage = "Failed to retrieve Client Details"

@@ -4,6 +4,14 @@
       <span class="sr-only">Loading...</span>
     </div>
   </div>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab" aria-controls="active" aria-selected="false" (click)="activeTabClicked()">Active Clients</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab" aria-controls="inactive" aria-selected="false" (click)="inactiveTabClicked()">Inactive Clients</a>
+    </li>
+  </ul>
   <div class="row">
     <div class="col" *ngIf="clients">
       <div class="card mb-3 mt-3 div-to-stand-out">
@@ -136,8 +144,8 @@
           </div>
           <div class="form-group">
             <div class="custom-control custom-switch">
-              <input type="checkbox" [checked]="selectedClient.isActive" class="custom-control-input" id="isActive" name="isActive" [(ngModel)]="selectedClient.isActive">
-              <label class="custom-control-label" for="isActive">Active</label>
+              <input type="checkbox" [checked]="selectedClient.isActive" class="custom-control-input" id="clientIsActive" name="clientIsActive" [(ngModel)]="selectedClient.isActive">
+              <label class="custom-control-label" for="clientIsActive">Active</label>
             </div>
           </div>
           <div class="modal-footer">
