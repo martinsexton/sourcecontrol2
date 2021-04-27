@@ -19,6 +19,13 @@
   </div>
 </div>
 
+<div *ngIf="!loading && !dataToPresent" class="'card mb-3 mt-3 div-to-stand-out'">
+  <div class="card-header">Project Costs For {{selectedProject.name}}</div>
+  <div class="card-body">
+    <img src="assets/images/nodata.png" class="img-responsive center" alt="...">
+  </div>
+</div>
+
 <!-- Display Timesheet Details -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
