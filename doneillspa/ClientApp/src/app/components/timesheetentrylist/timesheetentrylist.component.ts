@@ -108,21 +108,25 @@ export class TimeSheetEntryListComponent {
 
   getSortedTimesheetEntries() {
       const sorter = {
-        "mon": 1,
-        "tue": 2,
-        "wed": 3,
-        "thurs": 4,
-        "fri": 5,
-        "sat": 6,
-        "sun": 7
+        "mon": 100,
+        "tue": 200,
+        "wed": 300,
+        "thurs": 400,
+        "fri": 500,
+        "sat": 600,
+        "sun": 700
       }
       let ts = this.owner;
 
-      //Order timesheet entries
+      //Order timesheet entries by day
       ts.timesheetEntries.sort(function sortByDay(a, b) {
         let day1 = a.day.toLowerCase();
         let day2 = b.day.toLowerCase();
-        return sorter[day1] - sorter[day2];
+
+        var firstTime = new Date("2018-01-01 " + a.startTime);
+        var secondTime = new Date("2018-01-01 " + b.startTime);
+
+        return (sorter[day1] + firstTime.getHours()) - (sorter[day2] + secondTime.getHours());
       });
 
       //Return the sorted timesheet entries
