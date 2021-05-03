@@ -4,23 +4,29 @@ import { NG_VALIDATORS, FormControl, Validator, AbstractControl } from '@angular
 
 function validateEndtimeFactory(startTime : string) {
   return (c: FormControl) => {
-    let start = startTime.split(":");
-    let end = c.value.split(":");
+    if (c.value) {
+      let start = startTime.split(":");
+      let end = c.value.split(":");
 
-    let startHr = parseInt(start[0]);
-    let startMin = parseInt(start[1]);
+      let startHr = parseInt(start[0]);
+      let startMin = parseInt(start[1]);
 
-    let endHr = parseInt(end[0]);
-    let endMin = parseInt(end[1]);
+      let endHr = parseInt(end[0]);
+      let endMin = parseInt(end[1]);
 
-    let startInMinutes = (startHr * 60) + startMin;
-    let endInMinutes = (endHr * 60) + endMin;
+      let startInMinutes = (startHr * 60) + startMin;
+      let endInMinutes = (endHr * 60) + endMin;
 
-    return endInMinutes > startInMinutes ? null : {
-      validateEndtime: {
-        valid: false
-      }
-    };
+      return endInMinutes > startInMinutes ? null : {
+        validateEndtime: {
+          valid: false
+        }
+      };
+    }
+
+    //If no endTime just return.
+    return null;
+
   };
 }
 

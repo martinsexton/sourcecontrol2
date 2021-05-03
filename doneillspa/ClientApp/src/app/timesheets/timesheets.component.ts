@@ -435,7 +435,16 @@ export class TimesheetComponent {
   }
 
   showEditTimesheet(entry: TimesheetEntry) {
-    this.timesheetEntryToEdit = entry;
+    this.timesheetEntryToEdit = new TimesheetEntry("", "", "", "", "", "");
+
+    this.timesheetEntryToEdit.code = entry.code;
+    this.timesheetEntryToEdit.day = entry.day;
+    this.timesheetEntryToEdit.details = entry.details;
+    this.timesheetEntryToEdit.endTime = entry.endTime;
+    this.timesheetEntryToEdit.id = entry.id;
+    this.timesheetEntryToEdit.startTime = entry.startTime;
+    this.timesheetEntryToEdit.userName = entry.userName;
+
     $("#myEditTimesheetModal").modal('show');
   }
 
@@ -445,10 +454,13 @@ export class TimesheetComponent {
   }
 
   updateTimesheetEntry() {
-    console.log('updating timesheetEntryToEdit')
     $("#myEditTimesheetModal").modal('hide');
     this._timesheetService.updateTimesheetEntry(this.timesheetEntryToEdit).subscribe(
       res => {
+        var startOfWeek = this.getStartOfWeek();
+        //Retrieve timesheets for given date
+        this.retrieveTimeSheetsForDate(startOfWeek);
+
       }, error => this.errors = error);
   }
 
@@ -505,9 +517,20 @@ export class TimesheetComponent {
             this.pushTimesheetToCalendarDays(entry);
             this.toggleDisplayAddTimesheet();
 
+
+            //Clear times. Leave Projects as it might be of benefit.
+            this.newEntry.startTime = null;
+            this.newEntry.endTime = null;
+            this.newEntry.details = null;
+
           }, error => {
             this.errors = error;
             this.userMessage = "Failed to save entry. Please check for duplicates."
+
+            //Clear times details on error, as this might have been caused by overlap
+            this.newEntry.startTime = null;
+            this.newEntry.endTime = null;
+
             $('.toast').toast('show');
           });
       }
