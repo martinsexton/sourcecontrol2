@@ -332,7 +332,7 @@ export class DashboardComponent implements OnInit{
   }
   canRejectTimesheet() {
     if (this.selectedTimesheet) {
-      return this.selectedTimesheet.status.toUpperCase() == 'SUBMITTED';
+      return this.selectedTimesheet.status.toUpperCase() == 'SUBMITTED' || this.selectedTimesheet.status.toUpperCase() == 'APPROVED';
     }
   }
 }
