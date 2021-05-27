@@ -26,7 +26,7 @@ export class ProjectHealthComponent {
   public pageLimit: number = 10;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService) {
-    this._projectService.getProjects().subscribe(result => {
+    this._projectService.getActiveProjects().subscribe(result => {
       this.projects = result;
       //By default select first client
       this.setupProjectsForCurrentPage();

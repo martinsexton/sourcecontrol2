@@ -41,6 +41,20 @@ namespace doneillspa.Controllers
             return projectDtos;
         }
 
+        [HttpGet]
+        [Route("api/activeproject")]
+        public IEnumerable<ProjectDto> GetActiveProjects()
+        {
+            List<ProjectDto> projectDtos = new List<ProjectDto>();
+
+            IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).Where(b => b.IsActive).OrderBy(b => b.Name).ToList();
+            foreach (Project p in projects)
+            {
+                projectDtos.Add(_mapper.Map<ProjectDto>(p));
+            }
+            return projectDtos;
+        }
+
         [HttpDelete]
         [Route("api/project/{id}")]
         public JsonResult Delete(long id)

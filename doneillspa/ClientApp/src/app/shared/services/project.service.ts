@@ -70,6 +70,19 @@ export class ProjectService extends HttpServiceBase  {
       .catch(this.handleError);
   }
 
+  getActiveProjects() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Project[]>(this._baseurl + 'api/activeproject',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      })
+      .retry(5)
+      .catch(this.handleError);
+  }
+
   getProjectEffort(code : string) {
     let authToken = localStorage.getItem('auth_token');
 
