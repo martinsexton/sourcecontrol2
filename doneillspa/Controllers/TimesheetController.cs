@@ -49,6 +49,64 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
+        [Route("api/submittedtimesheet")]
+        public IEnumerable<TimesheetDto> GetSubmittedTimesheets()
+        {
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t =>t.Status == TimesheetStatus.Submitted).OrderByDescending(r => r.WeekStarting);
+            foreach (Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+            return timesheetsDtos;
+        }
+
+        [HttpGet]
+        [Route("api/approvedtimesheet")]
+        public IEnumerable<TimesheetDto> GetApprovedTimesheets()
+        {
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t => t.Status == TimesheetStatus.Approved && t.WeekStarting >= DateTime.Now.AddDays(-30)).OrderByDescending(r => r.WeekStarting);
+            foreach (Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+            return timesheetsDtos;
+        }
+
+
+        [HttpGet]
+        [Route("api/archievedtimesheet")]
+        public IEnumerable<TimesheetDto> GetArchievedTimesheets()
+        {
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t => t.Status == TimesheetStatus.Approved && t.WeekStarting < DateTime.Now.AddDays(-30)).OrderByDescending(r => r.WeekStarting);
+            foreach (Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+            return timesheetsDtos;
+        }
+
+
+        [HttpGet]
+        [Route("api/rejectedtimesheet")]
+        public IEnumerable<TimesheetDto> GetRejectedTimesheets()
+        {
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t => t.Status == TimesheetStatus.Rejected).OrderByDescending(r => r.WeekStarting);
+            foreach (Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+            return timesheetsDtos;
+        }
+
+        [HttpGet]
         [Route("api/timesheet/{id}")]
         public JsonResult Get(long id)
         {

@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit{
     this.loading = false;
     $('[data-toggle="tooltip"]').tooltip();
     //Retrieve Default list of tui Timesheets For display 
-    this._timesheetService.getTimesheets().subscribe(result => {
+    this._timesheetService.getSubmittedTimesheets().subscribe(result => {
       this.timesheets = result;
       //this.newTabClicked();
       this.submittedTabClicked();
@@ -126,23 +126,46 @@ export class DashboardComponent implements OnInit{
   }
 
   submittedTabClicked() {
-    this.activeTab = "Submitted";
-    this.setTimesheetsByState();
+    //Retrieve Default list of tui Timesheets For display 
+    this._timesheetService.getSubmittedTimesheets().subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Submitted";
+      if (this.timesheets.length > 0) {
+        this.setTimesheetsByState();
+      }
+    }, error => this.errors = error);
   }
 
   approvedTabClicked() {
-    this.activeTab = "Approved";
-    this.setTimesheetsByState();
+    //Retrieve Default list of tui Timesheets For display 
+    this._timesheetService.getApprovedTimesheets().subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Approved";
+      if (this.timesheets.length > 0) {
+        this.setTimesheetsByState();
+      }
+    }, error => this.errors = error);
+
   }
 
   rejectedTabClicked() {
-    this.activeTab = "Rejected";
-    this.setTimesheetsByState();
+    this._timesheetService.getRejectedTimesheets().subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Rejected";
+      if (this.timesheets.length > 0) {
+        this.setTimesheetsByState();
+      }
+    }, error => this.errors = error);
   }
 
   archievedTabClicked() {
-    this.activeTab = "Archieved";
-    this.setTimesheetsByState();
+    this._timesheetService.getArchievedTimesheets().subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Archieved";
+      if (this.timesheets.length > 0) {
+        this.setTimesheetsByState();
+      }
+    }, error => this.errors = error);
   }
   
 
@@ -298,31 +321,6 @@ export class DashboardComponent implements OnInit{
         console.log(res);
       },
       error => this.errors = error);
-  }
-
-  setSelectedDate() {
-    let newDate = new Date(this.selectedDate);
-
-    var startOfWeek = new Date();
-    startOfWeek.setDate(newDate.getDate() - (newDate.getDay() - 1));
-    startOfWeek.setMonth(newDate.getMonth());
-    startOfWeek.setFullYear(newDate.getFullYear());
-
-    //Retrieve Timesheets For display
-    this._timesheetService.getTimesheet(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate()).subscribe(result => {
-      this.timesheets = result;
-      //Clear filters
-      this.filteredTimesheets = null;
-      if (this.timesheets.length > 0) {
-        //this.refreshListOfUsers();
-        this.selectedTimesheet = this.timesheets[0];
-        this.selectedTsRow = 0;
-      } else {
-        //Clear the selected timesheet if no result found.
-        this.selectedTimesheet = null;
-        this.selectedTsRow = 0;
-      }
-    }, error => this.errors = error);
   }
 
   canApproveTimesheet() {
