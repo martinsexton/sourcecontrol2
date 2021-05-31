@@ -130,9 +130,7 @@ export class DashboardComponent implements OnInit{
     this._timesheetService.getSubmittedTimesheets().subscribe(result => {
       this.timesheets = result;
       this.activeTab = "Submitted";
-      if (this.timesheets.length > 0) {
-        this.setTimesheetsByState();
-      }
+      this.setTimesheetsByState();
     }, error => this.errors = error);
   }
 
@@ -141,9 +139,7 @@ export class DashboardComponent implements OnInit{
     this._timesheetService.getApprovedTimesheets().subscribe(result => {
       this.timesheets = result;
       this.activeTab = "Approved";
-      if (this.timesheets.length > 0) {
-        this.setTimesheetsByState();
-      }
+      this.setTimesheetsByState();
     }, error => this.errors = error);
 
   }
@@ -152,9 +148,7 @@ export class DashboardComponent implements OnInit{
     this._timesheetService.getRejectedTimesheets().subscribe(result => {
       this.timesheets = result;
       this.activeTab = "Rejected";
-      if (this.timesheets.length > 0) {
-        this.setTimesheetsByState();
-      }
+      this.setTimesheetsByState();
     }, error => this.errors = error);
   }
 
@@ -162,9 +156,7 @@ export class DashboardComponent implements OnInit{
     this._timesheetService.getArchievedTimesheets().subscribe(result => {
       this.timesheets = result;
       this.activeTab = "Archieved";
-      if (this.timesheets.length > 0) {
-        this.setTimesheetsByState();
-      }
+      this.setTimesheetsByState();
     }, error => this.errors = error);
   }
   
@@ -259,30 +251,9 @@ export class DashboardComponent implements OnInit{
   setTimesheetsByState() {
     this.filteredTimesheets = [];
     if (this.activeTab == "Archieved") {
-      var monthAgo = moment().subtract(1, "months");
-
       for (let item of this.timesheets) {
         if (item.status.toUpperCase() == "APPROVED") {
-          //if older than x weeks let them all appear under archieved tabs
-          var weekStarting = moment(item.weekStarting);
-
-          if (moment(weekStarting).isBefore(monthAgo)) {
-            this.filteredTimesheets.push(item);
-          }
-        }
-      }
-    }
-    else if (this.activeTab == "Approved") {
-      var monthAgo = moment().subtract(1, "months");
-
-      for (let item of this.timesheets) {
-        if (item.status.toUpperCase() == "APPROVED") {
-          //if older than x weeks let them all appear under archieved tabs
-          var weekStarting = moment(item.weekStarting);
-
-          if (moment(weekStarting).isAfter(monthAgo)) {
-            this.filteredTimesheets.push(item);
-          }
+          this.filteredTimesheets.push(item);
         }
       }
     }
