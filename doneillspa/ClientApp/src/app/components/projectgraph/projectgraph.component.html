@@ -21,7 +21,11 @@
 <div *ngIf="dataToPresent" class="'card mb-3 mt-3 div-to-stand-out'">
   <div class="card-header">Details For {{selectedProject.name}}</div>
   <div class="card-body">
-    Total Labour Costs: <span>&#8364;</span> {{totalLabourCosts}}<br>
+    <h6>Start Date:</h6>
+    {{selectedProject.startDate | date : "fullDate"}}<br /><br />
+    <h6>Total Labour Costs:</h6>
+    <span>&#8364;</span> {{totalLabourCosts}}<br /><br />
+    <h6>Duration in Weeks:</h6>
     Duration in Weeks: {{costsGraphData.weeks.length}}
   </div>
 </div>
