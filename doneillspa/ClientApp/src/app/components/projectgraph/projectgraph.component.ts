@@ -40,6 +40,7 @@ export class ProjectGraphComponent  {
   public dataToPresent = false;
   public costsGraphData: ProjectCostDto;
   public selectedProject: Project;
+  public totalLabourCosts: number = 0;
 
   public barChartLabels: string[] = [];
   public barChartType: string = 'bar';
@@ -60,6 +61,8 @@ export class ProjectGraphComponent  {
   }
 
   setupGraph(result: ProjectCostDto) {
+    //Reset counter each time.
+    this.totalLabourCosts = 0
     this.costsGraphData = result;
     this.barChartLabels = [];
     this.barChartData = [];
@@ -68,17 +71,18 @@ export class ProjectGraphComponent  {
       console.log('No data found');
       return;
     }
-    this.dataToPresent = true;
-
+    
     for (let wk of this.costsGraphData.weeks) {
       this.barChartLabels.push(wk);
     }
     let d: number[] = [];
     for (let cost of this.costsGraphData.costs) {
+      this.totalLabourCosts += cost;
       d.push(cost);
     }
     this.barChartData.push({ data: d, label: this.costsGraphData.projectName });
     this.loading = false;
+    this.dataToPresent = true;
   }
 
   // events
