@@ -59,8 +59,8 @@ export class ProjectGraphComponent  {
     //Retrive Graph Details for selected project
     this._projectService.getProjectEffort(project.code).subscribe(result => {
       this.setupGraph(result);
-      this.filterLabourCostForProject(project);
       this.loading = false;
+      this.filterLabourCostForProject(project);
     }, error => console.error(error));
   }
 
