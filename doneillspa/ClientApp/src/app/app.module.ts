@@ -29,6 +29,7 @@ import { ProjectGraphComponent } from './components/projectgraph/projectgraph.co
 
 import { LabourComponent } from './labour/labour.componenet';
 import { TimeSheetEntryListComponent } from './components/timesheetentrylist/timesheetentrylist.component';
+import { LabourDetailsComponent } from './components/labourdetails/labourdetails.component';
 import { TimeSheetListComponent } from './components/timesheetlist/timesheetlist.component';
 import { ProjectsListComponent } from './components/projectlist/projectlist.component';
 
@@ -58,6 +59,7 @@ import { AuthGuard } from './auth.guard';
     CounterComponent,
     FetchDataComponent,
     TimeSheetEntryListComponent,
+    LabourDetailsComponent,
     TimeSheetListComponent,
     ProjectsListComponent,
     RegistrationFormComponent,

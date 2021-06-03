@@ -3,6 +3,8 @@ import { Project } from '../../project';
 import { ProjectService } from '../../shared/services/project.service';
 import { ProjectCostDto } from '../../projectcostdto';
 import { TimesheetEntry } from '../../timesheetentry';
+import { TimesheetService } from '../../shared/services/timesheet.service';
+import { LabourWeek } from '../../labourweek';
 
 declare var $: any;
 
@@ -15,7 +17,7 @@ export class ProjectGraphComponent  {
   @Output() eventPublisher = new EventEmitter<Project>();
   public timesheetsEntries: TimesheetEntry[];
 
-  constructor(private _projectService: ProjectService) {}
+  constructor(private _projectService: ProjectService, private _timesheetService : TimesheetService) {}
 
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -41,6 +43,7 @@ export class ProjectGraphComponent  {
   public costsGraphData: ProjectCostDto;
   public selectedProject: Project;
   public totalLabourCosts: number = 0;
+  public labourWeeks: LabourWeek[] = [];
 
   public barChartLabels: string[] = [];
   public barChartType: string = 'bar';
@@ -56,8 +59,38 @@ export class ProjectGraphComponent  {
     //Retrive Graph Details for selected project
     this._projectService.getProjectEffort(project.code).subscribe(result => {
       this.setupGraph(result);
+      this.filterLabourCostForProject(project);
       this.loading = false;
     }, error => console.error(error));
+  }
+
+  filterLabourCostForProject(project) {
+    this._timesheetService.getLabourWeekDetailsForProject(project.code).subscribe(result => {
+      this.labourWeeks = result;
+
+      //Update Graph
+      if (this.labourWeeks) {
+        let data: number[] = [];
+        let data2: number[] = [];
+        let data3: number[] = [];
+        let data4: number[] = [];
+        let data5: number[] = [];
+
+        let cloneLabels = JSON.parse(JSON.stringify(this.barChartLabels));
+        let clone = JSON.parse(JSON.stringify(this.barChartData));
+
+        let growingLabourCost: number[] = [this.labourWeeks.length];
+        let totalamount: number = 0;
+        for (var index = 0; index < this.labourWeeks.length; index++) {
+          totalamount += this.labourWeeks[index].totalCost;
+
+          growingLabourCost[index] = totalamount;
+        }
+
+        this.selectedProject = project;
+      }
+
+    }, error => {});
   }
 
   setupGraph(result: ProjectCostDto) {

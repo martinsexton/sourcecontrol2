@@ -18,7 +18,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="dataToPresent" class="'card mb-3 mt-3 div-to-stand-out'">
+<!--<div *ngIf="dataToPresent" class="'card mb-3 mt-3 div-to-stand-out'">
   <div class="card-header">Details For {{selectedProject.name}}</div>
   <div class="card-body">
     <h6>Start Date:</h6>
@@ -28,14 +28,9 @@
     <h6>Duration in Weeks:</h6>
     Duration in Weeks: {{costsGraphData.weeks.length}}
   </div>
-</div>
+</div>-->
 
-<div *ngIf="!loading && !dataToPresent" class="'card mb-3 mt-3 div-to-stand-out'">
-  <div class="card-header">Project Costs For {{selectedProject.name}}</div>
-  <div class="card-body">
-    <img src="assets/images/nodata.png" class="img-responsive center" alt="...">
-  </div>
-</div>
+<labour-details [lb]="labourWeeks"></labour-details>
 
 <!-- Display Timesheet Details -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

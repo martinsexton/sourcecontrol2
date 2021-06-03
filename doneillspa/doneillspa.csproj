@@ -60,6 +60,7 @@
     <None Remove="ClientApp\src\app\certificate.ts" />
     <None Remove="ClientApp\src\app\components\certification\certification.component.ts" />
     <None Remove="ClientApp\src\app\client.ts" />
+    <None Remove="ClientApp\src\app\components\labourdetails\labourdetails.component.ts" />
     <None Remove="ClientApp\src\app\components\projectgraph\projectgraph.component.ts" />
     <None Remove="ClientApp\src\app\components\userdetails\userdetails.component.ts" />
     <None Remove="ClientApp\src\app\dashboard\dashboard.component.ts" />
@@ -117,6 +118,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\certificate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\certification\certification.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\client.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\labourdetails\labourdetails.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\projectgraph\projectgraph.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\userdetails\userdetails.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\dashboard\dashboard.component.ts" />

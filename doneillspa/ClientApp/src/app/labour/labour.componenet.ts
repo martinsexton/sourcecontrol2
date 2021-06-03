@@ -39,7 +39,7 @@ export class LabourComponent {
     { data: [], label: 'Week 1' }, { data: [], label: 'Week 2' }, { data: [], label: 'Week 3' }, { data: [], label: 'Week 4' }, { data: [], label: 'Week 5' }
   ];
 
-  public labourWeeks: LabourWeek[];
+  public labourWeeks: LabourWeek[] = [];
   public errors: string;
   public projects: Project[];
   public selectedProject: Project;
@@ -108,7 +108,6 @@ export class LabourComponent {
   }
 
   filterLabourCostForProject(project) {
-    this.selectedProject = project;
     this._timesheetService.getLabourWeekDetailsForProject(project.code).subscribe(result => {
       this.labourWeeks = result;
 
@@ -153,7 +152,7 @@ export class LabourComponent {
             clone[index - 1].data = data;
           }
         }
-
+        this.selectedProject = project;
         this.barChartLabels = cloneLabels;
         this.barChartData = clone;
       }
