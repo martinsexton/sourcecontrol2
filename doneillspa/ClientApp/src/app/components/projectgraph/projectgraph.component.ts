@@ -61,7 +61,10 @@ export class ProjectGraphComponent  {
       this.setupGraph(result);
       this.loading = false;
       this.filterLabourCostForProject(project);
-    }, error => console.error(error));
+    }, error => {
+        this.loading = false;
+        console.error(error);
+    })
   }
 
   filterLabourCostForProject(project) {
