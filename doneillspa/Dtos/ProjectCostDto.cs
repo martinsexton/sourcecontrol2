@@ -7,8 +7,8 @@ namespace doneillspa.Models
 {
     public class ProjectCostDto
     {
-        public ICollection<string> Weeks { get; set; }
-        public ICollection<decimal> Costs { get; set; }
+        public IList<string> Weeks { get; set; }
+        public IList<decimal> Costs { get; set; }
 
         public string ProjectName { get; set; }
 

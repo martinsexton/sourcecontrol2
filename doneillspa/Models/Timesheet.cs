@@ -91,6 +91,9 @@ namespace doneillspa.Models
 
         public decimal CalculateHoursWorkedForProject(string code)
         {
+            double totalWorked = 0;
+            Dictionary<string, double> hoursPerDay = new Dictionary<string, double>();
+
             decimal hours = 0;
             ApprovedTseForProject approvedForProjectSpecification = new ApprovedTseForProject(code);
 
@@ -100,9 +103,42 @@ namespace doneillspa.Models
                 if (!approvedForProjectSpecification.IsSatisfied(tse))
                     continue;
 
-                hours += tse.DurationInHours();
+                if (!hoursPerDay.ContainsKey(tse.Day))
+                {
+                    hoursPerDay.Add(tse.Day, tse.DurationInHours());
+                }
+                else
+                {
+                    double totalHours = hoursPerDay[tse.Day];
+                    totalHours += tse.DurationInHours();
+                    hoursPerDay[tse.Day] = totalHours;
+                }
             }
-            return hours;
+
+            RemoveLunchBreak(hoursPerDay);
+
+            foreach (var item in hoursPerDay)
+            {
+                totalWorked += item.Value;
+
+            }
+
+            return (decimal)totalWorked;
+        }
+
+        private void RemoveLunchBreak(Dictionary<string, double> hoursPerDay)
+        {
+            //Update each of the entries to remove 30 mins for days where engineer worked >= 5 hours
+            foreach (string key in hoursPerDay.Keys.ToList())
+            {
+                double hoursWorked = hoursPerDay[key];
+                if (((key.Equals("Sat") || key.Equals("Sun")) && hoursWorked > (5))
+                    || (!(key.Equals("Sat") || key.Equals("Sun")) && hoursWorked >= (5)))
+                {
+                    hoursWorked = hoursWorked - 0.5;
+                    hoursPerDay[key] = hoursWorked;
+                }
+            }
         }
 
         public void RecordAnnualLeaveForDay(DayOfWeek day)

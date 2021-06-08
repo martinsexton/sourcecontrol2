@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using doneillspa.DataAccess;
 using doneillspa.Factories;
 using doneillspa.Helpers;
@@ -80,11 +81,26 @@ namespace doneillspa.Services
             IEnumerable<Timesheet> timesheets = _repository.GetTimesheets();
             foreach (Timesheet ts in timesheets.AsQueryable())
             {
-                if (approvedTimesheetSpecification.IsSatisfied(ts) && !costs.weekAlreadyRecorded(ts.WeekStarting.ToShortDateString()))
+                if (approvedTimesheetSpecification.IsSatisfied(ts))
                 {
                     double rate = _repository.GetRateForTimesheet(ts);
-                    costs.addWeek(ts.WeekStarting.ToShortDateString());
-                    costs.addCost(ts.CalculateHoursWorkedForProject(code) * (decimal)rate);
+
+                    if (!costs.weekAlreadyRecorded(ts.WeekStarting.ToShortDateString()))
+                    {                     
+                        costs.addWeek(ts.WeekStarting.ToShortDateString());
+                        costs.addCost(ts.CalculateHoursWorkedForProject(code) * (decimal)rate);
+                    }
+                    else
+                    {
+                        //Need to find the index in the ICollection to update costs for a given week.
+                        int index = costs.Weeks.IndexOf(ts.WeekStarting.ToShortDateString());
+                        decimal existingCosts = costs.Costs.ElementAt(index);
+                        existingCosts += ts.CalculateHoursWorkedForProject(code) * (decimal)rate;
+                        //Need to update value at a specific index.
+                        costs.Costs.RemoveAt(index);
+                        costs.Costs.Insert(index, existingCosts);
+                    }
+
                 }
             }
 
