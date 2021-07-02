@@ -7,7 +7,8 @@ trigger:
   branches:
     include:
     - master
-    - develop
+    exclude:
+    - upgrade-branch
 
 pool:
   vmImage: 'VS2017-Win2016'
