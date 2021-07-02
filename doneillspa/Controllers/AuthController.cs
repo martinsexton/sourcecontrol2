@@ -33,7 +33,7 @@ namespace doneillspa.Controllers
         {
             JsonResult result;
             var expiresIn = TimeSpan.FromDays(7);
-            //var expiresIn = TimeSpan.FromSeconds(10);  
+            //var expiresIn = TimeSpan.FromSeconds(10);
 
             var identity = await GetClaimsIdentity(credentials.FirstName+credentials.Surname.Replace(" ", string.Empty), credentials.Password);
             if (identity == null)
