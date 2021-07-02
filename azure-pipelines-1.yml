@@ -4,11 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-  branches:
-    include:
-    - upgrade-branch
-    exclude:
-    - master
+- upgrade-branch
 
 pool:
   vmImage: 'VS2017-Win2016'
