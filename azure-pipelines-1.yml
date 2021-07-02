@@ -1,0 +1,51 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+  branches:
+    include:
+    - upgrade-branch
+
+pool:
+  vmImage: 'VS2017-Win2016'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@0
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+# Node.js tool installer
+# Finds or downloads and caches the specified version spec of Node.js and adds it to the PATH
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.11.1' 
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+     **\$(BuildConfiguration)\*test*.dll
+     **\$(BuildConfiguration)\**\*test*.dll
+     !**\*Microsoft.VisualStudio.TestPlatform*
+     !**\obj\**
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+#New Task Added to publish build artifacts so release pipe lines can work
+- task: PublishBuildArtifacts@1
