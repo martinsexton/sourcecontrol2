@@ -8,6 +8,7 @@ import { TimesheetNote } from '../../timesheetnote';
 import { HttpServiceBase } from './httpservicebase';
 import { LabourRate } from '../../labourrate';
 import { LabourWeek } from '../../labourweek';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TimesheetService extends HttpServiceBase{
@@ -193,10 +194,10 @@ export class TimesheetService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
-  getLabourWeekDetailsForProject(project) {
+  getLabourWeekDetailsForProject(project): Observable<LabourWeek[]>{
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/labourdetails/project/' + project,
+    return this._httpClient.get<LabourWeek[]>(this._baseurl + 'api/labourdetails/project/' + project,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
