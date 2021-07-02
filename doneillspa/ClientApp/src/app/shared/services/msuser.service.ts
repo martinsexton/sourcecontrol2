@@ -15,6 +15,7 @@ import { HttpServiceBase } from './httpservicebase';
 import { EmailNotification } from '../../emailnotification';
 import { HolidayRequest } from '../../holidayrequest';
 import { PasswordReset } from '../../passwordreset';
+import { Timesheet } from '../../timesheet';
 
 @Injectable()
 export class MsUserService extends HttpServiceBase{
@@ -81,7 +82,7 @@ export class MsUserService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
-  getUsers() {
+  getUsers(): Observable<ApplicationUser[]>{
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/',
@@ -208,10 +209,10 @@ export class MsUserService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
-  retrieveTimesheets(id : string) {
+  retrieveTimesheets(id: string): Observable<Timesheet[]>{
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get(this._baseurl + 'api/user/' + id + '/timesheets',
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/user/' + id + '/timesheets',
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
