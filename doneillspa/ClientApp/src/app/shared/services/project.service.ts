@@ -9,6 +9,7 @@ import { ProjectCostDto } from '../../projectcostdto';
 import { HttpServiceBase } from './httpservicebase';
 import { LabourRate } from '../../labourrate';
 import { NonChargeableTime } from '../../nonchargeabletime';
+import { TimesheetEntry } from '../../timesheetentry';
 
 @Injectable()
 export class ProjectService extends HttpServiceBase  {
@@ -31,10 +32,10 @@ export class ProjectService extends HttpServiceBase  {
       .catch(this.handleError);
   }
 
-  getClients() {
+  getClients(): Observable<Client[]>{
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<Project[]>(this._baseurl + 'api/client',
+    return this._httpClient.get<Client[]>(this._baseurl + 'api/client',
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
@@ -83,10 +84,10 @@ export class ProjectService extends HttpServiceBase  {
       .catch(this.handleError);
   }
 
-  getProjectEffort(code : string) {
+  getProjectEffort(code: string): Observable<ProjectCostDto>{
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<ProjectCostDto[]>(this._baseurl + 'api/projectcost/'+code,
+    return this._httpClient.get<ProjectCostDto>(this._baseurl + 'api/projectcost/'+code,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
@@ -96,13 +97,13 @@ export class ProjectService extends HttpServiceBase  {
       .catch(this.handleError);
   }
 
-  getTimesheetEntriesForProjectAndWeek(code : string, week : string) {
+  getTimesheetEntriesForProjectAndWeek(code: string, week: string): Observable<TimesheetEntry[]>{
     console.log('Find timesheet entries for ' + code + ' and week: ' + week);
     let authToken = localStorage.getItem('auth_token');
 
     console.log('Get timesheet entries for week: ' + week);
 
-    return this._httpClient.get<ProjectCostDto[]>(this._baseurl + 'api/labourdetails/project/timesheetentries/' + code + '/' + week,
+    return this._httpClient.get<TimesheetEntry[]>(this._baseurl + 'api/labourdetails/project/timesheetentries/' + code + '/' + week,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
