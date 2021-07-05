@@ -18,6 +18,7 @@ namespace doneillspa.Models
         public Client(string name)
         {
             Name = name;
+            IsActive = true;
         }
 
         public void AddProject(Project proj)
