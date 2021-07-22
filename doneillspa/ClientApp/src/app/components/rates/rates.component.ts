@@ -95,8 +95,6 @@ export class RatesComponent {
     roles.push("Supervisor");
     roles.push("ChargeHand");
     roles.push("ElectR1");
-    roles.push("ElectR2");
-    roles.push("ElectR3");
     roles.push("Temp");
     roles.push("First Year Apprentice");
     roles.push("Second Year Apprentice");
@@ -105,6 +103,8 @@ export class RatesComponent {
     roles.push("Loc1");
     roles.push("Loc2");
     roles.push("Loc3");
+    roles.push("Electrical Engineer");
+    roles.push("Fire Engineer");
 
     return roles;
   }
