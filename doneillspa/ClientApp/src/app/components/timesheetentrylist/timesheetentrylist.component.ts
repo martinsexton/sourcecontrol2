@@ -101,6 +101,12 @@ export class TimeSheetEntryListComponent {
     else if (tse.code == 'NC3') {
       return "DON.ELEC STAFF / MGMT MEETINGS";
     }
+    else if (tse.code == 'NC4') {
+      return "Sick Day";
+    }
+    else if (tse.code == 'NC5') {
+      return "Doctors Appointment";
+    }
     else {
       return tse.code;
     }
