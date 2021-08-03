@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { ApplicationUser } from '../../applicationuser';
 import { MsUserService } from '../../shared/services/msuser.service';
 
+declare var $: any;
+
 @Component({
   selector: 'user-details',
   templateUrl: './userdetails.component.html',
@@ -17,19 +19,14 @@ export class UserDetailsComponent {
     return this.user.isEnabled;
   }
 
-  enableUser() {
-    this.user.isEnabled = true;
-    this._msuserService.updateUser(this.user).subscribe(
-      result => {
-        console.info(result);
-      });
+  displayUserDetailsForEdit(project) {
+    $("#myUserModal").modal('show');
   }
 
-  disableUser() {
-    this.user.isEnabled = false;
+  updateUser() {
     this._msuserService.updateUser(this.user).subscribe(
       result => {
-        console.info(result);
+        $("#myUserModal").modal('hide');
       });
   }
 }

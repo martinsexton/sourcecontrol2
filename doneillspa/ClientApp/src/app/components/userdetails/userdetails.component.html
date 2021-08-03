@@ -5,11 +5,47 @@
     <p class="card-text">{{user.email}}</p>
     <p class="card-text">{{user.phoneNumber}}</p>
     <p class="card-text">{{user.role}}</p>
-    <button *ngIf="isUserEnabled() == false" class="btn btn-primary" type="button" (click)="enableUser()">
+    <!--<button *ngIf="isUserEnabled() == false" class="btn btn-primary" type="button" (click)="enableUser()">
       Enable User
     </button>
     <button *ngIf="isUserEnabled() == true" class="btn btn-primary" type="button" (click)="disableUser()">
       Disable User
+    </button>-->
+    <button class="btn btn-primary" type="button" (click)="displayUserDetailsForEdit()">
+      Edit User
     </button>
+  </div>
+</div>
+<!-- Display User Details Modal -->
+<div *ngIf="user" class="modal fade" id="myUserModal" tabindex="-1" role="dialog" aria-labelledby="myUserModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myUserModalLabel">User Details</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" [(ngModel)]="user.email" name="email" class="form-control" id="email">
+          </div>
+          <div class="form-group">
+            <label for="email">Mobile</label>
+            <input type="text" [(ngModel)]="user.phoneNumber" name="Mobile" class="form-control" id="Mobile">
+          </div>
+          <div class="form-group">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" [checked]="user.isEnabled" class="custom-control-input" id="userIsActive" name="userIsActive" [(ngModel)]="user.isEnabled">
+              <label class="custom-control-label" for="userIsActive">Active</label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button (click)="updateUser()" class="btn btn-primary">Update User Details</button>
+      </div>
+    </div>
   </div>
 </div>

@@ -83,6 +83,8 @@ namespace doneillspa.Controllers
         {
             ApplicationUser user = GetUserById(p.Id.ToString()).Result;
             user.IsEnabled = p.IsEnabled;
+            user.Email = p.Email;
+            user.PhoneNumber = p.PhoneNumber;
 
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             if (result.Result.Succeeded)
@@ -99,7 +101,9 @@ namespace doneillspa.Controllers
         [Route("api/user")]
         public IEnumerable<ApplicationUserDto> Get()
         {
-            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).Include(r => r.HolidayRequests).ToList();
+            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications)
+                .Include(r => r.HolidayRequests)
+                .OrderBy(r => r.NormalizedUserName).ToList();
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
 
