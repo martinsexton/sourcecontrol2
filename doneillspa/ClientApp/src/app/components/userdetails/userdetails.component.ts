@@ -19,7 +19,7 @@ export class UserDetailsComponent {
     return this.user.isEnabled;
   }
 
-  displayUserDetailsForEdit(project) {
+  displayUserDetailsForEdit() {
     $("#myUserModal").modal('show');
   }
 
