@@ -47,7 +47,7 @@ export class LabourComponent {
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
     this.loadingLabourDetails = true;
-    this._projectService.getProjects().subscribe(result => {
+    this._projectService.getActiveProjects().subscribe(result => {
       this.loadingLabourDetails = false;
       this.projects = result;
       this.selectedProject = this.projects[0];

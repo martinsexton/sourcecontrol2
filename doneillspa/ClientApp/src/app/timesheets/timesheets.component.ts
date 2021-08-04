@@ -102,6 +102,129 @@ export class TimesheetComponent {
     this.retrieveTimeSheetsForDate(startOfWeek);
   }
 
+  getStatusOfActiveTimesheet(): string {
+    if (this.activeTimeSheet) {
+      return this.activeTimeSheet.status;
+    }
+    else {
+      return "";
+    }
+  }
+
+  calculateTotalDuration(): string {
+    let totalDuration: number = 0;
+
+    //We will need to separate timesheets into the differnt days and add
+    //totals for each day and if >= 5 hours substract 30 minutes for lunch breaks
+    let mondayMins: number = 0;
+    let tueMins: number = 0;
+    let wedMins: number = 0;
+    let thursMins: number = 0;
+    let friMins: number = 0;
+    let satMins: number = 0;
+    let sunMins: number = 0;
+
+    for (let item of this.monEntries) {
+      var start = new Date("2018-01-01 " + item.startTime);
+      var end = new Date("2018-01-01 " + item.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+      mondayMins += elapsedTimeInMins;
+    }
+
+    for (let item of this.tueEntries) {
+      var start = new Date("2018-01-01 " + item.startTime);
+      var end = new Date("2018-01-01 " + item.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+      tueMins += elapsedTimeInMins;
+    }
+
+    for (let item of this.wedEntries) {
+      var start = new Date("2018-01-01 " + item.startTime);
+      var end = new Date("2018-01-01 " + item.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+      wedMins += elapsedTimeInMins;
+    }
+
+    for (let item of this.thursEntries) {
+      var start = new Date("2018-01-01 " + item.startTime);
+      var end = new Date("2018-01-01 " + item.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+      thursMins += elapsedTimeInMins;
+    }
+
+    for (let item of this.friEntries) {
+      var start = new Date("2018-01-01 " + item.startTime);
+      var end = new Date("2018-01-01 " + item.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+      friMins += elapsedTimeInMins;
+    }
+
+    for (let item of this.satEntries) {
+      var start = new Date("2018-01-01 " + item.startTime);
+      var end = new Date("2018-01-01 " + item.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+      satMins += elapsedTimeInMins;
+    }
+
+    for (let item of this.sunEntries) {
+      var start = new Date("2018-01-01 " + item.startTime);
+      var end = new Date("2018-01-01 " + item.endTime);
+
+      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+      var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+      sunMins += elapsedTimeInMins;
+    }
+
+    //If worked >= 5 hours for a day subtract 30 mins.
+    if (mondayMins >= (5 * 60)) {
+      mondayMins = mondayMins - 30;
+    }
+    if (tueMins >= (5 * 60)) {
+      tueMins = tueMins - 30;
+    }
+    if (wedMins >= (5 * 60)) {
+      wedMins = wedMins - 30;
+    }
+    if (thursMins >= (5 * 60)) {
+      thursMins = thursMins - 30;
+    }
+    if (friMins >= (5 * 60)) {
+      friMins = friMins - 30;
+    }
+    if (satMins > (5 * 60)) {
+      satMins = satMins - 30;
+    }
+    if (sunMins > (5 * 60)) {
+      sunMins = sunMins - 30;
+    }
+    totalDuration = mondayMins + tueMins + wedMins + thursMins + friMins + satMins + sunMins;
+
+    var hours = Math.floor(totalDuration / 60);
+    var minutes = totalDuration % 60;
+
+    return hours + ':' + minutes;
+  }
+
+
   retrieveContrators() {
     this._msuserService.getContractors().subscribe(result => {
       this.contractors = result;
