@@ -56,6 +56,7 @@
     <None Remove="ClientApp\src\app\account\registration-form\registration-form.component.ts" />
     <None Remove="ClientApp\src\app\app.routing.ts" />
     <None Remove="ClientApp\src\app\ApplicationUser.ts" />
+    <None Remove="ClientApp\src\app\assignmentdetails\assignmentdetails.component.ts" />
     <None Remove="ClientApp\src\app\auth.guard.ts" />
     <None Remove="ClientApp\src\app\certificate.ts" />
     <None Remove="ClientApp\src\app\components\certification\certification.component.ts" />
@@ -80,6 +81,7 @@
     <None Remove="ClientApp\src\app\components\notification\notification.component.ts" />
     <None Remove="ClientApp\src\app\passwordreset.ts" />
     <None Remove="ClientApp\src\app\project.ts" />
+    <None Remove="ClientApp\src\app\projectassignment.ts" />
     <None Remove="ClientApp\src\app\projectcostdto.ts" />
     <None Remove="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
     <None Remove="ClientApp\src\app\components\projectlist\projectlist.component.ts" />
@@ -114,6 +116,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\account\registration-form\registration-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\app.routing.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\applicationuser.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\assignmentdetails\assignmentdetails.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth.guard.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\certificate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\certification\certification.component.ts" />
@@ -138,6 +141,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\notification\notification.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\passwordreset.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\projectassignment.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projectcostdto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\projectlist\projectlist.component.ts" />

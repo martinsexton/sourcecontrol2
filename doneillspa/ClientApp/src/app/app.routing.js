@@ -13,6 +13,7 @@ var labour_componenet_1 = require("./labour/labour.componenet");
 var userdashboard_component_1 = require("./userdashboard/userdashboard.component");
 var registration_form_component_1 = require("./account/registration-form/registration-form.component");
 var projecthealth_component_1 = require("./projecthealth/projecthealth.component");
+var assignmentdetails_component_1 = require("./assignmentdetails/assignmentdetails.component");
 var login_form_component_1 = require("./account/login-form/login-form.component");
 var auth_guard_1 = require("./auth.guard");
 var appRoutes = [
@@ -28,7 +29,8 @@ var appRoutes = [
     { path: 'supervisor', component: supervisor_component_1.SupervisorComponent, canActivate: [auth_guard_1.AuthGuard] },
     { path: 'labour', component: labour_componenet_1.LabourComponent, canActivate: [auth_guard_1.AuthGuard] },
     { path: 'userdashboard', component: userdashboard_component_1.UserDashboardComponent, canActivate: [auth_guard_1.AuthGuard] },
-    { path: 'projecthealth', component: projecthealth_component_1.ProjectHealthComponent, canActivate: [auth_guard_1.AuthGuard] }
+    { path: 'projecthealth', component: projecthealth_component_1.ProjectHealthComponent, canActivate: [auth_guard_1.AuthGuard] },
+    { path: 'assignment', component: assignmentdetails_component_1.AssignmentDetailsComponent, canActivate: [auth_guard_1.AuthGuard] }
 ];
 exports.routing = router_1.RouterModule.forRoot(appRoutes);
 //# sourceMappingURL=app.routing.js.map

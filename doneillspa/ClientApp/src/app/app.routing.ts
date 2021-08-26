@@ -15,6 +15,7 @@ import { LabourComponent } from './labour/labour.componenet';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { ProjectHealthComponent } from './projecthealth/projecthealth.component';
+import { AssignmentDetailsComponent } from './assignmentdetails/assignmentdetails.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
 import { AuthGuard } from './auth.guard';
 
@@ -32,7 +33,8 @@ const appRoutes: Routes = [
   { path: 'supervisor', component: SupervisorComponent, canActivate: [AuthGuard] },
   { path: 'labour', component: LabourComponent, canActivate: [AuthGuard] },
   { path: 'userdashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'projecthealth', component: ProjectHealthComponent, canActivate: [AuthGuard] }
+  { path: 'projecthealth', component: ProjectHealthComponent, canActivate: [AuthGuard] },
+  { path: 'assignment', component: AssignmentDetailsComponent, canActivate: [AuthGuard] }
 ];
 
 

@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <form class="form-inline my-2 my-lg-0">
+    <div class="form-group">
+      <label for="selectedDate">Selet Date</label>
+      <input type="date" id="selectedDate" name="selectedDate" class="form-control" [(ngModel)]="selectedDate">
+    </div>
+    <div class="form-group">
+      <button type="button" class="btn btn-secondary" (click)="displayAssignmentsForSelectedWeek()">Display Assignments</button>
+    </div>
+  </form>
+  <div class="row">
+    <div *ngFor="let pn of assignedProjects" class="col-4">
+      <div class="card mb-3 mt-3 div-to-stand-out">
+        <div class="card-header">Assignments For {{pn.code | uppercase}}</div>
+        <div class="card-body">
+          <div *ngFor="let user of pn.users">{{user}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -115,10 +115,11 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/timesheet/week/{year}/{month}/{day}")]
-        public IEnumerable<TimesheetDto> Get(int year, int month, int day)
+        public IEnumerable<ProjectAssignmentDto> Get(int year, int month, int day)
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
             IEnumerable<Timesheet> timesheets = new List<Timesheet>();
+            IList<ProjectAssignmentDto> assignments = new List<ProjectAssignmentDto>();
 
             //If no date provide, then bring back all timesheets
             if (year == 0 || year == 1970)
@@ -133,9 +134,73 @@ namespace doneillspa.Controllers
 
             foreach (Timesheet ts in timesheets)
             {
-                timesheetsDtos.Add(ConvertToDto(ts));
+                if(ts.Status == TimesheetStatus.Approved)
+                {
+                    foreach (TimesheetEntry tse in ts.TimesheetEntries)
+                    {
+                        bool addProjectDetails = true;
+                        foreach (ProjectAssignmentDto dto in assignments)
+                        {
+                            if (dto.Code.Equals(tse.Code))
+                            {
+                                addProjectDetails = false;
+                            }
+                        }
+                        if (addProjectDetails)
+                        {
+                            if (tse.Code.Equals("NC1") || tse.Code.Equals("NC2") || tse.Code.Equals("NC3") || tse.Code.Equals("NC4") || tse.Code.Equals("NC5"))
+                            {
+                                continue;
+                            }
+                            ProjectAssignmentDto adto = new ProjectAssignmentDto();
+                            adto.Code = tse.Code;
+                            if (adto.Users == null)
+                            {
+                                adto.Users = new List<string>();
+                            }
+                            bool addUser = true;
+                            foreach (string user in adto.Users)
+                            {
+                                if (user.Equals(ts.Username))
+                                {
+                                    addUser = false;
+                                }
+                            }
+                            if (addUser)
+                            {
+                                adto.Users.Add(ts.Username);
+                            }
+                            assignments.Add(adto);
+                        }
+                        else
+                        {
+                            foreach (ProjectAssignmentDto dto in assignments)
+                            {
+                                if (dto.Code.Equals(tse.Code))
+                                {
+                                    if (dto.Users == null)
+                                    {
+                                        dto.Users = new List<string>();
+                                    }
+                                    bool addUser = true;
+                                    foreach (string user in dto.Users)
+                                    {
+                                        if (user.Equals(ts.Username))
+                                        {
+                                            addUser = false;
+                                        }
+                                    }
+                                    if (addUser)
+                                    {
+                                        dto.Users.Add(ts.Username);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            return timesheetsDtos;
+            return assignments;
 
         }
 

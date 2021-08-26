@@ -9,6 +9,7 @@ import { HttpServiceBase } from './httpservicebase';
 import { LabourRate } from '../../labourrate';
 import { LabourWeek } from '../../labourweek';
 import { Observable } from 'rxjs/Observable';
+import { ProjectAssignment } from '../../projectassignment';
 
 @Injectable()
 export class TimesheetService extends HttpServiceBase{
@@ -226,7 +227,7 @@ export class TimesheetService extends HttpServiceBase{
     headers = headers.append('Content-Type', 'application/json');
     headers = headers.append('Authorization', 'Bearer ' + authToken);
 
-    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/timesheet/week/' + year + '/' + month + '/' + day,
+    return this._httpClient.get<ProjectAssignment[]>(this._baseurl + 'api/timesheet/week/' + year + '/' + month + '/' + day,
       {
         headers
       })
