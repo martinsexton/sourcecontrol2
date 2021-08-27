@@ -5,7 +5,7 @@
       <input type="date" id="selectedDate" name="selectedDate" class="form-control" [(ngModel)]="selectedDate">
     </div>
     <div class="form-group">
-      <button type="button" class="btn btn-secondary" (click)="displayAssignmentsForSelectedWeek()">Display Assignments</button>
+      <button type="button" class="btn btn-primary" (click)="displayAssignmentsForSelectedWeek()">Display Assignments</button>
     </div>
   </form>
   <div class="row">
@@ -16,7 +16,7 @@
           <div *ngFor="let user of pn.users">{{user.userName}} Recorded {{durationAsHours(user)}} Hours</div>
         </div>
         <div class="card-footer">
-          <p>Total Hours: {{totalHoursAssigned(pn)}}</p>
+          <span class='badge badge-success'>Total Hours: {{ totalHoursAssigned(pn) }}</span>
         </div>
       </div>
     </div>
