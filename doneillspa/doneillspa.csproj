@@ -106,6 +106,7 @@
     <None Remove="ClientApp\src\app\components\timesheetlist\timesheetlist.component.ts" />
     <None Remove="ClientApp\src\app\timesheetnote.ts" />
     <None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
+    <None Remove="ClientApp\src\app\userassignmentdetails.ts" />
     <None Remove="ClientApp\src\app\userdashboard\userdashboard.component.ts" />
     <None Remove="Properties\PublishProfiles\doneillsa - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\doneillspa - Web Deploy.pubxml" />
@@ -167,6 +168,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\timesheetlist\timesheetlist.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheetnote.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\timesheets\timesheets.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\userassignmentdetails.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\userdashboard\userdashboard.component.ts" />
   </ItemGroup>
 

@@ -13,7 +13,10 @@
       <div class="card mb-3 mt-3 div-to-stand-out">
         <div class="card-header">Assignments For {{pn.code | uppercase}}</div>
         <div class="card-body">
-          <div *ngFor="let user of pn.users">{{user}}</div>
+          <div *ngFor="let user of pn.users">{{user.userName}} Recorded {{durationAsHours(user)}} Hours</div>
+        </div>
+        <div class="card-footer">
+          <p>Total Hours: {{totalHoursAssigned(pn)}}</p>
         </div>
       </div>
     </div>

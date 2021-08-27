@@ -8,6 +8,6 @@ namespace doneillspa.Dtos
     public class ProjectAssignmentDto
     {
         public string Code { get; set; }
-        public ICollection<string> Users { get; set; }
+        public ICollection<UserAssignmentDetails> Users { get; set; }
     }
 }

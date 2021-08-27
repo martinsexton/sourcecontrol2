@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
@@ -114,7 +115,7 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
-        [Route("api/timesheet/week/{year}/{month}/{day}")]
+        [Route("api/projectassignments/week/{year}/{month}/{day}")]
         public IEnumerable<ProjectAssignmentDto> Get(int year, int month, int day)
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
@@ -134,65 +135,101 @@ namespace doneillspa.Controllers
 
             foreach (Timesheet ts in timesheets)
             {
-                if(ts.Status == TimesheetStatus.Approved)
+                //We only are concerned with approved timesheets
+                if (ts.Status != TimesheetStatus.Approved) continue;
+
+                foreach (TimesheetEntry tse in ts.TimesheetEntries)
                 {
-                    foreach (TimesheetEntry tse in ts.TimesheetEntries)
+                    if (!projectCodeAlreadyRecorded(assignments, tse.Code))
                     {
-                        bool addProjectDetails = true;
+                        //For none chargeable codes we ignore.
+                        if (!isProjectCode(tse.Code))
+                        {
+                            continue;
+                        }
+                        ProjectAssignmentDto adto = new ProjectAssignmentDto();
+                        adto.Code = tse.Code;
+                        if (adto.Users == null)
+                        {
+                            adto.Users = new List<UserAssignmentDetails>();
+                        }
+                        bool addUser = true;
+                        foreach (UserAssignmentDetails user in adto.Users)
+                        {
+                            if (user.UserName.Equals(ts.Username))
+                            {
+                                addUser = false;
+                            }
+                        }
+                        if (addUser)
+                        {
+                            UserAssignmentDetails newUserDetails = new UserAssignmentDetails();
+                            newUserDetails.UserName = ts.Username;
+                            DateTime now = DateTime.UtcNow;
+                            string[] startTime = tse.StartTime.Split(":");
+                            string[] endTime = tse.EndTime.Split(":");
+
+                            DateTime start = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(startTime[0]), Int32.Parse(startTime[1]), 0);
+                            DateTime end = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(endTime[0]), Int32.Parse(endTime[1]), 0);
+
+                            TimeSpan varTime = (DateTime)end - (DateTime)start;
+
+                            newUserDetails.TotalMinutes = (int)varTime.TotalMinutes;
+                            adto.Users.Add(newUserDetails);
+                        }
+                        assignments.Add(adto);
+                    }
+                    else
+                    {
                         foreach (ProjectAssignmentDto dto in assignments)
                         {
                             if (dto.Code.Equals(tse.Code))
                             {
-                                addProjectDetails = false;
-                            }
-                        }
-                        if (addProjectDetails)
-                        {
-                            if (tse.Code.Equals("NC1") || tse.Code.Equals("NC2") || tse.Code.Equals("NC3") || tse.Code.Equals("NC4") || tse.Code.Equals("NC5"))
-                            {
-                                continue;
-                            }
-                            ProjectAssignmentDto adto = new ProjectAssignmentDto();
-                            adto.Code = tse.Code;
-                            if (adto.Users == null)
-                            {
-                                adto.Users = new List<string>();
-                            }
-                            bool addUser = true;
-                            foreach (string user in adto.Users)
-                            {
-                                if (user.Equals(ts.Username))
+                                if (dto.Users == null)
                                 {
-                                    addUser = false;
+                                    dto.Users = new List<UserAssignmentDetails>();
                                 }
-                            }
-                            if (addUser)
-                            {
-                                adto.Users.Add(ts.Username);
-                            }
-                            assignments.Add(adto);
-                        }
-                        else
-                        {
-                            foreach (ProjectAssignmentDto dto in assignments)
-                            {
-                                if (dto.Code.Equals(tse.Code))
+                                bool addUser = true;
+                                foreach (UserAssignmentDetails user in dto.Users)
                                 {
-                                    if (dto.Users == null)
+                                    if (user.UserName.Equals(ts.Username))
                                     {
-                                        dto.Users = new List<string>();
+                                        addUser = false;
                                     }
-                                    bool addUser = true;
-                                    foreach (string user in dto.Users)
+                                }
+                                if (addUser)
+                                {
+                                    UserAssignmentDetails newUserDetails = new UserAssignmentDetails();
+                                    newUserDetails.UserName = ts.Username;
+                                    DateTime now = DateTime.UtcNow;
+                                    string[] startTime = tse.StartTime.Split(":");
+                                    string[] endTime = tse.EndTime.Split(":");
+
+                                    DateTime start = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(startTime[0]), Int32.Parse(startTime[1]), 0);
+                                    DateTime end = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(endTime[0]), Int32.Parse(endTime[1]), 0);
+
+                                    TimeSpan varTime = (DateTime)end - (DateTime)start;
+
+                                    newUserDetails.TotalMinutes = (int)varTime.TotalMinutes;
+                                    dto.Users.Add(newUserDetails);
+                                }
+                                else
+                                {
+                                    foreach (UserAssignmentDetails user in dto.Users)
                                     {
-                                        if (user.Equals(ts.Username))
+                                        if (user.UserName.Equals(ts.Username))
                                         {
-                                            addUser = false;
+                                            DateTime now = DateTime.UtcNow;
+                                            string[] startTime = tse.StartTime.Split(":");
+                                            string[] endTime = tse.EndTime.Split(":");
+
+                                            DateTime start = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(startTime[0]), Int32.Parse(startTime[1]), 0);
+                                            DateTime end = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(endTime[0]), Int32.Parse(endTime[1]), 0);
+
+                                            TimeSpan varTime = (DateTime)end - (DateTime)start;
+
+                                            user.TotalMinutes += (int)varTime.TotalMinutes;
                                         }
-                                    }
-                                    if (addUser)
-                                    {
-                                        dto.Users.Add(ts.Username);
                                     }
                                 }
                             }
@@ -202,6 +239,24 @@ namespace doneillspa.Controllers
             }
             return assignments;
 
+        }
+
+        private bool isProjectCode(string code)
+        {
+            return !(code.Equals("NC1") || code.Equals("NC2") || code.Equals("NC3") || code.Equals("NC4") || code.Equals("NC5"));
+        }
+
+        private bool projectCodeAlreadyRecorded(IList<ProjectAssignmentDto> assignments, string code)
+        {
+            bool projectAlreadyAdded = false;
+            foreach (ProjectAssignmentDto dto in assignments)
+            {
+                if (dto.Code.Equals(code))
+                {
+                    projectAlreadyAdded = true;
+                }
+            }
+            return projectAlreadyAdded;
         }
 
         [HttpGet]

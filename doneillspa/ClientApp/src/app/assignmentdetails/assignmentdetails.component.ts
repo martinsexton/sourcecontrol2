@@ -7,6 +7,7 @@ import { Timesheet } from '../timesheet';
 import { forEach } from '@angular/router/src/utils/collection';
 import { TimesheetNote } from '../timesheetnote';
 import { ProjectAssignment } from '../projectassignment';
+import { UserAssignmentDetails } from '../userassignmentdetails';
 
 declare var $: any;
 
@@ -25,7 +26,7 @@ export class AssignmentDetailsComponent {
   displayAssignmentsForSelectedWeek() {
     let sd = new Date(this.selectedDate);
 
-    this._timesheetService.getTimesheet(sd.getFullYear(), (sd.getMonth() + 1), sd.getDate()).subscribe(result => {
+    this._timesheetService.getProjectAssignments(sd.getFullYear(), (sd.getMonth() + 1), sd.getDate()).subscribe(result => {
       this.assignments = result;
       this.assignedProjects = [];
 
@@ -33,5 +34,22 @@ export class AssignmentDetailsComponent {
         this.assignedProjects.push(assignmentDetails);
       }
     }, error => {});
+  }
+
+  durationAsHours(userDetails: UserAssignmentDetails) : number {
+    return userDetails.totalMinutes / 60;
+  }
+
+  totalHoursAssigned(proj: ProjectAssignment) {
+    let totalAssigned: number = 0;
+    for (let userDetails of proj.users) {
+      totalAssigned += userDetails.totalMinutes;
+    }
+    if (totalAssigned > 0) {
+      return totalAssigned / 60;
+    }
+    else {
+      return 0;
+    }
   }
 }

@@ -221,13 +221,13 @@ export class TimesheetService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
-  getTimesheet(year: number, month: number, day: number) {
+  getProjectAssignments(year: number, month: number, day: number) {
     let authToken = localStorage.getItem('auth_token');
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/json');
     headers = headers.append('Authorization', 'Bearer ' + authToken);
 
-    return this._httpClient.get<ProjectAssignment[]>(this._baseurl + 'api/timesheet/week/' + year + '/' + month + '/' + day,
+    return this._httpClient.get<ProjectAssignment[]>(this._baseurl + 'api/projectassignments/week/' + year + '/' + month + '/' + day,
       {
         headers
       })
