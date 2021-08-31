@@ -24,53 +24,6 @@ namespace doneillspa.Services
             _userManager = userManager;
         }
 
-        public void RecordAnnualLeave(string userName, DateTime start, int numberOfDays)
-        {
-            ApplicationUser userToVerify = _userManager.FindByNameAsync(userName.ToUpper()).Result;
-            string role = _userManager.GetRolesAsync(userToVerify).Result.FirstOrDefault();
-
-            List<DateTime> startOfWeeks = new List<DateTime>();
-            List<Timesheet> timesheets = new List<Timesheet>();
-            Timesheet timesheet = null;
-
-            for (int i = 0; i < numberOfDays; i++)
-            {
-                DateTime startOfWeek = GetFirstDayOfWeek(start);
-
-                if (!startOfWeeks.Contains(startOfWeek)){
-                    startOfWeeks.Add(startOfWeek);
-
-                    timesheet = GetOrCreateTimesheet(userName, startOfWeek, role, userToVerify);
-                    if (!timesheets.Contains(timesheet))
-                    {
-                        timesheets.Add(timesheet);
-                    }
-                }
-                if(timesheet != null)
-                {
-                    if (!start.DayOfWeek.Equals(DayOfWeek.Sunday))
-                    {
-                        timesheet.RecordAnnualLeaveForDay(start.DayOfWeek);
-                    }
-                    //Increment date
-                    start = start.AddDays(1);
-                }
-            }
-
-            SaveTimesheetEntries(timesheets);
-        }
-
-        private Timesheet GetOrCreateTimesheet(string userName, DateTime startOfWeek, string role, ApplicationUser userToVerify)
-        {
-            Timesheet timesheet = _repository.GetTimesheetsByUser(userName).Where(ts => ts.WeekStarting.Date.Equals(startOfWeek.Date)).FirstOrDefault();
-            if (timesheet == null)
-            {
-                timesheet = TimesheetFactory.CreateTimesheet(userName, startOfWeek, role, userToVerify.Id);
-                _repository.InsertTimesheet(timesheet);
-            }
-            return timesheet;
-        }
-
         public ProjectCostDto DetermineProjectCosts(string code)
         {
             ProjectCostDto costs = new ProjectCostDto();
@@ -228,14 +181,6 @@ namespace doneillspa.Services
                     hoursWorked = hoursWorked - 0.5;
                     hoursPerDay[key] = hoursWorked;
                 }
-            }
-        }
-
-        private void SaveTimesheetEntries(List<Timesheet> timesheets)
-        {
-            foreach (Timesheet ts in timesheets)
-            {
-                _repository.UpdateTimesheet(ts);
             }
         }
 

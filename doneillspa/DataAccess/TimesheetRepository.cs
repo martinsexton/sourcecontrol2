@@ -50,10 +50,10 @@ namespace doneillspa.DataAccess
             return 0.0;
         }
 
-        public IEnumerable<Timesheet> GetTimesheetsByUser(string user)
+        public IEnumerable<Timesheet> GetTimesheetsByUserId(string userId)
         {
             return _context.Timesheet
-                .Where(b => b.Username.ToUpper().Equals(user.ToUpper()))
+                .Where(b => b.Owner.ToString() == userId)
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
                 .ToList();

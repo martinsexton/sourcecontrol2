@@ -9,7 +9,6 @@ namespace doneillspa.Services
 {
     public interface ITimesheetService
     {
-        void RecordAnnualLeave(string userId, DateTime start, int numberOfDays);
         LabourWeekDetail BuildLabourWeekDetails(Timesheet ts, List<LabourRate> Rates, string proj);
         ProjectCostDto DetermineProjectCosts(string code);
 

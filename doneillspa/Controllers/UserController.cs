@@ -210,11 +210,7 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            Task<ApplicationUser> user = GetUserById(id);
-
-            JsonResult result = new JsonResult(user.Result.UserName);
-
-            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheetsByUser(result.Value.ToString()).OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheetsByUserId(id).OrderByDescending(r => r.WeekStarting);
 
             foreach (Timesheet ts in timesheets)
             {
