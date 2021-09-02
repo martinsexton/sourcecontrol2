@@ -95,6 +95,7 @@ export class TimesheetComponent {
     var startOfWeek = this.getStartOfWeek();
 
     //Setting up default timesheet and timesheet entries
+
     this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek,'New');
     this.newEntry = new TimesheetEntry("", "", "", "", "","");
 
@@ -631,37 +632,11 @@ export class TimesheetComponent {
   addTimesheetEntry() {
     let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details, '');
     if (this.timesheetExists) {
-        this._timesheetService.addTimesheetEntry(this.activeTimeSheet.id, entry).subscribe(
-          res => {
-            //Update the entry with the primary key that has come back from server
-            entry.id = res as number;
-            this.activeTimeSheet.timesheetEntries.push(entry);
-
-            this.pushTimesheetToCalendarDays(entry);
-            this.toggleDisplayAddTimesheet();
-
-
-            //Clear times. Leave Projects as it might be of benefit.
-            this.newEntry.startTime = null;
-            this.newEntry.endTime = null;
-            this.newEntry.details = null;
-
-          }, error => {
-            this.errors = error;
-            this.userMessage = "Failed to save entry. Please check for duplicates."
-
-            //Clear times details on error, as this might have been caused by overlap
-            this.newEntry.startTime = null;
-            this.newEntry.endTime = null;
-
-            $('.toast').toast('show');
-          });
-      }
+      this.persistTimesheetEntry(entry);
+    }
     else {
-      this.pushTimesheetToCalendarDays(entry);
-      //Automatically save timesheet if it has not been saved already
-      this.saveTimesheet();
-      this.toggleDisplayAddTimesheet();
+      //Automatically save timesheet and persist entry if it has not been saved already
+      this.saveTimesheetAndEntry(entry);
     }
 
     
@@ -696,6 +671,7 @@ export class TimesheetComponent {
       this.activeTimeSheet.timesheetEntries.push(item);
     }
   }
+
   saveTimesheet() {
     //Populate timesheet object with entries
     this.populateTimesheet(this.monEntries);
@@ -715,6 +691,57 @@ export class TimesheetComponent {
         $("#myNewTimesheetModal").modal('hide');
       },
       error => this.errors = error);
+  }
+
+  saveTimesheetAndEntry(entry : TimesheetEntry) {
+    //Populate timesheet object with entries
+    this.populateTimesheet(this.monEntries);
+    this.populateTimesheet(this.tueEntries);
+    this.populateTimesheet(this.wedEntries);
+    this.populateTimesheet(this.thursEntries);
+    this.populateTimesheet(this.friEntries);
+    this.populateTimesheet(this.satEntries);
+    this.populateTimesheet(this.sunEntries);
+
+    this._timesheetService.saveTimesheet(this.activeTimeSheet).subscribe(
+      res => {
+        console.log(res);
+        this.timesheetExists = true;
+        this.activeTimeSheet.id = res as number;
+        this.timesheets.push(this.activeTimeSheet);
+
+        this.persistTimesheetEntry(entry);
+        $("#myNewTimesheetModal").modal('hide');
+      },
+      error => this.errors = error);
+  }
+
+  persistTimesheetEntry(entry: TimesheetEntry) {
+    this._timesheetService.addTimesheetEntry(this.activeTimeSheet.id, entry).subscribe(
+      res => {
+        //Update the entry with the primary key that has come back from server
+        entry.id = res as number;
+        this.activeTimeSheet.timesheetEntries.push(entry);
+
+        this.pushTimesheetToCalendarDays(entry);
+        this.toggleDisplayAddTimesheet();
+
+
+        //Clear times. Leave Projects as it might be of benefit.
+        this.newEntry.startTime = null;
+        this.newEntry.endTime = null;
+        this.newEntry.details = null;
+
+      }, error => {
+        this.errors = error;
+        this.userMessage = "Failed to save entry. Please check for duplicates."
+
+        //Clear times details on error, as this might have been caused by overlap
+        this.newEntry.startTime = null;
+        this.newEntry.endTime = null;
+
+        $('.toast').toast('show');
+      });
   }
 
   submitTimesheet() {
