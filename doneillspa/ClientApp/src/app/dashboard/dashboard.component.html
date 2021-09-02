@@ -49,8 +49,8 @@
               <!--Display List Of Timesheets Entries-->
               <timesheet-entry-list [owner]="selectedTimesheet"></timesheet-entry-list>
               <button *ngIf="selectedTimesheet" type="button" class="btn btn-primary" data-toggle="modal" (click)="addTimesheetNote()">Add Note</button>
-              <button *ngIf="canApproveTimesheet()" (click)="approveTimesheet()" class="btn btn-primary">Approve Timesheet</button>
-              <button *ngIf="canRejectTimesheet()" (click)="rejectTimesheet()" class="btn btn-primary">Reject Timesheet</button>
+              <button *ngIf="canApproveTimesheet()" (click)="approveTimesheet()" class="ml-2 btn btn-primary">Approve Timesheet</button>
+              <button *ngIf="canRejectTimesheet()" (click)="rejectTimesheet()" class="ml-2 btn btn-primary">Reject Timesheet</button>
             </div>
           </div>
         </div>
