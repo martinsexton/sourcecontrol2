@@ -126,73 +126,31 @@ export class TimesheetComponent {
     let sunMins: number = 0;
 
     for (let item of this.monEntries) {
-      var start = new Date("2018-01-01 " + item.startTime);
-      var end = new Date("2018-01-01 " + item.endTime);
-
-      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-      var elapsedTimeInMins = elapsedTimeInSec / 60;
-
-      mondayMins += elapsedTimeInMins;
+      mondayMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);
     }
 
     for (let item of this.tueEntries) {
-      var start = new Date("2018-01-01 " + item.startTime);
-      var end = new Date("2018-01-01 " + item.endTime);
-
-      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-      var elapsedTimeInMins = elapsedTimeInSec / 60;
-
-      tueMins += elapsedTimeInMins;
+      tueMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
     }
 
     for (let item of this.wedEntries) {
-      var start = new Date("2018-01-01 " + item.startTime);
-      var end = new Date("2018-01-01 " + item.endTime);
-
-      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-      var elapsedTimeInMins = elapsedTimeInSec / 60;
-
-      wedMins += elapsedTimeInMins;
+      wedMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
     }
 
     for (let item of this.thursEntries) {
-      var start = new Date("2018-01-01 " + item.startTime);
-      var end = new Date("2018-01-01 " + item.endTime);
-
-      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-      var elapsedTimeInMins = elapsedTimeInSec / 60;
-
-      thursMins += elapsedTimeInMins;
+      thursMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
     }
 
     for (let item of this.friEntries) {
-      var start = new Date("2018-01-01 " + item.startTime);
-      var end = new Date("2018-01-01 " + item.endTime);
-
-      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-      var elapsedTimeInMins = elapsedTimeInSec / 60;
-
-      friMins += elapsedTimeInMins;
+      friMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
     }
 
     for (let item of this.satEntries) {
-      var start = new Date("2018-01-01 " + item.startTime);
-      var end = new Date("2018-01-01 " + item.endTime);
-
-      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-      var elapsedTimeInMins = elapsedTimeInSec / 60;
-
-      satMins += elapsedTimeInMins;
+      satMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
     }
 
     for (let item of this.sunEntries) {
-      var start = new Date("2018-01-01 " + item.startTime);
-      var end = new Date("2018-01-01 " + item.endTime);
-
-      var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
-      var elapsedTimeInMins = elapsedTimeInSec / 60;
-
-      sunMins += elapsedTimeInMins;
+      sunMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
     }
 
     //If worked >= 5 hours for a day subtract 30 mins.
@@ -223,6 +181,16 @@ export class TimesheetComponent {
     var minutes = totalDuration % 60;
 
     return hours + ':' + minutes;
+  }
+
+  deriveElapsedTimeInMins(startTime: string, endTime : string) : number {
+    var start = new Date("2018-01-01 " + startTime);
+    var end = new Date("2018-01-01 " + endTime);
+
+    var elapsedTimeInSec = (end.getTime() - start.getTime()) / 1000;
+    var elapsedTimeInMins = elapsedTimeInSec / 60;
+
+    return elapsedTimeInMins;
   }
 
 
