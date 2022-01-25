@@ -11,6 +11,7 @@ export class Timesheet {
     public owner: string,
     public role:string,
     public weekStarting: Date,
+    public dateSubmitted: Date,
     public status: string
   ) { }
 }

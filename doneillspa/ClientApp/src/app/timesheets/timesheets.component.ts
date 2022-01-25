@@ -96,7 +96,7 @@ export class TimesheetComponent {
 
     //Setting up default timesheet and timesheet entries
 
-    this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek,'New');
+    this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek,null,'New');
     this.newEntry = new TimesheetEntry("", "", "", "", "","");
 
     //Retrieve timesheets for given date

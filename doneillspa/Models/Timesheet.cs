@@ -25,6 +25,7 @@ namespace doneillspa.Models
         public string Role { get; set; }
         public DateTime WeekStarting { get; set; }
         public DateTime DateCreated { get; set; }
+        public DateTime? DateSubmitted { get; set; }
         public Guid Owner { get; set; }
         public TimesheetStatus Status { get; set; }
 
@@ -57,6 +58,7 @@ namespace doneillspa.Models
 
         public void Submitted(IMediator mediator)
         {
+            DateSubmitted = DateTime.UtcNow;
             Status = TimesheetStatus.Submitted;
 
             //Create a domain event for any side effects to register

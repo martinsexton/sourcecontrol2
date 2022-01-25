@@ -354,6 +354,11 @@ namespace doneillspa.Controllers
             tsdto.Username = ts.Username;
             tsdto.WeekStarting = ts.WeekStarting;
             tsdto.Status = ts.Status.ToString();
+            if (ts.DateSubmitted.HasValue)
+            {
+                tsdto.DateSubmitted = ts.DateSubmitted.Value;
+            }
+            
 
             tsdto.TimesheetEntries = new List<TimesheetEntryDto>();
             tsdto.TimesheetNotes = new List<TimesheetNoteDto>();

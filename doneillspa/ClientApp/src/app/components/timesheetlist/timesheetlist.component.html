@@ -7,6 +7,7 @@
             <th>Week Beginning</th>
             <th>User</th>
             <th>Status</th>
+            <th>Date Submitted</th>
           </tr>
         </thead>
         <tbody>
@@ -14,6 +15,7 @@
             <td>{{ts.weekStarting | date:'fullDate'}}</td>
             <td>{{ts.username}}</td>
             <td>{{ts.status}}</td>
+            <td>{{ts.dateSubmitted | date:'medium'}}</td>
           </tr>
         </tbody>
       </table>
