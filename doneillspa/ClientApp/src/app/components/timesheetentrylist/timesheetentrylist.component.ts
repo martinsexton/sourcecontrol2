@@ -185,7 +185,13 @@ export class TimeSheetEntryListComponent {
       return "Sick Day";
     }
     else if (tse.code == 'NC5') {
-      return "Doctors Appointment";
+      return "Medical Appointment";
+    }
+    else if (tse.code == 'NC6') {
+      return "Unpaid Leave";
+    }
+    else if (tse.code == 'NC7') {
+      return "Training";
     }
     else {
       return tse.code;

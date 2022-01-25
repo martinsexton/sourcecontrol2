@@ -243,7 +243,7 @@ namespace doneillspa.Controllers
 
         private bool isProjectCode(string code)
         {
-            return !(code.Equals("NC1") || code.Equals("NC2") || code.Equals("NC3") || code.Equals("NC4") || code.Equals("NC5"));
+            return !(code.Equals("NC1") || code.Equals("NC2") || code.Equals("NC3") || code.Equals("NC4") || code.Equals("NC5") || code.Equals("NC6") || code.Equals("NC7"));
         }
 
         private bool projectCodeAlreadyRecorded(IList<ProjectAssignmentDto> assignments, string code)
