@@ -55,7 +55,7 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t =>t.Status == TimesheetStatus.Submitted).OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t =>t.Status == TimesheetStatus.Submitted).OrderByDescending(r => r.DateSubmitted);
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
