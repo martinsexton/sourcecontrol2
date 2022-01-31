@@ -70,15 +70,7 @@
         </div>
       </div>
       <div class="row">
-        <!--<div *ngIf="!isContractor()" class="col-md-4">
-          <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
-            <div class="card-header">Notification Details</div>
-            <div class="card-body">
-              <user-notifications [user]="selectedUser"></user-notifications>
-            </div>
-          </div>
-        </div>-->
-        <div class="col-md-12">
+        <div class="col-md-6">
           <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
             <div class="card-header">Timesheets</div>
             <div class="card-body">
@@ -97,6 +89,14 @@
                 <span [class]="loadingTimesheets ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
                 Load Timesheets
               </button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!isContractor()" class="col-md-6">
+          <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
+            <div class="card-header">Notification Details</div>
+            <div class="card-body">
+              <user-notifications [user]="selectedUser"></user-notifications>
             </div>
           </div>
         </div>
