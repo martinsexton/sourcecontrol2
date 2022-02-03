@@ -38,10 +38,10 @@ export class MsUserService extends HttpServiceBase{
       .catch(this.handleError);
   }
 
-  resetPassword(id: string, details: PasswordReset) {
+  resetPassword(details: PasswordReset) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.put(this._baseurl + 'api/user/' + id + '/reset', details,
+    return this._httpClient.put(this._baseurl + 'api/user/reset', details,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

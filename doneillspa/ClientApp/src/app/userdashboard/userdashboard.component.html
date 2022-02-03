@@ -21,36 +21,6 @@
         <div *ngIf="selectedUser" class="col">
           <user-details [user]="selectedUser"></user-details>
         </div>
-        <!--<div *ngIf="!isContractor()" class="col">
-          <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
-            <div class="card-header">Holiday Requests</div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class='table'>
-                  <thead class="thead">
-                    <tr>
-                      <th>From Date</th>
-                      <th>Days</th>
-                      <th>Status</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let hol of selectedUsersHolidayRequests">
-                      <td>{{hol.fromDate | date : "mediumDate"}}</td>
-                      <td>{{hol.days}}</td>
-                      <td>{{hol.status}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>-->
-        <!--<div *ngIf="!isContractor()" class="col">-->
-          <!--Users Certifications-->
-          <!--<user-certificates [user]="selectedUser"></user-certificates>-->
-        <!--</div>-->
         <div *ngIf="!isContractor()" class="col">
           <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
             <div class="card-header">Reset Password For {{selectedUser.firstName | uppercase}} {{selectedUser.surname | uppercase}}</div>
@@ -70,7 +40,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col">
           <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
             <div class="card-header">Timesheets</div>
             <div class="card-body">
@@ -91,8 +61,10 @@
               </button>
             </div>
           </div>
-        </div>
-        <div *ngIf="!isContractor()" class="col-md-6">
+        </div>  
+      </div>
+      <div class="row">
+        <div *ngIf="!isContractor()" class="col">
           <div [class]="selectedUser.isEnabled ? 'card mb-3 mt-3 div-to-stand-out' : 'card mb-3 mt-3 div-to-stand-out bg-secondary'">
             <div class="card-header">Notification Details</div>
             <div class="card-body">

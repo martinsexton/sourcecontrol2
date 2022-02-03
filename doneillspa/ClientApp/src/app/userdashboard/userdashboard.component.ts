@@ -147,7 +147,7 @@ export class UserDashboardComponent {
 
   resetPassword() {
       this.resettingPassword = true;
-      this._msuserService.resetPassword(localStorage.getItem('client_id'), this.resetPasswordDetails).subscribe(
+      this._msuserService.resetPassword(this.resetPasswordDetails).subscribe(
         result => {
         this.resettingPassword = false;
         this.resetPasswordDetails.password = '';

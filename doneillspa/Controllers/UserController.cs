@@ -291,8 +291,8 @@ namespace doneillspa.Controllers
         }
 
         [HttpPut()]
-        [Route("api/user/{id}/reset")]
-        public IActionResult Put(string id, [FromBody]PasswordReset d)
+        [Route("api/user/reset")]
+        public IActionResult Put([FromBody]PasswordReset d)
         {
             ApplicationUser user = _userManager.FindByIdAsync(d.UserId).Result;
             var token = _userManager.GeneratePasswordResetTokenAsync(user).Result;
