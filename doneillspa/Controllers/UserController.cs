@@ -86,6 +86,18 @@ namespace doneillspa.Controllers
             user.Email = p.Email;
             user.PhoneNumber = p.PhoneNumber;
 
+            IList<string> currentRoles = _userManager.GetRolesAsync(user).Result;
+            if (!currentRoles.Contains(p.Role))
+            {
+                foreach(string r in currentRoles)
+                {
+                    IdentityResult removeRoleResult = _userManager.RemoveFromRoleAsync(user, r).Result;
+                }
+
+                IdentityResult addRoleResult = _userManager.AddToRoleAsync(user, p.Role).Result;
+            }
+
+
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             if (result.Result.Succeeded)
             {

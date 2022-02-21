@@ -34,6 +34,14 @@
             <label for="email">Mobile</label>
             <input type="text" [(ngModel)]="user.phoneNumber" name="Mobile" class="form-control" id="Mobile">
           </div>
+
+          <div class="form-group">
+            <label for="role">Role In Organization</label>
+            <select class="form-control form-control-sm" id="role" name="role" [(ngModel)]="fulltimeStaffRole">
+              <option *ngFor="let role of retrieveListOfRoles()">{{role}}</option>
+            </select>
+          </div>
+
           <div class="form-group">
             <div class="custom-control custom-switch">
               <input type="checkbox" [checked]="user.isEnabled" class="custom-control-input" id="userIsActive" name="userIsActive" [(ngModel)]="user.isEnabled">
