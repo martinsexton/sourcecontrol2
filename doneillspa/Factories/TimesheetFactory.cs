@@ -31,6 +31,7 @@ namespace doneillspa.Factories
             tse.Code = code;
             tse.DateCreated = DateTime.UtcNow;
             tse.Day = TranslateDayOfWeek(day.ToString());
+            tse.Chargeable = tse.IsEntryChargeable();
 
             return tse;
         }

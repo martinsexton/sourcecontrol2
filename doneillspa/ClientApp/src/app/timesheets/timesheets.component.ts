@@ -97,7 +97,7 @@ export class TimesheetComponent {
     //Setting up default timesheet and timesheet entries
 
     this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek,null,'New');
-    this.newEntry = new TimesheetEntry("", "", "", "", "","");
+    this.newEntry = new TimesheetEntry("", "", "", "", "","",true);
 
     //Retrieve timesheets for given date
     this.retrieveTimeSheetsForDate(startOfWeek);
@@ -527,7 +527,7 @@ export class TimesheetComponent {
   }
 
   showEditTimesheet(entry: TimesheetEntry) {
-    this.timesheetEntryToEdit = new TimesheetEntry("", "", "", "", "", "");
+    this.timesheetEntryToEdit = new TimesheetEntry("", "", "", "", "", "", true);
 
     this.timesheetEntryToEdit.code = entry.code;
     this.timesheetEntryToEdit.day = entry.day;
@@ -598,7 +598,7 @@ export class TimesheetComponent {
   }
 
   addTimesheetEntry() {
-    let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details, '');
+    let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details, '', true);
     if (this.timesheetExists) {
       this.persistTimesheetEntry(entry);
     }

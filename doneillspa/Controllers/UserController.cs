@@ -412,6 +412,7 @@ namespace doneillspa.Controllers
                 tsedto.Code = tse.Code;
                 tsedto.StartTime = tse.StartTime;
                 tsedto.Username = tse.Timesheet.Username;
+                tsedto.Chargeable = tse.Chargeable;
 
                 tsdto.TimesheetEntries.Add(tsedto);
             }

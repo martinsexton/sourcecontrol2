@@ -32,7 +32,7 @@ export class TimeSheetEntryListComponent {
 
     for (let tse of ts.timesheetEntries) {
       //Exclude time recorded against Sick Days
-      if (tse.code == 'NC4') {
+      if (!tse.chargeable) {
         continue;
       }
       let day = tse.day;

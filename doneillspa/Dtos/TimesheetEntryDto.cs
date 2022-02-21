@@ -15,5 +15,6 @@ namespace doneillspa.Models
         public string Code { get; set; }
         public string Details { get; set; }
         public string Username { get; set; }
+        public bool Chargeable { get; set; }
     }
 }

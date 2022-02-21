@@ -20,8 +20,14 @@ namespace doneillspa.Models
 
         public bool IsEntryChargeable()
         {
-            //Always true right now, but we can add logic here later to control if its chargeable or not.
-            return true;
+            if (Code.Equals("NC4") || Code.Equals("NC5") || Code.Equals("NC6"))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public int DurationInHours()

@@ -6,6 +6,7 @@ export class TimesheetEntry {
     public startTime: string,
     public endTime: string,
     public details: string,
-    public userName: string
+    public userName: string,
+    public chargeable: boolean
   ) { }
 }
