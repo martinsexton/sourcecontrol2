@@ -1,6 +1,7 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class HttpServiceBase {
@@ -12,11 +13,11 @@ export class HttpServiceBase {
   protected handleError(error: any) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
-      return Observable.throw('An error occurred:', error.error.message);
+      return observableThrowError('An error occurred:', error.error.message);
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
-      return Observable.throw(`Backend returned code ${error.status}`);
+      return observableThrowError(`Backend returned code ${error.status}`);
     }
   }
 }

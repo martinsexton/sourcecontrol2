@@ -1,3 +1,5 @@
+
+import {map, catchError, retry} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -5,8 +7,7 @@ import { ApplicationUser } from '../../applicationuser';
 import { UserRegistration } from '../models/user.registration.interface';
 import 'rxjs/Rx';
 
-import { Observable } from 'rxjs/Rx';
-import { BehaviorSubject } from 'rxjs/Rx';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { RequestOptions } from '@angular/http';
 import { LoginResponse } from '../models/loginresponse.interface';
 import { Certificate } from '../../certificate';
@@ -33,9 +34,9 @@ export class MsUserService extends HttpServiceBase{
       {
         headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   resetPassword(details: PasswordReset) {
@@ -46,9 +47,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   login(firstname, surname, password): Observable<LoginResponse>{
@@ -57,16 +58,16 @@ export class MsUserService extends HttpServiceBase{
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
-      })
-      .map(res => res)
-      .map(res => {
+      }).pipe(
+      map(res => res),
+      map(res => {
         if (!res.error) {
           this.loggedIn = true;
         }
         return res;
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }),
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getUsersWithRole(role: string) {
@@ -77,9 +78,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getUsers(): Observable<ApplicationUser[]>{
@@ -90,9 +91,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getContractors() {
@@ -103,9 +104,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getUser(name:string) {
@@ -116,9 +117,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getUserRoles() {
@@ -129,8 +130,8 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5);
+      }).pipe(
+      retry(5));
   }
 
   getHolidayRequests() {
@@ -141,8 +142,8 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5);
+      }).pipe(
+      retry(5));
   }
 
   getHolidayRequestsForApproval() {
@@ -153,8 +154,8 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5);
+      }).pipe(
+      retry(5));
   }
 
   addHolidayRequest(id: string, request: HolidayRequest) {
@@ -165,9 +166,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   updateUser(user: ApplicationUser) {
@@ -178,9 +179,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   addCertificate(id: string, cert: Certificate) {
@@ -191,9 +192,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   addEmailNotification(id: string, not: EmailNotification) {
@@ -204,9 +205,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   retrieveTimesheets(id: string): Observable<Timesheet[]>{
@@ -217,9 +218,9 @@ export class MsUserService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   logout() {
