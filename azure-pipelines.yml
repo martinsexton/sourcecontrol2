@@ -8,7 +8,7 @@ trigger:
     include:
     - master
     exclude:
-    - upgrade-branch
+    - azure-pipelines
 
 pool:
   vmImage: 'VS2017-Win2016'
