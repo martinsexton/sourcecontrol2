@@ -1,3 +1,5 @@
+
+import {catchError, retry} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -8,7 +10,7 @@ import { TimesheetNote } from '../../timesheetnote';
 import { HttpServiceBase } from './httpservicebase';
 import { LabourRate } from '../../labourrate';
 import { LabourWeek } from '../../labourweek';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ProjectAssignment } from '../../projectassignment';
 
 @Injectable()
@@ -27,9 +29,9 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   saveTimesheet(timesheet: Timesheet) {
@@ -39,9 +41,9 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   deleteNote(note: TimesheetNote) {
@@ -51,9 +53,9 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   addTimesheetNote(timesheetId: number, note: TimesheetNote) {
@@ -63,9 +65,9 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   addTimesheetEntry(timesheetId: number, entry: TimesheetEntry) {
@@ -75,9 +77,9 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   updateTimesheetEntry(entry: TimesheetEntry) {
@@ -87,9 +89,9 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   deleteTimesheetEntry(tse: TimesheetEntry) {
@@ -99,9 +101,9 @@ export class TimesheetService extends HttpServiceBase{
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-    .retry(5)
-    .catch(this.handleError);
+    }).pipe(
+    retry(5),
+    catchError(this.handleError),);
   }
 
   getTimesheets() {
@@ -112,9 +114,9 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getSubmittedTimesheets() {
@@ -125,9 +127,9 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getApprovedTimesheets() {
@@ -138,9 +140,9 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getArchievedTimesheets() {
@@ -151,9 +153,9 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getRejectedTimesheets() {
@@ -164,9 +166,9 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   downloadReport(project: string) {
@@ -177,9 +179,9 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   downloadFullReport() {
@@ -190,9 +192,9 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getLabourWeekDetailsForProject(project): Observable<LabourWeek[]>{
@@ -203,9 +205,9 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getLabourRates() {
@@ -216,9 +218,9 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getProjectAssignments(year: number, month: number, day: number) {
@@ -230,9 +232,9 @@ export class TimesheetService extends HttpServiceBase{
     return this._httpClient.get<ProjectAssignment[]>(this._baseurl + 'api/projectassignments/week/' + year + '/' + month + '/' + day,
       {
         headers
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getTimesheetForUser(year: number, month: number, day: number, user:string) {
