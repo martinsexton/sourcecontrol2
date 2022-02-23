@@ -1,10 +1,12 @@
+
+import {catchError, retry} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../../project';
 import { Client } from '../../client';
 import { Certificate } from '../../certificate';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ProjectCostDto } from '../../projectcostdto';
 import { HttpServiceBase } from './httpservicebase';
 import { LabourRate } from '../../labourrate';
@@ -27,9 +29,9 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getClients(): Observable<Client[]>{
@@ -40,9 +42,9 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getNonChargeableTime() {
@@ -53,9 +55,9 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getProjects() {
@@ -66,9 +68,9 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getActiveProjects() {
@@ -79,9 +81,9 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getProjectEffort(code: string): Observable<ProjectCostDto>{
@@ -92,9 +94,9 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getTimesheetEntriesForProjectAndWeek(code: string, week: string): Observable<TimesheetEntry[]>{
@@ -108,9 +110,9 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   saveRate(rate: LabourRate) {
@@ -120,9 +122,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   addProject(id: number, proj: Project) {
@@ -133,9 +135,9 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5)
-      .catch(this.handleError);
+      }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   saveClient(c: Client) {
@@ -145,9 +147,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   updateClient(c: Client) {
@@ -157,9 +159,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   saveProject(project: Project) {
@@ -169,9 +171,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   updateRate(rate: LabourRate) {
@@ -181,9 +183,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
   updateProject(project: Project) {
     let authToken = localStorage.getItem('auth_token');
@@ -192,9 +194,9 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5)
-      .catch(this.handleError);
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   getUserName(id) {
@@ -205,8 +207,8 @@ export class ProjectService extends HttpServiceBase  {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      })
-      .retry(5);
+      }).pipe(
+      retry(5));
   }
 
   deleteRate(rate: LabourRate) {
@@ -216,8 +218,8 @@ export class ProjectService extends HttpServiceBase  {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
-    })
-      .retry(5);
+    }).pipe(
+      retry(5));
   }
 
   deleteProject(project: Project) {
