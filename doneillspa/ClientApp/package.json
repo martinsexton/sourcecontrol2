@@ -28,17 +28,17 @@
     "ajv-keywords": "^3.2.0",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.3.1",
-    "chart.js": "^2.7.2",
+    "chart.js": "^2.9.4",
     "core-js": "^2.4.1",
-    "handlebars": "^4.1.2",
-    "jquery": "^3.3.1",
+    "handlebars": "^4.7.7",
+    "jquery": "^3.6.0",
     "moment": "^2.24.0",
     "ng2-charts": "^1.6.0",
     "rxjs": "^6.6.7",
+    "rxjs-compat": "^6.0.0-rc.0",
     "stringstream": "^1.0.0",
     "tslib": "^1.9.0",
-    "zone.js": "^0.8.29",
-    "rxjs-compat": "^6.0.0-rc.0"
+    "zone.js": "^0.8.29"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.13.0",
