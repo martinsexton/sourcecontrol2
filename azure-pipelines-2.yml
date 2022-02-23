@@ -6,9 +6,9 @@
 trigger:
   branches:
     include:
-    - azure-pipelines
+    - master
     exclude:
-      - master
+      - azure-pipelines
 
 pool:
   vmImage: 'windows-latest'
