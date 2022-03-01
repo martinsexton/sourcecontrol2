@@ -38,6 +38,9 @@ export class UserDashboardComponent {
   public contractorRole: string = "Loc1";
   public fulltimeStaffRole: string = "ChargeHand";
   newUser: ApplicationUser = new ApplicationUser('', '', '', '', '', '', false);
+  public usersCurrentPage: number = 1;
+  public usersForCurrentPage: ApplicationUser[];
+  public usersPageLimit: number = 15;
  
 
   public filterName: string;
@@ -63,6 +66,7 @@ export class UserDashboardComponent {
       this.loading = false;
       if (this.users.length > 0) {
         this.selectedUser = this.users[0];
+        this.setupUsersForCurrentPage();
         this.resetPasswordDetails.userid = this.selectedUser.id;
         this.selectedUserRow = 0;
         if (this.selectedUser.holidayRequests) {
@@ -86,6 +90,47 @@ export class UserDashboardComponent {
     }
     else {
       return (this.selectedUser.role == "Loc1" || this.selectedUser.role == "Loc2" || this.selectedUser.role == "Loc3");
+    }
+  }
+
+  previousPage() {
+    this.usersCurrentPage = this.usersCurrentPage - 1;
+    this.setupUsersForCurrentPage();
+  }
+
+  nextPage() {
+    this.usersCurrentPage = this.usersCurrentPage + 1;
+    this.setupUsersForCurrentPage();
+  }
+
+  determineUsersPageCount() {
+    var pageCount = 1;
+
+    var numberOfUsers = this.users.length;
+
+    if (numberOfUsers > 0) {
+      var totalPages_pre = Math.floor((numberOfUsers / this.usersPageLimit));
+      pageCount = (numberOfUsers % this.usersPageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
+    }
+    return pageCount;
+  }
+
+  setupUsersForCurrentPage() {
+    var startingIndex = 0;
+    var index = 0;
+
+    //reset client current page array
+    this.usersForCurrentPage = [];
+
+    if (this.usersCurrentPage > 1) {
+      startingIndex = (this.usersCurrentPage - 1) * this.usersPageLimit;
+    }
+
+    for (let p of this.users) {
+      if (index >= startingIndex && index < (startingIndex + this.usersPageLimit)) {
+        this.usersForCurrentPage.push(p);
+      }
+      index = index + 1;
     }
   }
 
@@ -160,7 +205,7 @@ export class UserDashboardComponent {
   }
 
   retrieveUsersToDisplay() {
-    return this.users;
+    return this.usersForCurrentPage;
   }
 
   displaySelectedUserDetails(user, index) {
