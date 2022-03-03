@@ -48,7 +48,6 @@ export class DashboardComponent implements OnInit{
   public pageLimit: number = 10;
 
   constructor(public signalRService: SignalRService, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
-    this.loading = false;
     $('[data-toggle="tooltip"]').tooltip();
     //Retrieve Default list of tui Timesheets For display 
     this._timesheetService.getSubmittedTimesheets().subscribe(result => {
@@ -85,6 +84,8 @@ export class DashboardComponent implements OnInit{
   }
 
   setupTimehseetsForCurrentPage() {
+    this.loading = true;
+
     var startingIndex = 0;
     var index = 0;
 
@@ -108,6 +109,7 @@ export class DashboardComponent implements OnInit{
       }
       index = index + 1;
     }
+    this.loading = false;
   }
 
   previousPage() {

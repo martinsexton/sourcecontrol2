@@ -23,26 +23,38 @@
   <div class="row">
     <div class="col-md-6">
       <!--Display List Of Timesheets-->
-      <timesheet-list [timesheets]="timesheetsForCurrentPage" (eventPublisher)="onTimesheetSelected($event)"></timesheet-list>
-      <nav aria-label="Timesheet Navigation">
-        <ul class="pagination">
-          <li [ngClass]="{'page-item': timesheetsCurrentPage > 1, 'page-item disabled': timesheetsCurrentPage == 1}">
-            <a class="page-link" aria-label="Previous" (click)="previousPage()">
-              <span aria-hidden="true">&laquo; Back</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-          <li [ngClass]="{'page-item': timesheetsCurrentPage < determinePageCount(), 'page-item disabled': timesheetsCurrentPage >= determinePageCount()}">
-            <a class="page-link" aria-label="Next" (click)="nextPage()">
-              <span aria-hidden="true">Next &raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <div *ngIf="loading" class="d-flex justify-content-center">
+        <div class="spinner-grow text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div *ngIf="!loading">
+        <timesheet-list [timesheets]="timesheetsForCurrentPage" (eventPublisher)="onTimesheetSelected($event)"></timesheet-list>
+        <nav aria-label="Timesheet Navigation">
+          <ul class="pagination">
+            <li [ngClass]="{'page-item': timesheetsCurrentPage > 1, 'page-item disabled': timesheetsCurrentPage == 1}">
+              <a class="page-link" aria-label="Previous" (click)="previousPage()">
+                <span aria-hidden="true">&laquo; Back</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <li [ngClass]="{'page-item': timesheetsCurrentPage < determinePageCount(), 'page-item disabled': timesheetsCurrentPage >= determinePageCount()}">
+              <a class="page-link" aria-label="Next" (click)="nextPage()">
+                <span aria-hidden="true">Next &raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
     <div class="col-md-6">
-      <div class="row">
+      <div *ngIf="loading" class="d-flex justify-content-center">
+        <div class="spinner-grow text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div *ngIf="!loading" class="row">
         <div class="col-md-12">
           <div class="card mb-3 mt-3 div-to-stand-out">
             <div class="card-body">
