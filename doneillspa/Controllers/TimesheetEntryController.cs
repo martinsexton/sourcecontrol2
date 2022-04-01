@@ -8,6 +8,7 @@ using doneillspa.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace doneillspa.Controllers
 {
@@ -16,10 +17,12 @@ namespace doneillspa.Controllers
     public class TimesheetEntryController : Controller
     {
         private ApplicationContext _context;
+        private readonly ILogger<TimesheetEntryController> _logger;
 
-        public TimesheetEntryController(ApplicationContext context)
+        public TimesheetEntryController(ILogger<TimesheetEntryController> logger, ApplicationContext context)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -42,6 +45,8 @@ namespace doneillspa.Controllers
         [Route("api/timesheetentry")]
         public IActionResult Put([FromBody]TimesheetEntry tse)
         {
+            _logger.LogWarning($"About to update timesheet entry");
+
             if (tse == null)
             {
                 return BadRequest();
