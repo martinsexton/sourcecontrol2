@@ -71,6 +71,7 @@ namespace doneillspa
             services.AddMvc();
             services.AddSignalR().AddAzureSignalR();
             services.AddCors();
+            services.AddApplicationInsightsTelemetry();
 
             //Enable Session
             services.AddSession();
@@ -121,8 +122,6 @@ namespace doneillspa
                    ClockSkew = TimeSpan.FromMinutes(0)
                };
            });
-
-            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
