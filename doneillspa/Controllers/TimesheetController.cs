@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Logging;
 
 namespace doneillspa.Controllers
 {
@@ -27,12 +28,14 @@ namespace doneillspa.Controllers
         private readonly ITimesheetRepository _timeSheetRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
+        private readonly ILogger<TimesheetController> _logger;
 
-        public TimesheetController(IMapper mapper, IMediator mediator, ITimesheetRepository repository)
+        public TimesheetController(ILogger<TimesheetController> logger, IMapper mapper, IMediator mediator, ITimesheetRepository repository)
         {
             _mapper = mapper;
             _mediator = mediator;
             _timeSheetRepository = repository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -287,17 +290,21 @@ namespace doneillspa.Controllers
         [Route("api/timesheet")]
         public IActionResult Put(int id, [FromBody]TimesheetDto ts)
         {
+            
             Timesheet timesheet = _timeSheetRepository.GetTimsheetById(ts.Id);
             if (ts.Status.Equals(TimesheetStatus.Approved.ToString()))
             {
+                _logger.LogWarning($"About to approve timesheet for id: {ts.Id}");
                 timesheet.Approved(_mediator);
             }
             else if (ts.Status.Equals(TimesheetStatus.Rejected.ToString()))
             {
+                _logger.LogWarning($"About to reject timesheet for id: {ts.Id}");
                 timesheet.Rejected(_mediator);
             }
             else if (ts.Status.Equals(TimesheetStatus.Submitted.ToString()))
             {
+                _logger.LogWarning($"Timesheet Submitted for id: {ts.Id}");
                 timesheet.Submitted(_mediator);
             }
 
