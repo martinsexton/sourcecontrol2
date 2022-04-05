@@ -45,7 +45,7 @@ namespace doneillspa.Controllers
         [Route("api/timesheetentry")]
         public IActionResult Put([FromBody]TimesheetEntry tse)
         {
-            _logger.LogWarning($"About to update timesheet entry");
+            _logger.LogWarning($"About to update timesheet entry for id: {tse.Id}");
 
             if (tse == null)
             {
