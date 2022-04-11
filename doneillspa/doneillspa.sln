@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doneillspa", "doneillspa.csproj", "{2FDFB3DD-3AA1-491A-86ED-30ADA2AD7E59}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doneillspa.tests", "..\doneillspa.tests\doneillspa.tests.csproj", "{AEBF44F0-C137-4DCD-8378-F32C02A151C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectReportJob", "..\ProjectReportJob\ProjectReportJob.csproj", "{FF458E8E-658E-42BA-800F-E4E8FA655837}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AEBF44F0-C137-4DCD-8378-F32C02A151C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEBF44F0-C137-4DCD-8378-F32C02A151C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEBF44F0-C137-4DCD-8378-F32C02A151C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF458E8E-658E-42BA-800F-E4E8FA655837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF458E8E-658E-42BA-800F-E4E8FA655837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF458E8E-658E-42BA-800F-E4E8FA655837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF458E8E-658E-42BA-800F-E4E8FA655837}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
