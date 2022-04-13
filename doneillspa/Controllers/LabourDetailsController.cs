@@ -24,6 +24,8 @@ using doneillspa.Services.Document;
 using doneillspa.Services;
 using Microsoft.EntityFrameworkCore;
 using doneillspa.Dtos;
+using Azure.Storage.Queues;
+using Newtonsoft.Json;
 
 namespace doneillspa.Controllers
 {
@@ -36,16 +38,19 @@ namespace doneillspa.Controllers
         private List<LabourRate> Rates = new List<LabourRate>();
         private readonly IEmailService _emailService;
         private readonly IDocumentService _documentService;
+        private IConfiguration _configuration;
 
         private ApplicationContext _context;
 
-        public LabourDetailsController(ApplicationContext context, ITimesheetService tss, IEmailService emailService, IDocumentService docService, ITimesheetRepository repository)
+        public LabourDetailsController(ApplicationContext context, ITimesheetService tss, IEmailService emailService, IDocumentService docService, 
+            ITimesheetRepository repository, IConfiguration configuration)
         {
             _context = context;
             _timesheetService = tss;
             _timeSheetRepository = repository;
             _emailService = emailService;
             _documentService = docService;
+            _configuration = configuration;
 
             Rates = _context.LabourRate.ToList();
         }
@@ -146,7 +151,22 @@ namespace doneillspa.Controllers
             projects.Add(projectName);
             GenerateExcelForProjects(projects);
 
+            GenerateReportEvent reportEvent = new GenerateReportEvent();
+            reportEvent.ProjectCode = projectName;
+
+            var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
+
+            // Instantiate a QueueClient which will be used to create and manipulate the queue
+            QueueClient queueClient = new QueueClient(connectionString, "messages");
+            queueClient.SendMessage(Base64Encode(JsonConvert.SerializeObject(reportEvent)));
+
             return Ok();
+        }
+
+        private static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
         }
 
         private void GenerateExcelForProjects(List<string> projects)
