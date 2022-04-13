@@ -40,6 +40,15 @@ steps:
     zipAfterPublish: true
   displayName: 'Publish web project'
     
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/ProjectReportJob.csproj'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.artifactStagingDirectory)/App_Data/jobs/continuous -r win-x64 --self-contained false'
+    zipAfterPublish: true
+  displayName: 'Publish web job'
+
 - task: VSTest@2
   inputs:
     testSelector: 'testAssemblies'
