@@ -11,7 +11,7 @@ trigger:
     - azure-pipelines
 
 pool:
-  vmImage: 'VS2017-Win2016'
+  vmImage: 'windows-latest'
 
 variables:
   solution: '**/*.sln'
@@ -29,14 +29,25 @@ steps:
 # Finds or downloads and caches the specified version spec of Node.js and adds it to the PATH
 - task: NodeTool@0
   inputs:
-    versionSpec: '8.11.1' 
+    versionSpec: '8.11.1'
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/ProjectReportJob.csproj'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.artifactStagingDirectory)/App_Data/jobs/continuous -r win-x64 --self-contained false'
+    zipAfterPublish: false
+  displayName: 'Publish web job'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    modifyOutputPath: false
+    arguments: '--configuration $(buildConfiguration) --output $(Build.artifactStagingDirectory)'
+    zipAfterPublish: true
+  displayName: 'Publish web project'
 
 - task: VSTest@2
   inputs:
