@@ -12,9 +12,10 @@ namespace ProjectReportJob
     {
         // This function will get triggered/executed when a new message is written 
         // on an Azure Queue called queue.
-        public static void ProcessQueueMessage([QueueTrigger("messages")] GenerateReportEvent message, TextWriter log)
+        public static void ProcessQueueMessage([QueueTrigger("messages")] GenerateReportEvent message, 
+            [Blob("doneillreports/report.txt", FileAccess.Write)] TextWriter reportWriter, TextWriter log)
         {
-            log.WriteLine(message.ProjectCode);
+            reportWriter.WriteLine($"Report created for { message.ProjectCode}");
         }
     }
 }
