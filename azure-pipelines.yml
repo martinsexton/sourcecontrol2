@@ -31,14 +31,12 @@ steps:
   inputs:
     versionSpec: '8.11.1'
 
-- task: DotNetCoreCLI@2
+- task: VSBuild@1
   inputs:
-    command: 'publish'
-    publishWebProjects: true
-    modifyOutputPath: false
-    arguments: '--configuration $(buildConfiguration) --output $(build.artifactStagingDirectory)'
-    zipAfterPublish: false
-  displayName: 'Publish web project'
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
   inputs:
