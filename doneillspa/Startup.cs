@@ -26,6 +26,7 @@ using MediatR;
 using System.Reflection;
 using doneillspa.Mediator.Handlers;
 using Microsoft.AspNetCore.SignalR;
+using doneillspa.Services.MessageQueue;
 
 namespace doneillspa
 {
@@ -54,6 +55,9 @@ namespace doneillspa
             //Email Services
             services.AddScoped<IEmailService>(_ => new SendGridEmailService(Configuration));
             //services.AddScoped<IEmailService>(_ => new GmailMailService(Configuration));
+
+            //Message Queue Services
+            services.AddSingleton<IMessageQueue>(_ => new MessageQueue(Configuration));
 
             //Document Service
             services.AddScoped<IDocumentService>(_ => new DropBoxDocumentService(Configuration));

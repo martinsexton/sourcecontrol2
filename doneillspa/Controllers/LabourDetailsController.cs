@@ -26,6 +26,7 @@ using Microsoft.EntityFrameworkCore;
 using doneillspa.Dtos;
 using Azure.Storage.Queues;
 using Newtonsoft.Json;
+using doneillspa.Services.MessageQueue;
 
 namespace doneillspa.Controllers
 {
@@ -39,11 +40,12 @@ namespace doneillspa.Controllers
         private readonly IEmailService _emailService;
         private readonly IDocumentService _documentService;
         private IConfiguration _configuration;
+        private IMessageQueue _messageQueue;
 
         private ApplicationContext _context;
 
         public LabourDetailsController(ApplicationContext context, ITimesheetService tss, IEmailService emailService, IDocumentService docService, 
-            ITimesheetRepository repository, IConfiguration configuration)
+            ITimesheetRepository repository, IConfiguration configuration, IMessageQueue messageQueue)
         {
             _context = context;
             _timesheetService = tss;
@@ -51,6 +53,7 @@ namespace doneillspa.Controllers
             _emailService = emailService;
             _documentService = docService;
             _configuration = configuration;
+            _messageQueue = messageQueue;
 
             Rates = _context.LabourRate.ToList();
         }
@@ -151,11 +154,7 @@ namespace doneillspa.Controllers
             reportEvent.ProjectCode = projectName;
             reportEvent.DestinationEmail = HttpContext.Session.GetString("UserEmail");
 
-            var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
-
-            // Instantiate a QueueClient which will be used to create and manipulate the queue
-            QueueClient queueClient = new QueueClient(connectionString, "messages");
-            queueClient.SendMessage(Base64Encode(JsonConvert.SerializeObject(reportEvent)));
+            _messageQueue.SendMessage(Base64Encode(JsonConvert.SerializeObject(reportEvent)));
 
             return Ok();
         }
