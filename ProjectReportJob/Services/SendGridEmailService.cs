@@ -42,7 +42,12 @@ namespace ProjectReportJob.Services
             var client = new SendGridClient(apiKey);
 
             SendGridMessage msg = BuildMessage(fromAddress, toAddress, subject, plainTextContent, htmlContent, attachmentName, attachmentContent);
-            client.SendEmailAsync(msg);
+            Response response = client.SendEmailAsync(msg).Result;
+
+            if(response.StatusCode != System.Net.HttpStatusCode.Accepted)
+            {
+                throw new Exception("Exception occured sending email with HTTP Error: "+response.StatusCode);
+            }
         }
 
         private SendGridMessage BuildMessage(string fromAddress, string toAddress, string s, string plainTextContent, string htmlContent, string attachmentName, string attachmentContent)
