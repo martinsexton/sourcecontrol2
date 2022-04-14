@@ -28,7 +28,7 @@ namespace ProjectReportJob
 
             //TODO Want to be able to write to blob.
             //reportWriter.Close();
-            reportWriter.WriteLine($"Report created for { message.ProjectCode}");
+            //reportWriter.WriteLine($"Report created for { message.ProjectCode}");
         }
 
         private void GenerateExcelForProject(string projectCode, TextWriter reportWriter, string destinationEmail)
