@@ -22,16 +22,16 @@ namespace ProjectReportJob
         // This function will get triggered/executed when a new message is written 
         // on an Azure Queue called queue.
         public void ProcessQueueMessage([QueueTrigger("messages")] GenerateReportEvent message,
-            [Blob("doneillreports/report.xls", FileAccess.Write)] Stream reportWriter)
+            [Blob("doneillreports/report.xls", FileAccess.Write)] TextWriter reportWriter)
         {
             GenerateExcelForProject(message.ProjectCode, reportWriter, message.DestinationEmail);
 
             //TODO Want to be able to write to blob.
             //reportWriter.Close();
-            //reportWriter.WriteLine($"Report created for { message.ProjectCode}");
+            reportWriter.WriteLine($"Report created for { message.ProjectCode}");
         }
 
-        private void GenerateExcelForProject(string projectCode, Stream reportWriter, string destinationEmail)
+        private void GenerateExcelForProject(string projectCode, TextWriter reportWriter, string destinationEmail)
         {
 
             MemoryStream spreadSheetStream = new MemoryStream();
@@ -94,7 +94,6 @@ namespace ProjectReportJob
                 fileName = projectCode + "_labour_costs_" + DateTime.Now.Ticks + ".xlsx";
                 subject = "Labour Costs For " + projectCode;
 
-                spreadSheetStream.CopyTo(reportWriter);
 
                 IEmailService emailService = SendGridEmailService.Instance;
                 emailService.SendMail("doneill@hotmail.com", destinationEmail, subject,
