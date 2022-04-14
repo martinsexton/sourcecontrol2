@@ -8,5 +8,6 @@ namespace doneillspa.Models
     public class GenerateReportEvent
     {
         public string ProjectCode { get; set; }
+        public string DestinationEmail { get; set; }
     }
 }

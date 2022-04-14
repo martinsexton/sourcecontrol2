@@ -147,12 +147,9 @@ namespace doneillspa.Controllers
         [Route("api/labourdetails/report/{projectName}")]
         public IActionResult Download(string projectName)
         {
-            List<string> projects = new List<string>();
-            projects.Add(projectName);
-            GenerateExcelForProjects(projects);
-
             GenerateReportEvent reportEvent = new GenerateReportEvent();
             reportEvent.ProjectCode = projectName;
+            reportEvent.DestinationEmail = HttpContext.Session.GetString("UserEmail");
 
             var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
 
