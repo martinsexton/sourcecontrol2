@@ -17,21 +17,14 @@ namespace ProjectReportJob
 {
     public class Functions
     {
-        private IEmailService _emailService;
-
         // This function will get triggered/executed when a new message is written 
         // on an Azure Queue called queue.
-        public void ProcessQueueMessage([QueueTrigger("messages")] GenerateReportEvent message,
-            [Blob("doneillreports/report.xls", FileAccess.Write)] TextWriter reportWriter)
+        public void ProcessQueueMessage([QueueTrigger("messages")] GenerateReportEvent message)
         {
-            GenerateExcelForProject(message.ProjectCode, reportWriter, message.DestinationEmail);
-
-            //TODO Want to be able to write to blob.
-            //reportWriter.Close();
-            //reportWriter.WriteLine($"Report created for { message.ProjectCode}");
+            GenerateExcelForProject(message.ProjectCode, message.DestinationEmail);
         }
 
-        private void GenerateExcelForProject(string projectCode, TextWriter reportWriter, string destinationEmail)
+        private void GenerateExcelForProject(string projectCode, string destinationEmail)
         {
 
             MemoryStream spreadSheetStream = new MemoryStream();
@@ -422,90 +415,5 @@ namespace ProjectReportJob
                 }
             }
         }
-
-        //private void SetupExcelHeader(SheetData sheetData)
-        //{
-        //    Row row;
-        //    row = new Row() { RowIndex = 1 };
-        //    sheetData.Append(row);
-
-        //    Cell weekCell = new Cell();
-        //    weekCell.CellValue = new CellValue("Week");
-        //    weekCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell superVisorCostCell = new Cell();
-        //    superVisorCostCell.CellValue = new CellValue("Supvervisor Cost");
-        //    superVisorCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell chargeHandCostCell = new Cell();
-        //    chargeHandCostCell.CellValue = new CellValue("ChargeHand Cost");
-        //    chargeHandCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell electR1CostCell = new Cell();
-        //    electR1CostCell.CellValue = new CellValue("ElectR1 Cost");
-        //    electR1CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell electR2CostCell = new Cell();
-        //    electR2CostCell.CellValue = new CellValue("ElectR2 Cost");
-        //    electR2CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell electR3CostCell = new Cell();
-        //    electR3CostCell.CellValue = new CellValue("ElectR3 Cost");
-        //    electR3CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-
-        //    Cell loc1CostCell = new Cell();
-        //    loc1CostCell.CellValue = new CellValue("Loc1 Cost");
-        //    loc1CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell loc2CostCell = new Cell();
-        //    loc2CostCell.CellValue = new CellValue("Loc2 Cost");
-        //    loc2CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell loc3CostCell = new Cell();
-        //    loc3CostCell.CellValue = new CellValue("Loc3 Cost");
-        //    loc3CostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell tempCostCell = new Cell();
-        //    tempCostCell.CellValue = new CellValue("Temp Cost");
-        //    tempCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell firstYearApprenticeCostCell = new Cell();
-        //    firstYearApprenticeCostCell.CellValue = new CellValue("First Year Apprentice Cost");
-        //    firstYearApprenticeCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell secondYearApprenticeCostCell = new Cell();
-        //    secondYearApprenticeCostCell.CellValue = new CellValue("Second Year Apprentice Cost");
-        //    secondYearApprenticeCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell thirdYearApprenticeCostCell = new Cell();
-        //    thirdYearApprenticeCostCell.CellValue = new CellValue("Third Year Apprentice Cost");
-        //    thirdYearApprenticeCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell fourthYearApprenticeCostCell = new Cell();
-        //    fourthYearApprenticeCostCell.CellValue = new CellValue("Fourth Year Apprentice Cost");
-        //    fourthYearApprenticeCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    Cell totalLabourCostCell = new Cell();
-        //    totalLabourCostCell.CellValue = new CellValue("Total Labour Cost");
-        //    totalLabourCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
-
-        //    //row.InsertBefore(newCell, refCell);
-        //    row.InsertAt(weekCell, 0);
-        //    row.InsertAt(superVisorCostCell, 1);
-        //    row.InsertAt(chargeHandCostCell, 2);
-        //    row.InsertAt(electR1CostCell, 3);
-        //    row.InsertAt(electR2CostCell, 4);
-        //    row.InsertAt(electR3CostCell, 5);
-        //    row.InsertAt(loc1CostCell, 6);
-        //    row.InsertAt(loc2CostCell, 7);
-        //    row.InsertAt(loc3CostCell, 8);
-        //    row.InsertAt(tempCostCell, 9);
-        //    row.InsertAt(firstYearApprenticeCostCell, 10);
-        //    row.InsertAt(secondYearApprenticeCostCell, 11);
-        //    row.InsertAt(thirdYearApprenticeCostCell, 12);
-        //    row.InsertAt(fourthYearApprenticeCostCell, 13);
-        //    row.InsertAt(totalLabourCostCell, 14);
-        //}
     }
 }
