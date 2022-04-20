@@ -5,9 +5,9 @@ namespace hub
 {
     public class Chat : Hub
     {
-        public void SendMessage(string msg)
+        public void SendMessage(string method, string msg)
         {
-           Clients.All.SendAsync("timesheetsubmitted", msg);
+           Clients.All.SendAsync(method, msg);
         }
     }
 }
