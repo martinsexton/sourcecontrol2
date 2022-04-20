@@ -10,12 +10,16 @@
         </div>
       </li>
     </ul>
+    <div *ngIf='signalRService._reportemailedmessages.length > 0'>
+      <button type="button" class="btn btn-primary position-relative" (click)="clearSignalRMessages()">
+        Notifications
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          {{signalRService._reportemailedmessages.length}}
+          <span class="visually-hidden">unread</span>
+        </span>
+      </button>
+    </div>
   </nav>
-  <div *ngIf='signalRService._reportemailedmessages.length > 0'>
-    <button type="button" class="btn btn-primary" (click)="clearSignalRMessages()">
-      Notifications <span class="badge badge-light">{{signalRService._reportemailedmessages.length}}</span>
-    </button>
-  </div>
   <div *ngIf="loadingLabourDetails" class="d-flex justify-content-center">
     <div class="spinner-grow text-primary" role="status">
       <span class="sr-only">Loading...</span>
