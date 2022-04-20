@@ -68,6 +68,10 @@ export class LabourComponent {
     this.signalRService.addReportEmailsListener();
   }
 
+  clearSignalRMessages() {
+    this.signalRService.clearMessages();
+  }
+
   calculateTotalCostToDate() {
     let totalCostToDate: number = 0;
 

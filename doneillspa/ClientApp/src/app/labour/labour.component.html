@@ -11,7 +11,11 @@
       </li>
     </ul>
   </nav>
-  <div *ngIf='signalRService._reportemailedmessage'><span (click)="clearSignalRMessages()"><img src="assets/images/schedule.png" class="img-responsive" alt="..."></span></div>
+  <div *ngIf='signalRService._reportemailedmessages.length > 0'>
+    <button type="button" class="btn btn-primary" (click)="clearSignalRMessages()">
+      Notifications <span class="badge badge-light">{{signalRService._reportemailedmessages.length}}</span>
+    </button>
+  </div>
   <div *ngIf="loadingLabourDetails" class="d-flex justify-content-center">
     <div class="spinner-grow text-primary" role="status">
       <span class="sr-only">Loading...</span>
