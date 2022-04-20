@@ -47,7 +47,7 @@ export class LabourComponent {
   public loadingLabourDetails: Boolean = false;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService,
-    private _timesheetService: TimesheetService, private _certificationService: CertificateService, private signalRService: SignalRService) {
+    private _timesheetService: TimesheetService, private _certificationService: CertificateService, public signalRService: SignalRService) {
     this.loadingLabourDetails = true;
     this._projectService.getActiveProjects().subscribe(result => {
       this.loadingLabourDetails = false;
