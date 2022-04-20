@@ -12,6 +12,7 @@ using ProjectReportJob.Data;
 using ProjectReportJob.Model;
 using Microsoft.EntityFrameworkCore;
 using ProjectReportJob.Services;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace ProjectReportJob
 {
@@ -22,6 +23,9 @@ namespace ProjectReportJob
         public void ProcessQueueMessage([QueueTrigger("messages")] GenerateReportEvent message)
         {
             GenerateExcelForProject(message.ProjectCode, message.DestinationEmail);
+
+            ISignalRService _service = SignalRService.Instance;
+            _service.SendMessage("reportemailed", "Report issued for " + message.ProjectCode);
         }
 
         private void GenerateExcelForProject(string projectCode, string destinationEmail)
@@ -63,9 +67,6 @@ namespace ProjectReportJob
                     worksheetPart.Worksheet.InsertAt(lstColumns, 0);
                 }
 
-                // Get the sheetData cell table.
-                SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
-
                 SetupExcelHeader(worksheetPart.Worksheet.GetFirstChild<SheetData>());
                 int rowIndex = 2;
                 foreach (LabourWeekDetail week in labourDetails)
@@ -75,17 +76,10 @@ namespace ProjectReportJob
                 }
 
                 document.Save();
-
-                //Increment SheetID
-                sheetId++;
-
                 document.Close();
 
-                string fileName = "";
-                string subject = "";
-
-                fileName = projectCode + "_labour_costs_" + DateTime.Now.Ticks + ".xlsx";
-                subject = "Labour Costs For " + projectCode;
+                string fileName = projectCode + "_labour_costs_" + DateTime.Now.Ticks + ".xlsx";
+                string subject = "Labour Costs For " + projectCode;
 
 
                 IEmailService emailService = SendGridEmailService.Instance;

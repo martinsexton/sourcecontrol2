@@ -15,6 +15,7 @@ import {
 } from '../shared/services/timesheet.service';
 import { CertificateService } from '../shared/services/certificate.service';
 import { LabourRate } from '../labourrate';
+import { SignalRService } from '../shared/services/signalrservice';
 
 declare var $: any;
 
@@ -45,7 +46,8 @@ export class LabourComponent {
   public selectedProject: Project;
   public loadingLabourDetails: Boolean = false;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService,
+    private _timesheetService: TimesheetService, private _certificationService: CertificateService, private signalRService: SignalRService) {
     this.loadingLabourDetails = true;
     this._projectService.getActiveProjects().subscribe(result => {
       this.loadingLabourDetails = false;
@@ -59,6 +61,11 @@ export class LabourComponent {
       this.errors = "Failed to retrieve labour details"
       $('.toast').toast('show');
     });
+  }
+
+  ngOnInit(): void {
+    this.signalRService.startConnection();
+    this.signalRService.addReportEmailsListener();
   }
 
   calculateTotalCostToDate() {

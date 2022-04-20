@@ -8,6 +8,7 @@ import { HttpServiceBase } from './httpservicebase';
 export class SignalRService extends HttpServiceBase {
   private hubConnection: signalR.HubConnection
   public _timsheetsubmittedmessage: string;
+  public _reportemailedmessage: string;
 
   constructor(_httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     super(_httpClient, baseUrl);
@@ -31,7 +32,15 @@ export class SignalRService extends HttpServiceBase {
     });
   }
 
+  public addReportEmailsListener = () => {
+    this.hubConnection.on('reportemailed', (data) => {
+      this._reportemailedmessage = data;
+      console.log(data);
+    });
+  }
+
   public clearMessages() {
     this._timsheetsubmittedmessage = null;
+    this._reportemailedmessage = null;
   }
 }
