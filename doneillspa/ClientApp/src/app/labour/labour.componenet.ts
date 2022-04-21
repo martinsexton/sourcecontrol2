@@ -68,6 +68,10 @@ export class LabourComponent {
     this.signalRService.addReportEmailsListener();
   }
 
+  //addTestMessage() {
+  //  this.signalRService._reportemailedmessages.push("Test");
+  //}
+
   clearSignalRMessages() {
     this.signalRService.clearMessages();
   }
