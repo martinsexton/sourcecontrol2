@@ -36,10 +36,11 @@ namespace ProjectReportJob.Services
             {
                 lock (locker)
                 {
-                    if (instance == null)
-                    {
-                        instance = new SignalRService(ConfigurationManager.ConnectionStrings["SignalRUri"].ConnectionString);
-                    }
+                    //if (instance == null)
+                    //{
+                    //    instance = new SignalRService(ConfigurationManager.ConnectionStrings["SignalRUri"].ConnectionString);
+                    //}
+                    instance = new SignalRService(ConfigurationManager.ConnectionStrings["SignalRUri"].ConnectionString);
                     return instance;
                 }
             }
