@@ -11,18 +11,20 @@ namespace doneillspa.Services.MessageQueue
     public class MessageQueue : IMessageQueue
     {
         private IConfiguration Configuration;
-        QueueClient queueClient;
+        
         private string QUEUE_NAME = "messages";
+        private string azureStorageConnectionString = "";
 
         public MessageQueue(IConfiguration configuration)
         {
             Configuration = configuration;
-            var azureStorageConnectionString = Configuration["ConnectionStrings:StorageConnectionString"];
-            queueClient = new QueueClient(azureStorageConnectionString, QUEUE_NAME);
+            azureStorageConnectionString = Configuration["ConnectionStrings:StorageConnectionString"];
+            
         }
 
         public void SendMessage(string msg)
         {
+            QueueClient queueClient = new QueueClient(azureStorageConnectionString, QUEUE_NAME);
             queueClient.SendMessage(msg);
         }
 
