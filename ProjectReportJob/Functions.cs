@@ -24,8 +24,9 @@ namespace ProjectReportJob
         {
             GenerateExcelForProject(message.ProjectCode, message.DestinationEmail);
 
-            ISignalRService _service = SignalRService.Instance;
-            _service.SendMessage("reportemailed", "Report issued for " + message.ProjectCode);
+            //Temporarily remove line below.
+            //ISignalRService _service = SignalRService.Instance;
+            //_service.SendMessage("reportemailed", "Report issued for " + message.ProjectCode);
         }
 
         private void GenerateExcelForProject(string projectCode, string destinationEmail)
