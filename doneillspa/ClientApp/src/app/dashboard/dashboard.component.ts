@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit{
 
   constructor(public signalRService: SignalRService, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
     $('[data-toggle="tooltip"]').tooltip();
-    //Retrieve Default list of tui Timesheets For display 
+    //Retrieve Default list of tui Timesheets For display  
     this._timesheetService.getSubmittedTimesheets().subscribe(result => {
       this.timesheets = result;
       //this.newTabClicked();
