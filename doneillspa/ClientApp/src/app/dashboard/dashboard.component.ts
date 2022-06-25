@@ -252,18 +252,9 @@ export class DashboardComponent implements OnInit{
 
   setTimesheetsByState() {
     this.filteredTimesheets = [];
-    if (this.activeTab == "Archieved") {
-      for (let item of this.timesheets) {
-        if (item.status.toUpperCase() == "APPROVED") {
-          this.filteredTimesheets.push(item);
-        }
-      }
-    }
-    else {
-      for (let item of this.timesheets) {
-        if (item.status.toUpperCase() == this.activeTab.toUpperCase()) {
-          this.filteredTimesheets.push(item);
-        }
+    for (let item of this.timesheets) {
+      if (item.status.toUpperCase() == this.activeTab.toUpperCase()) {
+        this.filteredTimesheets.push(item);
       }
     }
 

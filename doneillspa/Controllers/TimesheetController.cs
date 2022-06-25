@@ -72,7 +72,7 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t => t.Status == TimesheetStatus.Approved && t.WeekStarting >= DateTime.Now.AddDays(-30)).OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t => t.Status == TimesheetStatus.Approved).OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
@@ -87,7 +87,7 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t => t.Status == TimesheetStatus.Approved && t.WeekStarting < DateTime.Now.AddDays(-30)).OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(t => t.Status == TimesheetStatus.Archieved).OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
