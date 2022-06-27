@@ -184,6 +184,11 @@ namespace doneillspa.Models
             return Status == TimesheetStatus.Approved;
         }
 
+        public bool IsArchieved()
+        {
+            return Status == TimesheetStatus.Archieved;
+        }
+
         #endregion
     }
 }

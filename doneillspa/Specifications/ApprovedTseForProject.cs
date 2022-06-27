@@ -17,7 +17,7 @@ namespace doneillspa.Specifications
 
         public bool IsSatisfied(TimesheetEntry tse)
         {
-            return (tse.Timesheet.IsApproved() && tse.Code.Equals(this.projCode));
+            return ((tse.Timesheet.IsApproved() || tse.Timesheet.IsArchieved()) && tse.Code.Equals(this.projCode));
         }
     }
 }

@@ -19,7 +19,7 @@ namespace doneillspa.Specifications
         {
             bool satisfied = false;
 
-            if (ts.IsApproved())
+            if (ts.IsApproved() || ts.IsArchieved())
             {
                 foreach(TimesheetEntry tse in ts.TimesheetEntries)
                 {
