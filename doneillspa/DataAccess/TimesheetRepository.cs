@@ -52,6 +52,17 @@ namespace doneillspa.DataAccess
                 .ToList();
         }
 
+        public IEnumerable<Timesheet> GetRejectedTimesheets()
+        {
+            return _context.Timesheet
+                .Include(b => b.TimesheetEntries)
+                .Include(b => b.TimesheetNotes)
+                .Where(b => b.Status == TimesheetStatus.Rejected)
+                .ToList();
+        }
+
+        
+
         public IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting)
         {
             return _context.Timesheet

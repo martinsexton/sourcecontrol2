@@ -14,7 +14,8 @@ namespace doneillspa.DataAccess
         IEnumerable<Timesheet> GetSubmittedTimesheets();
         IEnumerable<Timesheet> GetApprovedTimesheets();
         IEnumerable<Timesheet> GetArchievedTimesheets();
-        
+        IEnumerable<Timesheet> GetRejectedTimesheets();
+
 
         Timesheet GetTimsheetById(long id);
         IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting);
