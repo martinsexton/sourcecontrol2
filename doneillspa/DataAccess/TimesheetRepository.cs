@@ -25,6 +25,33 @@ namespace doneillspa.DataAccess
                 .ToList();
         }
 
+        public IEnumerable<Timesheet> GetSubmittedTimesheets()
+        {
+            return _context.Timesheet
+                .Include(b => b.TimesheetEntries)
+                .Include(b => b.TimesheetNotes)
+                .Where(b => b.Status == TimesheetStatus.Submitted)
+                .ToList();
+        }
+
+        public IEnumerable<Timesheet> GetApprovedTimesheets()
+        {
+            return _context.Timesheet
+                .Include(b => b.TimesheetEntries)
+                .Include(b => b.TimesheetNotes)
+                .Where(b => b.Status == TimesheetStatus.Approved)
+                .ToList();
+        }
+
+        public IEnumerable<Timesheet> GetArchievedTimesheets()
+        {
+            return _context.Timesheet
+                .Include(b => b.TimesheetEntries)
+                .Include(b => b.TimesheetNotes)
+                .Where(b => b.Status == TimesheetStatus.Archieved)
+                .ToList();
+        }
+
         public IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting)
         {
             return _context.Timesheet

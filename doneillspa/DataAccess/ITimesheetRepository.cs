@@ -11,6 +11,11 @@ namespace doneillspa.DataAccess
         long InsertTimesheet(Timesheet b);
         void UpdateTimesheet(Timesheet b);
         IEnumerable<Timesheet> GetTimesheets();
+        IEnumerable<Timesheet> GetSubmittedTimesheets();
+        IEnumerable<Timesheet> GetApprovedTimesheets();
+        IEnumerable<Timesheet> GetArchievedTimesheets();
+        
+
         Timesheet GetTimsheetById(long id);
         IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting);
         IEnumerable<Timesheet> GetTimesheetsByUserId(string userId);
