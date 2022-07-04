@@ -105,6 +105,7 @@ export class RatesComponent {
     roles.push("Loc3");
     roles.push("Electrical Engineer");
     roles.push("Fire Engineer");
+    roles.push("General Operative");
 
     return roles;
   }

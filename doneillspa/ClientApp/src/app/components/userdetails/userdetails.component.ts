@@ -15,7 +15,7 @@ export class UserDetailsComponent {
 
   public roles: string[] = ["Administrator", "Supervisor", "ChargeHand", "ElectR1", "ElectR2",
     "ElectR3", "Temp", "First Year Apprentice", "Second Year Apprentice",
-    "Third Year Apprentice", "Fourth Year Apprentice"];
+    "Third Year Apprentice", "Fourth Year Apprentice", "Electrical Engineer", "Fire Engineer","General Operative"];
 
   public fulltimeStaffRole: string = "";
 

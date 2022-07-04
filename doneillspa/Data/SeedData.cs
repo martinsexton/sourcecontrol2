@@ -25,13 +25,14 @@ namespace doneillspa.Data
 
         private const string _electricalEngineerRoleName = "Electrical Engineer";
         private const string _fireEngineerRoleName = "Fire Engineer";
+        private const string _generalOperativeRoleName = "General Operative";
 
 
         private string _adminEmail = "admin@doneill.local";
         private string _adminPassword = "Hellofido!1234";
 
         private string[] _defaultRoles = new string[] { _adminRoleName, _supervisorRoleName, _chargeHandRoleName,
-            _electR1RoleName, _electricalEngineerRoleName, _fireEngineerRoleName, _tempRoleName, _firstYearApprenticeRoleName,
+            _electR1RoleName, _electricalEngineerRoleName, _fireEngineerRoleName, _generalOperativeRoleName, _tempRoleName, _firstYearApprenticeRoleName,
             _secondYearApprenticeRoleName, _thirdYearApprenticeRoleName, _fourthYearApprenticeRoleName,  _loc1RoleName, _loc2RoleName, _loc3RoleName };
 
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;

@@ -4,7 +4,6 @@ import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
 import { TimesheetNote } from '../timesheetnote';
 import { Project } from '../project';
-import { SignalRService } from '../shared/services/signalrservice';
 
 import {
   ProjectService
@@ -24,7 +23,7 @@ declare var $: any;
   styleUrls: ['./dashboard.component.css']
 })
 
-export class DashboardComponent implements OnInit{
+export class DashboardComponent {
   public timesheets: Timesheet[];
   public timesheetToAddNoteTo: Timesheet;
   public filteredTimesheets: Timesheet[];
@@ -47,7 +46,7 @@ export class DashboardComponent implements OnInit{
   public timesheetsCurrentPage: number = 1;
   public pageLimit: number = 10;
 
-  constructor(public signalRService: SignalRService, http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
     $('[data-toggle="tooltip"]').tooltip();
     //Retrieve Default list of tui Timesheets For display  
     this._timesheetService.getSubmittedTimesheets().subscribe(result => {
@@ -63,11 +62,6 @@ export class DashboardComponent implements OnInit{
 
   onTimesheetSelected(ts: Timesheet) {
     this.selectedTimesheet = ts;
-  }
-
-  ngOnInit(): void {
-    this.signalRService.startConnection();
-    this.signalRService.addTimesheetSubmittedListener();
   }
 
   determinePageCount() {
@@ -160,11 +154,6 @@ export class DashboardComponent implements OnInit{
       this.activeTab = "Archieved";
       this.setTimesheetsByState();
     }, error => this.errors = error);
-  }
-  
-
-  clearSignalRMessages(){
-    this.signalRService.clearMessages();
   }
 
   toggleTimesheetView() {

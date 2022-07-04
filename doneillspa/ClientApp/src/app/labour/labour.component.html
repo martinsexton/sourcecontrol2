@@ -10,19 +10,6 @@
         </div>
       </li>
     </ul>
-    <div *ngIf='signalRService._reportemailedmessages.length > 0'>
-      <button type="button" class="position-relative btn button-to-stand-out" (click)="clearSignalRMessages()">
-        Notifications
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-          {{signalRService._reportemailedmessages.length}}
-          <span class="visually-hidden">unread</span>
-        </span>
-      </button>
-    </div>
-
-    <!--<button type="button" class="btn btn-primary" (click)="addTestMessage()">
-      Test Messages
-    </button>-->
   </nav>
   <div *ngIf="loadingLabourDetails" class="d-flex justify-content-center">
     <div class="spinner-grow text-primary" role="status">

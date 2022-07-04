@@ -49,7 +49,7 @@ export class UserDashboardComponent {
 
   public roles: string[] = ["Administrator", "Supervisor", "ChargeHand", "ElectR1", "ElectR2",
     "ElectR3", "Temp", "First Year Apprentice", "Second Year Apprentice",
-    "Third Year Apprentice", "Fourth Year Apprentice"];
+    "Third Year Apprentice", "Fourth Year Apprentice", "Electrical Engineer", "Fire Engineer", "General Operative"];
 
   public contractorRoles: string[] = ["Loc1", "Loc2",
     "Loc3"];

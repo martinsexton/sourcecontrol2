@@ -43,7 +43,6 @@ import { myFocus } from './directives/focus.directive';
 
 /* Import Services */
 import { ProjectService } from './shared/services/project.service';
-import { SignalRService } from './shared/services/signalrservice';
 import { CertificateService } from './shared/services/certificate.service';
 import { HolidayService } from './shared/services/holiday.service';
 import { NotificationService } from './shared/services/notification.service';
@@ -92,7 +91,7 @@ import { AuthGuard } from './auth.guard';
     routing,
     ChartsModule
   ],
-  providers: [ProjectService, SignalRService, TimesheetService, CertificateService, HolidayService, NotificationService, MsUserService, AuthGuard, {
+  providers: [ProjectService, TimesheetService, CertificateService, HolidayService, NotificationService, MsUserService, AuthGuard, {
     provide: LOCALE_ID,
     useValue: 'en-IE'
   }],
