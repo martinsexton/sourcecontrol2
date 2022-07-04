@@ -276,7 +276,7 @@ namespace ProjectReportJob
                 IEnumerable<Timesheet> timesheets = db.Timesheet
                     .Include(b => b.TimesheetEntries)
                     .ToList()
-                    .Where(r => r.Status.ToString().Equals("Approved"))
+                    .Where(r => r.Status.ToString().Equals("Approved") || r.Status.ToString().Equals("Archieved"))
                     .OrderByDescending(r => r.WeekStarting);
 
                 foreach (Timesheet ts in timesheets)
