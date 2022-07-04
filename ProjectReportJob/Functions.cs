@@ -271,6 +271,8 @@ namespace ProjectReportJob
         {
             Dictionary<DateTime, LabourWeekDetail> labourDetailsByWeek = new Dictionary<DateTime, LabourWeekDetail>();
 
+            IList<long> timesheetIds = GetRelevantTimesheets(proj);
+
             using (var db = new ApplicationDbContext())
             {
                 IEnumerable<Timesheet> timesheets = db.Timesheet
@@ -281,24 +283,51 @@ namespace ProjectReportJob
 
                 foreach (Timesheet ts in timesheets)
                 {
-                    if (!labourDetailsByWeek.ContainsKey(ts.WeekStarting.Date))
+                    if (timesheetIds.Contains(ts.Id))
                     {
-                        LabourWeekDetail detail = BuildLabourWeekDetails(ts, proj);
-                        if (detail.TotalCost > 0)
+                        if (!labourDetailsByWeek.ContainsKey(ts.WeekStarting.Date))
                         {
-                            labourDetailsByWeek.Add(ts.WeekStarting.Date, detail);
+                            LabourWeekDetail detail = BuildLabourWeekDetails(ts, proj);
+                            if (detail.TotalCost > 0)
+                            {
+                                labourDetailsByWeek.Add(ts.WeekStarting.Date, detail);
+                            }
                         }
-                    }
-                    else
-                    {
-                        //Update the labout details that are present
-                        LabourWeekDetail detail = labourDetailsByWeek[ts.WeekStarting.Date];
-                        detail.ammendDetails(BuildLabourWeekDetails(ts, proj));
+                        else
+                        {
+                            //Update the labout details that are present
+                            LabourWeekDetail detail = labourDetailsByWeek[ts.WeekStarting.Date];
+                            detail.ammendDetails(BuildLabourWeekDetails(ts, proj));
+                        }
                     }
                 }
 
                 return labourDetailsByWeek.Values.ToList<LabourWeekDetail>();
             }
+        }
+
+        private IList<long> GetRelevantTimesheets(string proj)
+        {
+            IList<long> timesheetIds = new List<long>();
+            IEnumerable<TimesheetEntry> timesheetEntries;
+
+            using (var db = new ApplicationDbContext())
+            {
+                timesheetEntries = db.TimesheetEntry
+                    .Include(r => r.Timesheet)
+                    .Where(r => r.Code.Equals(proj));
+
+                foreach (TimesheetEntry tse in timesheetEntries)
+                {
+                    if (!timesheetIds.Contains(tse.Timesheet.Id))
+                    {
+                        timesheetIds.Add(tse.Timesheet.Id);
+                    }
+                }
+
+            }
+
+            return timesheetIds;
         }
 
         private LabourWeekDetail BuildLabourWeekDetails(Timesheet ts, string proj)
