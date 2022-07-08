@@ -32,7 +32,7 @@
     "core-js": "^2.4.1",
     "handlebars": "^4.7.7",
     "jquery": "^3.6.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ng2-charts": "^1.6.0",
     "rxjs": "^6.6.7",
     "rxjs-compat": "^6.0.0-rc.0",
