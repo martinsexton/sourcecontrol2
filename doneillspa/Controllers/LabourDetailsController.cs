@@ -482,23 +482,29 @@ namespace doneillspa.Controllers
         {
             Dictionary<DateTime, LabourWeekDetail> labourDetailsByWeek = new Dictionary<DateTime, LabourWeekDetail>();
 
+            IList<long> timesheetIds = _timeSheetRepository.GetRelevantTimesheets(proj);
+
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheets().Where(r => r.Status.ToString().Equals("Approved") || r.Status.ToString().Equals("Archieved"))
                 .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
-                if (!labourDetailsByWeek.ContainsKey(ts.WeekStarting.Date))
+                if (timesheetIds.Contains(ts.Id))
                 {
-                    LabourWeekDetail detail = _timesheetService.BuildLabourWeekDetails(ts, this.Rates, proj);
-                    if (detail.TotalCost > 0)
+                    if (!labourDetailsByWeek.ContainsKey(ts.WeekStarting.Date))
                     {
-                        labourDetailsByWeek.Add(ts.WeekStarting.Date, detail);
+                        LabourWeekDetail detail = _timesheetService.BuildLabourWeekDetails(ts, this.Rates, proj);
+                        if (detail.TotalCost > 0)
+                        {
+                            labourDetailsByWeek.Add(ts.WeekStarting.Date, detail);
+                        }
                     }
-                }
-                else
-                {
-                    //Update the labout details that are present
-                    LabourWeekDetail detail = labourDetailsByWeek[ts.WeekStarting.Date];
-                    detail.ammendDetails(_timesheetService.BuildLabourWeekDetails(ts, this.Rates, proj));
+                    else
+                    {
+                        //Update the labout details that are present
+                        LabourWeekDetail detail = labourDetailsByWeek[ts.WeekStarting.Date];
+                        detail.ammendDetails(_timesheetService.BuildLabourWeekDetails(ts, this.Rates, proj));
+                    }
+
                 }
             }
 

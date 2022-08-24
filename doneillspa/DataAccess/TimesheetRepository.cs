@@ -127,5 +127,24 @@ namespace doneillspa.DataAccess
             _context.Entry(b).State = EntityState.Modified;
             _context.SaveChanges();
         }
+
+        public IList<long> GetRelevantTimesheets(string proj)
+        {
+            IList<long> timesheetIds = new List<long>();
+            IEnumerable<TimesheetEntry> timesheetEntries;
+
+            timesheetEntries = _context.TimesheetEntry
+                .Include(r => r.Timesheet)
+                .Where(r => r.Code.Equals(proj));
+    
+            foreach (TimesheetEntry tse in timesheetEntries)
+            {
+                if (!timesheetIds.Contains(tse.Timesheet.Id))
+                {
+                        timesheetIds.Add(tse.Timesheet.Id);
+                }
+            }
+            return timesheetIds;
+        }
     }
 }
