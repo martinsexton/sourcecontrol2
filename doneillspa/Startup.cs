@@ -27,6 +27,7 @@ using System.Reflection;
 using doneillspa.Mediator.Handlers;
 using Microsoft.AspNetCore.SignalR;
 using doneillspa.Services.MessageQueue;
+using Microsoft.Extensions.Hosting;
 
 namespace doneillspa
 {
@@ -48,9 +49,9 @@ namespace doneillspa
 
             //services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["Data:Baby:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
             services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:ConnectionString"], providerOptions => providerOptions.CommandTimeout(60)));
-            
+
             services.AddScoped<ITimesheetRepository>(_ => new TimesheetRepository(_.GetService<ApplicationContext>()));
-            services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));            
+            services.AddScoped<ITimesheetEntryRepository>(_ => new TimesheetEntryRepository(_.GetService<ApplicationContext>()));
 
             //Email Services
             services.AddScoped<IEmailService>(_ => new SendGridEmailService(Configuration));
@@ -129,7 +130,7 @@ namespace doneillspa
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -151,12 +152,10 @@ namespace doneillspa
             app.UseSpaStaticFiles();
             app.UseAuthentication();
             app.UseSession();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
