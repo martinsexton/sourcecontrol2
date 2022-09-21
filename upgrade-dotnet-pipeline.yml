@@ -6,9 +6,9 @@
 trigger:
   branches:
     include:
-    - master
+    - upgrade-dotnet
     exclude:
-    - azure-pipelines
+    - master
 
 pool:
   vmImage: 'windows-latest'
