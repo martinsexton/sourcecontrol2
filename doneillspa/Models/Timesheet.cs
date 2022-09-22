@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using doneillspa.Factories;
 using doneillspa.Helpers;
 using doneillspa.Mediator.Notifications;
-using doneillspa.Services.Email;
 using doneillspa.Specifications;
 using hub;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 
 namespace doneillspa.Models
 {
