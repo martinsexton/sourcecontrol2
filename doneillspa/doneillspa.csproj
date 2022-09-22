@@ -15,7 +15,7 @@
 		<ApplicationInsightsAnnotationResourceId>/subscriptions/a953f295-b1e1-473c-8df9-dc1ddf7a7a72/resourcegroups/doneillspaeurope/providers/microsoft.insights/components/doneillspa</ApplicationInsightsAnnotationResourceId>
 
 		<RuntimeFrameworkVersion>3.1.0</RuntimeFrameworkVersion>
-		<PlatformTarget>AnyCPU</PlatformTarget>
+		<PlatformTarget>x64</PlatformTarget>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
 
