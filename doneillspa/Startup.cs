@@ -74,6 +74,7 @@ namespace doneillspa
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSignalR().AddAzureSignalR();
             services.AddCors();
             services.AddApplicationInsightsTelemetry();
