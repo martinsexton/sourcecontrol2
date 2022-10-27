@@ -52,6 +52,17 @@ namespace doneillspa.DataAccess
                 .ToList();
         }
 
+        public IEnumerable<Timesheet> GetArchievedTimesheetsForRange(DateTime fromDate, DateTime toDate)
+        {
+            return _context.Timesheet
+                        .Where(b => b.WeekStarting.Date >= fromDate.Date 
+                                && b.WeekStarting.Date <= toDate.Date 
+                                && b.Status == TimesheetStatus.Archieved)
+                        .Include(b => b.TimesheetEntries)
+                        .Include(b => b.TimesheetNotes)
+                        .ToList();
+        }
+
         public IEnumerable<Timesheet> GetRejectedTimesheets()
         {
             return _context.Timesheet

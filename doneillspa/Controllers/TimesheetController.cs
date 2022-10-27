@@ -95,6 +95,20 @@ namespace doneillspa.Controllers
             return timesheetsDtos;
         }
 
+        [HttpGet]
+        [Route("api/archievedtimesheetforrange")]
+        public IEnumerable<TimesheetDto> GetArchievedTimesheetsForRange(DateTime fromDate, DateTime toDate)
+        {
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetArchievedTimesheetsForRange(fromDate, toDate).OrderByDescending(r => r.WeekStarting);
+            foreach (Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+            return timesheetsDtos;
+        }
+
 
         [HttpGet]
         [Route("api/rejectedtimesheet")]

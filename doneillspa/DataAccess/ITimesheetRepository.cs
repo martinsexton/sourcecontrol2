@@ -14,6 +14,7 @@ namespace doneillspa.DataAccess
         IEnumerable<Timesheet> GetSubmittedTimesheets();
         IEnumerable<Timesheet> GetApprovedTimesheets();
         IEnumerable<Timesheet> GetArchievedTimesheets();
+        IEnumerable<Timesheet> GetArchievedTimesheetsForRange(DateTime fromDate, DateTime toDate);
         IEnumerable<Timesheet> GetRejectedTimesheets();
         IList<long> GetRelevantTimesheets(string proj);
 

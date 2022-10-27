@@ -158,6 +158,23 @@ export class TimesheetService extends HttpServiceBase{
       catchError(this.handleError),);
   }
 
+  getArchievedTimesheetsForRange(fromData:string, toDate:string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/archievedtimesheetforrange',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken),
+        params: new HttpParams()
+          .set("fromDate", fromData)
+          .set("toDate", toDate)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError));
+
+  }
+
   getRejectedTimesheets() {
     let authToken = localStorage.getItem('auth_token');
 
