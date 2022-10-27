@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit {
   }
 
   initForm() {
-    var toDate = this.selectedMoment.subtract(1, 'months').toDate();
+    var toDate = this.selectedMoment.toDate();
     var fromDate = this.selectedMoment.subtract(3, 'months').toDate();
     
     this.searchFromDate.setValue(formatDate(fromDate, "yyyy-MM-dd", "en"));
