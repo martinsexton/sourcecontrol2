@@ -103,7 +103,7 @@
                       <tr *ngFor="let note of selectedTimesheet.timesheetNotes">
                         <td>{{ note.dateCreated | date : "fullDate"}}</td>
                         <td>{{ note.details }}</td>
-                        <td><a class="text-primary" (click)="deleteNote(note)">Delete</a></td>
+                        <td><a (click)="deleteNote(note)"><i class="bi bi-trash"></i></a></td>
                       </tr>
                     </tbody>
                   </table>
