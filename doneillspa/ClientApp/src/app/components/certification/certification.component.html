@@ -14,7 +14,7 @@
           <tr *ngFor="let crt of getCertificatesToDisplay()" [ngClass]="{'text-danger': hasCertExpired(crt)}">
             <td>{{ crt.description }}</td>
             <td>{{ crt.expiry | date : "fullDate"}}</td>
-            <td><span aria-hidden="true" (click)="deleteCertification(crt)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
+            <td><span aria-hidden="true" (click)="deleteCertification(crt)"><i class="bi bi-trash"></i></span></td>
           </tr>
         </tbody>
       </table>

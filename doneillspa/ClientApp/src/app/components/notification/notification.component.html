@@ -13,7 +13,7 @@
         <td>{{ not.subject }}</td>
         <td>{{ not.body}}</td>
         <td>{{ not.activationDate | date : "fullDate"}}</td>
-        <td><span aria-hidden="true" (click)="deleteNotification(not)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
+        <td><span aria-hidden="true" (click)="deleteNotification(not)"><i class="bi bi-trash"></i></span></td>
       </tr>
     </tbody>
   </table>
