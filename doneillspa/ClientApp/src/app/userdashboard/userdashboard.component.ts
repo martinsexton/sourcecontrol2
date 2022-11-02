@@ -5,7 +5,7 @@ import { Project } from '../project';
 import { MsUserService } from '../shared/services/msuser.service';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
-
+import { FormBuilder, FormControl } from '@angular/forms';
 import {
   ProjectService
 } from '../shared/services/project.service';
@@ -41,11 +41,15 @@ export class UserDashboardComponent {
   public usersCurrentPage: number = 1;
   public usersForCurrentPage: ApplicationUser[];
   public usersPageLimit: number = 15;
- 
-
+  public activeTab: string = "New";
+  public errors: string;
+  public filteredTimesheets: Timesheet[];
+  public selectedTimesheet: Timesheet;
+  public timesheetsCurrentPage: number = 1;
   public filterName: string;
-
+  public timesheetsForCurrentPage: Timesheet[];
   public timesheets: Timesheet[];
+  public pageLimit: number = 10;
 
   public roles: string[] = ["Administrator", "Supervisor", "ChargeHand", "ElectR1", "ElectR2",
     "ElectR3", "Temp", "First Year Apprentice", "Second Year Apprentice",
@@ -79,6 +83,89 @@ export class UserDashboardComponent {
     }, error => this.userMessage = error)
   }
 
+  submittedTabClicked() {
+    this.activeTab = "Submitted";
+    this.setTimesheetsByState();
+  }
+
+  approvedTabClicked() {
+    this.activeTab = "Approved";
+    this.setTimesheetsByState();
+  }
+
+  rejectedTabClicked() {
+    this.activeTab = "Rejected";
+    this.setTimesheetsByState();
+  }
+
+  archievedTabClicked() {
+    this.activeTab = "Archieved";
+    this.setTimesheetsByState();
+  }
+
+  onTimesheetSelected(ts: Timesheet) {
+    this.selectedTimesheet = ts;
+  }
+
+  setTimesheetsByState() {
+    this.filteredTimesheets = [];
+    for (let item of this.timesheets) {
+      if (item.status.toUpperCase() == this.activeTab.toUpperCase()) {
+        this.filteredTimesheets.push(item);
+      }
+    }
+
+    this.selectedTimesheet = null;
+    if (this.filteredTimesheets) {
+      this.selectedTimesheet = this.filteredTimesheets[0];
+    }
+    //Reset page count and refresh.
+    this.timesheetsCurrentPage = 1;
+    this.setupTimehseetsForCurrentPage();
+  }
+
+  setupTimehseetsForCurrentPage() {
+    this.loading = true;
+
+    var startingIndex = 0;
+    var index = 0;
+
+    this.selectedTimesheet = null;
+
+    //reset client current page array
+    this.timesheetsForCurrentPage = [];
+
+    if (this.timesheetsCurrentPage > 1) {
+      startingIndex = (this.timesheetsCurrentPage - 1) * this.pageLimit;
+    }
+
+    for (let ts of this.filteredTimesheets) {
+      if (index >= startingIndex && index < (startingIndex + this.pageLimit)) {
+        this.timesheetsForCurrentPage.push(ts);
+
+        //Setup selected client as the firt client on current page.
+        if (this.selectedTimesheet == null) {
+          this.selectedTimesheet = ts;
+        }
+      }
+      index = index + 1;
+    }
+    this.loading = false;
+  }
+
+  determinePageCount() {
+    var pageCount = 1;
+    if (this.filteredTimesheets) {
+      var numberOfTimesheets = this.filteredTimesheets.length;
+
+      if (numberOfTimesheets > 0) {
+        var totalPages_pre = Math.floor((numberOfTimesheets / this.pageLimit));
+        pageCount = (numberOfTimesheets % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
+      }
+      return pageCount;
+    }
+  }
+
   showAddUser() {
     this.addingContractor = false;
     $("#myRegistrationModal").modal('show');
@@ -91,6 +178,16 @@ export class UserDashboardComponent {
     else {
       return (this.selectedUser.role == "Loc1" || this.selectedUser.role == "Loc2" || this.selectedUser.role == "Loc3");
     }
+  }
+
+  previousTimesheetsPage() {
+    this.timesheetsCurrentPage = this.timesheetsCurrentPage - 1;
+    this.setupTimehseetsForCurrentPage();
+  }
+
+  nextTimesheetsPage() {
+    this.timesheetsCurrentPage = this.timesheetsCurrentPage + 1;
+    this.setupTimehseetsForCurrentPage();
   }
 
   previousPage() {
@@ -214,7 +311,10 @@ export class UserDashboardComponent {
     this.resetPasswordDetails.userid = this.selectedUser.id;
 
     //Clear Timesheets
-    this.timesheets = new Array<Timesheet>();
+    this.selectedTimesheet = null;
+    this.timesheets = [];
+    this.filteredTimesheets = [];
+    this.timesheetsForCurrentPage = [];
 
     if (this.selectedUser.holidayRequests) {
       this.selectedUsersHolidayRequests = this.selectedUser.holidayRequests;
@@ -222,6 +322,8 @@ export class UserDashboardComponent {
     else {
       this.selectedUsersHolidayRequests = new Array<HolidayRequest>();
     }
+
+    this.retrieveTimesheetsForUser();
   }
 
   retrieveTimesheetsForDisplay() {
@@ -237,6 +339,7 @@ export class UserDashboardComponent {
     this._msuserService.retrieveTimesheets(this.selectedUser.id).subscribe(result => {
       this.loadingTimesheets = false;
       this.timesheets = result;
+      this.submittedTabClicked();
     }, error => {
       this.userMessage = error
       this.loadingTimesheets = false;
