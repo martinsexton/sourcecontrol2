@@ -41,7 +41,7 @@ export class UserDashboardComponent {
   public usersCurrentPage: number = 1;
   public usersForCurrentPage: ApplicationUser[];
   public usersPageLimit: number = 15;
-  public activeTab: string = "New";
+  public activeTab: string = "Submitted";
   public errors: string;
   public filteredTimesheets: Timesheet[];
   public selectedTimesheet: Timesheet;
@@ -339,7 +339,7 @@ export class UserDashboardComponent {
     this._msuserService.retrieveTimesheets(this.selectedUser.id).subscribe(result => {
       this.loadingTimesheets = false;
       this.timesheets = result;
-      this.submittedTabClicked();
+      this.setTimesheetsByState();
     }, error => {
       this.userMessage = error
       this.loadingTimesheets = false;

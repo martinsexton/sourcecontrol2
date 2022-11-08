@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
   public editable = false;
 
   public loading = true;
-  public activeTab: string = "New";
+  public activeTab: string = "Submitted";
 
   public timesheetsForCurrentPage: Timesheet[];
   public timesheetsCurrentPage: number = 1;
