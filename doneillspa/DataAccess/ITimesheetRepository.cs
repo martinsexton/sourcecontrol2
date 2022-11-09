@@ -12,10 +12,14 @@ namespace doneillspa.DataAccess
         void UpdateTimesheet(Timesheet b);
         IEnumerable<Timesheet> GetTimesheets();
         IEnumerable<Timesheet> GetSubmittedTimesheets();
+        IEnumerable<Timesheet> GetUserSubmittedTimesheets(String userId);
         IEnumerable<Timesheet> GetApprovedTimesheets();
-        IEnumerable<Timesheet> GetArchievedTimesheets();
+        IEnumerable<Timesheet> GetUserApprovedTimesheets(String userId);
+        //IEnumerable<Timesheet> GetArchievedTimesheets();
         IEnumerable<Timesheet> GetArchievedTimesheetsForRange(DateTime fromDate, DateTime toDate);
+        IEnumerable<Timesheet> GetUserArchievedTimesheetsForRange(String userId, DateTime fromDate, DateTime toDate);
         IEnumerable<Timesheet> GetRejectedTimesheets();
+        IEnumerable<Timesheet> GetUserRejectedTimesheets(String userId);
         IList<long> GetRelevantTimesheets(string proj);
 
 

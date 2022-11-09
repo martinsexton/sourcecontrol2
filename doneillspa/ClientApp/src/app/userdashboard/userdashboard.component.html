@@ -49,6 +49,24 @@
               <a class="nav-link" id="archieved-tab" data-toggle="tab" href="#archieved" role="tab" aria-controls="archieved" aria-selected="false" (click)="archievedTabClicked()">Archieved</a>
             </li>
           </ul>
+          <div *ngIf="!loading && activeTab == 'Archieved'" class="mt-3 mb-3 row">
+            <div class="col-md-12">
+              <div class="col-md-8">
+                <div class="row">
+                  <div class="col-md-2" data-toggle="tooltip" data-placement="right" title="From Date">
+                    <input id="searchFromDate" type="date" [formControl]="searchFromDate">
+                  </div>
+                  <div class="ml-3 col-md-2" data-toggle="tooltip" data-placement="right" title="To Date">
+                    <input id="searchToDate" type="date" [formControl]="searchToDate">
+                  </div>
+                  <div class="ml-3 col-md-2"><button (click)="filterArchievedTab()" class="btn btn-warning">Filter <i class="bi bi-funnel"></i></button></div>
+                </div>
+              </div>
+              <div class="col-md-4">
+
+              </div>
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-6">
               <!--Display List Of Timesheets-->

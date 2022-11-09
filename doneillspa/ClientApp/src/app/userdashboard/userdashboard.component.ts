@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ApplicationUser } from '../applicationuser';
 import { Project } from '../project';
@@ -17,6 +17,8 @@ import {
 import { HolidayRequest } from '../holidayrequest';
 import { UserRegistration } from '../shared/models/user.registration.interface';
 import { PasswordReset } from '../passwordreset';
+import * as moment from 'moment';
+import { formatDate } from '@angular/common';
 
 declare var $: any;
 
@@ -26,7 +28,7 @@ declare var $: any;
   styleUrls: ['./userdashboard.component.css']
 })
 
-export class UserDashboardComponent {
+export class UserDashboardComponent implements OnInit {
   public selectedUser: ApplicationUser;
   public selectedUserRow: number;
   public selectedUsersHolidayRequests: HolidayRequest[] = [];
@@ -50,6 +52,9 @@ export class UserDashboardComponent {
   public timesheetsForCurrentPage: Timesheet[];
   public timesheets: Timesheet[];
   public pageLimit: number = 10;
+  searchFromDate = new FormControl('');
+  searchToDate = new FormControl('');
+  selectedMoment: moment.Moment = moment();
 
   public roles: string[] = ["Administrator", "Supervisor", "ChargeHand", "ElectR1", "ElectR2",
     "ElectR3", "Temp", "First Year Apprentice", "Second Year Apprentice",
@@ -83,28 +88,61 @@ export class UserDashboardComponent {
     }, error => this.userMessage = error)
   }
 
-  submittedTabClicked() {
-    this.activeTab = "Submitted";
-    this.setTimesheetsByState();
+  ngOnInit() {
+    this.initForm();
   }
 
+  initForm() {
+    var toDate = this.selectedMoment.toDate();
+    var fromDate = this.selectedMoment.subtract(3, 'months').toDate();
+
+    this.searchFromDate.setValue(formatDate(fromDate, "yyyy-MM-dd", "en"));
+    this.searchToDate.setValue(formatDate(toDate, "yyyy-MM-dd", "en"));
+  }
+
+  submittedTabClicked() {
+    this._timesheetService.getUserSubmittedTimesheets(this.selectedUser.id).subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Submitted";
+      this.setTimesheetsByState();
+    }, error => this.errors = error);
+  }
+
+
   approvedTabClicked() {
-    this.activeTab = "Approved";
-    this.setTimesheetsByState();
+    this._timesheetService.getUserApprovedTimesheets(this.selectedUser.id).subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Approved";
+      this.setTimesheetsByState();
+    }, error => this.errors = error);
   }
 
   rejectedTabClicked() {
-    this.activeTab = "Rejected";
-    this.setTimesheetsByState();
+    this._timesheetService.getUserRejectedTimesheets(this.selectedUser.id).subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Rejected";
+      this.setTimesheetsByState();
+    }, error => this.errors = error);
   }
 
   archievedTabClicked() {
-    this.activeTab = "Archieved";
-    this.setTimesheetsByState();
+    this._timesheetService.getUserArchievedTimesheetsForRange(this.selectedUser.id, this.searchFromDate.value, this.searchToDate.value).subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Archieved";
+      this.setTimesheetsByState();
+    }, error => this.errors = error);
   }
 
   onTimesheetSelected(ts: Timesheet) {
     this.selectedTimesheet = ts;
+  }
+
+  filterArchievedTab() {
+    this._timesheetService.getUserArchievedTimesheetsForRange(this.selectedUser.id, this.searchFromDate.value, this.searchToDate.value).subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Archieved";
+      this.setTimesheetsByState();
+    }, error => this.errors = error);
   }
 
   setTimesheetsByState() {
