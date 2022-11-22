@@ -132,6 +132,21 @@ export class TimesheetService extends HttpServiceBase{
       catchError(this.handleError),);
   }
 
+  getUserSubmittedTimesheets(userId: string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/usersubmittedtimesheet',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken),
+        params: new HttpParams()
+          .set("userId", userId)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError));
+  }
+
   getApprovedTimesheets() {
     let authToken = localStorage.getItem('auth_token');
 
@@ -143,6 +158,21 @@ export class TimesheetService extends HttpServiceBase{
       }).pipe(
       retry(5),
       catchError(this.handleError),);
+  }
+
+  getUserApprovedTimesheets(userId: string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/userapprovedtimesheet',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken),
+        params: new HttpParams()
+          .set("userId", userId)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError));
   }
 
   getArchievedTimesheets() {
@@ -158,6 +188,39 @@ export class TimesheetService extends HttpServiceBase{
       catchError(this.handleError),);
   }
 
+  getArchievedTimesheetsForRange(fromData:string, toDate:string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/archievedtimesheetforrange',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken),
+        params: new HttpParams()
+          .set("fromDate", fromData)
+          .set("toDate", toDate)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError));
+  }
+
+  getUserArchievedTimesheetsForRange(userId: string, fromData: string, toDate: string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/userarchievedtimesheetforrange',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken),
+        params: new HttpParams()
+          .set("userId", userId)
+          .set("fromDate", fromData)
+          .set("toDate", toDate)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError));
+  }
+
   getRejectedTimesheets() {
     let authToken = localStorage.getItem('auth_token');
 
@@ -169,6 +232,21 @@ export class TimesheetService extends HttpServiceBase{
       }).pipe(
       retry(5),
       catchError(this.handleError),);
+  }
+
+  getUserRejectedTimesheets(userId: string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/userrejectedtimesheet',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken),
+        params: new HttpParams()
+          .set("userId", userId)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError));
   }
 
   downloadReport(project: string) {

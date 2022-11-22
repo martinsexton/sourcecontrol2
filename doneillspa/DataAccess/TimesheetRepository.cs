@@ -34,6 +34,16 @@ namespace doneillspa.DataAccess
                 .ToList();
         }
 
+        public IEnumerable<Timesheet> GetUserSubmittedTimesheets(String userId)
+        {
+            return _context.Timesheet
+                .Include(b => b.TimesheetEntries)
+                .Include(b => b.TimesheetNotes)
+                .Where(b => b.Status == TimesheetStatus.Submitted 
+                        && b.Owner.ToString().Equals(userId))
+                .ToList();
+        }
+
         public IEnumerable<Timesheet> GetApprovedTimesheets()
         {
             return _context.Timesheet
@@ -43,13 +53,46 @@ namespace doneillspa.DataAccess
                 .ToList();
         }
 
-        public IEnumerable<Timesheet> GetArchievedTimesheets()
+        public IEnumerable<Timesheet> GetUserApprovedTimesheets(String userId)
         {
             return _context.Timesheet
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
-                .Where(b => b.Status == TimesheetStatus.Archieved)
+                .Where(b => b.Status == TimesheetStatus.Approved 
+                        && b.Owner.ToString().Equals(userId))
                 .ToList();
+        }
+
+        //public IEnumerable<Timesheet> GetArchievedTimesheets()
+        //{
+        //    return _context.Timesheet
+        //        .Include(b => b.TimesheetEntries)
+        //        .Include(b => b.TimesheetNotes)
+        //        .Where(b => b.Status == TimesheetStatus.Archieved)
+        //        .ToList();
+        //}
+
+        public IEnumerable<Timesheet> GetArchievedTimesheetsForRange(DateTime fromDate, DateTime toDate)
+        {
+            return _context.Timesheet
+                        .Where(b => b.WeekStarting.Date >= fromDate.Date 
+                                && b.WeekStarting.Date <= toDate.Date 
+                                && b.Status == TimesheetStatus.Archieved)
+                        .Include(b => b.TimesheetEntries)
+                        .Include(b => b.TimesheetNotes)
+                        .ToList();
+        }
+
+        public IEnumerable<Timesheet> GetUserArchievedTimesheetsForRange(string userId, DateTime fromDate, DateTime toDate)
+        {
+            return _context.Timesheet
+                        .Where(b => b.WeekStarting.Date >= fromDate.Date
+                                && b.WeekStarting.Date <= toDate.Date
+                                && b.Status == TimesheetStatus.Archieved
+                                && b.Owner.ToString().Equals(userId))
+                        .Include(b => b.TimesheetEntries)
+                        .Include(b => b.TimesheetNotes)
+                        .ToList();
         }
 
         public IEnumerable<Timesheet> GetRejectedTimesheets()
@@ -61,7 +104,17 @@ namespace doneillspa.DataAccess
                 .ToList();
         }
 
-        
+        public IEnumerable<Timesheet> GetUserRejectedTimesheets(string userId)
+        {
+            return _context.Timesheet
+                .Include(b => b.TimesheetEntries)
+                .Include(b => b.TimesheetNotes)
+                .Where(b => b.Status == TimesheetStatus.Rejected
+                        && b.Owner.ToString().Equals(userId))
+                .ToList();
+        }
+
+
 
         public IEnumerable<Timesheet> GetTimesheetsByDate(DateTime weekStarting)
         {

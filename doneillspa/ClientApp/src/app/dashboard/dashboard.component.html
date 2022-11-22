@@ -19,104 +19,122 @@
       <a class="nav-link" id="archieved-tab" data-toggle="tab" href="#archieved" role="tab" aria-controls="archieved" aria-selected="false" (click)="archievedTabClicked()">Archieved</a>
     </li>
   </ul>
-  <div class="row">
-    <div class="col-md-6">
-      <!--Display List Of Timesheets-->
-      <div *ngIf="loading" class="d-flex justify-content-center">
-        <div class="spinner-grow text-primary" role="status">
-          <span class="sr-only">Loading...</span>
+  <div *ngIf="!loading && activeTab == 'Archieved'" class="mt-3 mb-3 row">
+    <div class="col-md-12">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-2" data-toggle="tooltip" data-placement="right" title="From Date">
+            <input id="searchFromDate" type="date" [formControl]="searchFromDate">
+          </div>
+          <div class="ml-3 col-md-2" data-toggle="tooltip" data-placement="right" title="To Date">
+            <input id="searchToDate" type="date" [formControl]="searchToDate">
+          </div>
+          <div class="ml-3 col-md-2"><button (click)="filterArchievedTab()" class="btn btn-warning">Filter <i class="bi bi-funnel"></i></button></div>
         </div>
       </div>
-      <div *ngIf="!loading">
-        <timesheet-list [timesheets]="timesheetsForCurrentPage" (eventPublisher)="onTimesheetSelected($event)"></timesheet-list>
-        <nav aria-label="Timesheet Navigation">
-          <ul class="pagination">
-            <li [ngClass]="{'page-item': timesheetsCurrentPage > 1, 'page-item disabled': timesheetsCurrentPage == 1}">
-              <a class="page-link" aria-label="Previous" (click)="previousPage()">
-                <span aria-hidden="true">&laquo; Back</span>
-                <span class="sr-only">Previous</span>
-              </a>
-            </li>
-            <li [ngClass]="{'page-item': timesheetsCurrentPage < determinePageCount(), 'page-item disabled': timesheetsCurrentPage >= determinePageCount()}">
-              <a class="page-link" aria-label="Next" (click)="nextPage()">
-                <span aria-hidden="true">Next &raquo;</span>
-                <span class="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+      <div class="col-md-4">
+        
       </div>
-    </div>
-    <div class="col-md-6">
-      <div *ngIf="loading" class="d-flex justify-content-center">
-        <div class="spinner-grow text-primary" role="status">
-          <span class="sr-only">Loading...</span>
+  </div>
+  </div>
+    <div class="row">
+      <div class="col-md-6">
+        <!--Display List Of Timesheets-->
+        <div *ngIf="loading" class="d-flex justify-content-center">
+          <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div *ngIf="!loading">
+          <timesheet-list [timesheets]="timesheetsForCurrentPage" (eventPublisher)="onTimesheetSelected($event)"></timesheet-list>
+          <nav aria-label="Timesheet Navigation">
+            <ul class="pagination">
+              <li [ngClass]="{'page-item': timesheetsCurrentPage > 1, 'page-item disabled': timesheetsCurrentPage == 1}">
+                <a class="page-link" aria-label="Previous" (click)="previousPage()">
+                  <span aria-hidden="true">&laquo; Back</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li [ngClass]="{'page-item': timesheetsCurrentPage < determinePageCount(), 'page-item disabled': timesheetsCurrentPage >= determinePageCount()}">
+                <a class="page-link" aria-label="Next" (click)="nextPage()">
+                  <span aria-hidden="true">Next &raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
-      <div *ngIf="!loading" class="row">
-        <div class="col-md-12">
-          <div class="card mb-3 mt-3 div-to-stand-out">
-            <div class="card-body">
-              <!--Display List Of Timesheets Entries-->
-              <timesheet-entry-list [owner]="selectedTimesheet"></timesheet-entry-list>
-              <button *ngIf="selectedTimesheet" type="button" class="btn btn-primary" data-toggle="modal" (click)="addTimesheetNote()">Add Note</button>
-              <button *ngIf="canApproveTimesheet()" (click)="approveTimesheet()" class="ml-2 btn btn-primary">Approve Timesheet</button>
-              <button *ngIf="canRejectTimesheet()" (click)="rejectTimesheet()" class="ml-2 btn btn-primary">Reject Timesheet</button>
+      <div class="col-md-6">
+        <div *ngIf="loading" class="d-flex justify-content-center">
+          <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div *ngIf="!loading" class="row">
+          <div class="col-md-12">
+            <div class="card mb-3 mt-3 div-to-stand-out">
+              <div class="card-body">
+                <!--Display List Of Timesheets Entries-->
+                <timesheet-entry-list [owner]="selectedTimesheet"></timesheet-entry-list>
+                <button *ngIf="selectedTimesheet" type="button" class="btn btn-primary" data-toggle="modal" (click)="addTimesheetNote()">Add Note</button>
+                <button *ngIf="canApproveTimesheet()" (click)="approveTimesheet()" class="ml-2 btn btn-primary">Approve Timesheet</button>
+                <button *ngIf="canRejectTimesheet()" (click)="rejectTimesheet()" class="ml-2 btn btn-primary">Reject Timesheet</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row" *ngIf="selectedTimesheet">
-        <h3>Notes</h3>
-        <div class="col-md-12" *ngIf="selectedTimesheet.timesheetNotes.length > 0">
-          <div class="card mb-3 mt-3 bg-light div-to-stand-out">
-            <!--<div class="card-header">Timesheet Notes</div>-->
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class='table'>
-                  <thead class="thead-light">
-                    <tr>
-                      <th>Date Created</th>
-                      <th>Note</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let note of selectedTimesheet.timesheetNotes">
-                      <td>{{ note.dateCreated | date : "fullDate"}}</td>
-                      <td>{{ note.details }}</td>
-                      <td><a class="text-primary" (click)="deleteNote(note)">Delete</a></td>
-                    </tr>
-                  </tbody>
-                </table>
+        <div class="row" *ngIf="selectedTimesheet">
+          <h3>Notes</h3>
+          <div class="col-md-12" *ngIf="selectedTimesheet.timesheetNotes.length > 0">
+            <div class="card mb-3 mt-3 bg-light div-to-stand-out">
+              <!--<div class="card-header">Timesheet Notes</div>-->
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class='table'>
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Date Created</th>
+                        <th>Note</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let note of selectedTimesheet.timesheetNotes">
+                        <td>{{ note.dateCreated | date : "fullDate"}}</td>
+                        <td>{{ note.details }}</td>
+                        <td><a (click)="deleteNote(note)"><i class="bi bi-trash"></i></a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- New Timesheet Note -->
-  <div class="modal fade" id="myNewNoteModal" tabindex="-1" role="dialog" aria-labelledby="myNewNoteModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myNewNoteModal">New Note</h4>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="details">Details</label>
-              <input type="text" [(ngModel)]="newNote.details" name="details" class="form-control" [ngClass]="{'is-invalid': newNoteDetails.invalid, 'is-valid': !newNoteDetails.invalid}" id="details" placeholder="Enter Details" required #newNoteDetails="ngModel">
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button [disabled]="newNoteDetails.invalid" (click)="saveTimesheetNote()" class="btn btn-primary">Save Note</button>
+    <!-- New Timesheet Note -->
+    <div class="modal fade" id="myNewNoteModal" tabindex="-1" role="dialog" aria-labelledby="myNewNoteModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myNewNoteModal">New Note</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="details">Details</label>
+                <input type="text" [(ngModel)]="newNote.details" name="details" class="form-control" [ngClass]="{'is-invalid': newNoteDetails.invalid, 'is-valid': !newNoteDetails.invalid}" id="details" placeholder="Enter Details" required #newNoteDetails="ngModel">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button [disabled]="newNoteDetails.invalid" (click)="saveTimesheetNote()" class="btn btn-primary">Save Note</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>

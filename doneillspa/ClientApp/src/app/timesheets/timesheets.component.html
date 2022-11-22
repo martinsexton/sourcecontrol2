@@ -39,8 +39,8 @@
           <div *ngFor="let entry of retrieveTimesheetsForIndex(i)">
             <p class="card-text" data-toggle="tooltip" title="Details: {{entry.details}}" (click)="toggleToolTip">
               {{entry.code}}: {{entry.startTime}} -> {{entry.endTime}}
-              <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span>
-              <span *ngIf="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" aria-hidden="true" (click)="showViewTimesheet(entry)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span>
+              <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>
+              <span *ngIf="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" aria-hidden="true" (click)="showViewTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>
             </p>
           </div>
         </div>

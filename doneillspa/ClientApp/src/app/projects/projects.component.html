@@ -30,7 +30,7 @@
                 <tr *ngFor="let client of clientsForCurrentPage" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="client == selectedClient">
                   <td (click)="displayProjectsForSelectedClient(client)">{{ client.name }}</td>
                   <td>{{getClientStatus(client)}}</td>
-                  <td><span aria-hidden="true" (click)="displaySelectedClient(client)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span></td>
+                  <td><span aria-hidden="true" (click)="displaySelectedClient(client)"><i class="bi bi-pencil-square"></i></span></td>
                 </tr>
               </tbody>
             </table>

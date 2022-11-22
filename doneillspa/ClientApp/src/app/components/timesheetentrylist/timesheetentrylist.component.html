@@ -17,7 +17,7 @@
         <td>{{ tse.endTime }}</td>
         <td>{{ getCodeToDisplay(tse) }}</td>
         <td>{{ tse.details }}</td>
-        <td *ngIf="owner && owner.status == 'Approved'"><span *ngIf="editable" aria-hidden="true" (click)="removeTimesheetEntry(tse)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
+        <td *ngIf="owner && owner.status == 'Approved'"><span *ngIf="editable" aria-hidden="true" (click)="removeTimesheetEntry(tse)"><i class="bi bi-trash"></i></span></td>
       </tr>
     </tbody>
     <tfoot *ngIf="owner">

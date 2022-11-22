@@ -33,8 +33,8 @@
             <td>{{ r.effectiveTo | date : "fullDate"}}</td>
             <td>{{ r.ratePerHour}}</td>
             <td>{{ r.overTimeRatePerHour}}</td>
-            <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="deleteRate(r)"><img src="assets/images/reject.png" class="img-responsive" alt="..."></span></td>
-            <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="displaySelectedRate(r)"><img src="assets/images/edit.png" class="img-responsive" alt="..."></span></td>
+            <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="deleteRate(r)"><i class="bi bi-trash"></i></span></td>
+            <td *ngIf="r.id > 0"><span aria-hidden="true" (click)="displaySelectedRate(r)"><i class="bi bi-pencil-square"></i></span></td>
           </tr>
         </tbody>
       </table>

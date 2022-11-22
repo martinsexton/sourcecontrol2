@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
 import { TimesheetNote } from '../timesheetnote';
-import { Project } from '../project';
 
 import {
   ProjectService
@@ -14,6 +13,8 @@ import {
 } from '../shared/services/timesheet.service';
 import { CertificateService } from '../shared/services/certificate.service';
 import * as moment from 'moment';
+import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { formatDate } from '@angular/common';
 
 declare var $: any;
 
@@ -23,7 +24,7 @@ declare var $: any;
   styleUrls: ['./dashboard.component.css']
 })
 
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   public timesheets: Timesheet[];
   public timesheetToAddNoteTo: Timesheet;
   public filteredTimesheets: Timesheet[];
@@ -40,13 +41,17 @@ export class DashboardComponent {
   public editable = false;
 
   public loading = true;
-  public activeTab: string = "New";
+  public activeTab: string = "Submitted";
 
   public timesheetsForCurrentPage: Timesheet[];
   public timesheetsCurrentPage: number = 1;
   public pageLimit: number = 10;
+  //vendorInformationForm: FormGroup;
+  searchFromDate = new FormControl('');
+  searchToDate = new FormControl('');
+  selectedMoment: moment.Moment = moment();
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService, private _formBuilder: FormBuilder) {
     $('[data-toggle="tooltip"]').tooltip();
     //Retrieve Default list of tui Timesheets For display  
     this._timesheetService.getSubmittedTimesheets().subscribe(result => {
@@ -60,8 +65,28 @@ export class DashboardComponent {
     }, error => this.errors = error);
   }
 
+  ngOnInit() {
+    this.initForm();
+  }
+
+  initForm() {
+    var toDate = this.selectedMoment.toDate();
+    var fromDate = this.selectedMoment.subtract(3, 'months').toDate();
+    
+    this.searchFromDate.setValue(formatDate(fromDate, "yyyy-MM-dd", "en"));
+    this.searchToDate.setValue(formatDate(toDate, "yyyy-MM-dd", "en")); 
+  }
+
   onTimesheetSelected(ts: Timesheet) {
     this.selectedTimesheet = ts;
+  }
+
+  filterArchievedTab() {
+    this._timesheetService.getArchievedTimesheetsForRange(this.searchFromDate.value, this.searchToDate.value).subscribe(result => {
+      this.timesheets = result;
+      this.activeTab = "Archieved";
+      this.setTimesheetsByState();
+    }, error => this.errors = error);
   }
 
   determinePageCount() {
@@ -149,7 +174,7 @@ export class DashboardComponent {
   }
 
   archievedTabClicked() {
-    this._timesheetService.getArchievedTimesheets().subscribe(result => {
+    this._timesheetService.getArchievedTimesheetsForRange(this.searchFromDate.value, this.searchToDate.value).subscribe(result => {
       this.timesheets = result;
       this.activeTab = "Archieved";
       this.setTimesheetsByState();
