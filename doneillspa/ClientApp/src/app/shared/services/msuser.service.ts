@@ -8,7 +8,6 @@ import { UserRegistration } from '../models/user.registration.interface';
 import 'rxjs/Rx';
 
 import { Observable ,  BehaviorSubject } from 'rxjs';
-import { RequestOptions } from '@angular/http';
 import { LoginResponse } from '../models/loginresponse.interface';
 import { Certificate } from '../../certificate';
 import { IdentityRole } from '../../identityrole';
