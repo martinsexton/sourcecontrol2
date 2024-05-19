@@ -29,7 +29,7 @@ steps:
 # Finds or downloads and caches the specified version spec of Node.js and adds it to the PATH
 - task: NodeTool@0
   inputs:
-    versionSpec: '8.11.1'
+    versionSpec: '10.9'
 
 - task: DotNetCoreCLI@2
   inputs:
