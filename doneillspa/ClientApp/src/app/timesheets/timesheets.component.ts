@@ -292,7 +292,7 @@ export class TimesheetComponent {
   }
 
   setupListOfProjects() {
-    this._projectService.getProjects().subscribe(result => {
+    this._projectService.getActiveProjects().subscribe(result => {
       this.projects = result;
       if (this.projects) {
         this.setUpActiveProjects();
