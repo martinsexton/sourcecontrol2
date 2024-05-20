@@ -30,10 +30,13 @@ export class TimesheetComponent {
   public projects: Project[];
   public nonChargeableTime: NonChargeableTime[];
   public activeProjects: Project[];
+  public selectedProjectName: string = '';
   public timesheetExists = false;
   public loading = true;
   public selectedDate: string = null;
   public errors: string;
+
+  public values: string = '';
 
   public selectedUser: ApplicationUser = null;
 
@@ -96,8 +99,8 @@ export class TimesheetComponent {
 
     //Setting up default timesheet and timesheet entries
 
-    this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek,null,'New');
-    this.newEntry = new TimesheetEntry("", "", "", "", "","",true);
+    this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek, null, 'New');
+    this.newEntry = new TimesheetEntry("", "", "", "", "", "", true);
 
     //Retrieve timesheets for given date
     this.retrieveTimeSheetsForDate(startOfWeek);
@@ -183,7 +186,7 @@ export class TimesheetComponent {
     return hours + ':' + minutes;
   }
 
-  deriveElapsedTimeInMins(startTime: string, endTime : string) : number {
+  deriveElapsedTimeInMins(startTime: string, endTime: string): number {
     var start = new Date("2018-01-01 " + startTime);
     var end = new Date("2018-01-01 " + endTime);
 
@@ -232,7 +235,7 @@ export class TimesheetComponent {
   }
 
   ngOnInit() {
-    $('[data-toggle="tooltip"]').tooltip(); 
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
   retrieveTimeCodes() {
@@ -247,7 +250,7 @@ export class TimesheetComponent {
       for (let nc of this.nonChargeableTime) {
         let code = new TimesheetCode(nc.code, nc.description, false);
         codes.push(code);
-      }    
+      }
     }
     return codes;
   }
@@ -288,7 +291,35 @@ export class TimesheetComponent {
   setupNonChargeableTime() {
     this._projectService.getNonChargeableTime().subscribe(result => {
       this.nonChargeableTime = result;
-    }, error => console.error(error)); 
+    }, error => console.error(error));
+  }
+
+  onKey(event: any) { // without type info
+    this.setupListOfProjectsByCode(event.target.value);
+  }
+
+  setupListOfProjectsByCode(code: string) {
+    this._projectService.getActiveProjectsByCode(code).subscribe(result => {
+      this.projects = result;
+      if (this.projects) {
+        this.setUpActiveProjects();
+        if (this.activeProjects.length > 0) {
+          this.newEntry.code = this.activeProjects[0].name;
+        }
+      }
+    }, error => console.error(error));
+  }
+
+  selectProject(proj: Project) {
+    this.selectedProjectName = proj.name;
+    this.newEntry.code = proj.code;
+    $("#dropdown_coins").dropdown('toggle');
+  }
+
+  selectProjectOnEdit(proj: Project) {
+    this.selectedProjectName = proj.name;
+    this.timesheetEntryToEdit.code = proj.code;
+    $("#dropdown_coins_edit").dropdown('toggle');
   }
 
   setupListOfProjects() {
@@ -300,7 +331,7 @@ export class TimesheetComponent {
           this.newEntry.code = this.activeProjects[0].name;
         }
       }
-    }, error => console.error(error));  
+    }, error => console.error(error));
   }
 
   populateDaysOfWeek() {
@@ -348,7 +379,7 @@ export class TimesheetComponent {
     let day = this.daysOfWeek[index];
     return this.retrieveTimesheetsForDay(day);
   }
-  retrieveTimesheetsForDay(day:string) {
+  retrieveTimesheetsForDay(day: string) {
     if (day == "Mon") {
       this.monEntries.sort(function sortByStartTime(a, b) {
         let day1 = parseInt(a.startTime.split(':')[0]);
@@ -407,7 +438,7 @@ export class TimesheetComponent {
     }
   }
 
-  populateEntriesForDaysOfWeek(array: Timesheet[], ws : Date) {
+  populateEntriesForDaysOfWeek(array: Timesheet[], ws: Date) {
     //Clear Arrays before loading
     this.monEntries.length = 0;
     this.tueEntries.length = 0;
@@ -460,7 +491,7 @@ export class TimesheetComponent {
     }
   }
 
-  retrieveDateForDay(day: string) : Date{
+  retrieveDateForDay(day: string): Date {
     if (day == "Mon") {
       return this.monday.date;
     }
@@ -607,10 +638,10 @@ export class TimesheetComponent {
       this.saveTimesheetAndEntry(entry);
     }
 
-    
+
   }
 
-  pushTimesheetToCalendarDays(entry:TimesheetEntry) {
+  pushTimesheetToCalendarDays(entry: TimesheetEntry) {
     if (this.selectedDay == "Mon") {
       this.monEntries.push(entry);
     }
@@ -649,7 +680,7 @@ export class TimesheetComponent {
     this.populateTimesheet(this.friEntries);
     this.populateTimesheet(this.satEntries);
     this.populateTimesheet(this.sunEntries);
-    
+
     this._timesheetService.saveTimesheet(this.activeTimeSheet).subscribe(
       res => {
         console.log(res);
@@ -661,7 +692,7 @@ export class TimesheetComponent {
       error => this.errors = error);
   }
 
-  saveTimesheetAndEntry(entry : TimesheetEntry) {
+  saveTimesheetAndEntry(entry: TimesheetEntry) {
     //Populate timesheet object with entries
     this.populateTimesheet(this.monEntries);
     this.populateTimesheet(this.tueEntries);
