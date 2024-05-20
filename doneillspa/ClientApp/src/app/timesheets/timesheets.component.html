@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="buttonHolder" *ngIf="activeProjects">
+  <div class="buttonHolder">
     <form class="form-inline my-2 my-lg-0">
       <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
       <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="ml-2 btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add</button>

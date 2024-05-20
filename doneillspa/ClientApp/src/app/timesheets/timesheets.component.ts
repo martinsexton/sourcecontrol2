@@ -87,7 +87,7 @@ export class TimesheetComponent {
     this.populateDaysOfWeek();
 
     //Setup list of available projects
-    this.setupListOfProjects();
+    //this.setupListOfProjects();
 
     this.setupNonChargeableTime();
 
@@ -256,10 +256,17 @@ export class TimesheetComponent {
   }
 
   setUpActiveProjects() {
+    var max = 10;
+    var index = 1;
+
     this.activeProjects = [];
     for (let item of this.projects) {
       if (item.isActive == true) {
+        if (index == 10) {
+          break;
+        }
         this.activeProjects.push(item);
+        index = index + 1;
       }
     }
 
@@ -303,9 +310,9 @@ export class TimesheetComponent {
       this.projects = result;
       if (this.projects) {
         this.setUpActiveProjects();
-        if (this.activeProjects.length > 0) {
-          this.newEntry.code = this.activeProjects[0].name;
-        }
+        //if (this.activeProjects.length > 0) {
+        //  this.newEntry.code = this.activeProjects[0].name;
+        //}
       }
     }, error => console.error(error));
   }
@@ -322,17 +329,17 @@ export class TimesheetComponent {
     $("#dropdown_coins_edit").dropdown('toggle');
   }
 
-  setupListOfProjects() {
-    this._projectService.getActiveProjects().subscribe(result => {
-      this.projects = result;
-      if (this.projects) {
-        this.setUpActiveProjects();
-        if (this.activeProjects.length > 0) {
-          this.newEntry.code = this.activeProjects[0].name;
-        }
-      }
-    }, error => console.error(error));
-  }
+  //setupListOfProjects() {
+  //  this._projectService.getActiveProjects().subscribe(result => {
+  //    this.projects = result;
+  //    if (this.projects) {
+  //      this.setUpActiveProjects();
+  //      if (this.activeProjects.length > 0) {
+  //        this.newEntry.code = this.activeProjects[0].name;
+  //      }
+  //    }
+  //  }, error => console.error(error));
+  //}
 
   populateDaysOfWeek() {
     this.daysOfWeek.push("Mon");
