@@ -557,6 +557,15 @@ export class TimesheetComponent {
     }
   }
 
+  projectNameForDisplay(proj: Project) : string{
+    if (proj.name.length > 40) {
+      return proj.name.slice(0, 40) + '...';
+    }
+    else {
+      return proj.name;
+    }
+  }
+
   showEditTimesheet(entry: TimesheetEntry) {
     this.timesheetEntryToEdit = new TimesheetEntry("", "", "", "", "", "", true);
 

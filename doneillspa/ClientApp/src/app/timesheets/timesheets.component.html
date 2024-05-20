@@ -83,7 +83,7 @@
                 <div class="form-group">
                   <input type="search" class="form-control" id="searchCoin" placeholder="Search.." autofocus="autofocus" (keyup)="onKey($event)">
                 </div>
-                <input *ngFor="let c of activeProjects" type="button" class="dropdown-item" value="{{c.name}}" (click)="selectProject(c)" />
+                <input *ngFor="let c of activeProjects" type="button" class="dropdown-item" value="{{projectNameForDisplay(c)}}" (click)="selectProject(c)" />
                 <div *ngIf="activeProjects && activeProjects.length == 0" id="empty" class="dropdown-header">No code found!</div>
               </div>
             </div>
@@ -128,7 +128,7 @@
                 <div class="form-group">
                   <input type="search" class="form-control" id="searchCoin" placeholder="Search.." autofocus="autofocus" (keyup)="onKey($event)">
                 </div>
-                <input *ngFor="let c of activeProjects" type="button" class="dropdown-item" value="{{c.name}}" (click)="selectProjectOnEdit(c)" />
+                <input *ngFor="let c of activeProjects" type="button" class="dropdown-item" value="{{projectNameForDisplay(c)}}" (click)="selectProjectOnEdit(c)" />
                 <div *ngIf="activeProjects && activeProjects.length == 0" id="empty" class="dropdown-header">No code found!</div>
               </div>
             </div>
