@@ -132,6 +132,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <TypeScriptCompile Remove="clientapp\src\app\timesheets2\timesheets2.component.ts" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<TypeScriptCompile Include="ClientApp\src\app\account\login-form\login-form.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\account\registration-form\registration-form.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\app.routing.ts" />

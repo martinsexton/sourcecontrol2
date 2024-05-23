@@ -1,0 +1,44 @@
+<div class="container-fluid">
+  <div class="row">
+    <div *ngIf="!loading" class="col-12"><p class="h6 text-primary text-center">{{getMonthToDisplay()}}</p></div>
+  </div>
+  <div class="row">
+    <div class="col-2">
+      <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
+    </div>
+    <div class="col-8">
+      <div *ngIf="!loading" class="row justify-content-md-center">
+        <div class="col"><p class="h6 text-muted text-center">M</p></div>
+        <div class="col"><p class="h6 text-muted text-center">T</p></div>
+        <div class="col"><p class="h6 text-muted text-center">W</p></div>
+        <div class="col"><p class="h6 text-muted text-center">T</p></div>
+        <div class="col"><p class="h6 text-muted text-center">F</p></div>
+        <div class="col"><p class="h6 text-muted text-center">S</p></div>
+      </div>
+      <div *ngIf="!loading" class="row justify-content-md-center">
+        <div class="col"><a class="link-opacity-75" (click)="mondaySelected()">{{getMondayDate()}}</a></div>
+        <div class="col"><a class="link-opacity-75" (click)="tuesdaySelected()">{{getTuesdayDate()}}</a></div>
+        <div class="col"><a class="link-opacity-75" (click)="wednesdaySelected()">{{getWednesdayDate()}}</a></div>
+        <div class="col"><a class="link-opacity-75" (click)="thursdaySelected()">{{getThursdayDate()}}</a></div>
+        <div class="col"><a class="link-opacity-75" (click)="fridaySelected()">{{getFridayDate()}}</a></div>
+        <div class="col"><a class="link-opacity-75" (click)="saturdaySelected()">{{getSaturdayDate()}}</a></div>
+      </div>
+    </div>
+    <div class="col-2">
+      <span class="ml-2" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
+    </div>
+  </div>
+  <div class="row" *ngFor="let entry of retrieveTimesheetsForDay()">
+    <div class="col-10">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{entry.code}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{entry.details}}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <h6 class="card-subtitle mb-2 text-muted">{{calculateTotalDurationForEntry(entry)}}</h6>
+</div>
+  </div>
+</div>

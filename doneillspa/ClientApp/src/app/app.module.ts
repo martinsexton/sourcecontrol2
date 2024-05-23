@@ -14,6 +14,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
 import { RatesComponent } from './components/rates/rates.component';
 import { TimesheetComponent } from './timesheets/timesheets.component';
+import { Timesheet2Component } from './timesheets2/timesheets2.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SupervisorComponent } from './supervisor/supervisor.component';
@@ -71,6 +72,7 @@ import { AuthGuard } from './auth.guard';
     ProjectComponent,
     RatesComponent,
     TimesheetComponent,
+    Timesheet2Component,
     HolidaysComponent,
     DashboardComponent,
     SupervisorComponent,
