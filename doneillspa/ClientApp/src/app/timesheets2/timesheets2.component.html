@@ -3,10 +3,7 @@
     <div *ngIf="!loading" class="col-12"><p class="h6 text-primary text-center">{{getMonthToDisplay()}}</p></div>
   </div>
   <div class="row">
-    <div class="col-2">
-      <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
-    </div>
-    <div class="col-8">
+    <div class="col-12">
       <div *ngIf="!loading" class="row justify-content-md-center">
         <div class="col"><p class="h6 text-muted text-center">M</p></div>
         <div class="col"><p class="h6 text-muted text-center">T</p></div>
@@ -24,11 +21,30 @@
         <div class="col"><a class="link-opacity-75" (click)="saturdaySelected()">{{getSaturdayDate()}}</a></div>
       </div>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-2">
+      <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
+    </div>
+    <div class="col-8 text-center">
+      <button class="ml-2 btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add</button>
+    </div>
     <div class="col-2">
       <span class="ml-2" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
     </div>
   </div>
   <div class="row" *ngFor="let entry of retrieveTimesheetsForDay()">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <p><small>Project: {{entry.code}}</small>
+          <p><small>Details: {{entry.details}}</small></p>
+          <p><small>Duration: {{calculateTotalDurationForEntry(entry)}}</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--<div class="row" *ngFor="let entry of retrieveTimesheetsForDay()">
     <div class="col-10">
       <div class="card">
         <div class="card-body">
@@ -39,6 +55,7 @@
     </div>
     <div class="col-2">
       <h6 class="card-subtitle mb-2 text-muted">{{calculateTotalDurationForEntry(entry)}}</h6>
-</div>
+    </div>-->
   </div>
+  <div>
 </div>
