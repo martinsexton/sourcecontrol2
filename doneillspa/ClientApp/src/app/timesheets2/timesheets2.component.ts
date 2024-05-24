@@ -43,6 +43,7 @@ export class Timesheet2Component {
   public timesheetExists = false;
   public errors: string;
   public selectedDay: string = "Mon";
+  public activeTab: string = "mon";
 
   public selectedDayEntries: Array<TimesheetEntry> = new Array();
   public monEntries: Array<TimesheetEntry> = new Array();
@@ -72,7 +73,7 @@ export class Timesheet2Component {
     this.newEntry = new TimesheetEntry("", "", "", "", "", "", true);
 
     //Retrieve timesheets for given date
-    this.retrieveTimeSheetsForDate(startOfWeek);
+    this.retrieveTimeSheetsForDate();
 
     this.loading = false;
   }
@@ -108,26 +109,32 @@ export class Timesheet2Component {
   }
 
   mondaySelected() {
+    this.activeTab = "mon";
     this.setActiveDay(0);
   }
 
   tuesdaySelected() {
+    this.activeTab = "tue";
     this.setActiveDay(1);
   }
 
   wednesdaySelected() {
+    this.activeTab = "wed";
     this.setActiveDay(2);
   }
 
   thursdaySelected() {
+    this.activeTab = "thurs";
     this.setActiveDay(3);
   }
 
   fridaySelected() {
+    this.activeTab = "fri";
     this.setActiveDay(4);
   }
 
   saturdaySelected() {
+    this.activeTab = "sat";
     this.setActiveDay(5);
   }
 
@@ -252,7 +259,8 @@ export class Timesheet2Component {
     }
   }
 
-  retrieveTimeSheetsForDate(startOfWeek: Date) {
+  retrieveTimeSheetsForDate() {
+    let startOfWeek = this.getStartOfWeek();
     this._timesheetService.getTimesheetForUser(startOfWeek.getFullYear(), (startOfWeek.getMonth() + 1), startOfWeek.getDate(), this.selectedUser.firstName + this.selectedUser.surname).subscribe(result => {
       this.timesheets = result;
       this.populateEntriesForDaysOfWeek(this.timesheets, startOfWeek);
@@ -272,11 +280,14 @@ export class Timesheet2Component {
   nextWeek() {
     this.selectedMoment.add(7, 'days');
     this.refreshCalendarDates();
+    this.retrieveTimeSheetsForDate();
   }
 
   previousWeek() {
     this.selectedMoment.add(-7, 'days');
     this.refreshCalendarDates();
+    this.retrieveTimeSheetsForDate();
+    
   }
 
   refreshCalendarDates() {
