@@ -655,8 +655,6 @@ export class TimesheetComponent {
       //Automatically save timesheet and persist entry if it has not been saved already
       this.saveTimesheetAndEntry(entry);
     }
-
-
   }
 
   pushTimesheetToCalendarDays(entry: TimesheetEntry) {
