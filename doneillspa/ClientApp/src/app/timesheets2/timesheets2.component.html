@@ -44,10 +44,26 @@
     </div>
     <div class="col-8 text-center">
       <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="ml-2 btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add</button>
-      <!--<button class="ml-2 btn btn-outline-success my-2 my-sm-0">Add</button>-->
+      <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0 ml-2" (click)="submitTimesheet()">Submit</button>
     </div>
     <div class="col-2">
       <span class="ml-2" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
+    </div>
+  </div>
+  <div *ngIf="activeTimeSheet" class="row">
+    <div class="col-12">
+      <div class="card bg-light">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-10">
+              Total Time Recorded: {{calculateTotalDuration()}}
+            </div>
+            <div *ngIf="activeTimeSheet.timesheetNotes.length > 0" class="col-2">
+              <span (click)="toggleDisplayNotes()"><i class="bi bi-clipboard2-data"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row" *ngFor="let entry of retrieveTimesheetsForDay()">
@@ -110,11 +126,11 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="startTime">Start Time</label>
+              <label for="newEntryStartTime">Start Time</label>
               <input type="time" id="newEntryStartTime" name="newEntryStartTime" class="form-control" [ngClass]="{'is-invalid': newEntryStartTime.invalid, 'is-valid': !newEntryStartTime.invalid}" required [(ngModel)]="newEntry.startTime" #newEntryStartTime="ngModel">
             </div>
             <div class="form-group">
-              <label for="endTime">End Time</label>
+              <label for="newEntryEndTime">End Time</label>
               <input type="time" id="newEntryEndTime" name="newEntryEndTime" class="form-control" [ngClass]="{'is-invalid': newEntryEndTime.invalid, 'is-valid': !newEntryEndTime.invalid}" required validateEndtime startTime="{{newEntryStartTime.value}}" [(ngModel)]="newEntry.endTime" #newEntryEndTime="ngModel">
             </div>
             <div class="form-group">
@@ -153,11 +169,11 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="startTime">Start Time</label>
+              <label for="editEntryStartTime">Start Time</label>
               <input type="time" id="editEntryStartTime" name="editEntryStartTime" class="form-control" [ngClass]="{'is-invalid': editEntryStartTime.invalid, 'is-valid': !editEntryStartTime.invalid}" required [(ngModel)]="timesheetEntryToEdit.startTime" #editEntryStartTime="ngModel">
             </div>
             <div class="form-group">
-              <label for="endTime">End Time</label>
+              <label for="editEntryEndTime">End Time</label>
               <input type="time" id="editEntryEndTime" name="editEntryEndTime" class="form-control" [ngClass]="{'is-invalid': editEntryEndTime.invalid, 'is-valid': !editEntryEndTime.invalid}" required validateEndtime startTime="{{timesheetEntryToEdit.startTime}}" [(ngModel)]="timesheetEntryToEdit.endTime" #editEntryEndTime="ngModel">
             </div>
             <div class="form-group">
@@ -168,6 +184,68 @@
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button [disabled]="editEntryStartTime.invalid || editEntryEndTime.invalid" (click)="updateTimesheetEntry()" class="btn btn-secondary">Update</button>
               <button (click)="removeTimesheetEntry(timesheetEntryToEdit)" class="btn btn-secondary">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- View Timesheet Details Modal -->
+  <div *ngIf="timesheetEntryToView" class="modal fade" id="myViewTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">View Details</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="code">Project Code</label>
+              <input type="text" disabled id="viewEntryCode" name="viewEntryCode" class="form-control" [(ngModel)]="timesheetEntryToView.code" #viewEntryStartTime="ngModel">
+            </div>
+            <div class="form-group">
+              <label for="viewEntryStartTime">Start Time</label>
+              <input type="time" disabled id="viewEntryStartTime" name="viewEntryStartTime" class="form-control" [(ngModel)]="timesheetEntryToView.startTime" #viewEntryStartTime="ngModel">
+            </div>
+            <div class="form-group">
+              <label for="viewEntryEndTime">End Time</label>
+              <input type="time" id="viewEntryEndTime" disabled name="viewEntryEndTime" class="form-control" [(ngModel)]="timesheetEntryToView.endTime" #viewEntryEndTime="ngModel">
+            </div>
+            <div class="form-group">
+              <label for="details">Details</label>
+              <textarea disabled [(ngModel)]="timesheetEntryToView.details" name="details" class="form-control" id="details" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- View Notes Modal -->
+  <div class="modal fade" id="myViewNotesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">View Notes</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div *ngFor="let note of activeTimeSheet.timesheetNotes" class="row">
+              <div class="col">
+                <div class="card">
+                  <div class="card-body">
+                    <p><strong>{{note.dateCreated | date : "fullDate"}}</strong></p>
+                    <p>{{note.details}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button (click)="toggleDisplayNotes()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
           </form>
         </div>

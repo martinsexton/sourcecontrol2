@@ -29,11 +29,11 @@
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/assignment"]' class="nav-link">Assignment Details</a>
       </li>
-      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
+      <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
         <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
-      </li>
+      </li>-->
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
-        <a [routerLink]='["/timesheets2"]' class="nav-link">Timesheets2</a>
+        <a [routerLink]='["/timesheets2"]' class="nav-link">Timesheets</a>
       </li>
       <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
     <a [routerLink]='["/holidays"]' class="nav-link">Holidays</a>

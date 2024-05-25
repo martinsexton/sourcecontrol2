@@ -45,6 +45,7 @@ export class Timesheet2Component {
   public selectedDay: string = "Mon";
   public activeTab: string = "mon";
   displayAddTimesheet = false;
+  displayNotes = false;
   public userMessage: string;
   public selectedProjectName: string = '';
 
@@ -58,6 +59,7 @@ export class Timesheet2Component {
   public sunEntries: Array<TimesheetEntry> = new Array();
   public daysOfWeek: Array<string> = new Array();
   public timesheetEntryToEdit: TimesheetEntry;
+  public timesheetEntryToView: TimesheetEntry;
   public nonChargeableTime: NonChargeableTime[];
   public timesheetCodes: TimesheetCode[];
   public activeProjects: Project[];
@@ -197,6 +199,15 @@ export class Timesheet2Component {
       }, error => this.errors = error);
   }
 
+  submitTimesheet() {
+    this.activeTimeSheet.status = "Submitted";
+    this._timesheetService.updateTimesheet(this.activeTimeSheet).subscribe(
+      res => {
+        console.log(res);
+      },
+      error => this.errors = error);
+  }
+
   removeTimesheetEntry(ts) {
     //We can only delete timesheet entries while the timesheet is in a status of new.
     if (this.activeTimeSheet.status == 'New' || this.activeTimeSheet.status == 'Rejected') {
@@ -236,6 +247,20 @@ export class Timesheet2Component {
     } else {
       $("#myNewTimesheetModal").modal('hide');
     }
+  }
+
+  toggleDisplayNotes() {
+    this.displayNotes = !this.displayNotes;
+    if (this.displayNotes) {
+      $("#myViewNotesModal").modal('show');
+    } else {
+      $("#myViewNotesModal").modal('hide');
+    }
+  }
+
+  showViewTimesheet(entry: TimesheetEntry) {
+    this.timesheetEntryToView = entry;
+    $("#myViewTimesheetModal").modal('show');
   }
 
   addTimesheetEntry() {
@@ -337,6 +362,78 @@ export class Timesheet2Component {
         break;
       }
     }
+  }
+
+  calculateTotalDuration(): string {
+    console.log("calculateDuration called");
+    let totalDuration: number = 0;
+
+    //We will need to separate timesheets into the differnt days and add
+    //totals for each day and if >= 5 hours substract 30 minutes for lunch breaks
+    let mondayMins: number = 0;
+    let tueMins: number = 0;
+    let wedMins: number = 0;
+    let thursMins: number = 0;
+    let friMins: number = 0;
+    let satMins: number = 0;
+    let sunMins: number = 0;
+
+    for (let item of this.monEntries) {
+      mondayMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);
+    }
+
+    for (let item of this.tueEntries) {
+      tueMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
+    }
+
+    for (let item of this.wedEntries) {
+      wedMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
+    }
+
+    for (let item of this.thursEntries) {
+      thursMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
+    }
+
+    for (let item of this.friEntries) {
+      friMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
+    }
+
+    for (let item of this.satEntries) {
+      satMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
+    }
+
+    for (let item of this.sunEntries) {
+      sunMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);;
+    }
+
+    //If worked >= 5 hours for a day subtract 30 mins.
+    if (mondayMins >= (5 * 60)) {
+      mondayMins = mondayMins - 30;
+    }
+    if (tueMins >= (5 * 60)) {
+      tueMins = tueMins - 30;
+    }
+    if (wedMins >= (5 * 60)) {
+      wedMins = wedMins - 30;
+    }
+    if (thursMins >= (5 * 60)) {
+      thursMins = thursMins - 30;
+    }
+    if (friMins >= (5 * 60)) {
+      friMins = friMins - 30;
+    }
+    if (satMins > (5 * 60)) {
+      satMins = satMins - 30;
+    }
+    if (sunMins > (5 * 60)) {
+      sunMins = sunMins - 30;
+    }
+    totalDuration = mondayMins + tueMins + wedMins + thursMins + friMins + satMins + sunMins;
+
+    var hours = Math.floor(totalDuration / 60);
+    var minutes = totalDuration % 60;
+
+    return hours + ':' + minutes;
   }
 
   calculateTotalDurationForEntry(item: TimesheetEntry): string {
