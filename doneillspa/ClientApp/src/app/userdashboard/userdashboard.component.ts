@@ -14,7 +14,6 @@ import {
   TimesheetService
 } from '../shared/services/timesheet.service';
 
-import { HolidayRequest } from '../holidayrequest';
 import { UserRegistration } from '../shared/models/user.registration.interface';
 import { PasswordReset } from '../passwordreset';
 import * as moment from 'moment';
@@ -31,7 +30,6 @@ declare var $: any;
 export class UserDashboardComponent implements OnInit {
   public selectedUser: ApplicationUser;
   public selectedUserRow: number;
-  public selectedUsersHolidayRequests: HolidayRequest[] = [];
   public userMessage: string;
   public resetPasswordDetails: PasswordReset = new PasswordReset('', '');
   public loadingTimesheets: boolean = false;
@@ -78,12 +76,6 @@ export class UserDashboardComponent implements OnInit {
         this.setupUsersForCurrentPage();
         this.resetPasswordDetails.userid = this.selectedUser.id;
         this.selectedUserRow = 0;
-        if (this.selectedUser.holidayRequests) {
-          this.selectedUsersHolidayRequests = this.selectedUser.holidayRequests;
-        }
-        else {
-          this.selectedUsersHolidayRequests = new Array<HolidayRequest>();
-        }
       }
     }, error => this.userMessage = error)
   }
@@ -353,13 +345,6 @@ export class UserDashboardComponent implements OnInit {
     this.timesheets = [];
     this.filteredTimesheets = [];
     this.timesheetsForCurrentPage = [];
-
-    if (this.selectedUser.holidayRequests) {
-      this.selectedUsersHolidayRequests = this.selectedUser.holidayRequests;
-    }
-    else {
-      this.selectedUsersHolidayRequests = new Array<HolidayRequest>();
-    }
 
     this.retrieveTimesheetsForUser();
   }

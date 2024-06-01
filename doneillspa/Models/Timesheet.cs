@@ -5,7 +5,6 @@ using doneillspa.Factories;
 using doneillspa.Helpers;
 using doneillspa.Mediator.Notifications;
 using doneillspa.Specifications;
-using hub;
 using MediatR;
 
 namespace doneillspa.Models

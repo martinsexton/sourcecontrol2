@@ -9,12 +9,10 @@ using doneillspa.Dtos;
 using doneillspa.Models;
 using doneillspa.Services;
 using doneillspa.Services.Email;
-using hub;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 
@@ -187,149 +185,9 @@ namespace doneillspa.Controllers
             return new JsonResult(ConvertToDto(_timeSheetRepository.GetTimsheetById(id)));
         }
 
-        [HttpGet]
-        [Route("api/projectassignments/week/{year}/{month}/{day}")]
-        public IEnumerable<ProjectAssignmentDto> Get(int year, int month, int day)
-        {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-            IEnumerable<Timesheet> timesheets = new List<Timesheet>();
-            IList<ProjectAssignmentDto> assignments = new List<ProjectAssignmentDto>();
-
-            //If no date provide, then bring back all timesheets
-            if (year == 0 || year == 1970)
-            {
-                timesheets = _timeSheetRepository.GetTimesheets();
-            }
-            else
-            {
-                DateTime weekStarting = new DateTime(year, month, day);
-                timesheets = _timeSheetRepository.GetTimesheetsByDate(weekStarting);
-            }
-
-            foreach (Timesheet ts in timesheets)
-            {
-                //We only are concerned with approved timesheets
-                if (ts.Status != TimesheetStatus.Approved) continue;
-
-                foreach (TimesheetEntry tse in ts.TimesheetEntries)
-                {
-                    if (!projectCodeAlreadyRecorded(assignments, tse.Code))
-                    {
-                        //For none chargeable codes we ignore.
-                        if (!isProjectCode(tse.Code))
-                        {
-                            continue;
-                        }
-                        ProjectAssignmentDto adto = new ProjectAssignmentDto();
-                        adto.Code = tse.Code;
-                        if (adto.Users == null)
-                        {
-                            adto.Users = new List<UserAssignmentDetails>();
-                        }
-                        bool addUser = true;
-                        foreach (UserAssignmentDetails user in adto.Users)
-                        {
-                            if (user.UserName.Equals(ts.Username))
-                            {
-                                addUser = false;
-                            }
-                        }
-                        if (addUser)
-                        {
-                            UserAssignmentDetails newUserDetails = new UserAssignmentDetails();
-                            newUserDetails.UserName = ts.Username;
-                            DateTime now = DateTime.UtcNow;
-                            string[] startTime = tse.StartTime.Split(":");
-                            string[] endTime = tse.EndTime.Split(":");
-
-                            DateTime start = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(startTime[0]), Int32.Parse(startTime[1]), 0);
-                            DateTime end = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(endTime[0]), Int32.Parse(endTime[1]), 0);
-
-                            TimeSpan varTime = (DateTime)end - (DateTime)start;
-
-                            newUserDetails.TotalMinutes = (int)varTime.TotalMinutes;
-                            adto.Users.Add(newUserDetails);
-                        }
-                        assignments.Add(adto);
-                    }
-                    else
-                    {
-                        foreach (ProjectAssignmentDto dto in assignments)
-                        {
-                            if (dto.Code.Equals(tse.Code))
-                            {
-                                if (dto.Users == null)
-                                {
-                                    dto.Users = new List<UserAssignmentDetails>();
-                                }
-                                bool addUser = true;
-                                foreach (UserAssignmentDetails user in dto.Users)
-                                {
-                                    if (user.UserName.Equals(ts.Username))
-                                    {
-                                        addUser = false;
-                                    }
-                                }
-                                if (addUser)
-                                {
-                                    UserAssignmentDetails newUserDetails = new UserAssignmentDetails();
-                                    newUserDetails.UserName = ts.Username;
-                                    DateTime now = DateTime.UtcNow;
-                                    string[] startTime = tse.StartTime.Split(":");
-                                    string[] endTime = tse.EndTime.Split(":");
-
-                                    DateTime start = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(startTime[0]), Int32.Parse(startTime[1]), 0);
-                                    DateTime end = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(endTime[0]), Int32.Parse(endTime[1]), 0);
-
-                                    TimeSpan varTime = (DateTime)end - (DateTime)start;
-
-                                    newUserDetails.TotalMinutes = (int)varTime.TotalMinutes;
-                                    dto.Users.Add(newUserDetails);
-                                }
-                                else
-                                {
-                                    foreach (UserAssignmentDetails user in dto.Users)
-                                    {
-                                        if (user.UserName.Equals(ts.Username))
-                                        {
-                                            DateTime now = DateTime.UtcNow;
-                                            string[] startTime = tse.StartTime.Split(":");
-                                            string[] endTime = tse.EndTime.Split(":");
-
-                                            DateTime start = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(startTime[0]), Int32.Parse(startTime[1]), 0);
-                                            DateTime end = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(endTime[0]), Int32.Parse(endTime[1]), 0);
-
-                                            TimeSpan varTime = (DateTime)end - (DateTime)start;
-
-                                            user.TotalMinutes += (int)varTime.TotalMinutes;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return assignments;
-
-        }
-
         private bool isProjectCode(string code)
         {
             return !(code.Equals("NC1") || code.Equals("NC2") || code.Equals("NC3") || code.Equals("NC4") || code.Equals("NC5") || code.Equals("NC6") || code.Equals("NC7"));
-        }
-
-        private bool projectCodeAlreadyRecorded(IList<ProjectAssignmentDto> assignments, string code)
-        {
-            bool projectAlreadyAdded = false;
-            foreach (ProjectAssignmentDto dto in assignments)
-            {
-                if (dto.Code.Equals(code))
-                {
-                    projectAlreadyAdded = true;
-                }
-            }
-            return projectAlreadyAdded;
         }
 
         [HttpGet]

@@ -12,7 +12,6 @@ using ProjectReportJob.Data;
 using ProjectReportJob.Model;
 using Microsoft.EntityFrameworkCore;
 using ProjectReportJob.Services;
-using Microsoft.AspNetCore.SignalR.Client;
 
 namespace ProjectReportJob
 {

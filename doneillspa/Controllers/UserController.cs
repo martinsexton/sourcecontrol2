@@ -12,8 +12,6 @@ using Microsoft.Extensions.Configuration;
 using doneillspa.Services.Email;
 using doneillspa.Dtos;
 using doneillspa.Services;
-using Microsoft.AspNetCore.SignalR;
-using hub;
 using AutoMapper;
 using MediatR;
 
@@ -135,15 +133,6 @@ namespace doneillspa.Controllers
                 {
                     dtouser.Role = roles.Result.First();
                 }
-                if (user.Certifications.Count > 0)
-                {
-                    List<CertificationDto> certs = new List<CertificationDto>();
-                    foreach (Certification cert in user.Certifications)
-                    {
-                        certs.Add(_mapper.Map<CertificationDto>(cert));
-                    }
-                    dtouser.Certifications = certs;
-                }
 
                 if (user.EmailNotifications.Count > 0)
                 {
@@ -155,16 +144,6 @@ namespace doneillspa.Controllers
 
                     dtouser.EmailNotifications = notifications;
 
-                }
-                if (user.HolidayRequests.Count > 0)
-                {
-                    List<HolidayRequestDto> holidays = new List<HolidayRequestDto>();
-                    foreach (HolidayRequest hol in user.HolidayRequests)
-                    {
-                        holidays.Add(_mapper.Map<HolidayRequestDto>(hol));
-                    }
-
-                    dtouser.HolidayRequests = holidays;
                 }
                 dtousers.Add(dtouser);
             }
@@ -231,77 +210,6 @@ namespace doneillspa.Controllers
             return timesheetsDtos;
         }
 
-
-        [HttpGet]
-        [Route("api/user/{id}/holidayrequests")]
-        public IEnumerable<HolidayRequestDto> GetHolidayRequestsForUser(string id)
-        {
-            List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
-            IEnumerable<HolidayRequest> holidayRequests = _context.HolidayRequest
-                        .Include(b => b.Approver)
-                        .Where(b => b.UserId.ToString() == id)
-                        .ToList();
-
-            foreach (HolidayRequest hr in holidayRequests)
-            {
-                holidayRequestDtos.Add(_mapper.Map<HolidayRequestDto>(hr));
-            }
-            return holidayRequestDtos;
-        }
-
-
-        [HttpGet]
-        [Route("api/supervisor/{id}/holidayrequests")]
-        public IEnumerable<HolidayRequestDto> GetHolidayRequestsForApproval(string id)
-        {
-            List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
-            IEnumerable<HolidayRequest> holidayRequests = _context.HolidayRequest
-                        .Include(b => b.Approver)
-                        .Where(b => b.Approver.Id.ToString() == id)
-                        .ToList();
-
-            foreach (HolidayRequest hr in holidayRequests)
-            {
-                holidayRequestDtos.Add(_mapper.Map<HolidayRequestDto>(hr));
-            }
-            return holidayRequestDtos;
-        }
-        [HttpPut()]
-        [Route("api/user/{id}/certificates")]
-        public IActionResult Put(string id, [FromBody]CertificationDto t)
-        {
-            ApplicationUser user = GetUserIncludingCerts(id);
-            Certification cert = user.AddCertification(t, _userManager).Result;
-
-            if (cert != null)
-            {
-                return Ok(cert.Id);
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpPut()]
-        [Route("api/user/{id}/holidayrequests")]
-        public IActionResult Put(string id, [FromBody]HolidayRequestDto t)
-        {
-            ApplicationUser user = GetUserIncludingCerts(id);
-            HolidayRequest hol = user.AddHolidayRequest(t, _userManager).Result;
-
-            hol.Created(_mediator);
-
-            if (hol != null)
-            {
-                return Ok(hol.Id);
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
         [HttpPut()]
         [Route("api/user/reset")]
         public IActionResult Put([FromBody]PasswordReset d)
@@ -359,15 +267,6 @@ namespace doneillspa.Controllers
                 if (roles.Result.Count > 0)
                 {
                     dtouser.Role = roles.Result.First();
-                }
-                if (user.Certifications.Count > 0)
-                {
-                    List<CertificationDto> certs = new List<CertificationDto>();
-                    foreach (Certification cert in user.Certifications)
-                    {
-                        certs.Add(_mapper.Map<CertificationDto>(cert));
-                    }
-                    dtouser.Certifications = certs;
                 }
                 dtousers.Add(dtouser);
             }

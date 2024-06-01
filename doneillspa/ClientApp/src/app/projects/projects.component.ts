@@ -6,7 +6,6 @@ import {
   ProjectService
 } from '../shared/services/project.service';
 import { Router } from '@angular/router';
-import { LabourRate } from '../labourrate';
 import { Client } from '../client';
 
 declare var $: any;
@@ -25,8 +24,6 @@ export class ProjectComponent {
   public selectedClient: Client;
   public activeTab: string = "Active";
 
-  public labourRates: LabourRate[];
-  public filteredRates: LabourRate[] = [];
   public userMessage: string;
   public selectedRole: string;
   public loading = true;
@@ -42,13 +39,9 @@ export class ProjectComponent {
   newClient: Client = new Client(0, "", true);
   projectSaved: boolean = false;
   selectedProject: Project = new Project(0, '', '', '', '', true, new Date);
-  selectedRate: LabourRate = new LabourRate(0, null, null, '', 0, 0);
-
-  newRate: LabourRate = new LabourRate(0, null, null, '', 0, 0);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router: Router) {
     this.retrieveClients();
-    this.retrieveRates();
   }
 
   displayProjectsForSelectedClient(client) {
@@ -194,18 +187,6 @@ export class ProjectComponent {
     this.setupProjectsForCurrentPage();
   }
 
-  retrieveRates() {
-    //Retrieve Default list of labour rates
-    this._projectService.getLabourRates().subscribe(result => {
-      this.labourRates = result;
-      //Default to supervisor
-      this.displayRatesForSelectedRole("Supervisor");
-    }, error => {
-      this.userMessage = "Failed to retrieve project rates"
-      $('.toast').toast('show');
-    })
-  }
-
   isProjectActive(project: Project) {
     return project.isActive;
   }
@@ -260,16 +241,6 @@ export class ProjectComponent {
     });
   }
 
-  displayRatesForSelectedRole(role) {
-    this.selectedRole = role;
-    this.filteredRates = [];
-    for (let r of this.labourRates) {
-      if (r.role == this.selectedRole) {
-        this.filteredRates.push(r);
-      }
-    }
-  }
-
   retrieveRolesToDisplay() {
     let roles: string[] = [];
     roles.push("Supervisor");
@@ -287,77 +258,6 @@ export class ProjectComponent {
     roles.push("Loc3");
 
     return roles;
-  }
-
-  displaySelectedRate(rate) {
-    this.selectedRate = rate;
-    $("#myDisplayRateModal").modal('show');
-  }
-
-  updateRate() {
-    this._projectService.updateRate(this.selectedRate).subscribe(
-      res => {
-        console.log(res);
-        $("#myDisplayRateModal").modal('hide');
-        this.showUserMessage("Rate Updated Successfully!")
-      }, error => {
-        $("#myDisplayRateModal").modal('hide');
-        this.userMessage = "Failed to update Rate"
-        $('.toast').toast('show');
-        console.error(error);
-      });
-  }
-
-  deleteRate(r) {
-    this._projectService.deleteRate(r).subscribe(
-      res => {
-        console.log(res);
-        this.removeFromRatesArrays(r);
-        this.showUserMessage("Rate Deleted!")
-        
-      }, error => {
-        this.userMessage = "Failed to delete Rate"
-        $('.toast').toast('show');
-        console.error(error);
-      });
-  }
-
-  removeFromRatesArrays(r: LabourRate) {
-    for (let item of this.filteredRates) {
-      if (item.id == r.id) {
-        this.filteredRates.splice(this.filteredRates.indexOf(item), 1);
-        break;
-      }
-    }
-    for (let item of this.labourRates) {
-      if (item.id == r.id) {
-        this.labourRates.splice(this.filteredRates.indexOf(item), 1);
-        break;
-      }
-    }
-  }
-
-  saveRate() {
-    this._projectService.saveRate(this.newRate).subscribe(
-      res => {
-        console.log(res);
-        this.newRate.id = res as number;
-        //Update the collection of projects with newly created one
-        this.labourRates.push(new LabourRate(this.newRate.id,this.newRate.effectiveFrom, this.newRate.effectiveTo, this.newRate.role, this.newRate.ratePerHour, this.newRate.overTimeRatePerHour));
-
-        this.displayRatesForSelectedRole(this.newRate.role);
-
-        //clear down the new project model
-        this.newRate = new LabourRate(0, null, null, '', 0, 0);
-        $("#myNewRateModal").modal('hide');
-
-        this.showUserMessage("Rate Saved Successfully!")
-      }, error => {
-        $("#myNewRateModal").modal('hide');
-        this.userMessage = "Failed to save Rate"
-        $('.toast').toast('show');
-        console.error(error);
-      });
   }
 
   showUserMessage(msg :string) {

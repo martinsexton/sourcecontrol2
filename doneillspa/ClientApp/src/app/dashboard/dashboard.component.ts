@@ -11,7 +11,6 @@ import {
 import {
   TimesheetService
 } from '../shared/services/timesheet.service';
-import { CertificateService } from '../shared/services/certificate.service';
 import * as moment from 'moment';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { formatDate } from '@angular/common';
@@ -51,7 +50,7 @@ export class DashboardComponent implements OnInit {
   searchToDate = new FormControl('');
   selectedMoment: moment.Moment = moment();
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _certificationService: CertificateService, private _formBuilder: FormBuilder) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _formBuilder: FormBuilder) {
     $('[data-toggle="tooltip"]').tooltip();
     //Retrieve Default list of tui Timesheets For display  
     this._timesheetService.getSubmittedTimesheets().subscribe(result => {

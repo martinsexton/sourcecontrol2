@@ -20,7 +20,6 @@ using doneillspa.Services.Email;
 using doneillspa.Services.Calendar;
 using doneillspa.Services.Document;
 using doneillspa.Services;
-using hub;
 using AutoMapper;
 using MediatR;
 using System.Reflection;
@@ -70,12 +69,12 @@ namespace doneillspa
 
             //Register Mediator Handlers
             services.AddScoped<SendEmailHandler>(_ => new SendEmailHandler(_.GetService<IEmailService>(), _.GetService<UserManager<ApplicationUser>>()));
-            services.AddScoped<SignalRNotifier>(_ => new SignalRNotifier(_.GetService<IHubContext<Chat>>()));
+            //services.AddScoped<SignalRNotifier>(_ => new SignalRNotifier(_.GetService<IHubContext<Chat>>()));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddMvc();
             services.AddControllers().AddNewtonsoftJson();
-            services.AddSignalR().AddAzureSignalR();
+            //services.AddSignalR().AddAzureSignalR();
             services.AddCors();
             services.AddApplicationInsightsTelemetry();
 
@@ -146,10 +145,10 @@ namespace doneillspa
                 builder.WithOrigins("http://doneillspa.azurewebsites.net"));
 
             app.UseFileServer();
-            app.UseAzureSignalR(routes =>
-            {
-                routes.MapHub<Chat>("/signalr");
-            });
+            //app.UseAzureSignalR(routes =>
+            //{
+            //    routes.MapHub<Chat>("/signalr");
+            //});
             app.UseSpaStaticFiles();
             app.UseAuthentication();
             app.UseSession();

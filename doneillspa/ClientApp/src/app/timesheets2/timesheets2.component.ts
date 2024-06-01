@@ -365,7 +365,6 @@ export class Timesheet2Component {
   }
 
   calculateTotalDuration(): string {
-    console.log("calculateDuration called");
     let totalDuration: number = 0;
 
     //We will need to separate timesheets into the differnt days and add

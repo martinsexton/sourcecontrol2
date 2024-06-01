@@ -9,11 +9,9 @@ import 'rxjs/Rx';
 
 import { Observable ,  BehaviorSubject } from 'rxjs';
 import { LoginResponse } from '../models/loginresponse.interface';
-import { Certificate } from '../../certificate';
 import { IdentityRole } from '../../identityrole';
 import { HttpServiceBase } from './httpservicebase';
 import { EmailNotification } from '../../emailnotification';
-import { HolidayRequest } from '../../holidayrequest';
 import { PasswordReset } from '../../passwordreset';
 import { Timesheet } from '../../timesheet';
 
@@ -133,60 +131,10 @@ export class MsUserService extends HttpServiceBase{
       retry(5));
   }
 
-  getHolidayRequests() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<HolidayRequest[]>(this._baseurl + 'api/user/' + localStorage.getItem('client_id') + '/holidayrequests',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5));
-  }
-
-  getHolidayRequestsForApproval() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<HolidayRequest[]>(this._baseurl + 'api/supervisor/' + localStorage.getItem('client_id') + '/holidayrequests',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5));
-  }
-
-  addHolidayRequest(id: string, request: HolidayRequest) {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.put(this._baseurl + 'api/user/' + id + '/holidayrequests', request,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
   updateUser(user: ApplicationUser) {
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.put(this._baseurl + 'api/user', user,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  addCertificate(id: string, cert: Certificate) {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.put(this._baseurl + 'api/user/'+id+'/certificates', cert,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

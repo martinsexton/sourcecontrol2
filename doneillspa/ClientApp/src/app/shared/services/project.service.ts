@@ -5,11 +5,9 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Project } from '../../project';
 import { Client } from '../../client';
-import { Certificate } from '../../certificate';
 import { Observable } from 'rxjs';
 import { ProjectCostDto } from '../../projectcostdto';
 import { HttpServiceBase } from './httpservicebase';
-import { LabourRate } from '../../labourrate';
 import { NonChargeableTime } from '../../nonchargeabletime';
 import { TimesheetEntry } from '../../timesheetentry';
 
@@ -19,19 +17,6 @@ export class ProjectService extends HttpServiceBase  {
 
   constructor(_httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     super(_httpClient, baseUrl); 
-  }
-
-  getLabourRates() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<LabourRate[]>(this._baseurl + 'api/labourdetails/rates',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
   }
 
   getClients(): Observable<Client[]>{
@@ -99,19 +84,6 @@ export class ProjectService extends HttpServiceBase  {
         catchError(this.handleError),);
   }
 
-  getProjectEffort(code: string): Observable<ProjectCostDto>{
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<ProjectCostDto>(this._baseurl + 'api/projectcost/'+code,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
   getTimesheetEntriesForProjectAndWeek(code: string, week: string): Observable<TimesheetEntry[]>{
     console.log('Find timesheet entries for ' + code + ' and week: ' + week);
     let authToken = localStorage.getItem('auth_token');
@@ -124,18 +96,6 @@ export class ProjectService extends HttpServiceBase  {
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  saveRate(rate: LabourRate) {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.post(this._baseurl + 'api/labourdetails/rates', rate, {
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', 'Bearer ' + authToken)
-    }).pipe(
       retry(5),
       catchError(this.handleError),);
   }
@@ -189,17 +149,6 @@ export class ProjectService extends HttpServiceBase  {
       catchError(this.handleError),);
   }
 
-  updateRate(rate: LabourRate) {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.put(this._baseurl + 'api/labourdetails/rates', rate, {
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', 'Bearer ' + authToken)
-    }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
   updateProject(project: Project) {
     let authToken = localStorage.getItem('auth_token');
 
@@ -221,17 +170,6 @@ export class ProjectService extends HttpServiceBase  {
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
       }).pipe(
-      retry(5));
-  }
-
-  deleteRate(rate: LabourRate) {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.delete(this._baseurl + 'api/labourdetails/rates/' + rate.id, {
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', 'Bearer ' + authToken)
-    }).pipe(
       retry(5));
   }
 

@@ -8,10 +8,7 @@ import { Timesheet } from '../../timesheet';
 import { TimesheetEntry } from '../../timesheetentry';
 import { TimesheetNote } from '../../timesheetnote';
 import { HttpServiceBase } from './httpservicebase';
-import { LabourRate } from '../../labourrate';
-import { LabourWeek } from '../../labourweek';
 import { Observable } from 'rxjs';
-import { ProjectAssignment } from '../../projectassignment';
 
 @Injectable()
 export class TimesheetService extends HttpServiceBase{
@@ -270,46 +267,6 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  getLabourWeekDetailsForProject(project): Observable<LabourWeek[]>{
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<LabourWeek[]>(this._baseurl + 'api/labourdetails/project/' + project,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  getLabourRates() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<LabourRate[]>(this._baseurl + 'api/labourdetails/rates',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  getProjectAssignments(year: number, month: number, day: number) {
-    let authToken = localStorage.getItem('auth_token');
-    let headers = new HttpHeaders();
-    headers = headers.append('Content-Type', 'application/json');
-    headers = headers.append('Authorization', 'Bearer ' + authToken);
-
-    return this._httpClient.get<ProjectAssignment[]>(this._baseurl + 'api/projectassignments/week/' + year + '/' + month + '/' + day,
-      {
-        headers
       }).pipe(
       retry(5),
       catchError(this.handleError),);

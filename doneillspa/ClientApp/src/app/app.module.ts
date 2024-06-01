@@ -12,26 +12,17 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
-import { RatesComponent } from './components/rates/rates.component';
 import { TimesheetComponent } from './timesheets/timesheets.component';
 import { Timesheet2Component } from './timesheets2/timesheets2.component';
-import { HolidaysComponent } from './holidays/holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SupervisorComponent } from './supervisor/supervisor.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
-import { CertificationComponent } from './components/certification/certification.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { UserDetailsComponent } from './components/userdetails/userdetails.component';
 
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
-import { ProjectHealthComponent } from './projecthealth/projecthealth.component';
-import { AssignmentDetailsComponent } from './assignmentdetails/assignmentdetails.component';
-import { ProjectGraphComponent } from './components/projectgraph/projectgraph.component';
 
-import { LabourComponent } from './labour/labour.componenet';
 import { TimeSheetEntryListComponent } from './components/timesheetentrylist/timesheetentrylist.component';
-import { LabourDetailsComponent } from './components/labourdetails/labourdetails.component';
 import { TimeSheetListComponent } from './components/timesheetlist/timesheetlist.component';
 import { ProjectsListComponent } from './components/projectlist/projectlist.component';
 
@@ -44,8 +35,6 @@ import { myFocus } from './directives/focus.directive';
 
 /* Import Services */
 import { ProjectService } from './shared/services/project.service';
-import { CertificateService } from './shared/services/certificate.service';
-import { HolidayService } from './shared/services/holiday.service';
 import { NotificationService } from './shared/services/notification.service';
 import { TimesheetService } from './shared/services/timesheet.service';
 import { ConfigService } from './shared/utils/config.service';
@@ -60,25 +49,16 @@ import { AuthGuard } from './auth.guard';
     CounterComponent,
     FetchDataComponent,
     TimeSheetEntryListComponent,
-    LabourDetailsComponent,
     TimeSheetListComponent,
     ProjectsListComponent,
     RegistrationFormComponent,
     UserDetailsComponent,
-    ProjectHealthComponent,
-    AssignmentDetailsComponent,
-    ProjectGraphComponent,
     LoginFormComponent,
     ProjectComponent,
-    RatesComponent,
     TimesheetComponent,
     Timesheet2Component,
-    HolidaysComponent,
     DashboardComponent,
-    SupervisorComponent,
-    LabourComponent,
     UserDashboardComponent,
-    CertificationComponent,
     NotificationComponent,
     EmailValidator,
     PasswordValidator,
@@ -94,7 +74,7 @@ import { AuthGuard } from './auth.guard';
     routing,
     ChartsModule
   ],
-  providers: [ProjectService, TimesheetService, CertificateService, HolidayService, NotificationService, MsUserService, AuthGuard, {
+  providers: [ProjectService, TimesheetService, NotificationService, MsUserService, AuthGuard, {
     provide: LOCALE_ID,
     useValue: 'en-IE'
   }],
