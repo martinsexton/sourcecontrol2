@@ -17,13 +17,13 @@
       </div>
       <nav aria-label="User Navigation">
         <ul class="pagination">
-          <li [ngClass]="{'page-item': usersCurrentPage > 1, 'page-item disabled': usersCurrentPage == 1}">
+          <li [ngClass]="{'page-item': !disablePreviousButton(), 'page-item disabled': disablePreviousButton()}">
             <a class="page-link" aria-label="Previous" (click)="previousPage()">
               <span aria-hidden="true">&laquo; Back</span>
               <span class="sr-only">Previous</span>
             </a>
           </li>
-          <li [ngClass]="{'page-item': usersCurrentPage < determineUsersPageCount(), 'page-item disabled': usersCurrentPage >= determineUsersPageCount()}">
+          <li [ngClass]="{'page-item': !disableNextButton(), 'page-item disabled': disableNextButton()}">
             <a class="page-link" aria-label="Next" (click)="nextPage()">
               <span aria-hidden="true">Next &raquo;</span>
               <span class="sr-only">Next</span>

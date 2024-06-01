@@ -80,10 +80,10 @@ export class MsUserService extends HttpServiceBase{
       catchError(this.handleError),);
   }
 
-  getUsers(): Observable<ApplicationUser[]>{
+  getUsers(page:number, pageSize:number): Observable<ApplicationUser[]>{
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/',
+    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/' + page + '/' + pageSize,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

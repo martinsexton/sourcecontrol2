@@ -108,12 +108,17 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
-        [Route("api/user")]
-        public IEnumerable<ApplicationUserDto> Get()
+        [Route("api/user/{page}/{pageSize}")]
+        public IEnumerable<ApplicationUserDto> Get(int page = 1, int pageSize = 10)
         {
-            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications)
-                .Include(r => r.HolidayRequests)
-                .OrderBy(r => r.NormalizedUserName).ToList();
+            var totalCount = _userManager.Users.Count();
+            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+            List<ApplicationUser> users = _userManager.Users
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(r => r.EmailNotifications)
+                .ToList();
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
 
