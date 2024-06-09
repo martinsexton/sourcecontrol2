@@ -115,6 +115,56 @@ namespace doneillspa.Controllers
             var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
 
             List<ApplicationUser> users = _userManager.Users
+                .Where(r => r.IsEnabled == true)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(r => r.EmailNotifications)
+                .ToList();
+
+            List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
+
+            foreach (ApplicationUser user in users)
+            {
+                Task<IList<string>> roles = _userManager.GetRolesAsync(user);
+
+                ApplicationUserDto dtouser = new ApplicationUserDto();
+                dtouser.Id = user.Id;
+                dtouser.FirstName = user.FirstName;
+                dtouser.Surname = user.Surname;
+                dtouser.PhoneNumber = user.PhoneNumber;
+                dtouser.Email = user.Email;
+                dtouser.IsEnabled = user.IsEnabled;
+
+                if (roles.Result.Count > 0)
+                {
+                    dtouser.Role = roles.Result.First();
+                }
+
+                if (user.EmailNotifications.Count > 0)
+                {
+                    List<EmailNotificationDto> notifications = new List<EmailNotificationDto>();
+                    foreach (EmailNotification not in user.EmailNotifications)
+                    {
+                        notifications.Add(_mapper.Map<EmailNotificationDto>(not));
+                    }
+
+                    dtouser.EmailNotifications = notifications;
+
+                }
+                dtousers.Add(dtouser);
+            }
+            return dtousers;
+        }
+
+        [HttpGet]
+        [Route("api/user/{filter}/{page}/{pageSize}")]
+        public IEnumerable<ApplicationUserDto> GetBaseOnFilter(string filter, int page = 1, int pageSize = 10)
+        {
+            var totalCount = _userManager.Users.Count();
+            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+            List<ApplicationUser> users = _userManager.Users
+                .Where(r => r.UserName.Contains(filter) && r.IsEnabled == true)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Include(r => r.EmailNotifications)

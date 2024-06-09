@@ -93,6 +93,19 @@ export class MsUserService extends HttpServiceBase{
       catchError(this.handleError),);
   }
 
+  getUsersBasedOnFilter(filter:string, page: number, pageSize: number): Observable<ApplicationUser[]> {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/' + filter + '/' + page + '/' + pageSize,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError),);
+  }
+
   getContractors() {
     let authToken = localStorage.getItem('auth_token');
 

@@ -56,7 +56,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-10">
-              Total Time Recorded: {{calculateTotalDuration()}}
+              Status: {{activeTimeSheet.status}}, Time Recorded: {{calculateTotalDuration()}}
             </div>
             <div *ngIf="activeTimeSheet.timesheetNotes.length > 0" class="col-2">
               <span (click)="toggleDisplayNotes()"><i class="bi bi-clipboard2-data"></i></span>

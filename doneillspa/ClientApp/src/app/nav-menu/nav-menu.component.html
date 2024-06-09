@@ -11,12 +11,15 @@
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/dashboard"]' class="nav-link">Timesheets</a>
       </li>
-      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
+      <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/userdashboard"]' class="nav-link">Users</a>
+      </li>-->
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
+        <a [routerLink]='["/userdashboard2"]' class="nav-link">Users</a>
       </li>
       <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
-        <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
-      </li>-->
+    <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
+  </li>-->
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
         <a [routerLink]='["/timesheets2"]' class="nav-link">Timesheets</a>
       </li>

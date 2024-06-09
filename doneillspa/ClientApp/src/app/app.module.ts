@@ -16,6 +16,7 @@ import { TimesheetComponent } from './timesheets/timesheets.component';
 import { Timesheet2Component } from './timesheets2/timesheets2.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
+import { UserDashboard2Component } from './userdashboard2/userdashboard2.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { UserDetailsComponent } from './components/userdetails/userdetails.component';
 
@@ -59,6 +60,7 @@ import { AuthGuard } from './auth.guard';
     Timesheet2Component,
     DashboardComponent,
     UserDashboardComponent,
+    UserDashboard2Component,
     NotificationComponent,
     EmailValidator,
     PasswordValidator,

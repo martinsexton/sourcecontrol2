@@ -115,6 +115,7 @@
 
 	<ItemGroup>
 	  <TypeScriptCompile Remove="clientapp\src\app\timesheets2\timesheets2.component.ts" />
+	  <TypeScriptCompile Remove="clientapp\src\app\userdashboard2\userdashboard2.component.ts" />
 	</ItemGroup>
 
 	<ItemGroup>

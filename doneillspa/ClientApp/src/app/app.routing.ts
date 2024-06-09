@@ -11,6 +11,7 @@ import { TimesheetComponent } from './timesheets/timesheets.component';
 import { Timesheet2Component } from './timesheets2/timesheets2.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserDashboardComponent } from './userdashboard/userdashboard.component';
+import { UserDashboard2Component } from './userdashboard2/userdashboard2.component';
 import { RegistrationFormComponent } from './account/registration-form/registration-form.component';
 import { LoginFormComponent } from './account/login-form/login-form.component';
 import { AuthGuard } from './auth.guard';
@@ -26,7 +27,8 @@ const appRoutes: Routes = [
   { path: 'timesheets', component: TimesheetComponent, canActivate: [AuthGuard] },
   { path: 'timesheets2', component: Timesheet2Component, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'userdashboard', component: UserDashboardComponent, canActivate: [AuthGuard] }
+  { path: 'userdashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'userdashboard2', component: UserDashboard2Component, canActivate: [AuthGuard] }
 ];
 
 

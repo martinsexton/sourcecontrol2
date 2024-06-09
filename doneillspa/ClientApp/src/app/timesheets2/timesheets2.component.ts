@@ -60,7 +60,6 @@ export class Timesheet2Component {
   public daysOfWeek: Array<string> = new Array();
   public timesheetEntryToEdit: TimesheetEntry;
   public timesheetEntryToView: TimesheetEntry;
-  public nonChargeableTime: NonChargeableTime[];
   public timesheetCodes: TimesheetCode[];
   public activeProjects: Project[];
   public projects: Project[];
@@ -71,8 +70,6 @@ export class Timesheet2Component {
 
     //Populate available days of the week for entering timesheets
     this.populateDaysOfWeek();
-
-    this.setupNonChargeableTime();
 
     //setup dates for each day of the week
     this.refreshCalendarDates();
@@ -93,13 +90,6 @@ export class Timesheet2Component {
     this.setupListOfProjectsByCode(event.target.value);
   }
 
-  setupNonChargeableTime() {
-    this._projectService.getNonChargeableTime().subscribe(result => {
-      this.nonChargeableTime = result;
-      this.refreshTimesheetCodes();
-    }, error => console.error(error));
-  }
-
   projectNameForDisplay(proj: TimesheetCode): string {
     if (proj.description.length > 40) {
       return proj.description.slice(0, 40) + '...';
@@ -115,12 +105,6 @@ export class Timesheet2Component {
     if (this.activeProjects) {
       for (let p of this.activeProjects) {
         let code = new TimesheetCode(p.code, p.name, true);
-        this.timesheetCodes.push(code);
-      }
-    }
-    if (this.nonChargeableTime) {
-      for (let nc of this.nonChargeableTime) {
-        let code = new TimesheetCode(nc.code, nc.description, false);
         this.timesheetCodes.push(code);
       }
     }
@@ -192,6 +176,8 @@ export class Timesheet2Component {
     $("#myEditTimesheetModal").modal('hide');
     this._timesheetService.updateTimesheetEntry(this.timesheetEntryToEdit).subscribe(
       res => {
+        //Clear list of timesheet codes
+        this.timesheetCodes = [];
         var startOfWeek = this.getStartOfWeek();
         //Retrieve timesheets for given date
         this.retrieveTimeSheetsForDate();
@@ -277,6 +263,9 @@ export class Timesheet2Component {
   persistTimesheetEntry(entry: TimesheetEntry) {
     this._timesheetService.addTimesheetEntry(this.activeTimeSheet.id, entry).subscribe(
       res => {
+        //Clear list of timesheet codes
+        this.timesheetCodes = [];
+
         //Update the entry with the primary key that has come back from server
         entry.id = res as number;
         this.activeTimeSheet.timesheetEntries.push(entry);
@@ -314,6 +303,9 @@ export class Timesheet2Component {
 
     this._timesheetService.saveTimesheet(this.activeTimeSheet).subscribe(
       res => {
+        //Clear list of timesheet codes
+        this.timesheetCodes = [];
+
         console.log(res);
         this.timesheetExists = true;
         this.activeTimeSheet.id = res as number;
