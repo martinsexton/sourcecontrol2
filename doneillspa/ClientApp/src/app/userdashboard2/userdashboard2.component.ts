@@ -25,6 +25,7 @@ export class UserDashboard2Component {
     "Third Year Apprentice", "Fourth Year Apprentice", "Electrical Engineer", "Fire Engineer", "General Operative"];
   public resetPasswordDetails: PasswordReset = new PasswordReset('', '');
   public resettingPassword: boolean = false;
+  public fulltimeStaffRole: string = "ChargeHand";
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _msuserService: MsUserService) {
     $('[data-toggle="tooltip"]').tooltip();
