@@ -80,10 +80,10 @@ export class MsUserService extends HttpServiceBase{
       catchError(this.handleError),);
   }
 
-  getUsers(page:number, pageSize:number): Observable<ApplicationUser[]>{
+  getUsers(inactiveUsers:boolean, page:number, pageSize:number): Observable<ApplicationUser[]>{
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/' + page + '/' + pageSize,
+    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/' + inactiveUsers + '/' + page + '/' + pageSize,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
@@ -93,10 +93,10 @@ export class MsUserService extends HttpServiceBase{
       catchError(this.handleError),);
   }
 
-  getUsersBasedOnFilter(filter:string, page: number, pageSize: number): Observable<ApplicationUser[]> {
+  getUsersBasedOnFilter(inactiveUsers:boolean, filter:string, page: number, pageSize: number): Observable<ApplicationUser[]> {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/' + filter + '/' + page + '/' + pageSize,
+    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/' + inactiveUsers + '/' + filter + '/' + page + '/' + pageSize,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

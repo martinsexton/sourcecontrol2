@@ -19,6 +19,8 @@ export class UserDashboard2Component {
   public users: ApplicationUser[];
   public selectedUser: ApplicationUser;
   public userMessage: string;
+  public searchFilter: string = "";
+  public showInactiveUsers: boolean = false;
   newUser: ApplicationUser = new ApplicationUser('', '', '', '', '', '', false);
   public roles: string[] = ["Administrator", "Supervisor", "ChargeHand", "ElectR1", "ElectR2",
     "ElectR3", "Temp", "First Year Apprentice", "Second Year Apprentice",
@@ -29,7 +31,7 @@ export class UserDashboard2Component {
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _msuserService: MsUserService) {
     $('[data-toggle="tooltip"]').tooltip();
-    this._msuserService.getUsers(this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+    this._msuserService.getUsers(this.showInactiveUsers, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
       this.users = result;
       if (this.users.length > 0) {
         this.selectedUser = this.users[0];
@@ -41,7 +43,7 @@ export class UserDashboard2Component {
   previousPage() {
     if (!this.disablePreviousButton()) {
       this.usersCurrentPage = this.usersCurrentPage - 1;
-      this._msuserService.getUsers(this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+      this._msuserService.getUsers(this.showInactiveUsers, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
         this.users = result;
         if (this.users.length > 0) {
           this.selectedUser = this.users[0];
@@ -54,7 +56,7 @@ export class UserDashboard2Component {
   nextPage() {
     if (!this.disableNextButton()) {
       this.usersCurrentPage = this.usersCurrentPage + 1;
-      this._msuserService.getUsers(this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+      this._msuserService.getUsers(this.showInactiveUsers, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
         this.users = result;
         if (this.users.length > 0) {
           this.selectedUser = this.users[0];
@@ -111,6 +113,15 @@ export class UserDashboard2Component {
     this._msuserService.updateUser(this.selectedUser).subscribe(
       result => {
         $("#myUserModal").modal('hide');
+        this.searchFilter = "";
+
+        this._msuserService.getUsers(this.showInactiveUsers, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+          this.users = result;
+          if (this.users.length > 0) {
+            this.selectedUser = this.users[0];
+            this.resetPasswordDetails.userid = this.selectedUser.id;
+          }
+        }, error => this.userMessage = error)
       });
   }
 
@@ -151,21 +162,36 @@ export class UserDashboard2Component {
     this.selectedUser = user;
   }
 
+  toggleActiveUsers(event: any) {
+    this.showInactiveUsers = event.target.checked;
+    this.searchFilter = "";
+
+    this._msuserService.getUsers(this.showInactiveUsers, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+      this.users = result;
+      if (this.users.length > 0) {
+        this.selectedUser = this.users[0];
+        this.resetPasswordDetails.userid = this.selectedUser.id;
+      }
+    }, error => this.userMessage = error)
+  }
+
   onKey(event: any) { // without type info
     this.usersCurrentPage = 1;
     if (event.target.value != '') {
-      this._msuserService.getUsersBasedOnFilter(event.target.value, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+      this._msuserService.getUsersBasedOnFilter(this.showInactiveUsers, event.target.value, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
         this.users = result;
         if (this.users.length > 0) {
           this.selectedUser = this.users[0];
+          this.resetPasswordDetails.userid = this.selectedUser.id;
         }
       }, error => this.userMessage = error)
     }
     else {
-      this._msuserService.getUsers(this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+      this._msuserService.getUsers(this.showInactiveUsers, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
         this.users = result;
         if (this.users.length > 0) {
           this.selectedUser = this.users[0];
+          this.resetPasswordDetails.userid = this.selectedUser.id;
         }
       }, error => this.userMessage = error)
     }

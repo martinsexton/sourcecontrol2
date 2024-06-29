@@ -1,11 +1,22 @@
 <div class="container-fluid">
   <div class="row mb-5">
-    <div class="col d-flex flex-nowrap" data-toggle="tooltip" data-placement="right" title="Name Filter">
-      <div class="input-group">
-        <input id="nameFilter" type="search" placeholder="Search.." (keyup)="onKey($event)">
-        <button type="button" class="btn btn-outline-success ml-2" (click)="showAddUser()">Add User</button>
+    <form>
+      <div class="form-row align-items-center">
+        <div class="col-sm-3 my-1">
+          <label class="sr-only" for="inlineFormInputName">Name</label>
+          <input type="text" name="searchFilter" [(ngModel)]="searchFilter" class="form-control" id="inlineFormInputName" placeholder="Search.." (keyup)="onKey($event)">
+        </div>
+        <div class="col-auto my-1">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="autoSizingCheck2" (change)="toggleActiveUsers($event)">
+            <label class="form-check-label" for="autoSizingCheck2">Inactive Users</label>
+          </div>
+        </div>
+        <div class="col-auto my-1">
+          <button type="button" class="btn btn-outline-success ml-2" (click)="showAddUser()">Add User</button>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
   <div class="row">
     <div class="col-12">

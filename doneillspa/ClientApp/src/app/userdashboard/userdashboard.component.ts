@@ -67,7 +67,7 @@ export class UserDashboardComponent implements OnInit {
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService,
     private _timesheetService: TimesheetService, private _msuserService: MsUserService) {
     $('[data-toggle="tooltip"]').tooltip();
-    this._msuserService.getUsers(this.usersCurrentPage, this.usersPageLimit ).subscribe(result => {
+    this._msuserService.getUsers(false, this.usersCurrentPage, this.usersPageLimit ).subscribe(result => {
       this.users = result;
       this.loading = false;
       if (this.users.length > 0) {
@@ -220,7 +220,7 @@ export class UserDashboardComponent implements OnInit {
 
   previousPage() {
     this.usersCurrentPage = this.usersCurrentPage - 1;
-    this._msuserService.getUsers(this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+    this._msuserService.getUsers(false, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
       this.users = result;
       this.loading = false;
       if (this.users.length > 0) {
@@ -233,7 +233,7 @@ export class UserDashboardComponent implements OnInit {
 
   nextPage() {
     this.usersCurrentPage = this.usersCurrentPage + 1;
-    this._msuserService.getUsers(this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+    this._msuserService.getUsers(false, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
       this.users = result;
       this.loading = false;
       if (this.users.length > 0) {
