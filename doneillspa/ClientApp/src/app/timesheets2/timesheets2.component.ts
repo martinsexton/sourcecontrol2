@@ -729,7 +729,7 @@ export class Timesheet2Component {
     let month: string = "";
 
     if (!this.loading) {
-      switch (this.selectedMoment.toDate().getMonth()) {
+      switch (this.getStartOfWeek().getMonth()) {
         case 0:
           month = "January";
           break;
