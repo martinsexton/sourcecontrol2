@@ -32,7 +32,7 @@ namespace ProjectReportJob
 
             //Temporarily remove line below.
             //ISignalRService _service = SignalRService.Instance;
-            //_service.SendMessage("reportemailed", "Report issued for " + message.ProjectCode);
+            //_service.SendMessage("reportemailed", "Report issued for " + message.ProjectCode); 
         }
 
         public void ProcessTimesheetReportMessage([QueueTrigger("reports")] TimesheetReport report)
@@ -43,7 +43,8 @@ namespace ProjectReportJob
         private async void SaveFileToBlob()
         {
             // Retrieve the connection string for use with the application. 
-            var connectionString = ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString;
+            Console.Write("azure storage connection string" + connectionString);
 
             // Create a BlobServiceClient object 
             var blobServiceClient = new BlobServiceClient(connectionString);
