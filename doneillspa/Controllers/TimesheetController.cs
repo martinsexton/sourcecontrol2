@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
 using doneillspa.Services;
 using doneillspa.Services.Email;
+using doneillspa.Services.MessageQueue;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace doneillspa.Controllers
 {
@@ -27,13 +35,18 @@ namespace doneillspa.Controllers
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly ILogger<TimesheetController> _logger;
+        private IMessageQueue _messageQueue;
+        private IConfiguration _configuration;
 
-        public TimesheetController(ILogger<TimesheetController> logger, IMapper mapper, IMediator mediator, ITimesheetRepository repository)
+        public TimesheetController(ILogger<TimesheetController> logger, IMapper mapper, IMediator mediator, ITimesheetRepository repository, 
+            IMessageQueue messageQueue, IConfiguration configuration)
         {
             _mapper = mapper;
             _mediator = mediator;
             _timeSheetRepository = repository;
             _logger = logger;
+            _messageQueue = messageQueue;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -120,6 +133,19 @@ namespace doneillspa.Controllers
         //    }
         //    return timesheetsDtos;
         //}
+        [HttpPost]
+        [Route("api/timesheet/report")]
+        public IActionResult OrderTimesheetReport([FromBody] TimesheetReport timesheetReport)
+        {
+            _messageQueue.SendMessage(Base64Encode(JsonConvert.SerializeObject(timesheetReport)));
+            return Ok();
+        }
+
+        private static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
 
         [HttpGet]
         [Route("api/archievedtimesheetforrange")]
@@ -147,6 +173,51 @@ namespace doneillspa.Controllers
                 timesheetsDtos.Add(ConvertToDto(ts));
             }
             return timesheetsDtos;
+        }
+
+
+        //[HttpGet]
+        //[Route("api/timesheetreport/{filename}")]
+        //public Task<IActionResult> DownloadBlob(String filename)
+        //{
+        //    // Retrieve the connection string for use with the application. 
+        //    var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
+
+        //    // Create a BlobServiceClient object 
+        //    var blobServiceClient = new BlobServiceClient(connectionString);
+        //    BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
+
+        //    BlobClient client = containerClient.GetBlobClient(filename);
+        //    BlobDownloadResult content = client.DownloadContent();
+
+
+        //}
+
+        [HttpGet]
+        [Route("api/timesheetreports")]
+        public IEnumerable<ReportDto> GetReports()
+        {
+            List<ReportDto> reports = new List<ReportDto>();
+
+            // Retrieve the connection string for use with the application. 
+            var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
+
+            // Create a BlobServiceClient object 
+            var blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
+
+            var resultSegment = containerClient.GetBlobs().AsPages();
+            foreach (Page<BlobItem> blobPage in resultSegment)
+            {
+                foreach (BlobItem blobItem in blobPage.Values)
+                {
+                    ReportDto report = new ReportDto();
+                    report.Name = blobItem.Name;
+
+                    reports.Add(report);
+                }
+            }
+            return reports;
         }
 
 

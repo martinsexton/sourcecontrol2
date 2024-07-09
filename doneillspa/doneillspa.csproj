@@ -33,6 +33,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.20.0" />
 		<PackageReference Include="Azure.Storage.Queues" Version="12.0.0" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
 		<PackageReference Include="Dropbox.Api" Version="4.9.3" />
@@ -114,6 +115,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <TypeScriptCompile Remove="clientapp\src\app\report.ts" />
+	  <TypeScriptCompile Remove="clientapp\src\app\TimesheetReport.ts" />
 	  <TypeScriptCompile Remove="clientapp\src\app\timesheets2\timesheets2.component.ts" />
 	  <TypeScriptCompile Remove="clientapp\src\app\userdashboard2\userdashboard2.component.ts" />
 	</ItemGroup>

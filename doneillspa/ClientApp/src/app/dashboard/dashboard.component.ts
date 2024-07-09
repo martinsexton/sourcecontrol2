@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
 import { TimesheetNote } from '../timesheetnote';
+import { Report } from '../Report';
 
 import {
   ProjectService
@@ -14,6 +15,7 @@ import {
 import * as moment from 'moment';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { formatDate } from '@angular/common';
+import { TimesheetReport } from '../TimesheetReport';
 
 declare var $: any;
 
@@ -28,6 +30,7 @@ export class DashboardComponent implements OnInit {
   public timesheetToAddNoteTo: Timesheet;
   public filteredTimesheets: Timesheet[];
   public users: string[];
+  public reports: Report[];
   public newNote: TimesheetNote = new TimesheetNote('', new Date());
   public selectedTimesheet: Timesheet;
   public selectedTsRow: number;
@@ -48,6 +51,7 @@ export class DashboardComponent implements OnInit {
   //vendorInformationForm: FormGroup;
   searchFromDate = new FormControl('');
   searchToDate = new FormControl('');
+  reportDate = new FormControl('');
   selectedMoment: moment.Moment = moment();
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _formBuilder: FormBuilder) {
@@ -73,6 +77,7 @@ export class DashboardComponent implements OnInit {
     var fromDate = this.selectedMoment.subtract(3, 'months').toDate();
     
     this.searchFromDate.setValue(formatDate(fromDate, "yyyy-MM-dd", "en"));
+    this.reportDate.setValue(formatDate(fromDate, "yyyy-MM-dd", "en"));
     this.searchToDate.setValue(formatDate(toDate, "yyyy-MM-dd", "en")); 
   }
 
@@ -177,6 +182,20 @@ export class DashboardComponent implements OnInit {
       this.timesheets = result;
       this.activeTab = "Archieved";
       this.setTimesheetsByState();
+    }, error => this.errors = error);
+  }
+
+  reportsTabClicked() {
+    this._timesheetService.getTimesheetReports().subscribe(result => {
+      this.activeTab = "Reports";
+      this.reports = result;
+    }, error => this.errors = error);
+  }
+
+  orderReport() {
+    let report = new TimesheetReport(this.reportDate.value);
+
+    this._timesheetService.orderReport(report).subscribe(result => {
     }, error => this.errors = error);
   }
 
