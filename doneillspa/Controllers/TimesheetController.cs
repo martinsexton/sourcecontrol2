@@ -137,7 +137,9 @@ namespace doneillspa.Controllers
         [Route("api/timesheet/report")]
         public IActionResult OrderTimesheetReport([FromBody] TimesheetReport timesheetReport)
         {
+            _logger.LogInformation("About to queue report order");
             _messageQueue.SendMessage(Base64Encode(JsonConvert.SerializeObject(timesheetReport)));
+            _logger.LogInformation("Finished queuing report order");
             return Ok();
         }
 
