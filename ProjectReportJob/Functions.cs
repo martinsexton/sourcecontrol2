@@ -44,6 +44,11 @@ namespace ProjectReportJob
         {
             // Retrieve the connection string for use with the application. 
             string connectionString = ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString;
+
+            if (connectionString.Equals(""))
+            {
+                connectionString = ConfigurationManager.AppSettings["AzureWebJobsStorage"];
+            }
             Console.Write("azure storage connection string" + connectionString + " found from configuration manager");
 
             // Create a BlobServiceClient object 
