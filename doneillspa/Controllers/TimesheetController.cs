@@ -215,6 +215,7 @@ namespace doneillspa.Controllers
                 {
                     ReportDto report = new ReportDto();
                     report.Name = blobItem.Name;
+                    report.CreatedOn = blobItem.Properties.CreatedOn.Value.DateTime.ToString();
 
                     reports.Add(report);
                 }
