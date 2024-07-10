@@ -245,6 +245,20 @@ export class TimesheetService extends HttpServiceBase{
         catchError(this.handleError));
   }
 
+  downloadFile(filename : string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get(this._baseurl + 'api/timesheetreport/' + filename,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+        , responseType: 'text' 
+      },).pipe(
+        retry(5),
+        catchError(this.handleError));
+  }
+
   getRejectedTimesheets() {
     let authToken = localStorage.getItem('auth_token');
 

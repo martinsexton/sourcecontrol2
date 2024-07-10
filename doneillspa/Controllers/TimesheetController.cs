@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Azure;
@@ -178,22 +181,31 @@ namespace doneillspa.Controllers
         }
 
 
-        //[HttpGet]
-        //[Route("api/timesheetreport/{filename}")]
-        //public Task<IActionResult> DownloadBlob(String filename)
-        //{
-        //    // Retrieve the connection string for use with the application. 
-        //    var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
+        [HttpGet]
+        [Route("api/timesheetreport/{filename}")]
+        public IActionResult DownloadBlob(String filename)
+        {
+            // Retrieve the connection string for use with the application. 
+            var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
 
-        //    // Create a BlobServiceClient object 
-        //    var blobServiceClient = new BlobServiceClient(connectionString);
-        //    BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
+            // Create a BlobServiceClient object 
+            var blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
 
-        //    BlobClient client = containerClient.GetBlobClient(filename);
-        //    BlobDownloadResult content = client.DownloadContent();
+            BlobClient client = containerClient.GetBlobClient(filename);
+            if (client.Exists())
+            {
+                using (var ms = new MemoryStream())
+                {
+                    client.DownloadTo(ms);
+                    return new FileContentResult(ms.ToArray(), "application/octet-stream");
+                }
+            }
 
+            //Return empy byte array
+            return new FileContentResult(new byte[0], "application/octet-stream");
 
-        //}
+        }
 
         [HttpGet]
         [Route("api/timesheetreports")]

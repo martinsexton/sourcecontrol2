@@ -199,6 +199,17 @@ export class DashboardComponent implements OnInit {
     }, error => this.errors = error);
   }
 
+  download(filename: string) {
+    let thefile = new Blob();
+
+    this._timesheetService.downloadFile(filename).subscribe(result => {
+      thefile = new Blob([result as BlobPart], { type: "application/octet-stream" })
+      let url = window.URL.createObjectURL(thefile);
+      window.open(url);
+
+    }, error => this.errors = error);
+  }
+
   toggleTimesheetView() {
     this.filterOnSubmittedTimesheets = !this.filterOnSubmittedTimesheets;
   }
