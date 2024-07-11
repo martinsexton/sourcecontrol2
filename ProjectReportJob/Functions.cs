@@ -35,7 +35,7 @@ namespace ProjectReportJob
             //_service.SendMessage("reportemailed", "Report issued for " + message.ProjectCode); 
         }
 
-        public void ProcessTimesheetReportMessage([QueueTrigger("testreports")] TimesheetReport report)
+        public void ProcessTimesheetReportMessage([QueueTrigger("reports")] TimesheetReport report)
         {
             SaveFileToBlob(report.reportDate);
         }
