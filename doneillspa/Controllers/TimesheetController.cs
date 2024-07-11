@@ -195,10 +195,14 @@ namespace doneillspa.Controllers
             BlobClient client = containerClient.GetBlobClient(filename);
             if (client.Exists())
             {
+
                 using (var ms = new MemoryStream())
                 {
                     client.DownloadTo(ms);
-                    return new FileContentResult(ms.ToArray(), "application/octet-stream");
+                    return new FileContentResult(ms.ToArray(), "application/octet-stream")
+                    {
+                        FileDownloadName = filename + ".txt"
+                    };
                 }
             }
 
