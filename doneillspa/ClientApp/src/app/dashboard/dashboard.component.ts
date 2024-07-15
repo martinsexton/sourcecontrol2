@@ -72,6 +72,13 @@ export class DashboardComponent implements OnInit {
     this.initForm();
   }
 
+  numberOfNotes() : number {
+    if (this.selectedTimesheet.timesheetNotes) {
+      return this.selectedTimesheet.timesheetNotes.length;
+    }
+    return 0;
+  }
+
   initForm() {
     var toDate = this.selectedMoment.toDate();
     var fromDate = this.selectedMoment.subtract(3, 'months').toDate();
