@@ -95,9 +95,9 @@
             <div class="card-body">
               <!--Display List Of Timesheets Entries-->
               <timesheet-entry-list [owner]="selectedTimesheet"></timesheet-entry-list>
-              <button *ngIf="selectedTimesheet" type="button" class="btn btn-primary" data-toggle="modal" (click)="addTimesheetNote()">Add Note</button>
-              <button *ngIf="canApproveTimesheet()" (click)="approveTimesheet()" class="ml-2 btn btn-primary">Approve Timesheet</button>
-              <button *ngIf="canRejectTimesheet()" (click)="rejectTimesheet()" class="ml-2 btn btn-primary">Reject Timesheet</button>
+              <button *ngIf="selectedTimesheet" type="button" class="btn btn-info" data-toggle="modal" (click)="addTimesheetNote()">Add Note</button>
+              <button *ngIf="canApproveTimesheet()" (click)="approveTimesheet()" class="ml-2 btn btn-info">Approve Timesheet</button>
+              <button *ngIf="canRejectTimesheet()" (click)="rejectTimesheet()" class="ml-2 btn btn-info">Reject Timesheet</button>
             </div>
           </div>
         </div>
@@ -159,7 +159,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button [disabled]="newNoteDetails.invalid" (click)="saveTimesheetNote()" class="btn btn-primary">Save Note</button>
+          <button [disabled]="newNoteDetails.invalid" (click)="saveTimesheetNote()" class="btn btn-info">Save Note</button>
         </div>
       </div>
     </div>

@@ -18,37 +18,39 @@
       </div>
     </form>
   </div>
-  <div class="row">
-    <div class="col-12">
-      <table class="table table-hover table-bordered table-sm">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">First Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Email</th>
-            <th scope="col">Mobile</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Reset</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let u of users; let i = index" (click)="setUser(u)" [ngClass]="{'table-primary': this.selectedUser == u}">
-            <td>{{u.firstName}}</td>
-            <td>{{u.surname}}</td>
-            <td>{{u.email}}</td>
-            <td>{{u.phoneNumber}}</td>
-            <td><span (click)="displayUserDetailsForEdit(u)"><i class="bi bi-pencil-square"></i></span></td>
-            <td><span (click)="displayResetPasswordDialog(u)"><i class="bi bi-bootstrap-reboot"></i></span></td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="card mb-3 mt-3 div-to-stand-out">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered table-sm">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">First Name</th>
+              <th scope="col">Surname</th>
+              <th scope="col">Email</th>
+              <th scope="col">Mobile</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Reset</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of users; let i = index" (click)="setUser(u)" [ngClass]="{'table-primary': this.selectedUser == u}">
+              <td>{{u.firstName}}</td>
+              <td>{{u.surname}}</td>
+              <td>{{u.email}}</td>
+              <td>{{u.phoneNumber}}</td>
+              <td><span (click)="displayUserDetailsForEdit(u)"><i class="bi bi-pencil-square"></i></span></td>
+              <td><span (click)="displayResetPasswordDialog(u)"><i class="bi bi-bootstrap-reboot"></i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   <div class="row">
     <div class="col-8">
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary mr-1" [ngClass]="{'disabled': disablePreviousButton()}" (click)="previousPage()">Previous</button>
-        <button type="button" class="btn btn-secondary" [ngClass]="{'disabled': disableNextButton()}" (click)="nextPage()">Next</button>
+        <button type="button" class="btn btn-primary mr-1" [disabled]="disablePreviousButton()" (click)="previousPage()">Previous</button>
+        <button type="button" class="btn btn-primary" [disabled]="disableNextButton()" (click)="nextPage()">Next</button>
       </div>
     </div>
   </div>
