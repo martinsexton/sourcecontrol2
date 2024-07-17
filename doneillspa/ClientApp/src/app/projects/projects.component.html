@@ -27,7 +27,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let client of clientsForCurrentPage" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="client == selectedClient">
+                <tr *ngFor="let client of clients" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="client == selectedClient">
                   <td (click)="displayProjectsForSelectedClient(client)">{{ client.name }}</td>
                   <td>{{getClientStatus(client)}}</td>
                   <td><span aria-hidden="true" (click)="displaySelectedClient(client)"><i class="bi bi-pencil-square"></i></span></td>
@@ -40,7 +40,7 @@
       </div>
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" (click)="previousPage()" class="btn btn-primary mr-1" [disabled]="clientsCurrentPage == 1">Previous</button>
-        <button type="button" (click)="nextPage()" class="btn btn-primary" [disabled]="clientsCurrentPage >= determinePageCount()">Next</button>
+        <button type="button" (click)="nextPage()" class="btn btn-primary" [disabled]="disableClientNextButton()">Next</button>
       </div>
     </div>
     <div class="col" *ngIf="projectsForCurrentPage">

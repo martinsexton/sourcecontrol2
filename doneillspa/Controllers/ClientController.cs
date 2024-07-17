@@ -71,12 +71,17 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
-        [Route("api/client")]
-        public IEnumerable<ClientDto> Get()
+        [Route("api/client/{activeClients}/{page}/{pageSize}")]
+        public IEnumerable<ClientDto> Get(bool activeClients, int page = 1, int pageSize = 10)
         {
             List<ClientDto> dtos = new List<ClientDto>();
 
-            IEnumerable<Client> clients = _context.Client.Include(b => b.Projects).OrderBy(b => b.Name).ToList();
+            IEnumerable<Client> clients = _context.Client
+                .Where(r => r.IsActive == activeClients)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(b => b.Projects).OrderBy(b => b.Name).ToList();
+
             foreach (Client c in clients)
             {
                 List<ProjectDto> projects = new List<ProjectDto>();

@@ -99,8 +99,8 @@ namespace doneillspa.Controllers
         [Route("api/user/{inactiveUsers}/{page}/{pageSize}")]
         public IEnumerable<ApplicationUserDto> Get(bool inactiveUsers, int page = 1, int pageSize = 10)
         {
-            var totalCount = _userManager.Users.Count();
-            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+            //var totalCount = _userManager.Users.Count();
+            //var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
 
             List<ApplicationUser> users = _userManager.Users
                 .Where(r => r.IsEnabled == !inactiveUsers)
@@ -148,8 +148,8 @@ namespace doneillspa.Controllers
         [Route("api/user/{inactiveUsers}/{filter}/{page}/{pageSize}")]
         public IEnumerable<ApplicationUserDto> GetBaseOnFilter(bool inactiveUsers, string filter, int page = 1, int pageSize = 10)
         {
-            var totalCount = _userManager.Users.Count();
-            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+            //var totalCount = _userManager.Users.Count();
+            //var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
 
             List<ApplicationUser> users = _userManager.Users
                 .Where(r => r.UserName.Contains(filter) && r.IsEnabled == !inactiveUsers)

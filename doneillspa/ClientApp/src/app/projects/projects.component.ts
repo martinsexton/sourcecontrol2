@@ -19,7 +19,6 @@ declare var $: any;
 export class ProjectComponent {
   public projectsToDisplay: Project[];
   public clients: Client[];
-  public clientsFilteredByState: Client[];
 
   public selectedClient: Client;
   public activeTab: string = "Active";
@@ -28,12 +27,12 @@ export class ProjectComponent {
   public selectedRole: string;
   public loading = true;
   public existingCodes: string[] = [];
-  public clientsForCurrentPage: Client[];
   public projectsForCurrentPage: Project[];
   public clientsCurrentPage: number = 1;
   public projectsCurrentPage: number = 1;
   public pageLimit: number = 10;
   public projectPageLimit: number = 5;
+
 
   newProject: Project = new Project(0, '', '', '', '', true, new Date);
   newClient: Client = new Client(0, "", true);
@@ -47,64 +46,34 @@ export class ProjectComponent {
   displayProjectsForSelectedClient(client) {
     this.selectedClient = client;
     this.projectsCurrentPage = 1;
-    this.projectsToDisplay = this.selectedClient.projects;
-    this.setupProjectsForCurrentPage();
-  }
-
-  determinePageCount() {
-    var pageCount = 1;
-    if (this.clientsFilteredByState) {
-      var numberOfClients = this.clientsFilteredByState.length;
-
-      if (numberOfClients > 0) {
-        var totalPages_pre = Math.floor((numberOfClients / this.pageLimit));
-        pageCount = (numberOfClients % this.pageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
-      }
-      return pageCount;
+    if (this.selectedClient.projects) {
+      this.setupProjectsForCurrentPage();
     }
   }
+
+  disableClientNextButton() {
+    return this.clients.length < this.pageLimit;
+  }
+
 
   activeTabClicked() {
     this.activeTab = "Active";
-    this.clientsFilteredByState = [];
-    this.projectsForCurrentPage = [];
-    this.projectsToDisplay = [];
-    
-    //Setup active clients first
-    for (let client of this.clients) {
-      if (client.isActive) {
-        this.clientsFilteredByState.push(client);
-      }
-    }
-
     //Reset page count. 
     this.clientsCurrentPage = 1;
-    this.setupClientsForCurrentPage();
 
-    if (this.clientsFilteredByState.length > 0) {
-      this.displayProjectsForSelectedClient(this.clientsFilteredByState[0]);
-    }
+    this.projectsForCurrentPage = [];
+    this.projectsToDisplay = [];
+    this.retrieveClients();
   }
 
   inactiveTabClicked() {
     this.activeTab = "Inactive";
-    this.clientsFilteredByState = [];
     this.projectsForCurrentPage = [];
     this.projectsToDisplay = [];
-
-    //Setup active clients first
-    for (let client of this.clients) {
-      if (!client.isActive) {
-        this.clientsFilteredByState.push(client);
-      }
-    }
     //Reset page count. 
     this.clientsCurrentPage = 1;
-    this.setupClientsForCurrentPage();
 
-    if (this.clientsFilteredByState.length > 0) {
-      this.displayProjectsForSelectedClient(this.clientsFilteredByState[0]);
-    }
+    this.retrieveClients();
   }
 
   determineProjectsPageCount() {
@@ -121,36 +90,11 @@ export class ProjectComponent {
     }
   }
 
-  setupClientsForCurrentPage() {
-    var startingIndex = 0;
-    var index = 0;
-
-    //Need to reset selectedClient
-    this.selectedClient = null;
-
-    //reset client current page array
-    this.clientsForCurrentPage = [];
-
-    if (this.clientsCurrentPage > 1) {
-      startingIndex = (this.clientsCurrentPage - 1) * this.pageLimit;
-    }
-
-    for (let client of this.clientsFilteredByState) {
-      if (index >= startingIndex && index < (startingIndex + this.pageLimit)) {
-        this.clientsForCurrentPage.push(client);
-
-        //Setup selected client as the firt client on current page.
-        if (this.selectedClient == null) {
-          this.displayProjectsForSelectedClient(client);
-        }
-      }
-      index = index + 1;
-    }
-  }
-
   setupProjectsForCurrentPage() {
     var startingIndex = 0;
     var index = 0;
+
+    this.projectsToDisplay = this.selectedClient.projects;
 
     //reset client current page array
     this.projectsForCurrentPage = [];
@@ -169,7 +113,7 @@ export class ProjectComponent {
 
   previousPage() {
     this.clientsCurrentPage = this.clientsCurrentPage - 1;
-    this.setupClientsForCurrentPage();
+    this.retrieveClients();
   }
 
   previousProjectPage() {
@@ -179,7 +123,7 @@ export class ProjectComponent {
 
   nextPage() {
     this.clientsCurrentPage = this.clientsCurrentPage + 1;
-    this.setupClientsForCurrentPage();
+    this.retrieveClients();
   }
 
   nextProjectPage() {
@@ -206,33 +150,20 @@ export class ProjectComponent {
   }
 
   retrieveClients() {
-    this._projectService.getClients().subscribe(result => {
+    this._projectService.getClients(this.activeTab == "Active",this.clientsCurrentPage, this.pageLimit).subscribe(result => {
       this.loading = false;
       this.clients = result;
       if (this.clients) {
-        this.clientsFilteredByState = [];
-        //Setup active clients first
+
+        //Will need to set the two below based on first client on current page.
+        this.selectedClient = this.clients[0];
+        this.displayProjectsForSelectedClient(this.clients[0]);
+
         for (let client of this.clients) {
-          if (client.isActive) {
-            this.clientsFilteredByState.push(client);
+          for (let p of client.projects) {
+            this.existingCodes.push(p.code.toUpperCase());
           }
         }
-
-        //By default select first client
-        this.setupClientsForCurrentPage();
-
-        if (this.clientsFilteredByState) {
-          //Will need to set the two below based on first client on current page.
-          this.selectedClient = this.clientsFilteredByState[0];
-          this.projectsToDisplay = this.selectedClient.projects;
-
-          for (let client of this.clients) {
-            for (let p of client.projects) {
-              this.existingCodes.push(p.code.toUpperCase());
-            }
-          }
-        }
-
       }
     }, error => {
       this.userMessage = "Failed to retrieve Client Details"
@@ -268,7 +199,7 @@ export class ProjectComponent {
   updateClient() {
     this._projectService.updateClient(this.selectedClient).subscribe(
       res => {
-
+        this.retrieveClients();
         //clear down the new project model
         this.newClient = new Client(0, '', true);
         $("#myEditClientModal").modal('hide');
@@ -285,7 +216,7 @@ export class ProjectComponent {
         console.log(res);
         //Update the collection of projects with newly created one
         var clientJustAdded = new Client(this.newClient.id, this.newClient.name, true);
-        this.clientsForCurrentPage.push(clientJustAdded);
+        /*this.clientsForCurrentPage.push(clientJustAdded);*/
         this.clients.push(clientJustAdded);
         this.displayProjectsForSelectedClient(clientJustAdded);
 
