@@ -71,6 +71,40 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
+        [Route("api/client/{filter}/{activeClients}/{page}/{pageSize}")]
+        public IEnumerable<ClientDto> GetForFilter(string filter, bool activeClients, int page = 1, int pageSize = 10)
+        {
+            List<ClientDto> dtos = new List<ClientDto>();
+
+            IEnumerable<Client> clients = _context.Client
+                .Where(r => r.IsActive == activeClients && r.Name.Contains(filter))
+                .OrderBy(r => r.Name)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(b => b.Projects).ToList();
+
+            foreach (Client c in clients)
+            {
+                List<ProjectDto> projects = new List<ProjectDto>();
+
+                ClientDto dto = new ClientDto();
+                dto.Id = c.Id;
+                dto.Name = c.Name;
+                dto.IsActive = c.IsActive;
+
+                foreach (Project proj in c.Projects)
+                {
+                    projects.Add(_mapper.Map<ProjectDto>(proj));
+                }
+
+                dto.Projects = projects;
+
+                dtos.Add(dto);
+            }
+            return dtos;
+        }
+
+        [HttpGet]
         [Route("api/client/{activeClients}/{page}/{pageSize}")]
         public IEnumerable<ClientDto> Get(bool activeClients, int page = 1, int pageSize = 10)
         {
@@ -78,9 +112,10 @@ namespace doneillspa.Controllers
 
             IEnumerable<Client> clients = _context.Client
                 .Where(r => r.IsActive == activeClients)
+                .OrderBy(r => r.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Include(b => b.Projects).OrderBy(b => b.Name).ToList();
+                .Include(b => b.Projects).ToList();
 
             foreach (Client c in clients)
             {
