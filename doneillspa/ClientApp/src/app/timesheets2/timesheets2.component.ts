@@ -486,6 +486,11 @@ export class Timesheet2Component {
     this.setActiveDay(5);
   }
 
+  sundaySelected() {
+    this.activeTab = "sun";
+    this.setActiveDay(6);
+  }
+
   setActiveDay(index) {
     this.selectedDay = this.daysOfWeek[index];
     this.newEntry.day = this.selectedDay;
@@ -719,6 +724,15 @@ export class Timesheet2Component {
   getSaturdayDate(): string {
     if (this.sat) {
       return this.sat.date.getDate().toString();
+    }
+    else {
+      return "";
+    }
+  }
+
+  getSundayDate(): string {
+    if (this.sun) {
+      return this.sun.date.getDate().toString();
     }
     else {
       return "";

@@ -11,6 +11,7 @@
         <div class="col"><p class="h6 text-muted text-center">T</p></div>
         <div class="col"><p class="h6 text-muted text-center">F</p></div>
         <div class="col"><p class="h6 text-muted text-center">S</p></div>
+        <div class="col"><p class="h6 text-muted text-center">S</p></div>
       </div>
       <div *ngIf="!loading" class="row justify-content-md-center">
         <div class="col-12">
@@ -32,6 +33,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" [ngClass]="{ 'active':activeTab==='sat'}" id="sat-tab" href="#sat" data-toggle="tab" role="tab" aria-controls="sat" aria-selected="false" (click)="saturdaySelected()">{{getSaturdayDate()}}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{ 'active':activeTab==='sun'}" id="sun-tab" href="#sun" data-toggle="tab" role="tab" aria-controls="sun" aria-selected="false" (click)="sundaySelected()">{{getSundayDate()}}</a>
             </li>
           </ul>
         </div>
