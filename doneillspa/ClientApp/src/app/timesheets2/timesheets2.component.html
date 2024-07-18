@@ -13,33 +13,29 @@
         <div class="col"><p class="h6 text-muted text-center">S</p></div>
         <div class="col"><p class="h6 text-muted text-center">S</p></div>
       </div>
-      <div *ngIf="!loading" class="row justify-content-md-center">
-        <div class="col-12">
-          <ul class="nav justify-content-center">
-            <li class="nav-item">
-              <a class="nav-link" [ngClass]="{ 'active':activeTab==='mon'}" id="mon-tab" href="#mon" data-toggle="tab" role="tab" aria-controls="mon" aria-selected="false" (click)="mondaySelected()">{{getMondayDate()}}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [ngClass]="{ 'active':activeTab==='tue'}" id="tue-tab" href="#tue" data-toggle="tab" role="tab" aria-controls="tue" aria-selected="false" (click)="tuesdaySelected()">{{getTuesdayDate()}}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [ngClass]="{ 'active':activeTab==='wed'}" id="wed-tab" href="#wed" data-toggle="tab" role="tab" aria-controls="wed" aria-selected="false" (click)="wednesdaySelected()">{{getWednesdayDate()}}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [ngClass]="{ 'active':activeTab==='thurs'}" id="thurs-tab" href="#thurs" data-toggle="tab" role="tab" aria-controls="thurs" aria-selected="false" (click)="thursdaySelected()">{{getThursdayDate()}}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [ngClass]="{ 'active':activeTab==='fri'}" id="fri-tab" href="#fri" data-toggle="tab" role="tab" aria-controls="fri" aria-selected="false" (click)="fridaySelected()">{{getFridayDate()}}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [ngClass]="{ 'active':activeTab==='sat'}" id="sat-tab" href="#sat" data-toggle="tab" role="tab" aria-controls="sat" aria-selected="false" (click)="saturdaySelected()">{{getSaturdayDate()}}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" [ngClass]="{ 'active':activeTab==='sun'}" id="sun-tab" href="#sun" data-toggle="tab" role="tab" aria-controls="sun" aria-selected="false" (click)="sundaySelected()">{{getSundayDate()}}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+    </div>
+  </div>
+  <div *ngIf="!loading" class="row">
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='mon'}" id="mon-tab" href="#mon" data-toggle="tab" role="tab" aria-controls="mon" aria-selected="false" (click)="mondaySelected()"><p style="text-align:center">{{getMondayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='tue'}" id="tue-tab" href="#tue" data-toggle="tab" role="tab" aria-controls="tue" aria-selected="false" (click)="tuesdaySelected()"><p style="text-align:center">{{getTuesdayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='wed'}" id="wed-tab" href="#wed" data-toggle="tab" role="tab" aria-controls="wed" aria-selected="false" (click)="wednesdaySelected()"><p style="text-align:center">{{getWednesdayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='thurs'}" id="thurs-tab" href="#thurs" data-toggle="tab" role="tab" aria-controls="thurs" aria-selected="false" (click)="thursdaySelected()"><p style="text-align:center">{{getThursdayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='fri'}" id="fri-tab" href="#fri" data-toggle="tab" role="tab" aria-controls="fri" aria-selected="false" (click)="fridaySelected()"><p style="text-align:center">{{getFridayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='sat'}" id="sat-tab" href="#sat" data-toggle="tab" role="tab" aria-controls="sat" aria-selected="false" (click)="saturdaySelected()"><p style="text-align:center">{{getSaturdayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='sun'}" id="sun-tab" href="#sun" data-toggle="tab" role="tab" aria-controls="sun" aria-selected="false" (click)="sundaySelected()"><p style="text-align:center">{{getSundayDate()}}</p></a>
     </div>
   </div>
   <div class="row">
