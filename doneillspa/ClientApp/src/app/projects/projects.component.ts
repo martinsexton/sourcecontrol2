@@ -32,6 +32,7 @@ export class ProjectComponent {
   public projectsCurrentPage: number = 1;
   public pageLimit: number = 10;
   public projectPageLimit: number = 5;
+  public searchFilter: string = "";
 
 
   newProject: Project = new Project(0, '', '', '', '', true, new Date);
@@ -53,6 +54,17 @@ export class ProjectComponent {
 
   disableClientNextButton() {
     return this.clients.length < this.pageLimit;
+  }
+
+  onKey(event: any) { // without type info
+    this.clientsCurrentPage = 1;
+
+    if (event.target.value != '') {
+      this.retrieveClientsForFilter();
+    }
+    else {
+      this.retrieveClients();
+    }
   }
 
 
@@ -149,8 +161,35 @@ export class ProjectComponent {
     }
   }
 
-  retrieveClients() {
-    this._projectService.getClients(this.activeTab == "Active",this.clientsCurrentPage, this.pageLimit).subscribe(result => {
+  retrieveClientsForFilter() {
+    this._projectService.getClientsForFilter(this.searchFilter, this.activeTab == "Active", this.clientsCurrentPage, this.pageLimit).subscribe(result => {
+      this.loading = false;
+      this.clients = result;
+      if (this.clients.length > 0) {
+
+        //Will need to set the two below based on first client on current page.
+        this.selectedClient = this.clients[0];
+        this.displayProjectsForSelectedClient(this.clients[0]);
+
+        for (let client of this.clients) {
+          for (let p of client.projects) {
+            this.existingCodes.push(p.code.toUpperCase());
+          }
+        }
+      }
+      else {
+        //clear the projects if no clients found
+        this.projectsForCurrentPage = [];
+      }
+    }, error => {
+      this.userMessage = "Failed to retrieve Client Details"
+      $('.toast').toast('show');
+      console.error(error);
+    });
+  }
+
+  retrieveClientsWithoutFilter() {
+    this._projectService.getClients(this.activeTab == "Active", this.clientsCurrentPage, this.pageLimit).subscribe(result => {
       this.loading = false;
       this.clients = result;
       if (this.clients) {
@@ -170,6 +209,15 @@ export class ProjectComponent {
       $('.toast').toast('show');
       console.error(error);
     });
+  }
+
+  retrieveClients() {
+    if (this.searchFilter !== "") {
+      this.retrieveClientsForFilter();
+    }
+    else {
+      this.retrieveClientsWithoutFilter();
+    }
   }
 
   retrieveRolesToDisplay() {

@@ -12,6 +12,18 @@
       <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab" aria-controls="inactive" aria-selected="false" (click)="inactiveTabClicked()">Inactive Clients</a>
     </li>
   </ul>
+  <div class="row mt-2">
+    <div class="col">
+      <form>
+        <div class="form-row align-items-center">
+          <div class="col-sm-3 my-1">
+            <label class="sr-only" for="inlineFormInputName">Name</label>
+            <input type="text" name="searchFilter" [(ngModel)]="searchFilter" class="form-control" id="inlineFormInputName" placeholder="Search.." (keyup)="onKey($event)">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
   <div class="row">
     <div class="col" *ngIf="clients">
       <div class="card mb-3 mt-3 div-to-stand-out">

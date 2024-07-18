@@ -19,6 +19,19 @@ export class ProjectService extends HttpServiceBase  {
     super(_httpClient, baseUrl); 
   }
 
+  getClientsForFilter(filter: string, activeClients: boolean, page: number, pageSize: number): Observable<Client[]> {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Client[]>(this._baseurl + 'api/client' + '/' + filter + '/' + activeClients + '/' + page + '/' + pageSize,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError),);
+  }
+
   getClients(activeClients:boolean, page: number, pageSize: number): Observable<Client[]>{
     let authToken = localStorage.getItem('auth_token');
 
