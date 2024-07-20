@@ -38,6 +38,29 @@
       <a [ngClass]="{ 'active':activeTab==='sun'}" id="sun-tab" href="#sun" data-toggle="tab" role="tab" aria-controls="sun" aria-selected="false" (click)="sundaySelected()"><p style="text-align:center">{{getSundayDate()}}</p></a>
     </div>
   </div>
+  <div *ngIf="!loading" class="row">
+    <div class="col">
+      <p class="text-info" style="text-align:center"><small>{{getHoursForMon()}}</small></p>
+    </div>
+    <div class="col">
+      <p class="text-info" style="text-align:center"><small>{{getHoursForTue()}}</small></p>
+    </div>
+    <div class="col">
+      <p class="text-info" style="text-align:center"><small>{{getHoursForWed()}}</small></p>
+    </div>
+    <div class="col">
+      <p class="text-info" style="text-align:center"><small>{{getHoursForThurs()}}</small></p>
+    </div>
+    <div class="col">
+      <p class="text-info" style="text-align:center"><small>{{getHoursForFri()}}</small></p>
+    </div>
+    <div class="col">
+      <p class="text-info" style="text-align:center"><small>{{getHoursForSat()}}</small></p>
+    </div>
+    <div class="col">
+      <p class="text-info" style="text-align:center"><small>{{getHoursForSun()}}</small></p>
+    </div>
+  </div>
   <div class="row">
     <div class="col-2">
       <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
@@ -71,9 +94,12 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <div class="col-10">
+            <div class="col-7">
               <p><strong>{{ (entry.code.length>50)? (entry.code | slice:0:50)+'...':(entry.code) }}</strong></p>
               <p><small><i class="bi bi-clock-history"></i> {{entry.startTime}} -> {{entry.endTime}}</small></p>
+            </div>
+            <div class="col-3">
+              <p class="h5 text-info"><strong>{{getHoursForTimesheetEntry(entry)}}</strong></p>
             </div>
             <div class="col-2">
               <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>

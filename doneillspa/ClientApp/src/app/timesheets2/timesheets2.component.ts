@@ -685,6 +685,68 @@ export class Timesheet2Component {
     }
   }
 
+  getHoursForMon(): string {
+    return this.getHoursForDay(this.monEntries);
+  }
+
+
+  getHoursForTue(): string {
+    return this.getHoursForDay(this.tueEntries);
+  }
+
+  getHoursForWed(): string {
+    return this.getHoursForDay(this.wedEntries);
+  }
+
+  getHoursForThurs(): string {
+    return this.getHoursForDay(this.thursEntries);
+  }
+
+  getHoursForFri(): string {
+    return this.getHoursForDay(this.friEntries);
+  }
+
+  getHoursForSat(): string {
+    return this.getHoursForDay(this.satEntries);
+  }
+
+  getHoursForSun(): string {
+    return this.getHoursForDay(this.sunEntries);
+  }
+
+  getHoursForDay(entries :TimesheetEntry[]): string {
+    let totalMins: number = 0;
+    for (let item of entries) {
+      totalMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);
+    }
+    if (totalMins > 0) {
+      var hours = Math.floor(totalMins / 60);
+      var minutes = totalMins % 60;
+
+      return hours + '.' + minutes;
+    }
+    else {
+      return "";
+    }
+  }
+
+  getHoursForTimesheetEntry(entry: TimesheetEntry): string {
+    let totalMins: number = this.deriveElapsedTimeInMins(entry.startTime, entry.endTime);
+
+    if (totalMins > 0) {
+      var hours = Math.floor(totalMins / 60);
+      var minutes = totalMins % 60;
+
+      let result: string = hours + '.' + minutes;
+
+      return result;
+      //return result.replace(".0", "");
+    }
+    else {
+      return "";
+    }
+  }
+
   getTuesdayDate(): string {
     if (this.tues) {
       return this.tues.date.getDate().toString();
