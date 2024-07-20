@@ -685,6 +685,33 @@ export class Timesheet2Component {
     }
   }
 
+  getHoursForTab() : string{
+    if (this.activeTab === 'mon') {
+      return this.getHoursForMon();
+    }
+    else if (this.activeTab === 'tue') {
+      return this.getHoursForTue();
+    }
+    else if (this.activeTab === 'wed') {
+      return this.getHoursForWed();
+    }
+    else if (this.activeTab === 'thurs') {
+      return this.getHoursForThurs();
+    }
+    else if (this.activeTab === 'fri') {
+      return this.getHoursForFri();
+    }
+    else if (this.activeTab === 'sat') {
+      return this.getHoursForSat();
+    }
+    else if (this.activeTab === 'sun') {
+      return this.getHoursForSun();
+    }
+    else {
+      return "";
+    }
+  }
+
   getHoursForMon(): string {
     return this.getHoursForDay(this.monEntries);
   }

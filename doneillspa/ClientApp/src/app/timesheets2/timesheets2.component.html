@@ -38,7 +38,7 @@
       <a [ngClass]="{ 'active':activeTab==='sun'}" id="sun-tab" href="#sun" data-toggle="tab" role="tab" aria-controls="sun" aria-selected="false" (click)="sundaySelected()"><p style="text-align:center">{{getSundayDate()}}</p></a>
     </div>
   </div>
-  <div *ngIf="!loading" class="row">
+  <!--<div *ngIf="!loading" class="row">
     <div class="col">
       <p class="text-info" style="text-align:center"><small>{{getHoursForMon()}}</small></p>
     </div>
@@ -60,7 +60,7 @@
     <div class="col">
       <p class="text-info" style="text-align:center"><small>{{getHoursForSun()}}</small></p>
     </div>
-  </div>
+  </div>-->
   <div class="row">
     <div class="col-2">
       <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
@@ -78,8 +78,11 @@
       <div class="card bg-light">
         <div class="card-body">
           <div class="row">
-            <div class="col-10">
-              Status: {{activeTimeSheet.status}}, Time Recorded: {{calculateTotalDuration()}}
+            <div class="col-7">
+              {{activeTimeSheet.status}}
+            </div>
+            <div class="col-3">
+              <p class="h5 text-info"><strong>{{getHoursForTab()}}</strong></p>
             </div>
             <div *ngIf="activeTimeSheet.timesheetNotes.length > 0" class="col-2">
               <span (click)="toggleDisplayNotes()"><i class="bi bi-clipboard2-data"></i></span>
@@ -99,7 +102,7 @@
               <p><small><i class="bi bi-clock-history"></i> {{entry.startTime}} -> {{entry.endTime}}</small></p>
             </div>
             <div class="col-3">
-              <p class="h5 text-info"><strong>{{getHoursForTimesheetEntry(entry)}}</strong></p>
+              <p class="h7 text-warning"><strong>{{getHoursForTimesheetEntry(entry)}}</strong></p>
             </div>
             <div class="col-2">
               <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>
