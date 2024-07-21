@@ -523,31 +523,31 @@ export class Timesheet2Component {
 
   statusStyle(): string {
     if (this.activeTimeSheet.status === 'Rejected') {
-      return "h6 text-white";
+      return "h4 text-white";
     }
     else if (this.activeTimeSheet.status === 'Approved') {
-      return "h6 text-white";
+      return "h4 text-white";
     }
     else if (this.activeTimeSheet.status === 'Submitted') {
-      return "h6 text-white";
+      return "h4 text-white";
     }
     else {
-      return "h6 text-info";
+      return "h4 text-white";
     }
   }
 
   durationStyle(): string {
     if (this.activeTimeSheet.status === 'Rejected') {
-      return "h3 text-white";
+      return "h4 text-white";
     }
     else if (this.activeTimeSheet.status === 'Approved') {
-      return "h3 text-white";
+      return "h4 text-white";
     }
     else if (this.activeTimeSheet.status === 'Submitted') {
-      return "h3 text-white";
+      return "h4 text-white";
     }
     else {
-      return "h3 text-info";
+      return "h4 text-white";
     }
   }
 

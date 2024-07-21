@@ -17,6 +17,18 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
+.card.bg-warning {
+  background-color: #008dbf !important;
+}
+
+.card.bg-light {
+   background-color: #008EA7 !important;
+}
+
+.card.bg-danger {
+  background-color: #6E7D5C !important;
+}
+
 @media (min-width: 1000px) {
   .body_container {
     width: 900px;
