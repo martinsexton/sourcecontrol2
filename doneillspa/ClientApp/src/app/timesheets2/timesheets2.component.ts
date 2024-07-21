@@ -753,7 +753,7 @@ export class Timesheet2Component {
       return hours + '.' + minutes;
     }
     else {
-      return "";
+      return "0.0";
     }
   }
 

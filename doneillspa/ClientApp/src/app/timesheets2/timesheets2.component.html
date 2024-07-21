@@ -2,16 +2,16 @@
   <div class="row">
     <div *ngIf="!loading" class="col-12"><p class="h6 text-primary text-center">{{getMonthToDisplay()}}</p></div>
   </div>
-  <div class="row">
+  <div class="row mb-2">
     <div class="col-12">
       <div *ngIf="!loading" class="row justify-content-md-center">
-        <div class="col"><p class="h6 text-muted text-center">M</p></div>
-        <div class="col"><p class="h6 text-muted text-center">T</p></div>
-        <div class="col"><p class="h6 text-muted text-center">W</p></div>
-        <div class="col"><p class="h6 text-muted text-center">T</p></div>
-        <div class="col"><p class="h6 text-muted text-center">F</p></div>
-        <div class="col"><p class="h6 text-muted text-center">S</p></div>
-        <div class="col"><p class="h6 text-muted text-center">S</p></div>
+        <div class="col"><p class="h6 text-info text-center">M</p></div>
+        <div class="col"><p class="h6 text-info text-center">T</p></div>
+        <div class="col"><p class="h6 text-info text-center">W</p></div>
+        <div class="col"><p class="h6 text-info text-center">T</p></div>
+        <div class="col"><p class="h6 text-info text-center">F</p></div>
+        <div class="col"><p class="h6 text-info text-center">S</p></div>
+        <div class="col"><p class="h6 text-info text-center">S</p></div>
       </div>
     </div>
   </div>
@@ -38,29 +38,6 @@
       <a [ngClass]="{ 'active':activeTab==='sun'}" id="sun-tab" href="#sun" data-toggle="tab" role="tab" aria-controls="sun" aria-selected="false" (click)="sundaySelected()"><p style="text-align:center">{{getSundayDate()}}</p></a>
     </div>
   </div>
-  <!--<div *ngIf="!loading" class="row">
-    <div class="col">
-      <p class="text-info" style="text-align:center"><small>{{getHoursForMon()}}</small></p>
-    </div>
-    <div class="col">
-      <p class="text-info" style="text-align:center"><small>{{getHoursForTue()}}</small></p>
-    </div>
-    <div class="col">
-      <p class="text-info" style="text-align:center"><small>{{getHoursForWed()}}</small></p>
-    </div>
-    <div class="col">
-      <p class="text-info" style="text-align:center"><small>{{getHoursForThurs()}}</small></p>
-    </div>
-    <div class="col">
-      <p class="text-info" style="text-align:center"><small>{{getHoursForFri()}}</small></p>
-    </div>
-    <div class="col">
-      <p class="text-info" style="text-align:center"><small>{{getHoursForSat()}}</small></p>
-    </div>
-    <div class="col">
-      <p class="text-info" style="text-align:center"><small>{{getHoursForSun()}}</small></p>
-    </div>
-  </div>-->
   <div class="row">
     <div class="col-2">
       <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
@@ -79,7 +56,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-7">
-              {{activeTimeSheet.status}}
+              <p [ngClass]="{'h6 text-danger': activeTimeSheet.status==='Rejected', 'h6 text-info': activeTimeSheet.status!='Rejected'}"><strong>{{activeTimeSheet.status}}</strong></p>
             </div>
             <div class="col-3">
               <p class="h5 text-info"><strong>{{getHoursForTab()}}</strong></p>
@@ -107,6 +84,19 @@
             <div class="col-2">
               <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>
               <span *ngIf="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" aria-hidden="true" (click)="showViewTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!retrieveTimesheetsForDay().length > 0" class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <p class="h6 text-center"><i class="bi bi-search"><small class="text-muted">   No entries found</small></i></p>
             </div>
           </div>
         </div>
