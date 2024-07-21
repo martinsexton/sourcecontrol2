@@ -500,6 +500,12 @@ export class Timesheet2Component {
     this.selectedUser = new ApplicationUser(localStorage.getItem('client_id'), localStorage.getItem('firstname'), localStorage.getItem('surname'), "", "", localStorage.getItem('role'), true);
   }
 
+  entriesFound(): boolean {
+    let n: number = this.retrieveTimesheetsForDay().length;
+
+    return n > 0;
+  }
+
   retrieveTimesheetsForDay() : TimesheetEntry[] {
     if (this.selectedDay == "Mon") {
       this.monEntries.sort(function sortByStartTime(a, b) {
