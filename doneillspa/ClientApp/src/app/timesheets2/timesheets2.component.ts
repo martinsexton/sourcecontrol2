@@ -506,6 +506,60 @@ export class Timesheet2Component {
     return n > 0;
   }
 
+  cardHeaderStyle(): string {
+    if (this.activeTimeSheet.status === 'Rejected') {
+      return "card bg-danger";
+    }
+    else if (this.activeTimeSheet.status === 'Approved') {
+      return "card bg-success";
+    }
+    else if (this.activeTimeSheet.status === 'Submitted') {
+      return "card bg-warning";
+    }
+    else {
+      return "card bg-light";
+    }
+  }
+
+  statusStyle(): string {
+    if (this.activeTimeSheet.status === 'Rejected') {
+      return "h6 text-white";
+    }
+    else if (this.activeTimeSheet.status === 'Approved') {
+      return "h6 text-white";
+    }
+    else if (this.activeTimeSheet.status === 'Submitted') {
+      return "h6 text-white";
+    }
+    else {
+      return "h6 text-info";
+    }
+  }
+
+  durationStyle(): string {
+    if (this.activeTimeSheet.status === 'Rejected') {
+      return "h3 text-white";
+    }
+    else if (this.activeTimeSheet.status === 'Approved') {
+      return "h3 text-white";
+    }
+    else if (this.activeTimeSheet.status === 'Submitted') {
+      return "h3 text-white";
+    }
+    else {
+      return "h3 text-info";
+    }
+  }
+
+  notesIconStyle(): string {
+    if (this.activeTimeSheet.status === 'Rejected') {
+      return "bi bi-clipboard-data-fill";
+    }
+    else {
+      return "bi bi-clipboard2-data";
+    }
+  }
+
   retrieveTimesheetsForDay() : TimesheetEntry[] {
     if (this.selectedDay == "Mon") {
       this.monEntries.sort(function sortByStartTime(a, b) {
