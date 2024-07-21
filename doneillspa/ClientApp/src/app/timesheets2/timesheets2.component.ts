@@ -500,7 +500,7 @@ export class Timesheet2Component {
     this.selectedUser = new ApplicationUser(localStorage.getItem('client_id'), localStorage.getItem('firstname'), localStorage.getItem('surname'), "", "", localStorage.getItem('role'), true);
   }
 
-  retrieveTimesheetsForDay() {
+  retrieveTimesheetsForDay() : TimesheetEntry[] {
     if (this.selectedDay == "Mon") {
       this.monEntries.sort(function sortByStartTime(a, b) {
         let day1 = parseInt(a.startTime.split(':')[0]);

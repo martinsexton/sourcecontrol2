@@ -90,7 +90,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!retrieveTimesheetsForDay()" class="row">
+  <div *ngIf="!retrieveTimesheetsForDay().length > 0" class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
