@@ -76,7 +76,7 @@
           <div class="row">
             <div class="col-7">
               <p><strong>{{ (entry.code.length>50)? (entry.code | slice:0:50)+'...':(entry.code) }}</strong></p>
-              <p><small><i class="bi bi-clock-history"></i> {{entry.startTime}} -> {{entry.endTime}}</small></p>
+              <p class="text-info"><small><i class="bi bi-clock-history"></i> {{entry.startTime}} -> {{entry.endTime}}</small></p>
             </div>
             <div class="col-3">
               <p class="h8 text-info"><strong>{{getHoursForTimesheetEntry(entry)}}</strong></p>

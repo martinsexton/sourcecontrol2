@@ -523,37 +523,37 @@ export class Timesheet2Component {
 
   statusStyle(): string {
     if (this.activeTimeSheet.status === 'Rejected') {
-      return "h4 text-white";
+      return "h5 text-white";
     }
     else if (this.activeTimeSheet.status === 'Approved') {
-      return "h4 text-white";
+      return "h5 text-white";
     }
     else if (this.activeTimeSheet.status === 'Submitted') {
-      return "h4 text-white";
+      return "h5 text-white";
     }
     else {
-      return "h4 text-white";
+      return "h5 text-white";
     }
   }
 
   durationStyle(): string {
     if (this.activeTimeSheet.status === 'Rejected') {
-      return "h4 text-white";
+      return "h5 text-white";
     }
     else if (this.activeTimeSheet.status === 'Approved') {
-      return "h4 text-white";
+      return "h5 text-white";
     }
     else if (this.activeTimeSheet.status === 'Submitted') {
-      return "h4 text-white";
+      return "h5 text-white";
     }
     else {
-      return "h4 text-white";
+      return "h5 text-white";
     }
   }
 
   notesIconStyle(): string {
     if (this.activeTimeSheet.status === 'Rejected') {
-      return "bi bi-clipboard-data-fill";
+      return "bi bi-clipboard2-data";
     }
     else {
       return "bi bi-clipboard2-data";
