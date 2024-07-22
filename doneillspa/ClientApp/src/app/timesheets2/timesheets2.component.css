@@ -18,11 +18,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card.bg-warning {
-  background-color: #008dbf !important;
+  background-color: #49DCA4 !important;
 }
 
 .card.bg-light {
-   background-color: #008EA7 !important;
+  background-color: #008DBF !important;
 }
 
 .card.bg-danger {
