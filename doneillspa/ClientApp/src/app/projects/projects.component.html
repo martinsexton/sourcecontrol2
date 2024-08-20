@@ -12,6 +12,18 @@
       <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab" aria-controls="inactive" aria-selected="false" (click)="inactiveTabClicked()">Inactive Clients</a>
     </li>
   </ul>
+  <div class="row mt-2">
+    <div class="col">
+      <form>
+        <div class="form-row align-items-center">
+          <div class="col-sm-3 my-1">
+            <label class="sr-only" for="inlineFormInputName">Name</label>
+            <input type="text" name="searchFilter" [(ngModel)]="searchFilter" class="form-control" id="inlineFormInputName" placeholder="Search.." (keyup)="onKey($event)">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
   <div class="row">
     <div class="col" *ngIf="clients">
       <div class="card mb-3 mt-3 div-to-stand-out">
@@ -27,7 +39,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let client of clientsForCurrentPage" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="client == selectedClient">
+                <tr *ngFor="let client of clients" data-toggle="tooltip" data-placement="right" title="Click For Details" [class.active]="client == selectedClient">
                   <td (click)="displayProjectsForSelectedClient(client)">{{ client.name }}</td>
                   <td>{{getClientStatus(client)}}</td>
                   <td><span aria-hidden="true" (click)="displaySelectedClient(client)"><i class="bi bi-pencil-square"></i></span></td>
@@ -35,53 +47,23 @@
               </tbody>
             </table>
           </div>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myNewClientModal">Add Client</button>
+          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myNewClientModal">Add Client</button>
         </div>
       </div>
-      <nav aria-label="Client Navigation">
-        <ul class="pagination">
-          <li [ngClass]="{'page-item': clientsCurrentPage > 1, 'page-item disabled': clientsCurrentPage == 1}">
-            <a class="page-link" aria-label="Previous" (click)="previousPage()">
-              <span aria-hidden="true">&laquo; Back</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-          <li [ngClass]="{'page-item': clientsCurrentPage < determinePageCount(), 'page-item disabled': clientsCurrentPage >= determinePageCount()}">
-            <a class="page-link" aria-label="Next" (click)="nextPage()">
-              <span aria-hidden="true">Next &raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" (click)="previousPage()" class="btn btn-primary mr-1" [disabled]="clientsCurrentPage == 1">Previous</button>
+        <button type="button" (click)="nextPage()" class="btn btn-primary" [disabled]="disableClientNextButton()">Next</button>
+      </div>
     </div>
     <div class="col" *ngIf="projectsForCurrentPage">
       <div class="card mb-3 mt-3 div-to-stand-out">
         <!--Project List Component Here -->
         <project-list [selectedClient]="selectedClient" [projects]="projectsForCurrentPage" [projectCodes]="existingCodes"></project-list>
       </div>
-      <nav aria-label="Project Navigation">
-        <ul class="pagination">
-          <li [ngClass]="{'page-item': projectsCurrentPage > 1, 'page-item disabled': projectsCurrentPage == 1}">
-            <a class="page-link" aria-label="Previous" (click)="previousProjectPage()">
-              <span aria-hidden="true">&laquo; Back</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-          <li [ngClass]="{'page-item': projectsCurrentPage < determineProjectsPageCount(), 'page-item disabled': projectsCurrentPage >= determineProjectsPageCount()}">
-            <a class="page-link" aria-label="Next" (click)="nextProjectPage()">
-              <span aria-hidden="true">Next &raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-  <div class="row" *ngIf="projectsToDisplay">
-    <div class="col" *ngIf="labourRates">
-      <!-- Rates Component Here-->
-      <rates></rates>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" (click)="previousProjectPage()" class="btn btn-primary mr-1" [disabled]="projectsCurrentPage == 1">Previous</button>
+        <button type="button" (click)="nextProjectPage()" class="btn btn-primary" [disabled]="projectsCurrentPage >= determineProjectsPageCount()">Next</button>
+      </div>
     </div>
   </div>
   <!-- Toasts -->
@@ -119,7 +101,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button [disabled]="clientName.invalid" (click)="saveClient()" class="btn btn-primary">Save Client</button>
+            <button [disabled]="clientName.invalid" (click)="saveClient()" class="btn btn-info">Save Client</button>
           </div>
         </form>
       </div>

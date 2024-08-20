@@ -8,10 +8,9 @@ import { Timesheet } from '../../timesheet';
 import { TimesheetEntry } from '../../timesheetentry';
 import { TimesheetNote } from '../../timesheetnote';
 import { HttpServiceBase } from './httpservicebase';
-import { LabourRate } from '../../labourrate';
-import { LabourWeek } from '../../labourweek';
 import { Observable } from 'rxjs';
-import { ProjectAssignment } from '../../projectassignment';
+import { TimesheetReport } from '../../TimesheetReport';
+import { Report } from '../../Report';
 
 @Injectable()
 export class TimesheetService extends HttpServiceBase{
@@ -20,6 +19,18 @@ export class TimesheetService extends HttpServiceBase{
 
   constructor(_httpClient: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     super(_httpClient, baseUrl); 
+  }
+
+  orderReport(report: TimesheetReport) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.post(this._baseurl + 'api/timesheet/report', report, {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + authToken)
+    }).pipe(
+      retry(5),
+      catchError(this.handleError),);
   }
 
   updateTimesheet(timesheet: Timesheet) {
@@ -221,6 +232,33 @@ export class TimesheetService extends HttpServiceBase{
         catchError(this.handleError));
   }
 
+  getTimesheetReports() {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Report[]>(this._baseurl + 'api/timesheetreports',
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError));
+  }
+
+  downloadFile(filename : string) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get(this._baseurl + 'api/timesheetreport/' + filename,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+        , responseType: 'text' 
+      },).pipe(
+        retry(5),
+        catchError(this.handleError));
+  }
+
   getRejectedTimesheets() {
     let authToken = localStorage.getItem('auth_token');
 
@@ -270,46 +308,6 @@ export class TimesheetService extends HttpServiceBase{
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  getLabourWeekDetailsForProject(project): Observable<LabourWeek[]>{
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<LabourWeek[]>(this._baseurl + 'api/labourdetails/project/' + project,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  getLabourRates() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<LabourRate[]>(this._baseurl + 'api/labourdetails/rates',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  getProjectAssignments(year: number, month: number, day: number) {
-    let authToken = localStorage.getItem('auth_token');
-    let headers = new HttpHeaders();
-    headers = headers.append('Content-Type', 'application/json');
-    headers = headers.append('Authorization', 'Bearer ' + authToken);
-
-    return this._httpClient.get<ProjectAssignment[]>(this._baseurl + 'api/projectassignments/week/' + year + '/' + month + '/' + day,
-      {
-        headers
       }).pipe(
       retry(5),
       catchError(this.handleError),);

@@ -1,40 +1,28 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#"><h3>Denis O'Neill Electrical</h3></a>
+  <a class="navbar-brand" href="#"><h4>Denis O'Neill Electrical</h4></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <!--<li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }' class="nav-item">
-    <a [routerLink]='["/"]' class="nav-link">Home <span class="sr-only">(current)</span></a>
-  </li>-->
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/projects"]' class="nav-link">Configuration</a>
       </li>
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/dashboard"]' class="nav-link">Timesheets</a>
       </li>
-      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
-        <a [routerLink]='["/labour"]' class="nav-link">Labour Details</a>
-      </li>
       <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
-    <a [routerLink]='["/supervisor"]' class="nav-link">Holiday Approval</a>
-  </li>-->
-      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
         <a [routerLink]='["/userdashboard"]' class="nav-link">Users</a>
-      </li>
+      </li>-->
       <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
-        <a [routerLink]='["/projecthealth"]' class="nav-link">Project Health</a>
-      </li>
-      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isAdministrator()'>
-        <a [routerLink]='["/assignment"]' class="nav-link">Assignment Details</a>
-      </li>
-      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
-        <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
+        <a [routerLink]='["/userdashboard2"]' class="nav-link">Users</a>
       </li>
       <!--<li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
-    <a [routerLink]='["/holidays"]' class="nav-link">Holidays</a>
+    <a [routerLink]='["/timesheets"]' class="nav-link">Timesheets</a>
   </li>-->
+      <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf='isUserLoggedIn() && isWorker()'>
+        <a [routerLink]='["/timesheets2"]' class="nav-link">Timesheets</a>
+      </li>
     </ul>
     <ul class="nav navbar-nav">
       <li *ngIf='!isUserLoggedIn()'><a [routerLink]='["/login"]' class="nav-link">Login</a></li>

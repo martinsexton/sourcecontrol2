@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectReportJob.Services
+namespace ProjectReportJob
 {
-    public interface ISignalRService
+    public class TimesheetReport
     {
-        void SendMessage(string method, string msg);
+        public string reportDate { get; set; }
     }
 }

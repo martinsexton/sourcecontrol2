@@ -9,9 +9,5 @@ namespace doneillspa.Services
 {
     public interface ITimesheetService
     {
-        LabourWeekDetail BuildLabourWeekDetails(Timesheet ts, List<LabourRate> Rates, string proj);
-        ProjectCostDto DetermineProjectCosts(string code);
-
-
     }
 }

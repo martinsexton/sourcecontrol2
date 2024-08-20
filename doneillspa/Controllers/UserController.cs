@@ -12,8 +12,6 @@ using Microsoft.Extensions.Configuration;
 using doneillspa.Services.Email;
 using doneillspa.Dtos;
 using doneillspa.Services;
-using Microsoft.AspNetCore.SignalR;
-using hub;
 using AutoMapper;
 using MediatR;
 
@@ -86,18 +84,6 @@ namespace doneillspa.Controllers
             user.Email = p.Email;
             user.PhoneNumber = p.PhoneNumber;
 
-            IList<string> currentRoles = _userManager.GetRolesAsync(user).Result;
-            if (!currentRoles.Contains(p.Role))
-            {
-                foreach(string r in currentRoles)
-                {
-                    IdentityResult removeRoleResult = _userManager.RemoveFromRoleAsync(user, r).Result;
-                }
-
-                IdentityResult addRoleResult = _userManager.AddToRoleAsync(user, p.Role).Result;
-            }
-
-
             Task<IdentityResult> result = _userManager.UpdateAsync(user);
             if (result.Result.Succeeded)
             {
@@ -110,12 +96,18 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
-        [Route("api/user")]
-        public IEnumerable<ApplicationUserDto> Get()
+        [Route("api/user/{inactiveUsers}/{page}/{pageSize}")]
+        public IEnumerable<ApplicationUserDto> Get(bool inactiveUsers, int page = 1, int pageSize = 10)
         {
-            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications)
-                .Include(r => r.HolidayRequests)
-                .OrderBy(r => r.NormalizedUserName).ToList();
+            //var totalCount = _userManager.Users.Count();
+            //var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+            List<ApplicationUser> users = _userManager.Users
+                .Where(r => r.IsEnabled == !inactiveUsers)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(r => r.EmailNotifications)
+                .ToList();
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
 
@@ -135,15 +127,6 @@ namespace doneillspa.Controllers
                 {
                     dtouser.Role = roles.Result.First();
                 }
-                if (user.Certifications.Count > 0)
-                {
-                    List<CertificationDto> certs = new List<CertificationDto>();
-                    foreach (Certification cert in user.Certifications)
-                    {
-                        certs.Add(_mapper.Map<CertificationDto>(cert));
-                    }
-                    dtouser.Certifications = certs;
-                }
 
                 if (user.EmailNotifications.Count > 0)
                 {
@@ -156,15 +139,54 @@ namespace doneillspa.Controllers
                     dtouser.EmailNotifications = notifications;
 
                 }
-                if (user.HolidayRequests.Count > 0)
+                dtousers.Add(dtouser);
+            }
+            return dtousers;
+        }
+
+        [HttpGet]
+        [Route("api/user/{inactiveUsers}/{filter}/{page}/{pageSize}")]
+        public IEnumerable<ApplicationUserDto> GetBaseOnFilter(bool inactiveUsers, string filter, int page = 1, int pageSize = 10)
+        {
+            //var totalCount = _userManager.Users.Count();
+            //var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+            List<ApplicationUser> users = _userManager.Users
+                .Where(r => r.UserName.Contains(filter) && r.IsEnabled == !inactiveUsers)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(r => r.EmailNotifications)
+                .ToList();
+
+            List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
+
+            foreach (ApplicationUser user in users)
+            {
+                Task<IList<string>> roles = _userManager.GetRolesAsync(user);
+
+                ApplicationUserDto dtouser = new ApplicationUserDto();
+                dtouser.Id = user.Id;
+                dtouser.FirstName = user.FirstName;
+                dtouser.Surname = user.Surname;
+                dtouser.PhoneNumber = user.PhoneNumber;
+                dtouser.Email = user.Email;
+                dtouser.IsEnabled = user.IsEnabled;
+
+                if (roles.Result.Count > 0)
                 {
-                    List<HolidayRequestDto> holidays = new List<HolidayRequestDto>();
-                    foreach (HolidayRequest hol in user.HolidayRequests)
+                    dtouser.Role = roles.Result.First();
+                }
+
+                if (user.EmailNotifications.Count > 0)
+                {
+                    List<EmailNotificationDto> notifications = new List<EmailNotificationDto>();
+                    foreach (EmailNotification not in user.EmailNotifications)
                     {
-                        holidays.Add(_mapper.Map<HolidayRequestDto>(hol));
+                        notifications.Add(_mapper.Map<EmailNotificationDto>(not));
                     }
 
-                    dtouser.HolidayRequests = holidays;
+                    dtouser.EmailNotifications = notifications;
+
                 }
                 dtousers.Add(dtouser);
             }
@@ -231,77 +253,6 @@ namespace doneillspa.Controllers
             return timesheetsDtos;
         }
 
-
-        [HttpGet]
-        [Route("api/user/{id}/holidayrequests")]
-        public IEnumerable<HolidayRequestDto> GetHolidayRequestsForUser(string id)
-        {
-            List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
-            IEnumerable<HolidayRequest> holidayRequests = _context.HolidayRequest
-                        .Include(b => b.Approver)
-                        .Where(b => b.UserId.ToString() == id)
-                        .ToList();
-
-            foreach (HolidayRequest hr in holidayRequests)
-            {
-                holidayRequestDtos.Add(_mapper.Map<HolidayRequestDto>(hr));
-            }
-            return holidayRequestDtos;
-        }
-
-
-        [HttpGet]
-        [Route("api/supervisor/{id}/holidayrequests")]
-        public IEnumerable<HolidayRequestDto> GetHolidayRequestsForApproval(string id)
-        {
-            List<HolidayRequestDto> holidayRequestDtos = new List<HolidayRequestDto>();
-            IEnumerable<HolidayRequest> holidayRequests = _context.HolidayRequest
-                        .Include(b => b.Approver)
-                        .Where(b => b.Approver.Id.ToString() == id)
-                        .ToList();
-
-            foreach (HolidayRequest hr in holidayRequests)
-            {
-                holidayRequestDtos.Add(_mapper.Map<HolidayRequestDto>(hr));
-            }
-            return holidayRequestDtos;
-        }
-        [HttpPut()]
-        [Route("api/user/{id}/certificates")]
-        public IActionResult Put(string id, [FromBody]CertificationDto t)
-        {
-            ApplicationUser user = GetUserIncludingCerts(id);
-            Certification cert = user.AddCertification(t, _userManager).Result;
-
-            if (cert != null)
-            {
-                return Ok(cert.Id);
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpPut()]
-        [Route("api/user/{id}/holidayrequests")]
-        public IActionResult Put(string id, [FromBody]HolidayRequestDto t)
-        {
-            ApplicationUser user = GetUserIncludingCerts(id);
-            HolidayRequest hol = user.AddHolidayRequest(t, _userManager).Result;
-
-            hol.Created(_mediator);
-
-            if (hol != null)
-            {
-                return Ok(hol.Id);
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
         [HttpPut()]
         [Route("api/user/reset")]
         public IActionResult Put([FromBody]PasswordReset d)
@@ -359,15 +310,6 @@ namespace doneillspa.Controllers
                 if (roles.Result.Count > 0)
                 {
                     dtouser.Role = roles.Result.First();
-                }
-                if (user.Certifications.Count > 0)
-                {
-                    List<CertificationDto> certs = new List<CertificationDto>();
-                    foreach (Certification cert in user.Certifications)
-                    {
-                        certs.Add(_mapper.Map<CertificationDto>(cert));
-                    }
-                    dtouser.Certifications = certs;
                 }
                 dtousers.Add(dtouser);
             }

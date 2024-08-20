@@ -1,22 +1,31 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
 using doneillspa.Models;
 using doneillspa.Services;
 using doneillspa.Services.Email;
-using hub;
+using doneillspa.Services.MessageQueue;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace doneillspa.Controllers
 {
@@ -29,13 +38,18 @@ namespace doneillspa.Controllers
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly ILogger<TimesheetController> _logger;
+        private IMessageQueue _messageQueue;
+        private IConfiguration _configuration;
 
-        public TimesheetController(ILogger<TimesheetController> logger, IMapper mapper, IMediator mediator, ITimesheetRepository repository)
+        public TimesheetController(ILogger<TimesheetController> logger, IMapper mapper, IMediator mediator, ITimesheetRepository repository, 
+            IMessageQueue messageQueue, IConfiguration configuration)
         {
             _mapper = mapper;
             _mediator = mediator;
             _timeSheetRepository = repository;
             _logger = logger;
+            _messageQueue = messageQueue;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -122,6 +136,21 @@ namespace doneillspa.Controllers
         //    }
         //    return timesheetsDtos;
         //}
+        [HttpPost]
+        [Route("api/timesheet/report")]
+        public IActionResult OrderTimesheetReport([FromBody] TimesheetReport timesheetReport)
+        {
+            _logger.LogInformation("About to queue report order");
+            _messageQueue.SendMessage(Base64Encode(JsonConvert.SerializeObject(timesheetReport)));
+            _logger.LogInformation("Finished queuing report order");
+            return Ok();
+        }
+
+        private static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
 
         [HttpGet]
         [Route("api/archievedtimesheetforrange")]
@@ -149,6 +178,65 @@ namespace doneillspa.Controllers
                 timesheetsDtos.Add(ConvertToDto(ts));
             }
             return timesheetsDtos;
+        }
+
+
+        [HttpGet]
+        [Route("api/timesheetreport/{filename}")]
+        public IActionResult DownloadBlob(String filename)
+        {
+            // Retrieve the connection string for use with the application. 
+            var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
+
+            // Create a BlobServiceClient object 
+            var blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
+
+            BlobClient client = containerClient.GetBlobClient(filename);
+            if (client.Exists())
+            {
+
+                using (var ms = new MemoryStream())
+                {
+                    client.DownloadTo(ms);
+                    return new FileContentResult(ms.ToArray(), "application/octet-stream")
+                    {
+                        FileDownloadName = filename + ".txt"
+                    };
+                }
+            }
+
+            //Return empy byte array
+            return new FileContentResult(new byte[0], "application/octet-stream");
+
+        }
+
+        [HttpGet]
+        [Route("api/timesheetreports")]
+        public IEnumerable<ReportDto> GetReports()
+        {
+            List<ReportDto> reports = new List<ReportDto>();
+
+            // Retrieve the connection string for use with the application. 
+            var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
+
+            // Create a BlobServiceClient object 
+            var blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
+
+            var resultSegment = containerClient.GetBlobs().AsPages();
+            foreach (Page<BlobItem> blobPage in resultSegment)
+            {
+                foreach (BlobItem blobItem in blobPage.Values)
+                {
+                    ReportDto report = new ReportDto();
+                    report.Name = blobItem.Name;
+                    report.CreatedOn = blobItem.Properties.CreatedOn.Value.DateTime.ToString();
+
+                    reports.Add(report);
+                }
+            }
+            return reports;
         }
 
 
@@ -187,149 +275,9 @@ namespace doneillspa.Controllers
             return new JsonResult(ConvertToDto(_timeSheetRepository.GetTimsheetById(id)));
         }
 
-        [HttpGet]
-        [Route("api/projectassignments/week/{year}/{month}/{day}")]
-        public IEnumerable<ProjectAssignmentDto> Get(int year, int month, int day)
-        {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-            IEnumerable<Timesheet> timesheets = new List<Timesheet>();
-            IList<ProjectAssignmentDto> assignments = new List<ProjectAssignmentDto>();
-
-            //If no date provide, then bring back all timesheets
-            if (year == 0 || year == 1970)
-            {
-                timesheets = _timeSheetRepository.GetTimesheets();
-            }
-            else
-            {
-                DateTime weekStarting = new DateTime(year, month, day);
-                timesheets = _timeSheetRepository.GetTimesheetsByDate(weekStarting);
-            }
-
-            foreach (Timesheet ts in timesheets)
-            {
-                //We only are concerned with approved timesheets
-                if (ts.Status != TimesheetStatus.Approved) continue;
-
-                foreach (TimesheetEntry tse in ts.TimesheetEntries)
-                {
-                    if (!projectCodeAlreadyRecorded(assignments, tse.Code))
-                    {
-                        //For none chargeable codes we ignore.
-                        if (!isProjectCode(tse.Code))
-                        {
-                            continue;
-                        }
-                        ProjectAssignmentDto adto = new ProjectAssignmentDto();
-                        adto.Code = tse.Code;
-                        if (adto.Users == null)
-                        {
-                            adto.Users = new List<UserAssignmentDetails>();
-                        }
-                        bool addUser = true;
-                        foreach (UserAssignmentDetails user in adto.Users)
-                        {
-                            if (user.UserName.Equals(ts.Username))
-                            {
-                                addUser = false;
-                            }
-                        }
-                        if (addUser)
-                        {
-                            UserAssignmentDetails newUserDetails = new UserAssignmentDetails();
-                            newUserDetails.UserName = ts.Username;
-                            DateTime now = DateTime.UtcNow;
-                            string[] startTime = tse.StartTime.Split(":");
-                            string[] endTime = tse.EndTime.Split(":");
-
-                            DateTime start = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(startTime[0]), Int32.Parse(startTime[1]), 0);
-                            DateTime end = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(endTime[0]), Int32.Parse(endTime[1]), 0);
-
-                            TimeSpan varTime = (DateTime)end - (DateTime)start;
-
-                            newUserDetails.TotalMinutes = (int)varTime.TotalMinutes;
-                            adto.Users.Add(newUserDetails);
-                        }
-                        assignments.Add(adto);
-                    }
-                    else
-                    {
-                        foreach (ProjectAssignmentDto dto in assignments)
-                        {
-                            if (dto.Code.Equals(tse.Code))
-                            {
-                                if (dto.Users == null)
-                                {
-                                    dto.Users = new List<UserAssignmentDetails>();
-                                }
-                                bool addUser = true;
-                                foreach (UserAssignmentDetails user in dto.Users)
-                                {
-                                    if (user.UserName.Equals(ts.Username))
-                                    {
-                                        addUser = false;
-                                    }
-                                }
-                                if (addUser)
-                                {
-                                    UserAssignmentDetails newUserDetails = new UserAssignmentDetails();
-                                    newUserDetails.UserName = ts.Username;
-                                    DateTime now = DateTime.UtcNow;
-                                    string[] startTime = tse.StartTime.Split(":");
-                                    string[] endTime = tse.EndTime.Split(":");
-
-                                    DateTime start = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(startTime[0]), Int32.Parse(startTime[1]), 0);
-                                    DateTime end = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(endTime[0]), Int32.Parse(endTime[1]), 0);
-
-                                    TimeSpan varTime = (DateTime)end - (DateTime)start;
-
-                                    newUserDetails.TotalMinutes = (int)varTime.TotalMinutes;
-                                    dto.Users.Add(newUserDetails);
-                                }
-                                else
-                                {
-                                    foreach (UserAssignmentDetails user in dto.Users)
-                                    {
-                                        if (user.UserName.Equals(ts.Username))
-                                        {
-                                            DateTime now = DateTime.UtcNow;
-                                            string[] startTime = tse.StartTime.Split(":");
-                                            string[] endTime = tse.EndTime.Split(":");
-
-                                            DateTime start = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(startTime[0]), Int32.Parse(startTime[1]), 0);
-                                            DateTime end = new DateTime(now.Year, now.Month, now.Day, Int32.Parse(endTime[0]), Int32.Parse(endTime[1]), 0);
-
-                                            TimeSpan varTime = (DateTime)end - (DateTime)start;
-
-                                            user.TotalMinutes += (int)varTime.TotalMinutes;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return assignments;
-
-        }
-
         private bool isProjectCode(string code)
         {
             return !(code.Equals("NC1") || code.Equals("NC2") || code.Equals("NC3") || code.Equals("NC4") || code.Equals("NC5") || code.Equals("NC6") || code.Equals("NC7"));
-        }
-
-        private bool projectCodeAlreadyRecorded(IList<ProjectAssignmentDto> assignments, string code)
-        {
-            bool projectAlreadyAdded = false;
-            foreach (ProjectAssignmentDto dto in assignments)
-            {
-                if (dto.Code.Equals(code))
-                {
-                    projectAlreadyAdded = true;
-                }
-            }
-            return projectAlreadyAdded;
         }
 
         [HttpGet]

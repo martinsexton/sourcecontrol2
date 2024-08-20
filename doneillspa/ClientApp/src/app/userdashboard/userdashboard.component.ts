@@ -14,7 +14,6 @@ import {
   TimesheetService
 } from '../shared/services/timesheet.service';
 
-import { HolidayRequest } from '../holidayrequest';
 import { UserRegistration } from '../shared/models/user.registration.interface';
 import { PasswordReset } from '../passwordreset';
 import * as moment from 'moment';
@@ -31,7 +30,6 @@ declare var $: any;
 export class UserDashboardComponent implements OnInit {
   public selectedUser: ApplicationUser;
   public selectedUserRow: number;
-  public selectedUsersHolidayRequests: HolidayRequest[] = [];
   public userMessage: string;
   public resetPasswordDetails: PasswordReset = new PasswordReset('', '');
   public loadingTimesheets: boolean = false;
@@ -41,7 +39,6 @@ export class UserDashboardComponent implements OnInit {
   public fulltimeStaffRole: string = "ChargeHand";
   newUser: ApplicationUser = new ApplicationUser('', '', '', '', '', '', false);
   public usersCurrentPage: number = 1;
-  public usersForCurrentPage: ApplicationUser[];
   public usersPageLimit: number = 15;
   public activeTab: string = "Submitted";
   public errors: string;
@@ -70,20 +67,13 @@ export class UserDashboardComponent implements OnInit {
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService,
     private _timesheetService: TimesheetService, private _msuserService: MsUserService) {
     $('[data-toggle="tooltip"]').tooltip();
-    this._msuserService.getUsers().subscribe(result => {
+    this._msuserService.getUsers(false, this.usersCurrentPage, this.usersPageLimit ).subscribe(result => {
       this.users = result;
       this.loading = false;
       if (this.users.length > 0) {
         this.selectedUser = this.users[0];
-        this.setupUsersForCurrentPage();
         this.resetPasswordDetails.userid = this.selectedUser.id;
         this.selectedUserRow = 0;
-        if (this.selectedUser.holidayRequests) {
-          this.selectedUsersHolidayRequests = this.selectedUser.holidayRequests;
-        }
-        else {
-          this.selectedUsersHolidayRequests = new Array<HolidayRequest>();
-        }
       }
     }, error => this.userMessage = error)
   }
@@ -230,43 +220,36 @@ export class UserDashboardComponent implements OnInit {
 
   previousPage() {
     this.usersCurrentPage = this.usersCurrentPage - 1;
-    this.setupUsersForCurrentPage();
+    this._msuserService.getUsers(false, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+      this.users = result;
+      this.loading = false;
+      if (this.users.length > 0) {
+        this.selectedUser = this.users[0];
+        this.resetPasswordDetails.userid = this.selectedUser.id;
+        this.selectedUserRow = 0;
+      }
+    }, error => this.userMessage = error)
   }
 
   nextPage() {
     this.usersCurrentPage = this.usersCurrentPage + 1;
-    this.setupUsersForCurrentPage();
-  }
-
-  determineUsersPageCount() {
-    var pageCount = 1;
-
-    var numberOfUsers = this.users.length;
-
-    if (numberOfUsers > 0) {
-      var totalPages_pre = Math.floor((numberOfUsers / this.usersPageLimit));
-      pageCount = (numberOfUsers % this.usersPageLimit) == 0 ? totalPages_pre : totalPages_pre + 1
-    }
-    return pageCount;
-  }
-
-  setupUsersForCurrentPage() {
-    var startingIndex = 0;
-    var index = 0;
-
-    //reset client current page array
-    this.usersForCurrentPage = [];
-
-    if (this.usersCurrentPage > 1) {
-      startingIndex = (this.usersCurrentPage - 1) * this.usersPageLimit;
-    }
-
-    for (let p of this.users) {
-      if (index >= startingIndex && index < (startingIndex + this.usersPageLimit)) {
-        this.usersForCurrentPage.push(p);
+    this._msuserService.getUsers(false, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+      this.users = result;
+      this.loading = false;
+      if (this.users.length > 0) {
+        this.selectedUser = this.users[0];
+        this.resetPasswordDetails.userid = this.selectedUser.id;
+        this.selectedUserRow = 0;
       }
-      index = index + 1;
-    }
+    }, error => this.userMessage = error)
+  }
+
+  disableNextButton() {
+    return this.users.length < this.usersPageLimit;
+  }
+
+  disablePreviousButton() {
+    return this.usersCurrentPage == 1;
   }
 
   showAddContractUser() {
@@ -340,7 +323,7 @@ export class UserDashboardComponent implements OnInit {
   }
 
   retrieveUsersToDisplay() {
-    return this.usersForCurrentPage;
+    return this.users;
   }
 
   displaySelectedUserDetails(user, index) {
@@ -353,13 +336,6 @@ export class UserDashboardComponent implements OnInit {
     this.timesheets = [];
     this.filteredTimesheets = [];
     this.timesheetsForCurrentPage = [];
-
-    if (this.selectedUser.holidayRequests) {
-      this.selectedUsersHolidayRequests = this.selectedUser.holidayRequests;
-    }
-    else {
-      this.selectedUsersHolidayRequests = new Array<HolidayRequest>();
-    }
 
     this.retrieveTimesheetsForUser();
   }

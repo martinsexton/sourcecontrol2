@@ -18,40 +18,6 @@ namespace doneillspa.Models
         public ICollection<HolidayRequest> HolidayRequests { get; set; }
         public ICollection<EmailNotification> EmailNotifications { get; set; }
 
-        public async Task<HolidayRequest> AddHolidayRequest(HolidayRequestDto request, UserManager<ApplicationUser> _userManager)
-        {
-            HolidayRequest holiday = HolidayFromDto(request, _userManager);
-            HolidayRequests.Add(holiday);
-
-            Task<IdentityResult> result = _userManager.UpdateAsync(this);
-
-            if (result.Result.Succeeded)
-            {
-                return holiday;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public async Task<Certification> AddCertification(CertificationDto cert, UserManager<ApplicationUser> _userManager)
-        {
-            Certification certification = CertificationFromDto(cert);
-            Certifications.Add(certification);
-
-            Task<IdentityResult> result = _userManager.UpdateAsync(this);
-
-            if (result.Result.Succeeded)
-            {
-                return certification;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
         public async Task<EmailNotification> AddNotification(EmailNotificationDto not, UserManager<ApplicationUser> _userManager, IMediator _mediator)
         {
             EmailNotification notification = NotificationFromDto(not);
@@ -73,18 +39,6 @@ namespace doneillspa.Models
             }
         }
 
-        private HolidayRequest HolidayFromDto(HolidayRequestDto dto, UserManager<ApplicationUser> _userManager)
-        {
-            HolidayRequest holiday = new HolidayRequest();
-            holiday.FromDate = dto.FromDate;
-            holiday.Days = dto.Days;
-            holiday.RequestedDate = DateTime.UtcNow;
-            holiday.Approver = GetUserById(dto.ApproverId, _userManager).Result;
-            holiday.User = this;
-
-            return holiday;
-        }
-
         private async Task<ApplicationUser> GetUserById(string id, UserManager<ApplicationUser> _userManager)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id.ToString());
@@ -94,18 +48,6 @@ namespace doneillspa.Models
             }
             //User not found
             return await Task.FromResult<ApplicationUser>(null);
-        }
-
-        private Certification CertificationFromDto(CertificationDto dto)
-        {
-            Certification cert = new Certification();
-            cert.CreatedDate = dto.CreatedDate;
-            cert.Description = dto.Description;
-            cert.Expiry = dto.Expiry;
-            cert.User = this;
-            cert.UserId = Id;
-
-            return cert;
         }
 
         private EmailNotification NotificationFromDto(EmailNotificationDto dto)

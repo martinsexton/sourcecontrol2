@@ -1,0 +1,37 @@
+.buttonHolder {
+  width: 360px;
+  margin: 0 auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Arial, Georgia, Times, serif;
+}
+
+.dropdown-menu {
+  max-height: 250px;
+  overflow-y: scroll;
+}
+
+.active {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.card.bg-warning {
+  background-color: #49DCA4 !important;
+}
+
+.card.bg-light {
+  background-color: #008DBF !important;
+}
+
+.card.bg-danger {
+  background-color: #6E7D5C !important;
+}
+
+@media (min-width: 1000px) {
+  .body_container {
+    width: 900px;
+    margin: 0 auto;
+  }
+}

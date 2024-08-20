@@ -33,23 +33,28 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-		<PackageReference Include="Azure.Storage.Queues" Version="12.0.0" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.20.0" />
+		<PackageReference Include="Azure.Storage.Queues" Version="12.18.0" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
 		<PackageReference Include="Dropbox.Api" Version="4.9.3" />
 		<PackageReference Include="Google.Apis.Calendar.v3" Version="1.38.0.1543" />
 		<PackageReference Include="Google.Apis.Gmail.v1" Version="1.38.2.1543" />
 		<PackageReference Include="MediatR" Version="8.0.1" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
-		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.31" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.39" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.27" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
 		<PackageReference Include="Microsoft.Azure.SignalR" Version="1.1.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.4.4">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
 		<PackageReference Include="MimeKit" Version="2.1.4" />
 		<PackageReference Include="Moq" Version="4.10.1" />
@@ -71,13 +76,8 @@
 		<None Remove="ClientApp\src\app\account\registration-form\registration-form.component.ts" />
 		<None Remove="ClientApp\src\app\app.routing.ts" />
 		<None Remove="ClientApp\src\app\ApplicationUser.ts" />
-		<None Remove="ClientApp\src\app\assignmentdetails\assignmentdetails.component.ts" />
 		<None Remove="ClientApp\src\app\auth.guard.ts" />
-		<None Remove="ClientApp\src\app\certificate.ts" />
-		<None Remove="ClientApp\src\app\components\certification\certification.component.ts" />
 		<None Remove="ClientApp\src\app\client.ts" />
-		<None Remove="ClientApp\src\app\components\labourdetails\labourdetails.component.ts" />
-		<None Remove="ClientApp\src\app\components\projectgraph\projectgraph.component.ts" />
 		<None Remove="ClientApp\src\app\components\userdetails\userdetails.component.ts" />
 		<None Remove="ClientApp\src\app\dashboard\dashboard.component.ts" />
 		<None Remove="ClientApp\src\app\directives\email.validator.directive.ts" />
@@ -86,34 +86,22 @@
 		<None Remove="ClientApp\src\app\directives\password.validator.directive.ts" />
 		<None Remove="ClientApp\src\app\directives\projectcode.validator.directive.ts" />
 		<None Remove="ClientApp\src\app\emailnotification.ts" />
-		<None Remove="ClientApp\src\app\holidayrequest.ts" />
-		<None Remove="ClientApp\src\app\holidays\holidays.component.ts" />
 		<None Remove="ClientApp\src\app\identityrole.ts" />
-		<None Remove="ClientApp\src\app\labourrate.ts" />
-		<None Remove="ClientApp\src\app\labourweek.ts" />
-		<None Remove="ClientApp\src\app\labour\labour.componenet.ts" />
 		<None Remove="ClientApp\src\app\nonchargeabletime.ts" />
 		<None Remove="ClientApp\src\app\components\notification\notification.component.ts" />
 		<None Remove="ClientApp\src\app\passwordreset.ts" />
 		<None Remove="ClientApp\src\app\project.ts" />
-		<None Remove="ClientApp\src\app\projectassignment.ts" />
 		<None Remove="ClientApp\src\app\projectcostdto.ts" />
-		<None Remove="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
 		<None Remove="ClientApp\src\app\components\projectlist\projectlist.component.ts" />
 		<None Remove="ClientApp\src\app\projects\projects.component.ts" />
-		<None Remove="ClientApp\src\app\components\rates\rates.component.ts" />
 		<None Remove="ClientApp\src\app\shared\models\credentials.interface.ts" />
 		<None Remove="ClientApp\src\app\shared\models\loginresponse.interface.ts" />
 		<None Remove="ClientApp\src\app\shared\models\user.registration.interface.ts" />
-		<None Remove="ClientApp\src\app\shared\services\certificate.service.ts" />
-		<None Remove="ClientApp\src\app\shared\services\holiday.service.ts" />
 		<None Remove="ClientApp\src\app\shared\services\httpservicebase.ts" />
 		<None Remove="ClientApp\src\app\shared\services\msuser.service.ts" />
 		<None Remove="ClientApp\src\app\shared\services\notification.service.ts" />
-		<None Remove="ClientApp\src\app\shared\services\signalrservice.ts" />
 		<None Remove="ClientApp\src\app\shared\services\timesheet.service.ts" />
 		<None Remove="ClientApp\src\app\shared\utils\config.service.ts" />
-		<None Remove="ClientApp\src\app\supervisor\supervisor.component.ts" />
 		<None Remove="ClientApp\src\app\Timesheet.ts" />
 		<None Remove="ClientApp\src\app\timesheetcode.ts" />
 		<None Remove="ClientApp\src\app\timesheetentry.ts" />
@@ -121,10 +109,16 @@
 		<None Remove="ClientApp\src\app\components\timesheetlist\timesheetlist.component.ts" />
 		<None Remove="ClientApp\src\app\timesheetnote.ts" />
 		<None Remove="ClientApp\src\app\timesheets\timesheets.component.ts" />
-		<None Remove="ClientApp\src\app\userassignmentdetails.ts" />
 		<None Remove="ClientApp\src\app\userdashboard\userdashboard.component.ts" />
 		<None Remove="Properties\PublishProfiles\doneillsa - Web Deploy.pubxml" />
 		<None Remove="Properties\PublishProfiles\doneillspa - Web Deploy.pubxml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <TypeScriptCompile Remove="clientapp\src\app\report.ts" />
+	  <TypeScriptCompile Remove="clientapp\src\app\TimesheetReport.ts" />
+	  <TypeScriptCompile Remove="clientapp\src\app\timesheets2\timesheets2.component.ts" />
+	  <TypeScriptCompile Remove="clientapp\src\app\userdashboard2\userdashboard2.component.ts" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -132,13 +126,8 @@
 		<TypeScriptCompile Include="ClientApp\src\app\account\registration-form\registration-form.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\app.routing.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\applicationuser.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\assignmentdetails\assignmentdetails.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\auth.guard.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\certificate.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\components\certification\certification.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\client.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\components\labourdetails\labourdetails.component.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\components\projectgraph\projectgraph.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\components\userdetails\userdetails.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\dashboard\dashboard.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\directives\email.validator.directive.ts" />
@@ -147,24 +136,14 @@
 		<TypeScriptCompile Include="ClientApp\src\app\directives\password.validator.directive.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\directives\projectcode.validator.directive.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\emailnotification.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\holidayrequest.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\holidays\holidays.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\identityrole.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\labourrate.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\labourweek.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\labour\labour.componenet.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\nonchargeabletime.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\components\notification\notification.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\passwordreset.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\project.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\projectassignment.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\projectcostdto.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\projecthealth\projecthealth.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\components\projectlist\projectlist.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\projects\projects.component.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\components\rates\rates.component.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\shared\services\certificate.service.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\shared\services\holiday.service.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\shared\services\httpservicebase.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\shared\services\notification.service.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\shared\services\project.service.ts" />
@@ -172,10 +151,8 @@
 		<TypeScriptCompile Include="ClientApp\src\app\shared\models\loginresponse.interface.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\shared\models\user.registration.interface.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\shared\services\msuser.service.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\shared\services\signalrservice.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\shared\services\timesheet.service.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\shared\utils\config.service.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\supervisor\supervisor.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\timesheet.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\timesheetcode.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\timesheetentry.ts" />
@@ -183,7 +160,6 @@
 		<TypeScriptCompile Include="ClientApp\src\app\components\timesheetlist\timesheetlist.component.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\timesheetnote.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\timesheets\timesheets.component.ts" />
-		<TypeScriptCompile Include="ClientApp\src\app\userassignmentdetails.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\userdashboard\userdashboard.component.ts" />
 	</ItemGroup>
 

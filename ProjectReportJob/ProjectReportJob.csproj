@@ -6,9 +6,12 @@
     <IsWebJobProject>true</IsWebJobProject>
     <WebJobName>$(AssemblyName)</WebJobName>
     <WebJobType>Continuous</WebJobType>
+    <UserSecretsId>d99ca6b3-5c0d-4000-a3c3-3de1607e39dd</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.12.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.20.0" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.16.0" />
     <PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.3" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.4" />

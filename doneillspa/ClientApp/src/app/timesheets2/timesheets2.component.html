@@ -1,52 +1,110 @@
-<div class="container-fluid">
-  <div class="buttonHolder">
-    <form class="form-inline my-2 my-lg-0">
+<div class="container-fluid body_container">
+  <div class="row">
+    <div *ngIf="!loading" class="col-12"><p class="h6 text-primary text-center">{{getMonthToDisplay()}}</p></div>
+  </div>
+  <div class="row mb-2">
+    <div class="col-12">
+      <div *ngIf="!loading" class="row justify-content-md-center">
+        <div class="col"><p class="h6 text-info text-center"><strong>M</strong></p></div>
+        <div class="col"><p class="h6 text-info text-center"><strong>T</strong></p></div>
+        <div class="col"><p class="h6 text-info text-center"><strong>W</strong></p></div>
+        <div class="col"><p class="h6 text-info text-center"><strong>T</strong></p></div>
+        <div class="col"><p class="h6 text-info text-center"><strong>F</strong></p></div>
+        <div class="col"><p class="h6 text-info text-center"><strong>S</strong></p></div>
+        <div class="col"><p class="h6 text-info text-center"><strong>S</strong></p></div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!loading" class="row">
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='mon'}" id="mon-tab" href="#mon" data-toggle="tab" role="tab" aria-controls="mon" aria-selected="false" (click)="mondaySelected()"><p style="text-align:center">{{getMondayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='tue'}" id="tue-tab" href="#tue" data-toggle="tab" role="tab" aria-controls="tue" aria-selected="false" (click)="tuesdaySelected()"><p style="text-align:center">{{getTuesdayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='wed'}" id="wed-tab" href="#wed" data-toggle="tab" role="tab" aria-controls="wed" aria-selected="false" (click)="wednesdaySelected()"><p style="text-align:center">{{getWednesdayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='thurs'}" id="thurs-tab" href="#thurs" data-toggle="tab" role="tab" aria-controls="thurs" aria-selected="false" (click)="thursdaySelected()"><p style="text-align:center">{{getThursdayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='fri'}" id="fri-tab" href="#fri" data-toggle="tab" role="tab" aria-controls="fri" aria-selected="false" (click)="fridaySelected()"><p style="text-align:center">{{getFridayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='sat'}" id="sat-tab" href="#sat" data-toggle="tab" role="tab" aria-controls="sat" aria-selected="false" (click)="saturdaySelected()"><p style="text-align:center">{{getSaturdayDate()}}</p></a>
+    </div>
+    <div class="col">
+      <a [ngClass]="{ 'active':activeTab==='sun'}" id="sun-tab" href="#sun" data-toggle="tab" role="tab" aria-controls="sun" aria-selected="false" (click)="sundaySelected()"><p style="text-align:center">{{getSundayDate()}}</p></a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2">
       <span (click)="previousWeek()"><img src="assets/images/previous.png" class="img-responsive" alt="..."></span>
+    </div>
+    <div class="col-8 text-center">
       <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="ml-2 btn btn-outline-success my-2 my-sm-0" (click)="toggleDisplayAddTimesheet()">Add</button>
-      <div *ngIf="isSupervisor()" class="btn-group ml-2">
-        <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          User
-        </button>
-        <div class="dropdown-menu">
-          <a *ngFor="let u of retrieveListOfUsers(); let i = index" class="dropdown-item" (click)="setUser(u)">{{u.firstName | uppercase}} {{u.surname | uppercase}}</a>
-        </div>
-      </div>
       <button [disabled]="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" class="btn btn-outline-success my-2 my-sm-0 ml-2" (click)="submitTimesheet()">Submit</button>
+    </div>
+    <div class="col-2">
       <span class="ml-2" (click)="nextWeek()"><img src="assets/images/next.png" class="img-responsive" alt="..."></span>
-    </form>
-  </div>
-  <div *ngIf="loading" class="d-flex justify-content-center">
-    <div class="spinner-grow text-primary" role="status">
-      <span class="sr-only">Loading...</span>
     </div>
   </div>
-  <div *ngIf="!loading"><p><mark>Status: {{ getStatusOfActiveTimesheet() }}, Hours Entered: {{ calculateTotalDuration() }}</mark></p></div>
-  <div *ngIf="!loading && retrieveNotesToDisplay().length > 0">
-    <h3>Notes</h3>
-    <div class="card mb-3 mt-3" *ngFor="let note of retrieveNotesToDisplay()">
-      <div class="card-body">{{note.details}}</div>
-    </div>
-  </div>
-  <div *ngIf="!loading" id="accordion">
-    <div class="card mb-3 mt-3" *ngFor="let day of daysOfWeek; let i = index">
-      <div class="card-header">
-        <a data-toggle="collapse" href="#collapseExample{{i}}" role="button" attr.aria-expanded="false" attr.aria-controls="collapseExample{{i}}" (click)="setActiveDay(i)">
-          {{day | uppercase}} {{ retrieveDateForDay(day) | date : "mediumDate" }} {{selectedUser.firstName}} {{selectedUser.surname}}
-        </a>
-      </div>
-      <div id="collapseExample{{i}}" class="collapse" attr.aria-labelledby="heading{{i}}" data-parent="#accordion">
+  <div *ngIf="activeTimeSheet" class="row">
+    <div class="col-12">
+      <div [ngClass]="cardHeaderStyle()">
         <div class="card-body">
-          <div *ngFor="let entry of retrieveTimesheetsForIndex(i)">
-            <p class="card-text" data-toggle="tooltip" title="Details: {{entry.details}}" (click)="toggleToolTip">
-              {{entry.code}}: {{entry.startTime}} -> {{entry.endTime}}
-              <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>
-              <span *ngIf="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" aria-hidden="true" (click)="showViewTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>
-            </p>
+          <div class="row">
+            <div class="col-7">
+              <p [ngClass]="statusStyle()"><strong>{{activeTimeSheet.status}}</strong></p>
+            </div>
+            <div class="col-3">
+              <p [ngClass]="durationStyle()"><strong>{{getHoursForTab()}}</strong></p>
+            </div>
+            <div *ngIf="activeTimeSheet.timesheetNotes.length > 0" class="col-2">
+              <span (click)="toggleDisplayNotes()"><i [ngClass]="notesIconStyle()"></i></span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="row" *ngFor="let entry of retrieveTimesheetsForDay()">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-7">
+              <p><strong>{{ (entry.code.length>50)? (entry.code | slice:0:50)+'...':(entry.code) }}</strong></p>
+              <p class="text-info"><small><i class="bi bi-clock-history"></i> {{entry.startTime}} -> {{entry.endTime}}</small></p>
+            </div>
+            <div class="col-3">
+              <p class="h8 text-info"><strong>{{getHoursForTimesheetEntry(entry)}}</strong></p>
+            </div>
+            <div class="col-2">
+              <span *ngIf="activeTimeSheet.status == 'New' || activeTimeSheet.status == 'Rejected'" aria-hidden="true" (click)="showEditTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>
+              <span *ngIf="activeTimeSheet.status == 'Submitted' || activeTimeSheet.status == 'Approved'" aria-hidden="true" (click)="showViewTimesheet(entry)"><i class="bi bi-pencil-square"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!entriesFound()" class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <p class="h6 text-center"><i class="bi bi-search"><small class="text-muted">   No entries found</small></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+<div>
   <!-- New Timesheet Details Modal -->
   <div class="modal fade" id="myNewTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -82,16 +140,16 @@
               <div id="menu" class="dropdown-menu" aria-labelledby="dropdown_coins">
                 <div class="form-group">
                   <input type="search" class="form-control" id="searchCoin" placeholder="Search.." autofocus="autofocus" (keyup)="onKey($event)">
-                  <input *ngFor="let c of timesheetCodes" type="button" class="dropdown-item" value="{{projectNameForDisplay2(c)}}" (click)="selectProject(c)" />
-                </div>     
+                  <input *ngFor="let c of timesheetCodes" type="button" class="dropdown-item" value="{{projectNameForDisplay(c)}}" (click)="selectProject(c)" />
+                </div>
               </div>
             </div>
             <div class="form-group">
-              <label for="startTime">Start Time</label>
+              <label for="newEntryStartTime">Start Time</label>
               <input type="time" id="newEntryStartTime" name="newEntryStartTime" class="form-control" [ngClass]="{'is-invalid': newEntryStartTime.invalid, 'is-valid': !newEntryStartTime.invalid}" required [(ngModel)]="newEntry.startTime" #newEntryStartTime="ngModel">
             </div>
             <div class="form-group">
-              <label for="endTime">End Time</label>
+              <label for="newEntryEndTime">End Time</label>
               <input type="time" id="newEntryEndTime" name="newEntryEndTime" class="form-control" [ngClass]="{'is-invalid': newEntryEndTime.invalid, 'is-valid': !newEntryEndTime.invalid}" required validateEndtime startTime="{{newEntryStartTime.value}}" [(ngModel)]="newEntry.endTime" #newEntryEndTime="ngModel">
             </div>
             <div class="form-group">
@@ -107,7 +165,6 @@
       </div>
     </div>
   </div>
-
   <!-- Edit Timesheet Details Modal -->
   <div class="modal fade" id="myEditTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -126,16 +183,16 @@
               <div id="menu" class="dropdown-menu" aria-labelledby="dropdown_coins_edit">
                 <div class="form-group">
                   <input type="search" class="form-control" id="searchCoin" placeholder="Search.." autofocus="autofocus" (keyup)="onKey($event)">
-                  <input *ngFor="let c of timesheetCodes" type="button" class="dropdown-item" value="{{projectNameForDisplay2(c)}}" (click)="selectProjectOnEdit(c)" />
-                </div> 
+                  <input *ngFor="let c of timesheetCodes" type="button" class="dropdown-item" value="{{projectNameForDisplay(c)}}" (click)="selectProjectOnEdit(c)" />
+                </div>
               </div>
             </div>
             <div class="form-group">
-              <label for="startTime">Start Time</label>
+              <label for="editEntryStartTime">Start Time</label>
               <input type="time" id="editEntryStartTime" name="editEntryStartTime" class="form-control" [ngClass]="{'is-invalid': editEntryStartTime.invalid, 'is-valid': !editEntryStartTime.invalid}" required [(ngModel)]="timesheetEntryToEdit.startTime" #editEntryStartTime="ngModel">
             </div>
             <div class="form-group">
-              <label for="endTime">End Time</label>
+              <label for="editEntryEndTime">End Time</label>
               <input type="time" id="editEntryEndTime" name="editEntryEndTime" class="form-control" [ngClass]="{'is-invalid': editEntryEndTime.invalid, 'is-valid': !editEntryEndTime.invalid}" required validateEndtime startTime="{{timesheetEntryToEdit.startTime}}" [(ngModel)]="timesheetEntryToEdit.endTime" #editEntryEndTime="ngModel">
             </div>
             <div class="form-group">
@@ -152,7 +209,6 @@
       </div>
     </div>
   </div>
-
   <!-- View Timesheet Details Modal -->
   <div *ngIf="timesheetEntryToView" class="modal fade" id="myViewTimesheetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -168,11 +224,11 @@
               <input type="text" disabled id="viewEntryCode" name="viewEntryCode" class="form-control" [(ngModel)]="timesheetEntryToView.code" #viewEntryStartTime="ngModel">
             </div>
             <div class="form-group">
-              <label for="startTime">Start Time</label>
+              <label for="viewEntryStartTime">Start Time</label>
               <input type="time" disabled id="viewEntryStartTime" name="viewEntryStartTime" class="form-control" [(ngModel)]="timesheetEntryToView.startTime" #viewEntryStartTime="ngModel">
             </div>
             <div class="form-group">
-              <label for="endTime">End Time</label>
+              <label for="viewEntryEndTime">End Time</label>
               <input type="time" id="viewEntryEndTime" disabled name="viewEntryEndTime" class="form-control" [(ngModel)]="timesheetEntryToView.endTime" #viewEntryEndTime="ngModel">
             </div>
             <div class="form-group">
@@ -181,6 +237,34 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- View Notes Modal -->
+  <div class="modal fade" id="myViewNotesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">View Notes</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div *ngFor="let note of activeTimeSheet.timesheetNotes" class="row">
+              <div class="col">
+                <div class="card">
+                  <div class="card-body">
+                    <p><strong>{{note.dateCreated | date : "fullDate"}}</strong></p>
+                    <p>{{note.details}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button (click)="toggleDisplayNotes()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
           </form>
         </div>

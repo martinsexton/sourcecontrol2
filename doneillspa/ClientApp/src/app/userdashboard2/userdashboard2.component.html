@@ -1,0 +1,179 @@
+<div class="container-fluid">
+  <div class="row mb-5">
+    <form>
+      <div class="form-row align-items-center">
+        <div class="col-sm-3 my-1">
+          <label class="sr-only" for="inlineFormInputName">Name</label>
+          <input type="text" name="searchFilter" [(ngModel)]="searchFilter" class="form-control" id="inlineFormInputName" placeholder="Search.." (keyup)="onKey($event)">
+        </div>
+        <div class="col-auto my-1">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="autoSizingCheck2" (change)="toggleActiveUsers($event)">
+            <label class="form-check-label" for="autoSizingCheck2">Inactive Users</label>
+          </div>
+        </div>
+        <div class="col-auto my-1">
+          <button type="button" class="btn btn-outline-success ml-2" (click)="showAddUser()">Add User</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card mb-3 mt-3 div-to-stand-out">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered table-sm">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">First Name</th>
+              <th scope="col">Surname</th>
+              <th scope="col">Email</th>
+              <th scope="col">Mobile</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Reset</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of users; let i = index" (click)="setUser(u)" [ngClass]="{'table-primary': this.selectedUser == u}">
+              <td>{{u.firstName}}</td>
+              <td>{{u.surname}}</td>
+              <td>{{u.email}}</td>
+              <td>{{u.phoneNumber}}</td>
+              <td><span (click)="displayUserDetailsForEdit(u)"><i class="bi bi-pencil-square"></i></span></td>
+              <td><span (click)="displayResetPasswordDialog(u)"><i class="bi bi-bootstrap-reboot"></i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary mr-1" [disabled]="disablePreviousButton()" (click)="previousPage()">Previous</button>
+        <button type="button" class="btn btn-primary" [disabled]="disableNextButton()" (click)="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+  <!-- Toasts -->
+  <div aria-live="polite" aria-atomic="true">
+    <!-- Position it -->
+    <div style="position: absolute; top: 3rem; right: 0;">
+      <div class="toast" style="background-color:lightgreen" role="status" aria-live="polite" aria-atomic="true" data-delay="4000">
+        <div class="toast-header">
+          <strong class="mr-auto">Notification!</strong>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="toast-body">
+          {{userMessage}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Display User Details Modal -->
+  <div class="modal fade" id="resetPwdModal" tabindex="-1" role="dialog" aria-labelledby="resetPwdModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="resetPwdModalLabel">Reset Password</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="resetPasswordDetails.password">Password</label>
+              <input type="text" [(ngModel)]="resetPasswordDetails.password" name="password" class="form-control" id="password">
+            </div>
+            <button class="btn btn-primary" type="button" (click)="resetPassword()">
+              <span [class]="resettingPassword ? 'spinner-grow spinner-grow-sm' : ''" role="status" aria-hidden="true"></span>
+              Reset Password
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Display User Details Modal -->
+  <div *ngIf="selectedUser" class="modal fade" id="myUserModal" tabindex="-1" role="dialog" aria-labelledby="myUserModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myUserModalLabel">User Details</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" [(ngModel)]="selectedUser.email" name="email" class="form-control" id="email">
+            </div>
+            <div class="form-group">
+              <label for="email">Mobile</label>
+              <input type="text" [(ngModel)]="selectedUser.phoneNumber" name="Mobile" class="form-control" id="Mobile">
+            </div>
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" [checked]="selectedUser.isEnabled" class="custom-control-input" id="userIsActive" name="userIsActive" [(ngModel)]="selectedUser.isEnabled">
+                <label class="custom-control-label" for="userIsActive">Active</label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button (click)="updateUser()" class="btn btn-primary">Update User Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Registration Modal -->
+  <div class="modal fade" id="myRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Register</h4>
+        </div>
+        <div class="modal-body">
+          <form #rf="ngForm" novalidate (ngSubmit)="registerUser(rf)">
+            <div class="form-group">
+              <label for="firstname">First Name</label>
+              <input id="firstname" type="text" required name="firstname" class="form-control" placeholder="Your Firstname" tmFocus ngModel>
+            </div>
+            <div class="form-group">
+              <label for="surname">Surname</label>
+              <input id="surname" type="text" required name="surname" class="form-control" placeholder="Your Surname" tmFocus ngModel>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" type="text" required name="email" validateEmail class="form-control" placeholder="Email" ngModel #email="ngModel">
+              <small [hidden]="email.valid || (email.pristine)" class="text-danger">Please enter a valid email</small>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input id="password" type="password" required name="password" validatePassword class="form-control" placeholder="Password" ngModel #password="ngModel">
+              <small [hidden]="password.valid || (password.pristine)" class="text-danger">Please enter a valid Password</small>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input id="phone" type="tel" required name="phone" class="form-control" ngModel #phone="ngModel">
+            </div>
+            <div class="form-group">
+              <label for="role">Role In Organization</label>
+              <select class="form-control form-control-sm" id="role" name="role" [(ngModel)]="fulltimeStaffRole">
+                <option *ngFor="let role of retrieveListOfRoles()">{{role}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+            <div *ngIf="userMessage" class="alert alert-danger" role="alert">
+              <strong>Oops!</strong> {{userMessage}}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

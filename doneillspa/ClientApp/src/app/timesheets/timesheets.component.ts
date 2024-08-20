@@ -30,10 +30,14 @@ export class TimesheetComponent {
   public projects: Project[];
   public nonChargeableTime: NonChargeableTime[];
   public activeProjects: Project[];
+  public timesheetCodes: TimesheetCode[];
+  public selectedProjectName: string = '';
   public timesheetExists = false;
   public loading = true;
   public selectedDate: string = null;
   public errors: string;
+
+  public values: string = '';
 
   public selectedUser: ApplicationUser = null;
 
@@ -83,9 +87,6 @@ export class TimesheetComponent {
     //Populate available days of the week for entering timesheets
     this.populateDaysOfWeek();
 
-    //Setup list of available projects
-    this.setupListOfProjects();
-
     this.setupNonChargeableTime();
 
     //setup dates for each day of the week
@@ -95,9 +96,8 @@ export class TimesheetComponent {
     var startOfWeek = this.getStartOfWeek();
 
     //Setting up default timesheet and timesheet entries
-
-    this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek,null,'New');
-    this.newEntry = new TimesheetEntry("", "", "", "", "","",true);
+    this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek, null, 'New');
+    this.newEntry = new TimesheetEntry("", "", "", "", "", "", true);
 
     //Retrieve timesheets for given date
     this.retrieveTimeSheetsForDate(startOfWeek);
@@ -183,7 +183,7 @@ export class TimesheetComponent {
     return hours + ':' + minutes;
   }
 
-  deriveElapsedTimeInMins(startTime: string, endTime : string) : number {
+  deriveElapsedTimeInMins(startTime: string, endTime: string): number {
     var start = new Date("2018-01-01 " + startTime);
     var end = new Date("2018-01-01 " + endTime);
 
@@ -232,33 +232,42 @@ export class TimesheetComponent {
   }
 
   ngOnInit() {
-    $('[data-toggle="tooltip"]').tooltip(); 
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
-  retrieveTimeCodes() {
-    let codes: Array<TimesheetCode> = new Array();
+  refreshTimesheetCodes() {
+    this.timesheetCodes = [];
 
-
-    if (this.activeProjects && this.nonChargeableTime) {
+    if (this.activeProjects) {
       for (let p of this.activeProjects) {
         let code = new TimesheetCode(p.code, p.name, true);
-        codes.push(code);
+        this.timesheetCodes.push(code);
       }
+    }
+    if (this.nonChargeableTime) {
       for (let nc of this.nonChargeableTime) {
         let code = new TimesheetCode(nc.code, nc.description, false);
-        codes.push(code);
-      }    
+        this.timesheetCodes.push(code);
+      }
     }
-    return codes;
   }
 
   setUpActiveProjects() {
+    var max = 10;
+    var index = 1;
+
     this.activeProjects = [];
     for (let item of this.projects) {
       if (item.isActive == true) {
+        if (index == 10) {
+          break;
+        }
         this.activeProjects.push(item);
+        index = index + 1;
       }
     }
+
+    this.refreshTimesheetCodes();
 
   }
 
@@ -288,19 +297,41 @@ export class TimesheetComponent {
   setupNonChargeableTime() {
     this._projectService.getNonChargeableTime().subscribe(result => {
       this.nonChargeableTime = result;
-    }, error => console.error(error)); 
+      this.refreshTimesheetCodes();
+    }, error => console.error(error));
   }
 
-  setupListOfProjects() {
-    this._projectService.getProjects().subscribe(result => {
-      this.projects = result;
-      if (this.projects) {
-        this.setUpActiveProjects();
-        if (this.activeProjects.length > 0) {
-          this.newEntry.code = this.activeProjects[0].name;
+  onKey(event: any) { // without type info
+    this.setupListOfProjectsByCode(event.target.value);
+  }
+
+  setupListOfProjectsByCode(code: string) {
+    if (code.length > 0) {
+      this._projectService.getActiveProjectsByCode(code).subscribe(result => {
+        this.projects = result;
+        if (this.projects) {
+          this.setUpActiveProjects();
         }
-      }
-    }, error => console.error(error));  
+      }, error => console.error(error));
+    }
+    else {
+      //Clear list of active projects and refresh timesheet codes
+      this.activeProjects = [];
+      this.refreshTimesheetCodes();
+    }
+
+  }
+
+  selectProject(proj: TimesheetCode) {
+    this.selectedProjectName = proj.description;
+    this.newEntry.code = proj.code;
+    $("#dropdown_coins").dropdown('toggle');
+  }
+
+  selectProjectOnEdit(proj: TimesheetCode) {
+    this.selectedProjectName = proj.description;
+    this.timesheetEntryToEdit.code = proj.code;
+    $("#dropdown_coins_edit").dropdown('toggle');
   }
 
   populateDaysOfWeek() {
@@ -348,7 +379,7 @@ export class TimesheetComponent {
     let day = this.daysOfWeek[index];
     return this.retrieveTimesheetsForDay(day);
   }
-  retrieveTimesheetsForDay(day:string) {
+  retrieveTimesheetsForDay(day: string) {
     if (day == "Mon") {
       this.monEntries.sort(function sortByStartTime(a, b) {
         let day1 = parseInt(a.startTime.split(':')[0]);
@@ -407,7 +438,7 @@ export class TimesheetComponent {
     }
   }
 
-  populateEntriesForDaysOfWeek(array: Timesheet[], ws : Date) {
+  populateEntriesForDaysOfWeek(array: Timesheet[], ws: Date) {
     //Clear Arrays before loading
     this.monEntries.length = 0;
     this.tueEntries.length = 0;
@@ -460,7 +491,7 @@ export class TimesheetComponent {
     }
   }
 
-  retrieveDateForDay(day: string) : Date{
+  retrieveDateForDay(day: string): Date {
     if (day == "Mon") {
       return this.monday.date;
     }
@@ -523,6 +554,24 @@ export class TimesheetComponent {
       $("#myNewTimesheetModal").modal('show');
     } else {
       $("#myNewTimesheetModal").modal('hide');
+    }
+  }
+
+  projectNameForDisplay(proj: Project) : string{
+    if (proj.name.length > 40) {
+      return proj.name.slice(0, 40) + '...';
+    }
+    else {
+      return proj.name;
+    }
+  }
+
+  projectNameForDisplay2(proj: TimesheetCode): string {
+    if (proj.description.length > 40) {
+      return proj.description.slice(0, 40) + '...';
+    }
+    else {
+      return proj.description;
     }
   }
 
@@ -606,11 +655,9 @@ export class TimesheetComponent {
       //Automatically save timesheet and persist entry if it has not been saved already
       this.saveTimesheetAndEntry(entry);
     }
-
-    
   }
 
-  pushTimesheetToCalendarDays(entry:TimesheetEntry) {
+  pushTimesheetToCalendarDays(entry: TimesheetEntry) {
     if (this.selectedDay == "Mon") {
       this.monEntries.push(entry);
     }
@@ -649,7 +696,7 @@ export class TimesheetComponent {
     this.populateTimesheet(this.friEntries);
     this.populateTimesheet(this.satEntries);
     this.populateTimesheet(this.sunEntries);
-    
+
     this._timesheetService.saveTimesheet(this.activeTimeSheet).subscribe(
       res => {
         console.log(res);
@@ -661,7 +708,7 @@ export class TimesheetComponent {
       error => this.errors = error);
   }
 
-  saveTimesheetAndEntry(entry : TimesheetEntry) {
+  saveTimesheetAndEntry(entry: TimesheetEntry) {
     //Populate timesheet object with entries
     this.populateTimesheet(this.monEntries);
     this.populateTimesheet(this.tueEntries);
