@@ -65,7 +65,7 @@ export class TimeSheetEntryListComponent {
       }
     }
 
-    //If worked >= 5 hours for a day subtract 30 mins.
+    //If worked >= 5 hours for a day subtract 30 mins. 
     if (mondayMins >= (5 * 60)) {
       mondayMins = mondayMins - 30;
     }
