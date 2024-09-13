@@ -26,6 +26,7 @@ import { LoginFormComponent } from './account/login-form/login-form.component';
 import { TimeSheetEntryListComponent } from './components/timesheetentrylist/timesheetentrylist.component';
 import { TimeSheetListComponent } from './components/timesheetlist/timesheetlist.component';
 import { ProjectsListComponent } from './components/projectlist/projectlist.component';
+import { ChooseTenantComponent } from './components/choosetenant/choosetenant.component';
 
 
 import { EmailValidator } from './directives/email.validator.directive';
@@ -36,6 +37,7 @@ import { myFocus } from './directives/focus.directive';
 
 /* Import Services */
 import { ProjectService } from './shared/services/project.service';
+import { TenantService } from './shared/services/tenant.service';
 import { NotificationService } from './shared/services/notification.service';
 import { TimesheetService } from './shared/services/timesheet.service';
 import { ConfigService } from './shared/utils/config.service';
@@ -55,6 +57,7 @@ import { AuthGuard } from './auth.guard';
     RegistrationFormComponent,
     UserDetailsComponent,
     LoginFormComponent,
+    ChooseTenantComponent,
     ProjectComponent,
     TimesheetComponent,
     Timesheet2Component,
@@ -76,7 +79,7 @@ import { AuthGuard } from './auth.guard';
     routing,
     ChartsModule
   ],
-  providers: [ProjectService, TimesheetService, NotificationService, MsUserService, AuthGuard, {
+  providers: [ProjectService,TenantService,TimesheetService, NotificationService, MsUserService, AuthGuard, {
     provide: LOCALE_ID,
     useValue: 'en-IE'
   }],

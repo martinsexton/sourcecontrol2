@@ -67,7 +67,15 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               localStorage.setItem('username', value.firstname + value.surname);
               localStorage.setItem('firstname', value.firstname);
               localStorage.setItem('surname', value.surname);
-              this.router.navigate(['/']);
+
+              if (result.role === "Administrator") {
+                //add some conditional logic here, for admins ask to choose tenant
+                this.router.navigate(['/choosetenant']);
+              }
+              else {
+                //add some conditional logic here, for admins ask to choose tenant
+                this.router.navigate(['/timesheets2']);
+              }
             }
           }
         }, responseError => this.errors = responseError);

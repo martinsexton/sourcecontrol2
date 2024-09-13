@@ -1,0 +1,14 @@
+.div-to-stand-out {
+  box-shadow: 0 0 1em 1em #ccc;
+}
+
+.list-group-item-action.active {
+  background-color: #ccddff;
+}
+
+@media (min-width: 1000px) {
+  .body_container {
+    width: 900px;
+    margin: 0 auto;
+  }
+}

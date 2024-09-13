@@ -106,7 +106,6 @@ namespace doneillspa.Controllers
                 .Where(r => r.IsEnabled == !inactiveUsers)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Include(r => r.EmailNotifications)
                 .ToList();
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
@@ -126,18 +125,6 @@ namespace doneillspa.Controllers
                 if (roles.Result.Count > 0)
                 {
                     dtouser.Role = roles.Result.First();
-                }
-
-                if (user.EmailNotifications.Count > 0)
-                {
-                    List<EmailNotificationDto> notifications = new List<EmailNotificationDto>();
-                    foreach (EmailNotification not in user.EmailNotifications)
-                    {
-                        notifications.Add(_mapper.Map<EmailNotificationDto>(not));
-                    }
-
-                    dtouser.EmailNotifications = notifications;
-
                 }
                 dtousers.Add(dtouser);
             }
@@ -155,7 +142,6 @@ namespace doneillspa.Controllers
                 .Where(r => r.UserName.Contains(filter) && r.IsEnabled == !inactiveUsers)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Include(r => r.EmailNotifications)
                 .ToList();
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
@@ -177,17 +163,6 @@ namespace doneillspa.Controllers
                     dtouser.Role = roles.Result.First();
                 }
 
-                if (user.EmailNotifications.Count > 0)
-                {
-                    List<EmailNotificationDto> notifications = new List<EmailNotificationDto>();
-                    foreach (EmailNotification not in user.EmailNotifications)
-                    {
-                        notifications.Add(_mapper.Map<EmailNotificationDto>(not));
-                    }
-
-                    dtouser.EmailNotifications = notifications;
-
-                }
                 dtousers.Add(dtouser);
             }
             return dtousers;
@@ -197,7 +172,8 @@ namespace doneillspa.Controllers
         [Route("api/contractor")]
         public IEnumerable<ApplicationUserDto> GetContractors()
         {
-            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).Include(r => r.HolidayRequests).ToList();
+            List<ApplicationUser> users = _userManager.Users.Include(r => r.Certifications)
+                .Include(r => r.HolidayRequests).ToList();
 
             List<ApplicationUserDto> dtousers = new List<ApplicationUserDto>();
             List<string> contractorRoles = new List<string>();
@@ -271,23 +247,6 @@ namespace doneillspa.Controllers
             }
         }
 
-        [HttpPut()]
-        [Route("api/user/{id}/notifications")]
-        public IActionResult Put(string id, [FromBody]EmailNotificationDto t)
-        {
-            ApplicationUser user = GetUserIncludingCerts(id);
-            EmailNotification notification = user.AddNotification(t, _userManager, _mediator).Result;
-
-            if (notification != null)
-            {
-                return Ok(notification.Id);
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
         [HttpGet]
         [Route("api/user/name/{name}")]
         public ApplicationUserDto GetByName(string name)
@@ -318,7 +277,7 @@ namespace doneillspa.Controllers
 
         private ApplicationUser GetUserIncludingCerts(string id)
         {
-            return _userManager.Users.Include(r => r.Certifications).Include(r => r.EmailNotifications).Include(r => r.HolidayRequests).Where(r => r.Id.ToString() == id).FirstOrDefault();
+            return _userManager.Users.Include(r => r.Certifications).Include(r => r.HolidayRequests).Where(r => r.Id.ToString() == id).FirstOrDefault();
         }
 
         private async Task<ApplicationUser> GetUserById(string id)

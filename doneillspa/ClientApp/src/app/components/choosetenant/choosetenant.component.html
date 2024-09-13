@@ -1,0 +1,19 @@
+<div class="container-fluid body_container">
+  <div class="row mt-5 justify-content-md-center">
+    <div class="col-12">
+      <div class="card div-to-stand-out">
+        <div class="card-body">
+          <form>
+            <div class="form-group">
+              <label for="chooseTenant">Choose Tenant</label>
+              <select #tenantlist (change)="onSelected(tenantlist.value)" class="form-control">
+                <option selected>Choose Tenant..</option>
+                <option *ngFor="let t of tenants">{{t.name}}</option>
+              </select>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
