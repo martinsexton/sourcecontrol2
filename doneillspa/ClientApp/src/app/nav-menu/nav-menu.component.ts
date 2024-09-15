@@ -35,6 +35,10 @@ export class NavMenuComponent {
     return this.userService.isLoggedIn();
   }
 
+  retrieveTenant() : string {
+    return localStorage.getItem('tenantname');
+  }
+
   logOut() {
     this.userService.logout();
   }

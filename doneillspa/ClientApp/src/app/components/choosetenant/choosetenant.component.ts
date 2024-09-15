@@ -19,13 +19,21 @@ export class ChooseTenantComponent {
     this._tenantService.getTenants().subscribe(result => {
       this.tenants = result;
       if (this.tenants.length > 0) {
-        localStorage.setItem('tenant', this.tenants[0].name);
+        localStorage.setItem('tenant', this.tenants[0].id.toString());
+        localStorage.setItem('tenantname', this.tenants[0].name);
       }
     }, error => this.errors = error);
   }
 
   onSelected(value: string): void {
     localStorage.setItem('tenant', value);
+    for (let i = 0; i < this.tenants.length; i++) {
+      let t = this.tenants[i];
+      if (t.id.toString() === value) {
+        localStorage.setItem('tenantname', t.name);
+      }
+
+    }
     this.router.navigate(['/dashboard']);
   }
 }

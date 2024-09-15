@@ -35,6 +35,8 @@ namespace doneillspa.Controllers
             if (client == null) return BadRequest();
 
             Client c = new Client(client.Name);
+            c.Tenant = _context.Tenant.Where(t=>t.Id == client.TenantId).FirstOrDefault();
+
             _context.Client.Add(c);
 
             _context.SaveChanges();
@@ -72,15 +74,18 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/client/{filter}/{activeClients}/{page}/{pageSize}")]
-        public IEnumerable<ClientDto> GetForFilter(string filter, bool activeClients, int page = 1, int pageSize = 10)
+        public IEnumerable<ClientDto> GetForFilter([FromQuery] string tenant, string filter, bool activeClients, int page = 1, int pageSize = 10)
         {
             List<ClientDto> dtos = new List<ClientDto>();
 
             IEnumerable<Client> clients = _context.Client
-                .Where(r => r.IsActive == activeClients && r.Name.Contains(filter))
+                .Where(r => r.IsActive == activeClients 
+                        && r.Name.Contains(filter) 
+                        && r.Tenant.Id.ToString() == tenant)
                 .OrderBy(r => r.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .Include(b => b.Tenant)
                 .Include(b => b.Projects).ToList();
 
             foreach (Client c in clients)
@@ -91,6 +96,7 @@ namespace doneillspa.Controllers
                 dto.Id = c.Id;
                 dto.Name = c.Name;
                 dto.IsActive = c.IsActive;
+                dto.TenantId = c.Tenant.Id;
 
                 foreach (Project proj in c.Projects)
                 {
@@ -106,15 +112,16 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/client/{activeClients}/{page}/{pageSize}")]
-        public IEnumerable<ClientDto> Get(bool activeClients, int page = 1, int pageSize = 10)
+        public IEnumerable<ClientDto> Get([FromQuery] string tenant, bool activeClients, int page = 1, int pageSize = 10)
         {
             List<ClientDto> dtos = new List<ClientDto>();
 
             IEnumerable<Client> clients = _context.Client
-                .Where(r => r.IsActive == activeClients)
+                .Where(r => r.IsActive == activeClients && r.Tenant.Id.ToString() == tenant)
                 .OrderBy(r => r.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .Include(b => b.Tenant)
                 .Include(b => b.Projects).ToList();
 
             foreach (Client c in clients)
@@ -125,8 +132,9 @@ namespace doneillspa.Controllers
                 dto.Id = c.Id;
                 dto.Name = c.Name;
                 dto.IsActive = c.IsActive;
+                dto.TenantId = c.Tenant.Id;
 
-                foreach(Project proj in c.Projects)
+                foreach (Project proj in c.Projects)
                 {
                     projects.Add(_mapper.Map<ProjectDto>(proj));
                 }

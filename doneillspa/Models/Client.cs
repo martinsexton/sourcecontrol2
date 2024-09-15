@@ -10,6 +10,7 @@ namespace doneillspa.Models
         public long Id { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
+        public Tenant Tenant { get; set; }
 
         public ICollection<Project> Projects { get; set; }
 

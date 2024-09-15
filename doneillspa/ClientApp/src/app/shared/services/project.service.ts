@@ -20,27 +20,25 @@ export class ProjectService extends HttpServiceBase  {
   }
 
   getClientsForFilter(filter: string, activeClients: boolean, page: number, pageSize: number): Observable<Client[]> {
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') },
+      params: { 'tenant': localStorage.getItem('tenant') }
+    };
 
     return this._httpClient.get<Client[]>(this._baseurl + 'api/client' + '/' + filter + '/' + activeClients + '/' + page + '/' + pageSize,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
+      httpOptions).pipe(
         retry(5),
         catchError(this.handleError),);
   }
 
   getClients(activeClients:boolean, page: number, pageSize: number): Observable<Client[]>{
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') },
+      params: { 'tenant': localStorage.getItem('tenant') }
+    };
 
     return this._httpClient.get<Client[]>(this._baseurl + 'api/client' + '/' + activeClients + '/' + page + '/' + pageSize,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
+      httpOptions).pipe(
       retry(5),
       catchError(this.handleError),);
   }
@@ -58,82 +56,36 @@ export class ProjectService extends HttpServiceBase  {
       catchError(this.handleError),);
   }
 
-  getProjects() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<Project[]>(this._baseurl + 'api/project',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  getActiveProjects() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<Project[]>(this._baseurl + 'api/activeproject',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
   getActiveProjectsByCode(code: string) {
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') },
+      params: { 'tenant': localStorage.getItem('tenant') }
+    };
 
     return this._httpClient.get<Project[]>(this._baseurl + 'api/activeproject/' + code,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
+      httpOptions).pipe(
         retry(5),
         catchError(this.handleError),);
   }
 
-  getTimesheetEntriesForProjectAndWeek(code: string, week: string): Observable<TimesheetEntry[]>{
-    console.log('Find timesheet entries for ' + code + ' and week: ' + week);
-    let authToken = localStorage.getItem('auth_token');
-
-    console.log('Get timesheet entries for week: ' + week);
-
-    return this._httpClient.get<TimesheetEntry[]>(this._baseurl + 'api/labourdetails/project/timesheetentries/' + code + '/' + week,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
   addProject(id: number, proj: Project) {
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') }
+    };
 
     return this._httpClient.put(this._baseurl + 'api/client/' + id + '/projects', proj,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
+      httpOptions).pipe(
       retry(5),
       catchError(this.handleError),);
   }
 
   saveClient(c: Client) {
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') }
+    };
 
-    return this._httpClient.post(this._baseurl + 'api/client', c, {
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', 'Bearer ' + authToken)
-    }).pipe(
+    return this._httpClient.post(this._baseurl + 'api/client', c,
+      httpOptions).pipe(
       retry(5),
       catchError(this.handleError),);
   }

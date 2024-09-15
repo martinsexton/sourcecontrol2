@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using doneillspa.DataAccess;
 
@@ -11,9 +12,10 @@ using doneillspa.DataAccess;
 namespace doneillspa.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240915204348_clienthastenant")]
+    partial class clienthastenant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,7 +123,7 @@ namespace doneillspa.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Certification", (string)null);
+                    b.ToTable("Certification");
                 });
 
             modelBuilder.Entity("doneillspa.Models.Client", b =>
@@ -145,7 +147,7 @@ namespace doneillspa.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Client", (string)null);
+                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("doneillspa.Models.HolidayRequest", b =>
@@ -180,7 +182,7 @@ namespace doneillspa.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HolidayRequest", (string)null);
+                    b.ToTable("HolidayRequest");
                 });
 
             modelBuilder.Entity("doneillspa.Models.Project", b =>
@@ -213,7 +215,7 @@ namespace doneillspa.Migrations
 
                     b.HasIndex("OwningClientId");
 
-                    b.ToTable("Project", (string)null);
+                    b.ToTable("Project");
                 });
 
             modelBuilder.Entity("doneillspa.Models.Tenant", b =>
@@ -229,7 +231,7 @@ namespace doneillspa.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tenant", (string)null);
+                    b.ToTable("Tenant");
                 });
 
             modelBuilder.Entity("doneillspa.Models.Timesheet", b =>
@@ -263,7 +265,7 @@ namespace doneillspa.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Timesheet", (string)null);
+                    b.ToTable("Timesheet");
                 });
 
             modelBuilder.Entity("doneillspa.Models.TimesheetEntry", b =>
@@ -302,7 +304,7 @@ namespace doneillspa.Migrations
 
                     b.HasIndex("TimesheetId");
 
-                    b.ToTable("TimesheetEntry", (string)null);
+                    b.ToTable("TimesheetEntry");
                 });
 
             modelBuilder.Entity("doneillspa.Models.TimesheetNote", b =>
@@ -326,7 +328,7 @@ namespace doneillspa.Migrations
 
                     b.HasIndex("TimesheetId");
 
-                    b.ToTable("TimesheetNote", (string)null);
+                    b.ToTable("TimesheetNote");
                 });
 
             modelBuilder.Entity("doneillspa.ValueObjects.LabourRate", b =>
@@ -354,7 +356,7 @@ namespace doneillspa.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LabourRate", (string)null);
+                    b.ToTable("LabourRate");
                 });
 
             modelBuilder.Entity("doneillspa.ValueObjects.NonChargeableTime", b =>
@@ -373,7 +375,7 @@ namespace doneillspa.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NonChargeableTime", (string)null);
+                    b.ToTable("NonChargeableTime");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>

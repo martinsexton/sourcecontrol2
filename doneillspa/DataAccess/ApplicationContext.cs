@@ -56,6 +56,9 @@ namespace doneillspa.DataAccess
                 .HasOne<Client>(n => n.OwningClient)
                 .WithMany(a => a.Projects)
                 .HasForeignKey(n => n.OwningClientId);
+
+            modelBuilder.Entity<Client>()
+                .HasOne<Tenant>(n => n.Tenant);
         }
     }
 }

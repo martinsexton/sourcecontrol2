@@ -8,7 +8,7 @@
               <label for="chooseTenant">Choose Tenant</label>
               <select #tenantlist (change)="onSelected(tenantlist.value)" class="form-control">
                 <option selected>Choose Tenant..</option>
-                <option *ngFor="let t of tenants">{{t.name}}</option>
+                <option *ngFor="let t of tenants" value="{{t.id}}">{{t.name}}</option>
               </select>
             </div>
           </form>

@@ -68,7 +68,7 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/submittedtimesheet")]
-        public IEnumerable<TimesheetDto> GetSubmittedTimesheets()
+        public IEnumerable<TimesheetDto> GetSubmittedTimesheets([FromQuery] string tenant)
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
@@ -96,7 +96,7 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/approvedtimesheet")]
-        public IEnumerable<TimesheetDto> GetApprovedTimesheets()
+        public IEnumerable<TimesheetDto> GetApprovedTimesheets([FromQuery] string tenant)
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
@@ -154,7 +154,7 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/archievedtimesheetforrange")]
-        public IEnumerable<TimesheetDto> GetArchievedTimesheetsForRange(DateTime fromDate, DateTime toDate)
+        public IEnumerable<TimesheetDto> GetArchievedTimesheetsForRange([FromQuery] string tenant, [FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
@@ -242,7 +242,7 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/rejectedtimesheet")]
-        public IEnumerable<TimesheetDto> GetRejectedTimesheets()
+        public IEnumerable<TimesheetDto> GetRejectedTimesheets([FromQuery] string tenant)
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 

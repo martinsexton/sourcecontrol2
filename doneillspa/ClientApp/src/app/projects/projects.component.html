@@ -12,7 +12,7 @@
       <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab" aria-controls="inactive" aria-selected="false" (click)="inactiveTabClicked()">Inactive Clients</a>
     </li>
   </ul>
-  <div class="row mt-2">
+  <div class="row mt-2" *ngIf="clients && clients.length > 0">
     <div class="col">
       <form>
         <div class="form-row align-items-center">
@@ -24,12 +24,12 @@
       </form>
     </div>
   </div>
-  <div class="row">
-    <div class="col" *ngIf="clients">
+  <div class="row" *ngIf="clients">
+    <div class="col">
       <div class="card mb-3 mt-3 div-to-stand-out">
         <div class="card-header">Clients</div>
         <div class="card-body">
-          <div class="table-responsive">
+          <div class="table-responsive" *ngIf="clients.length > 0">
             <table class='table'>
               <thead class="thead">
                 <tr>

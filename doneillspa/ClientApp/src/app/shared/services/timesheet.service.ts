@@ -131,14 +131,13 @@ export class TimesheetService extends HttpServiceBase{
   }
 
   getSubmittedTimesheets() {
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') },
+      params: { 'tenant': localStorage.getItem('tenant') }
+    };
 
     return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/submittedtimesheet',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
+      httpOptions).pipe(
       retry(5),
       catchError(this.handleError),);
   }
@@ -159,14 +158,13 @@ export class TimesheetService extends HttpServiceBase{
   }
 
   getApprovedTimesheets() {
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') },
+      params: { 'tenant': localStorage.getItem('tenant') }
+    };
 
     return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/approvedtimesheet',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
+      httpOptions).pipe(
       retry(5),
       catchError(this.handleError),);
   }
@@ -187,30 +185,25 @@ export class TimesheetService extends HttpServiceBase{
   }
 
   getArchievedTimesheets() {
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') },
+      params: { 'tenant': localStorage.getItem('tenant') }
+    };
 
     return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/archievedtimesheet',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
+      httpOptions).pipe(
       retry(5),
       catchError(this.handleError),);
   }
 
   getArchievedTimesheetsForRange(fromData:string, toDate:string) {
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') },
+      params: { 'tenant': localStorage.getItem('tenant'), 'fromDate':fromData, 'toDate' : toDate }
+    };
 
     return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/archievedtimesheetforrange',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken),
-        params: new HttpParams()
-          .set("fromDate", fromData)
-          .set("toDate", toDate)
-      }).pipe(
+      httpOptions).pipe(
         retry(5),
         catchError(this.handleError));
   }
@@ -260,14 +253,13 @@ export class TimesheetService extends HttpServiceBase{
   }
 
   getRejectedTimesheets() {
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') },
+      params: { 'tenant': localStorage.getItem('tenant')}
+    };
 
     return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/rejectedtimesheet',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
+      httpOptions).pipe(
       retry(5),
       catchError(this.handleError),);
   }

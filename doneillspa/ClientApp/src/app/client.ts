@@ -7,6 +7,7 @@ export class Client {
     public id: number,
     public name: string,
     public isActive: boolean,
+    public tenantId: number,
   ) { }
 
 }

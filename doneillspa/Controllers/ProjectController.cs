@@ -27,37 +27,37 @@ namespace doneillspa.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Route("api/project")]
-        public IEnumerable<ProjectDto> Get()
-        {
-            List<ProjectDto> projectDtos = new List<ProjectDto>();
+        //[HttpGet]
+        //[Route("api/project")]
+        //public IEnumerable<ProjectDto> Get([FromQuery] string tenant)
+        //{
+        //    List<ProjectDto> projectDtos = new List<ProjectDto>();
 
-            IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).OrderBy(b => b.Name).ToList();
-            foreach (Project p in projects)
-            {
-                projectDtos.Add(_mapper.Map<ProjectDto>(p));
-            }
-            return projectDtos;
-        }
+        //    IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).OrderBy(b => b.Name).ToList();
+        //    foreach (Project p in projects)
+        //    {
+        //        projectDtos.Add(_mapper.Map<ProjectDto>(p));
+        //    }
+        //    return projectDtos;
+        //}
 
-        [HttpGet]
-        [Route("api/activeproject")]
-        public IEnumerable<ProjectDto> GetActiveProjects()
-        {
-            List<ProjectDto> projectDtos = new List<ProjectDto>();
+        //[HttpGet]
+        //[Route("api/activeproject")]
+        //public IEnumerable<ProjectDto> GetActiveProjects()
+        //{
+        //    List<ProjectDto> projectDtos = new List<ProjectDto>();
 
-            IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).Where(b => b.IsActive).OrderBy(b => b.Name).ToList();
-            foreach (Project p in projects)
-            {
-                projectDtos.Add(_mapper.Map<ProjectDto>(p));
-            }
-            return projectDtos;
-        }
+        //    IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).Where(b => b.IsActive).OrderBy(b => b.Name).ToList();
+        //    foreach (Project p in projects)
+        //    {
+        //        projectDtos.Add(_mapper.Map<ProjectDto>(p));
+        //    }
+        //    return projectDtos;
+        //}
 
         [HttpGet]
         [Route("api/activeproject/{code}")]
-        public IEnumerable<ProjectDto> GetActiveProjectsByCode(string code)
+        public IEnumerable<ProjectDto> GetActiveProjectsByCode([FromQuery] string tenant, string code)
         {
             List<ProjectDto> projectDtos = new List<ProjectDto>();
 

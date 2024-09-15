@@ -69,6 +69,10 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               localStorage.setItem('surname', value.surname);
 
               if (result.role === "Administrator") {
+                //Clear tenant details on login
+                localStorage.setItem('tenant', '');
+                localStorage.setItem('tenantname', '');
+
                 //add some conditional logic here, for admins ask to choose tenant
                 this.router.navigate(['/choosetenant']);
               }

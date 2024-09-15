@@ -15,8 +15,13 @@ namespace ProjectReportJob.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var connection =
+            string connection =
                 ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
+
+            if (connection.Equals(""))
+            {
+                connection = ConfigurationManager.AppSettings["Database"];
+            }
 
             options.UseSqlServer(connection, providerOptions => providerOptions.CommandTimeout(60));
         }
