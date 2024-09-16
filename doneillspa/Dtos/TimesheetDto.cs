@@ -11,6 +11,7 @@ namespace doneillspa.Models
         public long Id { get; set; }
         public string Username { get; set; }
         public string Role { get; set; }
+        public long TenantId { get; set; }
         public DateTime WeekStarting { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateSubmitted { get; set; }

@@ -72,7 +72,10 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetSubmittedTimesheets().OrderByDescending(r => r.DateSubmitted);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetSubmittedTimesheets()
+                .Where(r => r.Tenant.Id.ToString() == tenant)
+                .OrderByDescending(r => r.DateSubmitted);
+
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
@@ -100,7 +103,9 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetApprovedTimesheets().OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetApprovedTimesheets()
+                .Where(r => r.Tenant.Id.ToString() == tenant)
+                .OrderByDescending(r => r.WeekStarting);
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
@@ -158,7 +163,10 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetArchievedTimesheetsForRange(fromDate, toDate).OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetArchievedTimesheetsForRange(fromDate, toDate)
+                .Where(r => r.Tenant.Id.ToString() == tenant)
+                .OrderByDescending(r => r.WeekStarting);
+
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
@@ -246,7 +254,10 @@ namespace doneillspa.Controllers
         {
             List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
 
-            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetRejectedTimesheets().OrderByDescending(r => r.WeekStarting);
+            IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetRejectedTimesheets()
+                .Where(r => r.Tenant.Id.ToString() == tenant)
+                .OrderByDescending(r => r.WeekStarting);
+
             foreach (Timesheet ts in timesheets)
             {
                 timesheetsDtos.Add(ConvertToDto(ts));
@@ -373,6 +384,7 @@ namespace doneillspa.Controllers
         {
             TimesheetDto tsdto = new TimesheetDto();
             tsdto.DateCreated = ts.DateCreated;
+            tsdto.TenantId = ts.Tenant.Id;
             tsdto.Id = ts.Id;
             tsdto.Owner = ts.Owner;
             tsdto.Role = ts.Role;

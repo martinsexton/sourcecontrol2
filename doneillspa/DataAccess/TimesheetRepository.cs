@@ -22,6 +22,7 @@ namespace doneillspa.DataAccess
             return _context.Timesheet
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
+                .Include(b => b.Tenant)
                 .ToList();
         }
 
@@ -30,6 +31,7 @@ namespace doneillspa.DataAccess
             return _context.Timesheet
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
+                .Include(b => b.Tenant)
                 .Where(b => b.Status == TimesheetStatus.Submitted)
                 .ToList();
         }
@@ -49,6 +51,7 @@ namespace doneillspa.DataAccess
             return _context.Timesheet
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
+                .Include(b => b.Tenant)
                 .Where(b => b.Status == TimesheetStatus.Approved)
                 .ToList();
         }
@@ -58,6 +61,7 @@ namespace doneillspa.DataAccess
             return _context.Timesheet
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
+                .Include(b => b.Tenant)
                 .Where(b => b.Status == TimesheetStatus.Approved 
                         && b.Owner.ToString().Equals(userId))
                 .ToList();
@@ -80,6 +84,7 @@ namespace doneillspa.DataAccess
                                 && b.Status == TimesheetStatus.Archieved)
                         .Include(b => b.TimesheetEntries)
                         .Include(b => b.TimesheetNotes)
+                        .Include(b => b.Tenant)
                         .ToList();
         }
 
@@ -92,6 +97,7 @@ namespace doneillspa.DataAccess
                                 && b.Owner.ToString().Equals(userId))
                         .Include(b => b.TimesheetEntries)
                         .Include(b => b.TimesheetNotes)
+                        .Include(b => b.Tenant)
                         .ToList();
         }
 
@@ -100,6 +106,7 @@ namespace doneillspa.DataAccess
             return _context.Timesheet
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
+                .Include(b => b.Tenant)
                 .Where(b => b.Status == TimesheetStatus.Rejected)
                 .ToList();
         }
@@ -109,6 +116,7 @@ namespace doneillspa.DataAccess
             return _context.Timesheet
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
+                .Include(b => b.Tenant)
                 .Where(b => b.Status == TimesheetStatus.Rejected
                         && b.Owner.ToString().Equals(userId))
                 .ToList();
@@ -122,6 +130,7 @@ namespace doneillspa.DataAccess
                         .Where(b => b.WeekStarting.Date == weekStarting.Date)
                         .Include(b => b.TimesheetEntries)
                         .Include(b => b.TimesheetNotes)
+                        .Include(b => b.Tenant)
                         .ToList();
 
         }
@@ -147,6 +156,7 @@ namespace doneillspa.DataAccess
                 .Where(b => b.Owner.ToString() == userId)
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
+                .Include(b => b.Tenant)
                 .ToList();
         }
 
@@ -156,6 +166,7 @@ namespace doneillspa.DataAccess
                 .Where(b => b.Username.ToUpper().Equals(user.ToUpper()) && b.WeekStarting.Date == weekStarting.Date)
                 .Include(b => b.TimesheetEntries)
                 .Include(b => b.TimesheetNotes)
+                .Include(b => b.Tenant)
                 .ToList();
         }
 
@@ -165,6 +176,7 @@ namespace doneillspa.DataAccess
                         .Where(b => b.Id == id)
                         .Include(b => b.TimesheetEntries)
                         .Include(b => b.TimesheetNotes)
+                        .Include(b => b.Tenant)
                         .FirstOrDefault();
         }
 

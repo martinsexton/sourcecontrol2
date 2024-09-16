@@ -38,6 +38,9 @@ namespace doneillspa.DataAccess
             modelBuilder.Entity<Timesheet>()
                 .HasMany(t => t.TimesheetNotes);
 
+            modelBuilder.Entity<Timesheet>()
+                .HasOne<Tenant>(n => n.Tenant);
+
             modelBuilder.Entity<Certification>()
                 .HasOne<ApplicationUser>(n => n.User)
                 .WithMany(a => a.Certifications)
