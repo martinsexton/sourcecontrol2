@@ -18,10 +18,10 @@ export class ChooseTenantComponent {
   constructor(private _tenantService: TenantService, private router: Router) {
     this._tenantService.getTenants().subscribe(result => {
       this.tenants = result;
-      if (this.tenants.length > 0) {
-        localStorage.setItem('tenant', this.tenants[0].id.toString());
-        localStorage.setItem('tenantname', this.tenants[0].name);
-      }
+      //if (this.tenants.length > 0) {
+      //  localStorage.setItem('tenant', this.tenants[0].id.toString());
+      //  localStorage.setItem('tenantname', this.tenants[0].name);
+      //}
     }, error => this.errors = error);
   }
 

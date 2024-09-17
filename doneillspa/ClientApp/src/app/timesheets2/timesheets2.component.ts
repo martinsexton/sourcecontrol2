@@ -497,7 +497,7 @@ export class Timesheet2Component {
   }
 
   setDefaultUser() {
-    this.selectedUser = new ApplicationUser(localStorage.getItem('client_id'), localStorage.getItem('firstname'), localStorage.getItem('surname'), "", "", localStorage.getItem('role'), true);
+    this.selectedUser = new ApplicationUser(localStorage.getItem('client_id'), localStorage.getItem('firstname'), localStorage.getItem('surname'), "", "", localStorage.getItem('role'), true, Number(localStorage.getItem('tenant')));
   }
 
   entriesFound(): boolean {

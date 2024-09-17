@@ -28,6 +28,7 @@
               <th scope="col">Surname</th>
               <th scope="col">Email</th>
               <th scope="col">Mobile</th>
+              <th scope="col">Tenant</th>
               <th scope="col">Edit</th>
               <th scope="col">Reset</th>
             </tr>
@@ -38,6 +39,7 @@
               <td>{{u.surname}}</td>
               <td>{{u.email}}</td>
               <td>{{u.phoneNumber}}</td>
+              <td><a class="badge badge-info">{{getTenantName(u)}}</a></td>
               <td><span (click)="displayUserDetailsForEdit(u)"><i class="bi bi-pencil-square"></i></span></td>
               <td><span (click)="displayResetPasswordDialog(u)"><i class="bi bi-bootstrap-reboot"></i></span></td>
             </tr>
@@ -111,6 +113,12 @@
             <div class="form-group">
               <label for="email">Mobile</label>
               <input type="text" [(ngModel)]="selectedUser.phoneNumber" name="Mobile" class="form-control" id="Mobile">
+            </div>
+            <div class="form-group">
+              <label for="chooseTenant">Choose Tenant</label>
+              <select #tenantlist (change)="onSelected(tenantlist.value)" class="form-control">
+                <option *ngFor="let t of tenants" [ngValue]="t" [selected]="t.id===selectedUser.tenantId">{{t.name}}</option>
+              </select>
             </div>
             <div class="form-group">
               <div class="custom-control custom-switch">

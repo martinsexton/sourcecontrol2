@@ -12,10 +12,8 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProjectComponent } from './projects/projects.component';
-import { TimesheetComponent } from './timesheets/timesheets.component';
 import { Timesheet2Component } from './timesheets2/timesheets2.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { UserDashboardComponent } from './userdashboard/userdashboard.component';
 import { UserDashboard2Component } from './userdashboard2/userdashboard2.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { UserDetailsComponent } from './components/userdetails/userdetails.component';
@@ -59,10 +57,8 @@ import { AuthGuard } from './auth.guard';
     LoginFormComponent,
     ChooseTenantComponent,
     ProjectComponent,
-    TimesheetComponent,
     Timesheet2Component,
     DashboardComponent,
-    UserDashboardComponent,
     UserDashboard2Component,
     NotificationComponent,
     EmailValidator,

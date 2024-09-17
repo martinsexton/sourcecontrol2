@@ -4,6 +4,8 @@ import { MsUserService } from '../shared/services/msuser.service';
 import { ApplicationUser } from '../applicationuser';
 import { UserRegistration } from '../shared/models/user.registration.interface';
 import { PasswordReset } from '../passwordreset';
+import { TenantService } from '../shared/services/tenant.service';
+import { Tenant } from '../Tenant';
 
 declare var $: any;
 
@@ -14,6 +16,7 @@ declare var $: any;
 })
 
 export class UserDashboard2Component {
+  public tenants: Tenant[];
   public usersCurrentPage: number = 1;
   public usersPageLimit: number = 8;
   public users: ApplicationUser[];
@@ -21,7 +24,7 @@ export class UserDashboard2Component {
   public userMessage: string;
   public searchFilter: string = "";
   public showInactiveUsers: boolean = false;
-  newUser: ApplicationUser = new ApplicationUser('', '', '', '', '', '', false);
+  newUser: ApplicationUser = new ApplicationUser('', '', '', '', '', '', false, 0);
   public roles: string[] = ["Administrator", "Supervisor", "ChargeHand", "ElectR1", "ElectR2",
     "ElectR3", "Temp", "First Year Apprentice", "Second Year Apprentice",
     "Third Year Apprentice", "Fourth Year Apprentice", "Electrical Engineer", "Fire Engineer", "General Operative"];
@@ -29,7 +32,8 @@ export class UserDashboard2Component {
   public resettingPassword: boolean = false;
   public fulltimeStaffRole: string = "ChargeHand";
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _msuserService: MsUserService) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string,
+    private _msuserService: MsUserService, private _tenantService: TenantService) {
     $('[data-toggle="tooltip"]').tooltip();
     this._msuserService.getUsers(this.showInactiveUsers, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
       this.users = result;
@@ -38,6 +42,36 @@ export class UserDashboard2Component {
         this.resetPasswordDetails.userid = this.selectedUser.id;
       }
     }, error => this.userMessage = error)
+
+    this._tenantService.getTenants().subscribe(result => {
+      this.tenants = result;
+    }, error => this.userMessage = error);
+  }
+
+  getTenantName(user : ApplicationUser): string {
+    for (let i = 0; i < this.tenants.length; i++) {
+      let t = this.tenants[i];
+      if (t.id === user.tenantId) {
+        return t.name;
+      }
+    }
+  }
+
+  onSelected(value: string): void {
+    let tenantId = this.getTenantIdFromDescription(value);
+    if (tenantId > 0) {
+      this.selectedUser.tenantId = tenantId;
+    }
+  }
+
+  getTenantIdFromDescription(desc : string) : number {
+    for (let i = 0; i < this.tenants.length; i++) {
+      let t = this.tenants[i];
+      if (t.name === desc) {
+        return t.id;
+      }
+    }
+    return 0;
   }
 
   previousPage() {

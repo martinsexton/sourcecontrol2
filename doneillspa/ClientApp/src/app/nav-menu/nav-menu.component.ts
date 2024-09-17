@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MsUserService } from '../shared/services/msuser.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,7 +8,7 @@ import { MsUserService } from '../shared/services/msuser.service';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  constructor(private userService: MsUserService) { }
+  constructor(private userService: MsUserService, private router: Router) { }
 
   isExpanded = false;
 
@@ -25,6 +26,10 @@ export class NavMenuComponent {
 
   isWorker() {
     return this.isUserLoggedIn && !this.userService.isAdministrator();
+  }
+
+  changeTenant() {
+    this.router.navigate(['/choosetenant']);
   }
 
   isSupervisor() {

@@ -67,28 +67,14 @@ export class MsUserService extends HttpServiceBase{
       catchError(this.handleError),);
   }
 
-  getUsersWithRole(role: string) {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/role/' + role,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
   getUsers(inactiveUsers:boolean, page:number, pageSize:number): Observable<ApplicationUser[]>{
-    let authToken = localStorage.getItem('auth_token');
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('auth_token') },
+      params: { 'tenant': localStorage.getItem('tenant') }
+    };
 
     return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/' + inactiveUsers + '/' + page + '/' + pageSize,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
+      httpOptions).pipe(
       retry(5),
       catchError(this.handleError),);
   }
@@ -104,44 +90,6 @@ export class MsUserService extends HttpServiceBase{
       }).pipe(
         retry(5),
         catchError(this.handleError),);
-  }
-
-  getContractors() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/contractor/',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  getUser(name:string) {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<ApplicationUser[]>(this._baseurl + 'api/user/name/'+name,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  getUserRoles() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<IdentityRole[]>(this._baseurl + 'api/user/roles',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5));
   }
 
   updateUser(user: ApplicationUser) {
@@ -161,19 +109,6 @@ export class MsUserService extends HttpServiceBase{
     let authToken = localStorage.getItem('auth_token');
 
     return this._httpClient.put(this._baseurl + 'api/user/' + id + '/notifications', not,
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
-  retrieveTimesheets(id: string): Observable<Timesheet[]>{
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<Timesheet[]>(this._baseurl + 'api/user/' + id + '/timesheets',
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

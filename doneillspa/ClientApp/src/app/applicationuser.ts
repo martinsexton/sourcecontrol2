@@ -10,6 +10,7 @@ export class ApplicationUser {
     public email: string,
     public phoneNumber: string,
     public role: string,
-    public isEnabled: boolean
+    public isEnabled: boolean,
+    public tenantId : number
   ) { }
 }

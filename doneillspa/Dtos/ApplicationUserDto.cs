@@ -15,5 +15,6 @@ namespace doneillspa.Models
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public bool? IsEnabled { get; set; }
+        public long TenantId { get; set; }
     }
 }
