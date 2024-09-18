@@ -61,30 +61,44 @@ export class LoginFormComponent implements OnInit, OnDestroy {
             }
             else {
               $("#myLoginModal").modal('hide');
-              localStorage.setItem('auth_token', result.auth_token);
-              localStorage.setItem('role', result.role);
-              localStorage.setItem('client_id', result.id);
-              localStorage.setItem('username', value.firstname + value.surname);
-              localStorage.setItem('firstname', value.firstname);
-              localStorage.setItem('surname', value.surname);
-
-              if (result.role === "Administrator") {
-                //Clear tenant details on login
-                localStorage.setItem('tenant', '');
-                localStorage.setItem('tenantname', '');
-
-                //add some conditional logic here, for admins ask to choose tenant
-                this.router.navigate(['/choosetenant']);
-              }
-              else {
-                //add some conditional logic here, for admins ask to choose tenant
-                localStorage.setItem('tenant', result.tenantId);
-                this.router.navigate(['/timesheets2']);
-              }
+              this.populateSessionData(result, value);
+              this.populateTenantInformation(result);
+              this.navigateToNextComponent(result);
             }
           }
         }, responseError => this.errors = responseError);
     }
+  }
+
+  navigateToNextComponent(result: LoginResponse) {
+    if (result.role === "Administrator") {
+      //Navigate to choose tenant component
+      this.router.navigate(['/choosetenant']);
+    }
+    else {
+      //As an engineer we want to navigate directly to timesheet page
+      this.router.navigate(['/timesheets2']);
+    }
+  }
+
+  populateTenantInformation(result: LoginResponse) {
+    if (result.role === "Administrator") {
+      //Reset tenant details on login
+      localStorage.setItem('tenant', '1');
+      localStorage.setItem('tenantname', 'Electrical Business Unit');
+    }
+    else {
+      localStorage.setItem('tenant', result.tenantId);
+    }
+  }
+
+  populateSessionData(result: LoginResponse, value: Credentials) {
+    localStorage.setItem('auth_token', result.auth_token);
+    localStorage.setItem('role', result.role);
+    localStorage.setItem('client_id', result.id);
+    localStorage.setItem('username', value.firstname + value.surname);
+    localStorage.setItem('firstname', value.firstname);
+    localStorage.setItem('surname', value.surname);
   }
 
   navigateHome() {

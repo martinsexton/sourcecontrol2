@@ -56,10 +56,9 @@ export class DashboardComponent implements OnInit {
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _timesheetService: TimesheetService, private _formBuilder: FormBuilder) {
     $('[data-toggle="tooltip"]').tooltip();
-    //Retrieve Default list of tui Timesheets For display  
+    //Retrieve Default list of Timesheets For display  
     this._timesheetService.getSubmittedTimesheets().subscribe(result => {
       this.timesheets = result;
-      //this.newTabClicked();
       this.submittedTabClicked();
       if (this.timesheets.length > 0) {
         this.setTimesheetsByState();

@@ -72,77 +72,40 @@ namespace doneillspa.Controllers
         [Route("api/submittedtimesheet")]
         public IEnumerable<TimesheetDto> GetSubmittedTimesheets([FromQuery] string tenant)
         {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetSubmittedTimesheets()
                 .Where(r => r.Tenant.Id.ToString() == tenant)
                 .OrderByDescending(r => r.DateSubmitted);
 
-            foreach (Timesheet ts in timesheets)
-            {
-                timesheetsDtos.Add(ConvertToDto(ts));
-            }
-            return timesheetsDtos;
+            return ConvertToDtos(timesheets);
         }
 
         [HttpGet]
         [Route("api/usersubmittedtimesheet")]
         public IEnumerable<TimesheetDto> GetUserSubmittedTimesheets(String userId)
         {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetUserSubmittedTimesheets(userId).OrderByDescending(r => r.DateSubmitted);
-            foreach (Timesheet ts in timesheets)
-            {
-                timesheetsDtos.Add(ConvertToDto(ts));
-            }
-            return timesheetsDtos;
+            return ConvertToDtos(timesheets);
         }
 
         [HttpGet]
         [Route("api/approvedtimesheet")]
         public IEnumerable<TimesheetDto> GetApprovedTimesheets([FromQuery] string tenant)
         {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetApprovedTimesheets()
                 .Where(r => r.Tenant.Id.ToString() == tenant)
                 .OrderByDescending(r => r.WeekStarting);
-            foreach (Timesheet ts in timesheets)
-            {
-                timesheetsDtos.Add(ConvertToDto(ts));
-            }
-            return timesheetsDtos;
+
+            return ConvertToDtos(timesheets);
         }
 
         [HttpGet]
         [Route("api/userapprovedtimesheet")]
         public IEnumerable<TimesheetDto> GetUserApprovedTimesheets(String userId)
         {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetUserApprovedTimesheets(userId).OrderByDescending(r => r.WeekStarting);
-            foreach (Timesheet ts in timesheets)
-            {
-                timesheetsDtos.Add(ConvertToDto(ts));
-            }
-            return timesheetsDtos;
+            return ConvertToDtos(timesheets);
         }
 
-
-        //[HttpGet]
-        //[Route("api/archievedtimesheet")]
-        //public IEnumerable<TimesheetDto> GetArchievedTimesheets()
-        //{
-        //    List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
-        //    IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetArchievedTimesheets().OrderByDescending(r => r.WeekStarting);
-        //    foreach (Timesheet ts in timesheets)
-        //    {
-        //        timesheetsDtos.Add(ConvertToDto(ts));
-        //    }
-        //    return timesheetsDtos;
-        //}
         [HttpPost]
         [Route("api/timesheet/report")]
         public IActionResult OrderTimesheetReport([FromBody] TimesheetReport timesheetReport)
@@ -163,31 +126,19 @@ namespace doneillspa.Controllers
         [Route("api/archievedtimesheetforrange")]
         public IEnumerable<TimesheetDto> GetArchievedTimesheetsForRange([FromQuery] string tenant, [FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
         {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetArchievedTimesheetsForRange(fromDate, toDate)
                 .Where(r => r.Tenant.Id.ToString() == tenant)
                 .OrderByDescending(r => r.WeekStarting);
 
-            foreach (Timesheet ts in timesheets)
-            {
-                timesheetsDtos.Add(ConvertToDto(ts));
-            }
-            return timesheetsDtos;
+            return ConvertToDtos(timesheets);
         }
 
         [HttpGet]
         [Route("api/userarchievedtimesheetforrange")]
         public IEnumerable<TimesheetDto> GetUserArchievedTimesheetsForRange(String userId, DateTime fromDate, DateTime toDate)
         {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetUserArchievedTimesheetsForRange(userId, fromDate, toDate).OrderByDescending(r => r.WeekStarting);
-            foreach (Timesheet ts in timesheets)
-            {
-                timesheetsDtos.Add(ConvertToDto(ts));
-            }
-            return timesheetsDtos;
+            return ConvertToDtos(timesheets);
         }
 
 
@@ -254,31 +205,19 @@ namespace doneillspa.Controllers
         [Route("api/rejectedtimesheet")]
         public IEnumerable<TimesheetDto> GetRejectedTimesheets([FromQuery] string tenant)
         {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetRejectedTimesheets()
                 .Where(r => r.Tenant.Id.ToString() == tenant)
                 .OrderByDescending(r => r.WeekStarting);
 
-            foreach (Timesheet ts in timesheets)
-            {
-                timesheetsDtos.Add(ConvertToDto(ts));
-            }
-            return timesheetsDtos;
+            return ConvertToDtos(timesheets);
         }
 
         [HttpGet]
         [Route("api/userrejectedtimesheet")]
         public IEnumerable<TimesheetDto> GetUserRejectedTimesheets(String userId)
         {
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetUserRejectedTimesheets(userId).OrderByDescending(r => r.WeekStarting);
-            foreach (Timesheet ts in timesheets)
-            {
-                timesheetsDtos.Add(ConvertToDto(ts));
-            }
-            return timesheetsDtos;
+            return ConvertToDtos(timesheets);
         }
 
         [HttpGet]
@@ -288,25 +227,14 @@ namespace doneillspa.Controllers
             return new JsonResult(ConvertToDto(_timeSheetRepository.GetTimsheetById(id)));
         }
 
-        private bool isProjectCode(string code)
-        {
-            return !(code.Equals("NC1") || code.Equals("NC2") || code.Equals("NC3") || code.Equals("NC4") || code.Equals("NC5") || code.Equals("NC6") || code.Equals("NC7"));
-        }
-
         [HttpGet]
         [Route("api/timesheet/name/{user}/week/{year}/{month}/{day}")]
         public IEnumerable<TimesheetDto> Get(string user, int year, int month, int day)
         {
             DateTime weekStarting = new DateTime(year, month, day);
 
-            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
-
             IEnumerable<Timesheet> timesheets = _timeSheetRepository.GetTimesheetsByUserAndDate(user, weekStarting);
-            foreach (Timesheet ts in timesheets)
-            {
-                timesheetsDtos.Add(ConvertToDto(ts));
-            }
-            return timesheetsDtos;
+            return ConvertToDtos(timesheets);
         }
 
         [HttpPost]
@@ -405,6 +333,18 @@ namespace doneillspa.Controllers
                 return Ok(note.Id);
             }
             return BadRequest();
+        }
+
+        private IEnumerable<TimesheetDto> ConvertToDtos(IEnumerable<Timesheet> timesheets)
+        {
+            List<TimesheetDto> timesheetsDtos = new List<TimesheetDto>();
+
+            foreach (Timesheet ts in timesheets)
+            {
+                timesheetsDtos.Add(ConvertToDto(ts));
+            }
+
+            return timesheetsDtos;
         }
 
         private TimesheetDto ConvertToDto(Timesheet ts)
