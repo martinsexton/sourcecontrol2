@@ -61,7 +61,9 @@ namespace doneillspa.Controllers
         {
             List<ProjectDto> projectDtos = new List<ProjectDto>();
 
-            IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).Where(b => b.IsActive && b.Code.Contains(code)).OrderBy(b => b.Name).ToList();
+            IEnumerable<Project> projects = _context.Project.Include(b => b.OwningClient).
+                Where(b => b.IsActive && b.Code.Contains(code) && b.OwningClient.Tenant.Id.ToString().Equals(tenant))
+                .OrderBy(b => b.Name).ToList();
             foreach (Project p in projects)
             {
                 projectDtos.Add(_mapper.Map<ProjectDto>(p));

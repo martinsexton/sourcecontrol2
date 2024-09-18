@@ -12,6 +12,7 @@ export class Timesheet {
     public role:string,
     public weekStarting: Date,
     public dateSubmitted: Date,
-    public status: string
+    public status: string,
+    public tenantId: string
   ) { }
 }

@@ -78,7 +78,7 @@ export class Timesheet2Component {
     var startOfWeek = this.getStartOfWeek();
 
     //Setting up default timesheet and timesheet entries
-    this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek, null, 'New');
+    this.activeTimeSheet = new Timesheet(0, this.selectedUser.firstName + this.selectedUser.surname, this.selectedUser.id, this.selectedUser.role, startOfWeek, null, 'New', localStorage.getItem("tenant"));
     this.newEntry = new TimesheetEntry("", "", "", "", "", "", true);
 
     //Retrieve timesheets for given date
@@ -494,6 +494,10 @@ export class Timesheet2Component {
   setActiveDay(index) {
     this.selectedDay = this.daysOfWeek[index];
     this.newEntry.day = this.selectedDay;
+  }
+
+  getTenantId() : string {
+    return localStorage.getItem('tenant')
   }
 
   setDefaultUser() {

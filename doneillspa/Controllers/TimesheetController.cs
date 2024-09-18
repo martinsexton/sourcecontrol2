@@ -40,9 +40,10 @@ namespace doneillspa.Controllers
         private readonly ILogger<TimesheetController> _logger;
         private IMessageQueue _messageQueue;
         private IConfiguration _configuration;
+        private ApplicationContext _context;
 
         public TimesheetController(ILogger<TimesheetController> logger, IMapper mapper, IMediator mediator, ITimesheetRepository repository, 
-            IMessageQueue messageQueue, IConfiguration configuration)
+            IMessageQueue messageQueue, IConfiguration configuration, ApplicationContext context)
         {
             _mapper = mapper;
             _mediator = mediator;
@@ -50,6 +51,7 @@ namespace doneillspa.Controllers
             _logger = logger;
             _messageQueue = messageQueue;
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpGet]
@@ -309,10 +311,35 @@ namespace doneillspa.Controllers
 
         [HttpPost]
         [Route("api/timesheet")]
-        public IActionResult Post([FromBody]Timesheet timesheet)
+        public IActionResult Post([FromBody]TimesheetDto timesheet)
         {
-            timesheet.OnCreation();
-            return Ok(_timeSheetRepository.InsertTimesheet(timesheet));
+            Timesheet ts = new Timesheet();
+            ts.Tenant = _context.Tenant.Where(t => t.Id == timesheet.TenantId).FirstOrDefault();
+            ts.Owner = timesheet.Owner;
+            ts.Role = timesheet.Role;
+            ts.Username = timesheet.Username;
+            ts.WeekStarting = timesheet.WeekStarting;
+
+            ICollection<TimesheetEntry> entries = new List<TimesheetEntry>();
+            if (timesheet.TimesheetEntries.Count > 0)
+            {
+                foreach(TimesheetEntryDto tsedto in timesheet.TimesheetEntries)
+                {
+                    TimesheetEntry tse = new TimesheetEntry();
+                    tse.StartTime = tsedto.StartTime;
+                    tse.EndTime = tsedto.EndTime;
+                    tse.Day = tsedto.Day;
+                    tse.Details = tsedto.Details;
+                    tse.Code = tsedto.Code;
+                    tse.Chargeable = tsedto.Chargeable;
+
+                    entries.Add(tse);
+                } 
+            }
+
+            ts.TimesheetEntries = entries;
+            ts.OnCreation();
+            return Ok(_timeSheetRepository.InsertTimesheet(ts));
         }
 
         [HttpPut()]

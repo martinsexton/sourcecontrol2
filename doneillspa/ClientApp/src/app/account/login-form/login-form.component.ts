@@ -78,6 +78,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               }
               else {
                 //add some conditional logic here, for admins ask to choose tenant
+                localStorage.setItem('tenant', result.tenantId);
                 this.router.navigate(['/timesheets2']);
               }
             }
