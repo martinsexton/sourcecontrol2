@@ -42,6 +42,24 @@ namespace doneillspa.Controllers
         }
 
         [HttpGet]
+        [Route("api/project/client/{clientId}/{page}/{pageSize}")]
+        public IEnumerable<ProjectDto> Get(int clientId, int page = 1, int pageSize = 10)
+        {
+            List<ProjectDto> projectDtos = new List<ProjectDto>();
+
+            IEnumerable<Project> projects = _context.Project
+                .Where(b => b.OwningClient.Id == clientId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(b => b.OwningClient).OrderByDescending(b => b.Id).ToList();
+            foreach (Project p in projects)
+            {
+                projectDtos.Add(_mapper.Map<ProjectDto>(p));
+            }
+            return projectDtos;
+        }
+
+        [HttpGet]
         [Route("api/activeproject")]
         public IEnumerable<ProjectDto> GetActiveProjects()
         {

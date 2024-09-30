@@ -55,10 +55,10 @@
         <button type="button" (click)="nextPage()" class="btn btn-primary" [disabled]="disableClientNextButton()">Next</button>
       </div>
     </div>
-    <div class="col" *ngIf="projectsForCurrentPage">
+    <div class="col" *ngIf="projectsToDisplay">
       <div class="card mb-3 mt-3 div-to-stand-out">
         <!--Project List Component Here -->
-        <project-list [selectedClient]="selectedClient" [projects]="projectsForCurrentPage" [projectCodes]="existingCodes"></project-list>
+        <project-list [selectedClient]="selectedClient" [projects]="projectsToDisplay" [projectCodes]="existingCodes"></project-list>
       </div>
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" (click)="previousProjectPage()" class="btn btn-primary mr-1" [disabled]="projectsCurrentPage == 1">Previous</button>

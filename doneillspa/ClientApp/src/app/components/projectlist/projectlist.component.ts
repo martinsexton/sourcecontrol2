@@ -35,11 +35,21 @@ export class ProjectsListComponent {
   }
 
   canEditProject() {
-    return this.selectedClient.isActive;
+    if (this.selectedClient) {
+      return this.selectedClient.isActive;
+    }
+    else {
+      return false;
+    }
   }
 
   canAddProject() {
-    return this.selectedClient.isActive;
+    if (this.selectedClient) {
+      return this.selectedClient.isActive;
+    }
+    else {
+      return false;
+    }
   }
 
   saveProject() {
