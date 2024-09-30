@@ -6,7 +6,7 @@
 trigger:
   branches:
     include:
-    - app-upgrades
+    - live-fix
     exclude:
     - master
 
