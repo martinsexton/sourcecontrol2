@@ -22,6 +22,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   credentials: Credentials = { firstname: '', surname: '', password: '' };
   public loginProgress = false;
+  public fieldTextType = false;
 
 
   constructor(private userService: MsUserService, private router: Router, private activatedRoute: ActivatedRoute) {}
@@ -45,6 +46,9 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
 
   login({ value, valid }: { value: Credentials, valid: boolean }) {
     this.loginProgress = true;

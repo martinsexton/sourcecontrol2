@@ -17,9 +17,13 @@
           <div class="form-group">
             <input id="surname" type="text" required name="surname" [ngModel]="credentials.surname" #email="ngModel" class="form-control" placeholder="Surname">
           </div>
-          <div class="form-group">
-            <input id="password" type="password" required name="password" validatePassword class="form-control" placeholder="Password" ngModel #password="ngModel">
-            <small [hidden]="password.valid || (password.pristine && !submitted)" class="text-muted">Please enter a valid Password</small>
+          <div class="input-group mb-3">
+            <input id="password" [type]="fieldTextType ? 'text' : 'password'" required name="password" validatePassword class="form-control" placeholder="Password" ngModel #password="ngModel">
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="bi bi-eye-slash" (click)="toggleFieldTextType()"></i>
+              </span>
+            </div>
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-primary" [disabled]="f.invalid || loginProgress">
