@@ -22,6 +22,7 @@ export class ProjectComponent {
 
   public selectedClient: Client;
   public activeTab: string = "Active";
+  public showInActiveProjects: boolean = false;
 
   public userMessage: string;
   public selectedRole: string;
@@ -68,6 +69,7 @@ export class ProjectComponent {
 
 
   activeTabClicked() {
+    this.showInActiveProjects = false;
     this.activeTab = "Active";
     //Reset page count. 
     this.clientsCurrentPage = 1;
@@ -76,6 +78,7 @@ export class ProjectComponent {
   }
 
   inactiveTabClicked() {
+    this.showInActiveProjects = true;
     this.activeTab = "Inactive";
     this.projectsToDisplay = [];
     //Reset page count. 
@@ -137,7 +140,7 @@ export class ProjectComponent {
   }
 
   retrieveProjectsForClient(c : Client, currentPage: number) {
-    this._projectService.getProjectsForClient(c.id, currentPage, this.projectPageLimit).subscribe(result => {
+    this._projectService.getProjectsForClient(c.id, this.showInActiveProjects, currentPage, this.projectPageLimit).subscribe(result => {
       this.loading = false;
       this.projectsToDisplay = result;
     }, error => {
@@ -145,6 +148,10 @@ export class ProjectComponent {
       $('.toast').toast('show');
       console.error(error);
     });
+  }
+
+  triggerProjectRetrieve() {
+    this.retrieveProjectsForClient(this.selectedClient, this.projectsCurrentPage);
   }
 
   retrieveClientsForFilter() {

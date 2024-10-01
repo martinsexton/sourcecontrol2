@@ -162,8 +162,7 @@ export class UserDashboard2Component {
     this.selectedUser = user;
   }
 
-  toggleActiveUsers(event: any) {
-    this.showInactiveUsers = event.target.checked;
+  triggerUserRetrieve() {
     this.searchFilter = "";
 
     this._msuserService.getUsers(this.showInactiveUsers, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
@@ -174,6 +173,19 @@ export class UserDashboard2Component {
       }
     }, error => this.userMessage = error)
   }
+
+  //toggleActiveUsers(event: any) {
+  //  this.showInactiveUsers = event.target.checked;
+  //  this.searchFilter = "";
+
+  //  this._msuserService.getUsers(this.showInactiveUsers, this.usersCurrentPage, this.usersPageLimit).subscribe(result => {
+  //    this.users = result;
+  //    if (this.users.length > 0) {
+  //      this.selectedUser = this.users[0];
+  //      this.resetPasswordDetails.userid = this.selectedUser.id;
+  //    }
+  //  }, error => this.userMessage = error)
+  //}
 
   onKey(event: any) { // without type info
     this.usersCurrentPage = 1;

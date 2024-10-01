@@ -71,10 +71,10 @@ export class ProjectService extends HttpServiceBase  {
       catchError(this.handleError),);
   }
 
-  getProjectsForClient(clientId: number, page: number, pageSize: number) {
+  getProjectsForClient(clientId: number, activeProjects: boolean, page: number, pageSize: number) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<Project[]>(this._baseurl + 'api/project/client/' + clientId + '/' + page + '/' + pageSize,
+    return this._httpClient.get<Project[]>(this._baseurl + 'api/project/client/' + clientId + '/' + activeProjects + '/' + page + '/' + pageSize,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

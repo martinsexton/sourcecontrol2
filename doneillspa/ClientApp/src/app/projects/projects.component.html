@@ -20,6 +20,10 @@
             <label class="sr-only" for="inlineFormInputName">Name</label>
             <input type="text" name="searchFilter" [(ngModel)]="searchFilter" class="form-control" id="inlineFormInputName" placeholder="Search.." (keyup)="onKey($event)">
           </div>
+          <div *ngIf="activeTab == 'Active'" class="custom-control custom-switch">
+            <input type="checkbox" [checked]="showInActiveProjects" class="custom-control-input" id="inactiveProjects" name="inactiveProjects" [(ngModel)]="showInActiveProjects" (change)="triggerProjectRetrieve()">
+            <label class="custom-control-label" for="inactiveProjects">In Active Projects</label>
+          </div>
         </div>
       </form>
     </div>
@@ -58,7 +62,7 @@
     <div class="col" *ngIf="projectsToDisplay">
       <div class="card mb-3 mt-3 div-to-stand-out">
         <!--Project List Component Here -->
-        <project-list [selectedClient]="selectedClient" [projects]="projectsToDisplay" [projectCodes]="existingCodes"></project-list>
+        <project-list [selectedClient]="selectedClient" [projects]="projectsToDisplay" [inactiveProjects]="showInActiveProjects" [projectCodes]="existingCodes"></project-list>
       </div>
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" (click)="previousProjectPage()" class="btn btn-primary mr-1" [disabled]="projectsCurrentPage == 1">Previous</button>
