@@ -810,6 +810,11 @@ export class Timesheet2Component {
       totalMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);
     }
     if (totalMins > 0) {
+      //Remove Lunch Break
+      if (totalMins >= (5 * 60)) {
+        totalMins = totalMins - 30;
+      }
+
       var hours = Math.floor(totalMins / 60);
       var minutes = totalMins % 60;
 
