@@ -15,5 +15,6 @@ namespace doneillspa.Dtos
         public bool IsActive { get; set; }
         public string Details { get; set; }
         public DateTime StartDate { get; set; }
+        public bool Chargeable { get; set; }
     }
 }

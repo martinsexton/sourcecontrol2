@@ -19,7 +19,7 @@ export class ProjectsListComponent {
   @Input() projectCodes: string[];
   @Input() inactiveProjects: boolean;
   selectedProject: Project;
-  newProject: Project = new Project(0, '', '', '', '', true, new Date);
+  newProject: Project = new Project(0, '', '', '', '', true, new Date, true);
 
   constructor(private _projectService: ProjectService) {}
 
@@ -59,14 +59,14 @@ export class ProjectsListComponent {
         this.newProject.id = res as number;
         this.newProject.client = this.selectedClient.name;
 
-        let projectToPush = new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.code, this.newProject.details, this.newProject.isActive, this.newProject.startDate);
+        let projectToPush = new Project(this.newProject.id, this.newProject.client, this.newProject.name, this.newProject.code, this.newProject.details, this.newProject.isActive, this.newProject.startDate, this.newProject.chargeable);
 
         //Update the collection of projects with newly created one
         this.projects.push(projectToPush);
         this.selectedClient.projects.push(projectToPush);
 
         //clear down the new project model
-        this.newProject = new Project(0, '', '', '', '', true, new Date);
+        this.newProject = new Project(0, '', '', '', '', true, new Date, true);
         $("#myNewProjectModal").modal('hide');
 
       });

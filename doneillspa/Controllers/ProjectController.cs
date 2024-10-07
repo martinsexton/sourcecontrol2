@@ -130,7 +130,7 @@ namespace doneillspa.Controllers
                 //Update fields
                 proj.Name = p.Name;
                 proj.Details = p.Details;
-                //proj.IsActive = p.IsActive;
+                proj.Chargeable = p.Chargeable;
                 proj.Code = p.Code;
             }
 

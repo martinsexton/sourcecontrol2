@@ -144,7 +144,7 @@ namespace doneillspa.Controllers
         {
             Client client = _context.Client.Include(b => b.Projects).Where(b => b.Id == id).FirstOrDefault();
 
-            Project proj = new Project(p.Code, p.Name, p.Details, p.StartDate);
+            Project proj = new Project(p.Code, p.Name, p.Details, p.StartDate, p.Chargeable);
             client.AddProject(proj);
 
             _context.SaveChanges();

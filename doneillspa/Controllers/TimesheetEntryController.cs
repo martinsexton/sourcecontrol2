@@ -60,7 +60,7 @@ namespace doneillspa.Controllers
             item.Details = tse.Details;
             item.EndTime = tse.EndTime;
             item.Code = tse.Code;
-            item.Chargeable = tse.IsEntryChargeable();
+            item.Chargeable = tse.Chargeable;
 
             _context.SaveChanges();
 

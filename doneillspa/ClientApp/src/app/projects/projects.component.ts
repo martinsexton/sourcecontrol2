@@ -35,10 +35,10 @@ export class ProjectComponent {
   public searchFilter: string = "";
 
 
-  newProject: Project = new Project(0, '', '', '', '', true, new Date);
+  newProject: Project = new Project(0, '', '', '', '', true, new Date, true);
   newClient: Client = new Client(0, "", true);
   projectSaved: boolean = false;
-  selectedProject: Project = new Project(0, '', '', '', '', true, new Date);
+  selectedProject: Project = new Project(0, '', '', '', '', true, new Date, true);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router: Router) {
     this.retrieveClients();

@@ -4,7 +4,6 @@ import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
 import { TimesheetCode } from '../timesheetcode';
 import { Project } from '../project';
-import { NonChargeableTime } from '../nonchargeabletime';
 import * as moment from 'moment';
 
 import {
@@ -28,7 +27,6 @@ declare var $: any;
 export class TimesheetComponent {
   public timesheets: Timesheet[];
   public projects: Project[];
-  public nonChargeableTime: NonChargeableTime[];
   public activeProjects: Project[];
   public timesheetCodes: TimesheetCode[];
   public selectedProjectName: string = '';
@@ -86,8 +84,6 @@ export class TimesheetComponent {
 
     //Populate available days of the week for entering timesheets
     this.populateDaysOfWeek();
-
-    this.setupNonChargeableTime();
 
     //setup dates for each day of the week
     this.refreshCalendarDates();
@@ -244,12 +240,6 @@ export class TimesheetComponent {
         this.timesheetCodes.push(code);
       }
     }
-    if (this.nonChargeableTime) {
-      for (let nc of this.nonChargeableTime) {
-        let code = new TimesheetCode(nc.code, nc.description, false);
-        this.timesheetCodes.push(code);
-      }
-    }
   }
 
   setUpActiveProjects() {
@@ -292,13 +282,6 @@ export class TimesheetComponent {
     var startOfWeek = new Date(this.selectedMoment.toDate());
     startOfWeek.setDate(baseDate.getDate() - (day - 1))
     return startOfWeek;
-  }
-
-  setupNonChargeableTime() {
-    this._projectService.getNonChargeableTime().subscribe(result => {
-      this.nonChargeableTime = result;
-      this.refreshTimesheetCodes();
-    }, error => console.error(error));
   }
 
   onKey(event: any) { // without type info

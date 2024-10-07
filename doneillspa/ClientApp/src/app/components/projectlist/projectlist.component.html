@@ -58,6 +58,12 @@
               <label class="custom-control-label" for="projectIsActive">Active</label>
             </div>
           </div>
+          <div class="form-group">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" [checked]="selectedProject.chargeable" class="custom-control-input" id="projectChargeable" name="projectChargeable" [(ngModel)]="selectedProject.chargeable">
+              <label class="custom-control-label" for="projectChargeable">Chargeable</label>
+            </div>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
