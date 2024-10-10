@@ -11,6 +11,7 @@ import { HttpServiceBase } from './httpservicebase';
 import { Observable } from 'rxjs';
 import { TimesheetReport } from '../../TimesheetReport';
 import { Report } from '../../Report';
+import { OrderReport } from '../../orderreport';
 
 @Injectable()
 export class TimesheetService extends HttpServiceBase{
@@ -21,10 +22,10 @@ export class TimesheetService extends HttpServiceBase{
     super(_httpClient, baseUrl); 
   }
 
-  orderReport(report: TimesheetReport) {
+  orderReport(report: OrderReport) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.post(this._baseurl + 'api/timesheet/report', report, {
+    return this._httpClient.post<TimesheetReport>(this._baseurl + 'api/timesheet/report', report, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + authToken)
@@ -232,10 +233,10 @@ export class TimesheetService extends HttpServiceBase{
         catchError(this.handleError));
   }
 
-  getTimesheetReports() {
+  getTimesheetReports(currentPage : number, pageLimit: number) {
     let authToken = localStorage.getItem('auth_token');
 
-    return this._httpClient.get<Report[]>(this._baseurl + 'api/timesheetreports',
+    return this._httpClient.get<TimesheetReport[]>(this._baseurl + 'api/timesheetreports2/'+currentPage + '/' + pageLimit,
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/json')

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using doneillspa.Dtos;
 using doneillspa.Models;
 using doneillspa.ValueObjects;
+using Dropbox.Api.Team;
 using Microsoft.EntityFrameworkCore;
 
 namespace doneillspa.DataAccess
@@ -63,14 +65,33 @@ namespace doneillspa.DataAccess
                 .ToList();
         }
 
-        //public IEnumerable<Timesheet> GetArchievedTimesheets()
-        //{
-        //    return _context.Timesheet
-        //        .Include(b => b.TimesheetEntries)
-        //        .Include(b => b.TimesheetNotes)
-        //        .Where(b => b.Status == TimesheetStatus.Archieved)
-        //        .ToList();
-        //}
+        public TimesheetReport InsertTimesheetReport(TimesheetReport tsr)
+        {
+            _context.TimesheetReport.Add(tsr);
+            _context.SaveChanges();
+
+            return tsr;
+        }
+
+        public IEnumerable<TimesheetReportDto> GetTimesheetReports()
+        {
+            List<TimesheetReport> reports = _context.TimesheetReport.ToList();
+            List<TimesheetReportDto> returnReports = new List<TimesheetReportDto>();
+
+            foreach(TimesheetReport r in reports)
+            {
+                TimesheetReportDto dto = new TimesheetReportDto();
+                dto.Id = r.Id;
+                dto.ReportDate = r.ReportDate;
+                dto.Status = r.Status.ToString();
+                dto.FileReference = r.FileReference;
+                dto.CreatedDate = r.CreatedDate;
+
+                returnReports.Add(dto);
+            }
+
+            return returnReports;
+        } 
 
         public IEnumerable<Timesheet> GetArchievedTimesheetsForRange(DateTime fromDate, DateTime toDate)
         {

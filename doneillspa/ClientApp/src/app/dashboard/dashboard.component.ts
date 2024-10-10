@@ -16,6 +16,7 @@ import * as moment from 'moment';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { TimesheetReport } from '../TimesheetReport';
+import { OrderReport } from '../orderreport';
 
 declare var $: any;
 
@@ -30,7 +31,8 @@ export class DashboardComponent implements OnInit {
   public timesheetToAddNoteTo: Timesheet;
   public filteredTimesheets: Timesheet[];
   public users: string[];
-  public reports: Report[];
+/*  public reports: Report[];*/
+  public timesheetReports: TimesheetReport[];
   public newNote: TimesheetNote = new TimesheetNote('', new Date());
   public selectedTimesheet: Timesheet;
   public selectedTsRow: number;
@@ -41,6 +43,8 @@ export class DashboardComponent implements OnInit {
   public errors: string;
   public filterOnSubmittedTimesheets: boolean = false;
   public editable = false;
+  public reportsCurrentPage: number = 1;
+  public reportsPageLimit: number = 3;
 
   public loading = true;
   public activeTab: string = "Submitted";
@@ -77,6 +81,16 @@ export class DashboardComponent implements OnInit {
       return this.selectedTimesheet.timesheetNotes.length;
     }
     return 0;
+  }
+
+  previousReportsPage() {
+    this.reportsCurrentPage = this.reportsCurrentPage - 1;
+    this.retrieveReports();
+  }
+
+  nextReportsPage() {
+    this.reportsCurrentPage = this.reportsCurrentPage + 1;
+    this.retrieveReports();
   }
 
   initForm() {
@@ -192,17 +206,29 @@ export class DashboardComponent implements OnInit {
     }, error => this.errors = error);
   }
 
-  reportsTabClicked() {
-    this._timesheetService.getTimesheetReports().subscribe(result => {
-      this.activeTab = "Reports";
-      this.reports = result;
+  retrieveReports() {
+    this._timesheetService.getTimesheetReports(this.reportsCurrentPage, this.reportsPageLimit).subscribe(result => {
+      this.timesheetReports = result;
     }, error => this.errors = error);
   }
 
+  reportsTabClicked() {
+    this.reportsCurrentPage = 1;
+    this.activeTab = "Reports";
+    this.retrieveReports();
+  }
+
+  disableReportNextButton() {
+    return this.timesheetReports.length < this.reportsPageLimit;
+  }
+
   orderReport() {
-    let report = new TimesheetReport(this.reportDate.value);
+    let report = new OrderReport(this.reportDate.value);
 
     this._timesheetService.orderReport(report).subscribe(result => {
+      this.reportsCurrentPage = 1;
+      this.retrieveReports();
+
     }, error => this.errors = error);
   }
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace doneillspa.Models
+namespace ProjectReportJob.Data
 {
     public class TimesheetReport
     {

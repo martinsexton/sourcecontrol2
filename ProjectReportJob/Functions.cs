@@ -35,13 +35,15 @@ namespace ProjectReportJob
             //_service.SendMessage("reportemailed", "Report issued for " + message.ProjectCode); 
         }
 
-        public void ProcessTimesheetReportMessage([QueueTrigger("reports")] TimesheetReport report)
+        public void ProcessTimesheetReportMessage([QueueTrigger("testreports")] TimesheetReportOrder order)
         {
-            SaveFileToBlob(report.reportDate);
+            SaveFileToBlob(order);
         }
 
-        private async void SaveFileToBlob(string reportDate)
+        private async void SaveFileToBlob(TimesheetReportOrder order)
         {
+            string blobName = "test_file_" + Guid.NewGuid().ToString() + ".txt";
+
             // Retrieve the connection string for use with the application. 
             string connectionString = ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString;
 
@@ -55,13 +57,28 @@ namespace ProjectReportJob
             var blobServiceClient = new BlobServiceClient(connectionString);
 
             BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
-            BlobClient blobClient = containerClient.GetBlobClient("test_file_" + Guid.NewGuid().ToString() + ".txt");
+            BlobClient blobClient = containerClient.GetBlobClient(blobName);
 
             Console.WriteLine("Uploading to Blob storage as blob:\n\t {0}\n", blobClient.Uri);
 
             //await blobClient.UploadAsync(GenerateExcelTimesheetReport(reportDate));
-            await blobClient.UploadAsync(GenerateTextTimesheetReport(reportDate));
+            blobClient.UploadAsync(GenerateTextTimesheetReport(order.reportDate)).Wait();
 
+            UpdateReportStatus(order, blobName);
+
+        }
+
+        private void UpdateReportStatus(TimesheetReportOrder order, string blobName)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                TimesheetReport report = db.TimesheetReport.Where(r => r.Id == order.Id).First();
+
+                report.FileReference = blobName;
+                report.Status = TimesheetReportStatus.Success;
+
+                db.SaveChanges();
+            }
         }
 
         private MemoryStream GenerateTextTimesheetReport(string weekBeginning)

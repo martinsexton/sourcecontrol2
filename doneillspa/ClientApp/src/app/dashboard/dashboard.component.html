@@ -35,19 +35,25 @@
           <thead class="thead-light">
             <tr>
               <th scope="col">Date Created</th>
-              <th scope="col">File Name</th>
+              <th scope="col">Week Beginning</th>
+              <th scope="col">Status</th>
               <th scope="col">Download</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let r of reports"> 
-              <td>{{r.createdOn}}</td>
-              <td>{{r.name}}</td>
-              <td (click)="download(r.name)"><i class="bi bi-download"></i></td>
+            <tr *ngFor="let r of timesheetReports">
+              <td>{{r.createdDate}}</td>
+              <td>{{r.reportDate}}</td>
+              <td>{{r.status}}</td>
+              <td *ngIf="r.status === 'Success'" (click)="download(r.fileReference)"><i class="bi bi-download"></i></td>
             </tr>
           </tbody>
         </table>
       </div>
+    </div>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" (click)="previousReportsPage()" class="btn btn-primary mr-1" [disabled]="reportsCurrentPage == 1">Previous</button>
+      <button type="button" (click)="nextReportsPage()" class="btn btn-primary" [disabled]="disableReportNextButton()">Next</button>
     </div>
   </div>
   <div *ngIf="!loading && activeTab == 'Archieved'" class="mt-3 mb-3 row">

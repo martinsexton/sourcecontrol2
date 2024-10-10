@@ -22,6 +22,7 @@ namespace doneillspa.DataAccess
         public DbSet<Certification> Certification { get; set; }
         public DbSet<HolidayRequest> HolidayRequest { get; set; }
         public DbSet<Timesheet> Timesheet { get; set; }
+        public DbSet<TimesheetReport> TimesheetReport { get; set; }
         public DbSet<TimesheetEntry> TimesheetEntry { get; set; }
         public DbSet<TimesheetNote> TimesheetNote { get; set; }
         public DbSet<LabourRate> LabourRate { get; set; }

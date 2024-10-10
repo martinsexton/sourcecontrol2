@@ -138,12 +138,41 @@ namespace doneillspa.Controllers
         //}
         [HttpPost]
         [Route("api/timesheet/report")]
-        public IActionResult OrderTimesheetReport([FromBody] TimesheetReport timesheetReport)
+        public IActionResult OrderTimesheetReport([FromBody] OrderReportDto orderReport)
         {
             _logger.LogInformation("About to queue report order");
-            _messageQueue.SendMessage(Base64Encode(JsonConvert.SerializeObject(timesheetReport)));
+            TimesheetReport report = new TimesheetReport();
+            report.CreatedDate = DateTime.Now;
+            report.ReportDate = orderReport.ReportDate;
+            report.Status = TimesheetReportStatus.Pending;
+            report.FileReference = "";
+
+            TimesheetReport persistedReport = _timeSheetRepository.InsertTimesheetReport(report);
+            orderReport.Id = persistedReport.Id;
+
+            _messageQueue.SendMessage(Base64Encode(JsonConvert.SerializeObject(orderReport)));
             _logger.LogInformation("Finished queuing report order");
-            return Ok();
+
+            TimesheetReportDto returnReport = new TimesheetReportDto();
+            returnReport.Id = persistedReport.Id;
+            returnReport.CreatedDate = persistedReport.CreatedDate;
+            returnReport.ReportDate = persistedReport.ReportDate;
+            returnReport.Status = "Pending";
+            returnReport.FileReference = persistedReport.FileReference;
+
+            return Ok(returnReport);
+        }
+
+        [HttpGet]
+        [Route("api/timesheetreports2/{page}/{pageSize}")]
+        public IEnumerable<TimesheetReportDto> GetTimesheetReports(int page = 1, int pageSize = 3)
+        {
+            List<TimesheetReportDto> timesheetsReportsDtos = new List<TimesheetReportDto>();
+
+            return _timeSheetRepository.GetTimesheetReports()
+                .OrderByDescending(r => r.CreatedDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);
         }
 
         private static string Base64Encode(string plainText)
