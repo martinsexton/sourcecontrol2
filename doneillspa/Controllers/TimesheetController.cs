@@ -10,6 +10,7 @@ using AutoMapper;
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using doneillspa.DataAccess;
 using doneillspa.Dtos;
@@ -25,6 +26,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 
 namespace doneillspa.Controllers
@@ -212,8 +214,11 @@ namespace doneillspa.Controllers
 
         [HttpGet]
         [Route("api/timesheetreport/{filename}")]
-        public IActionResult DownloadBlob(String filename)
+        public IActionResult GetBlobSasUri(String filename)
         {
+            Uri sasURI = null;
+            BlobUriBuilder sasUriBuilder = null;
+
             // Retrieve the connection string for use with the application. 
             var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
 
@@ -221,24 +226,81 @@ namespace doneillspa.Controllers
             var blobServiceClient = new BlobServiceClient(connectionString);
             BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
 
-            BlobClient client = containerClient.GetBlobClient(filename);
-            if (client.Exists())
+            if (containerClient.CanGenerateSasUri)
             {
-
-                using (var ms = new MemoryStream())
+                // Create a SAS token that's valid for one day
+                BlobSasBuilder sasBuilder = new BlobSasBuilder()
                 {
-                    client.DownloadTo(ms);
-                    return new FileContentResult(ms.ToArray(), "application/octet-stream")
-                    {
-                        FileDownloadName = filename + ".txt"
-                    };
-                }
+                    BlobContainerName = containerClient.Name,
+                    Resource = "c"
+                };
+                sasBuilder.ExpiresOn = DateTimeOffset.UtcNow.AddDays(1);
+                sasBuilder.SetPermissions(BlobContainerSasPermissions.Read);
+
+                sasURI = containerClient.GenerateSasUri(sasBuilder);
+
+                sasUriBuilder = new BlobUriBuilder(sasURI)
+                {
+                    BlobName = filename
+                };
+
+
+                
             }
 
-            //Return empy byte array
-            return new FileContentResult(new byte[0], "application/octet-stream");
+            return Ok(sasUriBuilder.ToUri());
+
+            //if (client.Exists())
+            //{
+
+            //    using (var ms = new MemoryStream())
+            //    {
+            //        client.DownloadTo(ms);
+            //        ms.Seek(0, SeekOrigin.Begin);
+
+            //        return new FileContentResult(ms.ToArray(), "application/octet-stream")
+            //        {
+            //            FileDownloadName = filename + ".txt"
+            //        };
+            //    }
+            //}
+
+            ////Return empy byte array
+            //return new FileContentResult(new byte[0], "application/octet-stream");
 
         }
+
+        //[HttpGet]
+        //[Route("api/timesheetreport/{filename}")]
+        //public IActionResult DownloadBlob(String filename)
+        //{
+        //    // Retrieve the connection string for use with the application. 
+        //    var connectionString = _configuration["ConnectionStrings:StorageConnectionString"];
+
+        //    // Create a BlobServiceClient object 
+        //    var blobServiceClient = new BlobServiceClient(connectionString);
+        //    BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
+
+        //    BlobClient client = containerClient.GetBlobClient(filename);
+        //    if (client.Exists())
+        //    {
+
+        //        using (var ms = new MemoryStream())
+        //        {
+        //            client.DownloadTo(ms);
+        //            ms.Seek(0, SeekOrigin.Begin);
+
+        //            return new FileContentResult(ms.ToArray(), "application/octet-stream")
+        //            {
+        //                FileDownloadName = filename + ".txt"
+        //            };
+        //        }
+        //    }
+
+        //    //Return empy byte array
+        //    return new FileContentResult(new byte[0], "application/octet-stream");
+
+        //}
 
         [HttpGet]
         [Route("api/timesheetreports")]

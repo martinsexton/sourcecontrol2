@@ -236,18 +236,13 @@ export class DashboardComponent implements OnInit {
     let thefile = new Blob();
 
     this._timesheetService.downloadFile(filename).subscribe(result => {
-      let file = new File([result], filename, { type: 'application/octet-stream' });
-      let url = window.URL.createObjectURL(file);
+      //Need to strip single quotes of the string.
+      let r = result;
+      let stringWithoutQuotes = r.replace(/"/g, '');
+
       var link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
+      link.href = stringWithoutQuotes;
       link.click();
-
-      //window.open(url);
-
-      //thefile = new Blob([result as BlobPart], { type: "application/octet-stream" })
-      //let url = window.URL.createObjectURL(thefile);
-      //window.open(url);
 
     }, error => this.errors = error);
   }

@@ -42,8 +42,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let r of timesheetReports">
-              <td>{{r.createdDate}}</td>
-              <td>{{r.reportDate}}</td>
+              <td>{{r.createdDate | date: 'dd/MM/yyyy hh:mm a'}}</td>
+              <td>{{r.reportDate | date: 'dd/MM/yyyy'}}</td>
               <td>{{r.status}}</td>
               <td *ngIf="r.status === 'Success'" (click)="download(r.fileReference)"><i class="bi bi-download"></i></td>
             </tr>
