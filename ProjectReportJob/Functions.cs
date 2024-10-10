@@ -42,7 +42,7 @@ namespace ProjectReportJob
 
         private async void SaveFileToBlob(TimesheetReportOrder order)
         {
-            string blobName = "test_file_" + Guid.NewGuid().ToString() + ".xlsx";
+            string blobName = "report_" + Guid.NewGuid().ToString() + ".xlsx";
 
             // Retrieve the connection string for use with the application. 
             string connectionString = ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString;
