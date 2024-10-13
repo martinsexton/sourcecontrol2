@@ -159,11 +159,54 @@ namespace ProjectReportJob
 
                     foreach (Timesheet ts in timesheets)
                     {
+                        IList<TimesheetEntry> monEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> tueEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> wedEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> thursEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> friEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> satEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> sunEntries = new List<TimesheetEntry>();
+
                         foreach (TimesheetEntry tse in ts.TimesheetEntries)
                         {
-                            WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), weekbeginning, ts.Username, tse.Day, tse.Code, tse.StartTime, tse.EndTime, rowIndex);
-                            rowIndex += 1;
+                            if (tse.Day.ToUpper().Equals("MON"))
+                            {
+                                monEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("TUE"))
+                            {
+                                tueEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("WED"))
+                            {
+                                wedEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("THURS"))
+                            {
+                                thursEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("FRI"))
+                            {
+                                friEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("SAT"))
+                            {
+                                satEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("SUN"))
+                            {
+                                sunEntries.Add(tse);
+                            }
                         }
+
+                        rowIndex = PrintRowsForDay(monEntries, rowIndex, worksheetPart, ts.Username, weekbeginning);
+                        rowIndex = PrintRowsForDay(tueEntries, rowIndex, worksheetPart, ts.Username, weekbeginning);
+                        rowIndex = PrintRowsForDay(wedEntries, rowIndex, worksheetPart, ts.Username, weekbeginning);
+                        rowIndex = PrintRowsForDay(thursEntries, rowIndex, worksheetPart, ts.Username, weekbeginning);
+                        rowIndex = PrintRowsForDay(friEntries, rowIndex, worksheetPart, ts.Username, weekbeginning);
+                        rowIndex = PrintRowsForDay(satEntries, rowIndex, worksheetPart, ts.Username, weekbeginning);
+                        rowIndex = PrintRowsForDay(sunEntries, rowIndex, worksheetPart, ts.Username, weekbeginning);
+
                         WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), "", "", "", "", "", "", rowIndex);
                         rowIndex += 1;
                     }
@@ -176,6 +219,19 @@ namespace ProjectReportJob
                 return spreadSheetStream;
 
             }
+        }
+
+        private int PrintRowsForDay(IList<TimesheetEntry> entries, int rowIndex, WorksheetPart worksheetPart, string username, string weekbeginning)
+        {
+            if(entries.Count > 0)
+            {
+                foreach (TimesheetEntry tse in entries)
+                {
+                    WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), weekbeginning, username, tse.Day, tse.Code, tse.StartTime, tse.EndTime, rowIndex);
+                    rowIndex += 1;
+                }
+            }
+            return rowIndex;
         }
 
         private void WriteRow(SheetData sheetData, String weekBeginning, String name, String day, String project, String startTime, String endTime, int rowIndex)
