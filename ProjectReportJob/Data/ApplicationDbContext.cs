@@ -12,6 +12,7 @@ namespace ProjectReportJob.Data
     {
         public DbSet<Timesheet> Timesheet { get; set; }
         public DbSet<TimesheetEntry> TimesheetEntry { get; set; }
+        public DbSet<TimesheetReport> TimesheetReport { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

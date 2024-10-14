@@ -8,7 +8,6 @@ import { Client } from '../../client';
 import { Observable } from 'rxjs';
 import { ProjectCostDto } from '../../projectcostdto';
 import { HttpServiceBase } from './httpservicebase';
-import { NonChargeableTime } from '../../nonchargeabletime';
 import { TimesheetEntry } from '../../timesheetentry';
 
 @Injectable()
@@ -45,19 +44,6 @@ export class ProjectService extends HttpServiceBase  {
       catchError(this.handleError),);
   }
 
-  getNonChargeableTime() {
-    let authToken = localStorage.getItem('auth_token');
-
-    return this._httpClient.get<NonChargeableTime[]>(this._baseurl + 'api/nonchargeabletime',
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + authToken)
-      }).pipe(
-      retry(5),
-      catchError(this.handleError),);
-  }
-
   getProjects() {
     let authToken = localStorage.getItem('auth_token');
 
@@ -69,6 +55,19 @@ export class ProjectService extends HttpServiceBase  {
       }).pipe(
       retry(5),
       catchError(this.handleError),);
+  }
+
+  getProjectsForClient(clientId: number, activeProjects: boolean, page: number, pageSize: number) {
+    let authToken = localStorage.getItem('auth_token');
+
+    return this._httpClient.get<Project[]>(this._baseurl + 'api/project/client/' + clientId + '/' + activeProjects + '/' + page + '/' + pageSize,
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', 'Bearer ' + authToken)
+      }).pipe(
+        retry(5),
+        catchError(this.handleError),);
   }
 
   getActiveProjects() {

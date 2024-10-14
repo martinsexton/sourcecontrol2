@@ -41,6 +41,25 @@ namespace doneillspa.Controllers
             return projectDtos;
         }
 
+
+        [HttpGet]
+        [Route("api/project/client/{clientId}/{inactiveProjects}/{page}/{pageSize}")]
+        public IEnumerable<ProjectDto> Get(int clientId, bool inactiveProjects, int page = 1, int pageSize = 10)
+        {
+            List<ProjectDto> projectDtos = new List<ProjectDto>();
+
+            IEnumerable<Project> projects = _context.Project
+                .Where(b => b.OwningClient.Id == clientId && b.IsActive != inactiveProjects)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(b => b.OwningClient).OrderByDescending(b => b.Id).ToList();
+            foreach (Project p in projects)
+            {
+                projectDtos.Add(_mapper.Map<ProjectDto>(p));
+            }
+            return projectDtos;
+        }
+
         [HttpGet]
         [Route("api/activeproject")]
         public IEnumerable<ProjectDto> GetActiveProjects()
@@ -111,7 +130,7 @@ namespace doneillspa.Controllers
                 //Update fields
                 proj.Name = p.Name;
                 proj.Details = p.Details;
-                //proj.IsActive = p.IsActive;
+                proj.Chargeable = p.Chargeable;
                 proj.Code = p.Code;
             }
 

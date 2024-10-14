@@ -15,16 +15,18 @@ namespace doneillspa.Models
         public bool IsActive { get; set; }
         public string Details { get; set; }
         public DateTime StartDate { get; set; }
+        public bool Chargeable { get; set; }
 
         public Project() { }
 
-        public Project(string code, string name, string details, DateTime startDate)
+        public Project(string code, string name, string details, DateTime startDate, bool chargeable)
         {
             Code = code;
             Name = name;
             Details = details;
             StartDate = startDate;
             IsActive = true;
+            Chargeable = chargeable;
         }
 
         public void Activate()

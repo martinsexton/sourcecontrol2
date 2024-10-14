@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProjectReportJob
 {
-    public class TimesheetReport
+    public class TimesheetReportOrder
     {
+        public long Id {  get; set; }   
         public string reportDate { get; set; }
     }
 }

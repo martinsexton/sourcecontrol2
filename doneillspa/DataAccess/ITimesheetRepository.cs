@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using doneillspa.Dtos;
 using doneillspa.Models;
 
 namespace doneillspa.DataAccess
@@ -29,5 +30,8 @@ namespace doneillspa.DataAccess
 
         IEnumerable<Timesheet> GetTimesheetsByUserAndDate(string user, DateTime weekStarting);
         double GetRateForTimesheet(Timesheet ts);
+
+        public TimesheetReport InsertTimesheetReport(TimesheetReport tsr);
+        public IEnumerable<TimesheetReportDto> GetTimesheetReports();
     }
 }

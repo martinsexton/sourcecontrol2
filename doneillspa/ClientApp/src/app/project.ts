@@ -9,7 +9,8 @@ export class Project{
     public code: string,
     public details: string,
     public isActive: boolean,
-    public startDate:Date
+    public startDate: Date,
+    public chargeable: boolean
   ) { }
 
 }

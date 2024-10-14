@@ -35,13 +35,15 @@ namespace ProjectReportJob
             //_service.SendMessage("reportemailed", "Report issued for " + message.ProjectCode); 
         }
 
-        public void ProcessTimesheetReportMessage([QueueTrigger("reports")] TimesheetReport report)
+        public void ProcessTimesheetReportMessage([QueueTrigger("livefixreports")] TimesheetReportOrder order)
         {
-            SaveFileToBlob(report.reportDate);
+            SaveFileToBlob(order);
         }
 
-        private async void SaveFileToBlob(string reportDate)
+        private async void SaveFileToBlob(TimesheetReportOrder order)
         {
+            string blobName = "report_" + Guid.NewGuid().ToString() + ".xlsx";
+
             // Retrieve the connection string for use with the application. 
             string connectionString = ConfigurationManager.ConnectionStrings["AzureWebJobsStorage"].ConnectionString;
 
@@ -55,13 +57,28 @@ namespace ProjectReportJob
             var blobServiceClient = new BlobServiceClient(connectionString);
 
             BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("doneillreports");
-            BlobClient blobClient = containerClient.GetBlobClient("test_file_" + Guid.NewGuid().ToString() + ".txt");
+            BlobClient blobClient = containerClient.GetBlobClient(blobName);
 
             Console.WriteLine("Uploading to Blob storage as blob:\n\t {0}\n", blobClient.Uri);
 
-            //await blobClient.UploadAsync(GenerateExcelTimesheetReport(reportDate));
-            await blobClient.UploadAsync(GenerateTextTimesheetReport(reportDate));
+            blobClient.UploadAsync(GenerateExcelTimesheetReport(order.reportDate)).Wait();
+            //blobClient.UploadAsync(GenerateTextTimesheetReport(order.reportDate)).Wait();
 
+            UpdateReportStatus(order, blobName);
+
+        }
+
+        private void UpdateReportStatus(TimesheetReportOrder order, string blobName)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                TimesheetReport report = db.TimesheetReport.Where(r => r.Id == order.Id).First();
+
+                report.FileReference = blobName;
+                report.Status = TimesheetReportStatus.Success;
+
+                db.SaveChanges();
+            }
         }
 
         private MemoryStream GenerateTextTimesheetReport(string weekBeginning)
@@ -99,6 +116,8 @@ namespace ProjectReportJob
 
         private MemoryStream GenerateExcelTimesheetReport(String weekbeginning)
         {
+            string comparisonString = DateTime.Parse(weekbeginning).ToShortDateString();
+
             MemoryStream spreadSheetStream = new MemoryStream();
             using(SpreadsheetDocument document = SpreadsheetDocument.Create(spreadSheetStream, SpreadsheetDocumentType.Workbook))
             {
@@ -112,7 +131,7 @@ namespace ProjectReportJob
                 worksheetPart.Worksheet = new Worksheet(new SheetData());
 
                 DocumentFormat.OpenXml.UInt32Value sheetId = 1;
-                Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = sheetId, Name = weekbeginning };
+                Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = sheetId, Name = "Timesheet" };
                 sheets.Append(sheet);
 
                 Columns lstColumns = worksheetPart.Worksheet.GetFirstChild<Columns>();
@@ -129,8 +148,76 @@ namespace ProjectReportJob
                 SetupExcelHeader(worksheetPart.Worksheet.GetFirstChild<SheetData>());
 
                 int rowIndex = 2;
-                WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), weekbeginning,"Martin Sexton", "BearingPoint", rowIndex);
-                //rowIndex += 1;
+
+                using (var db = new ApplicationDbContext())
+                {
+                    IEnumerable<Timesheet> timesheets = db.Timesheet
+                        .Include(b => b.TimesheetEntries)
+                        .ToList()
+                        .Where(r => r.WeekStarting.ToShortDateString().Equals(comparisonString) && (r.Status.ToString().Equals("Approved") || r.Status.ToString().Equals("Archieved")))
+                        .OrderByDescending(r => r.WeekStarting);
+
+                    foreach (Timesheet ts in timesheets)
+                    {
+                        IList<TimesheetEntry> monEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> tueEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> wedEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> thursEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> friEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> satEntries = new List<TimesheetEntry>();
+                        IList<TimesheetEntry> sunEntries = new List<TimesheetEntry>();
+
+                        foreach (TimesheetEntry tse in ts.TimesheetEntries)
+                        {
+                            if (tse.Day.ToUpper().Equals("MON"))
+                            {
+                                monEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("TUE"))
+                            {
+                                tueEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("WED"))
+                            {
+                                wedEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("THURS"))
+                            {
+                                thursEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("FRI"))
+                            {
+                                friEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("SAT"))
+                            {
+                                satEntries.Add(tse);
+                            }
+                            else if (tse.Day.ToUpper().Equals("SUN"))
+                            {
+                                sunEntries.Add(tse);
+                            }
+                        }
+                        List<double> dailyDuration = new List<double>();
+                        double weeklyDuration = 0;
+
+
+                        rowIndex = PrintRowsForDay(monEntries, rowIndex, worksheetPart, ts.Username, weekbeginning, dailyDuration);
+                        rowIndex = PrintRowsForDay(tueEntries, rowIndex, worksheetPart, ts.Username, weekbeginning, dailyDuration);
+                        rowIndex = PrintRowsForDay(wedEntries, rowIndex, worksheetPart, ts.Username, weekbeginning, dailyDuration);
+                        rowIndex = PrintRowsForDay(thursEntries, rowIndex, worksheetPart, ts.Username, weekbeginning, dailyDuration);
+                        rowIndex = PrintRowsForDay(friEntries, rowIndex, worksheetPart, ts.Username, weekbeginning, dailyDuration);
+                        rowIndex = PrintRowsForDay(satEntries, rowIndex, worksheetPart, ts.Username, weekbeginning, dailyDuration);
+                        rowIndex = PrintRowsForDay(sunEntries, rowIndex, worksheetPart, ts.Username, weekbeginning, dailyDuration);
+
+                        foreach(double daily in dailyDuration)
+                        {
+                            weeklyDuration += daily;
+                        }
+                        WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), "", "", "", "", "Weekly Payable Hours", GetDurationInformation(weeklyDuration), rowIndex);
+                        rowIndex += 2;
+                    }
+                }
 
                 document.Save();
                 document.Close();
@@ -141,10 +228,94 @@ namespace ProjectReportJob
             }
         }
 
-        private void WriteRow(SheetData sheetData, String weekBeginning, String name, String project, int rowIndex)
+
+        private int PrintRowsForDay(IList<TimesheetEntry> entries, int rowIndex, WorksheetPart worksheetPart, string username, string weekbeginning, List<double>dailyDuration)
+        {
+            double durationForDay = 0;
+
+            if(entries.Count > 0)
+            {
+                foreach (TimesheetEntry tse in entries)
+                {
+                    WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), weekbeginning, username, tse.Day, tse.Code, tse.StartTime, tse.EndTime, rowIndex);
+                    rowIndex += 1;
+                    if (tse.Chargeable)
+                    {
+                        durationForDay += Duration(tse);
+                    }
+                }
+
+                //Remove Lunch Break
+                if(durationForDay >= (5*60))
+                {
+                    durationForDay -= 30;
+                }
+
+                dailyDuration.Add(durationForDay);
+                //WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), "", "", "", "", "Daily Total", (durationForDay/60).ToString(), rowIndex);
+                //rowIndex += 1;
+            }
+            return rowIndex;
+        }
+
+        private string GetDurationInformation(double durationInMinutes)
+        {
+            TimeSpan workInMinutes = TimeSpan.FromMinutes(durationInMinutes);
+            return string.Format("{0:00}:{1:00}", (int)workInMinutes.TotalHours, workInMinutes.Minutes);
+
+        }
+
+        private void PrntTotalForDayRow(SheetData sheetData, int rowIndex, double total)
         {
             Row row;
             row = new Row() { RowIndex = UInt32.Parse(rowIndex.ToString()) };
+            sheetData.Append(row);
+
+            Cell weekCell = new Cell();
+            weekCell.CellValue = new CellValue("");
+            weekCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell nameCell = new Cell();
+            nameCell.CellValue = new CellValue("");
+            nameCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell dayCell = new Cell();
+            dayCell.CellValue = new CellValue("");
+            dayCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell projectCell = new Cell();
+            projectCell.CellValue = new CellValue("");
+            projectCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell startCell = new Cell();
+            startCell.CellValue = new CellValue(total.ToString());
+            startCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell endCell = new Cell();
+            endCell.CellValue = new CellValue("");
+            endCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            row.InsertAt(weekCell, 0);
+            row.InsertAt(nameCell, 1);
+            row.InsertAt(dayCell, 2);
+            row.InsertAt(projectCell, 3);
+            row.InsertAt(startCell, 4);
+            row.InsertAt(endCell, 5);
+        }
+
+        private double Duration(TimesheetEntry tse)
+        {
+            DateTime startDateTime = DateTime.ParseExact(tse.StartTime, "H:mm", null, System.Globalization.DateTimeStyles.None);
+            DateTime endDateTime = DateTime.ParseExact(tse.EndTime, "H:mm", null, System.Globalization.DateTimeStyles.None);
+
+            return endDateTime.Subtract(startDateTime).TotalMinutes;
+        }
+
+        private void WriteRow(SheetData sheetData, String weekBeginning, String name, String day, String project, String startTime, String endTime, int rowIndex)
+        {
+            Row row;
+            row = new Row() { RowIndex = UInt32.Parse(rowIndex.ToString()) };
+
             sheetData.Append(row);
 
             Cell weekCell = new Cell();
@@ -155,13 +326,28 @@ namespace ProjectReportJob
             nameCell.CellValue = new CellValue(name);
             nameCell.DataType = new EnumValue<CellValues>(CellValues.String);
 
+            Cell dayCell = new Cell();
+            dayCell.CellValue = new CellValue(day);
+            dayCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
             Cell projectCell = new Cell();
             projectCell.CellValue = new CellValue(project);
             projectCell.DataType = new EnumValue<CellValues>(CellValues.String);
 
+            Cell startCell = new Cell();
+            startCell.CellValue = new CellValue(startTime);
+            startCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell endCell = new Cell();
+            endCell.CellValue = new CellValue(endTime);
+            endCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
             row.InsertAt(weekCell, 0);
             row.InsertAt(nameCell, 1);
-            row.InsertAt(projectCell, 2);
+            row.InsertAt(dayCell, 2);
+            row.InsertAt(projectCell, 3);
+            row.InsertAt(startCell, 4);
+            row.InsertAt(endCell, 5);
         }
 
         private void SetupExcelHeader(SheetData sheetData)
@@ -178,18 +364,34 @@ namespace ProjectReportJob
             weekCell.CellValue = new CellValue("Week");
             weekCell.DataType = new EnumValue<CellValues>(CellValues.String);
 
-            Cell superVisorCostCell = new Cell();
-            superVisorCostCell.CellValue = new CellValue("Name");
-            superVisorCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
+            Cell nameCell = new Cell();
+            nameCell.CellValue = new CellValue("Name");
+            nameCell.DataType = new EnumValue<CellValues>(CellValues.String);
 
-            Cell chargeHandCostCell = new Cell();
-            chargeHandCostCell.CellValue = new CellValue("Project");
-            chargeHandCostCell.DataType = new EnumValue<CellValues>(CellValues.String);
+            Cell dayCell = new Cell();
+            dayCell.CellValue = new CellValue("Day");
+            dayCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell projectCell = new Cell();
+            projectCell.CellValue = new CellValue("Project");
+            projectCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+
+            Cell startCell = new Cell();
+            startCell.CellValue = new CellValue("Start Time");
+            startCell.DataType = new EnumValue<CellValues>(CellValues.String);
+
+            Cell endCell = new Cell();
+            endCell.CellValue = new CellValue("End Time");
+            endCell.DataType = new EnumValue<CellValues>(CellValues.String);
 
             //row.InsertBefore(newCell, refCell);
             row.InsertAt(weekCell, 0);
-            row.InsertAt(superVisorCostCell, 1);
-            row.InsertAt(chargeHandCostCell, 2);
+            row.InsertAt(nameCell, 1);
+            row.InsertAt(dayCell, 2);
+            row.InsertAt(projectCell, 3);
+            row.InsertAt(startCell, 4);
+            row.InsertAt(endCell, 5);
         }
 
         //private void GenerateExcelForProject(string projectCode, string destinationEmail)

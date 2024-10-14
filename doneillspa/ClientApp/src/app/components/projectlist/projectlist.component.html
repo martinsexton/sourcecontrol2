@@ -10,7 +10,6 @@
           <th>Description</th>
           <th>Start Date</th>
           <th></th>
-          <th></th>
         </tr>
       </thead>
       <tbody *ngIf="projects">
@@ -20,7 +19,6 @@
           <td>{{ project.code }}</td>
           <td>{{ project.details }}</td>
           <td>{{ project.startDate | date : "fullDate"}}</td>
-          <td *ngIf="canEditProject()"><span aria-hidden="true" (click)="deleteProject(project)"><i class="bi bi-trash"></i></span></td>
           <td *ngIf="canEditProject()"><span aria-hidden="true" (click)="displaySelectedProject(project)"><i class="bi bi-pencil-square"></i></span></td>
         </tr>
       </tbody>
@@ -58,6 +56,12 @@
             <div class="custom-control custom-switch">
               <input type="checkbox" [checked]="selectedProject.isActive" class="custom-control-input" id="projectIsActive" name="projectIsActive" [(ngModel)]="selectedProject.isActive">
               <label class="custom-control-label" for="projectIsActive">Active</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" [checked]="selectedProject.chargeable" class="custom-control-input" id="projectChargeable" name="projectChargeable" [(ngModel)]="selectedProject.chargeable">
+              <label class="custom-control-label" for="projectChargeable">Chargeable</label>
             </div>
           </div>
         </form>

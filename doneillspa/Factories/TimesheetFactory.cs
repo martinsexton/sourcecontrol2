@@ -23,19 +23,6 @@ namespace doneillspa.Factories
             return timesheet;
         }
 
-        public static TimesheetEntry CreateFullDayEntryForDay(string code, DayOfWeek day)
-        {
-            TimesheetEntry tse = new TimesheetEntry();
-            tse.StartTime = Constants.Strings.Timesheets.StartTime;
-            tse.EndTime = Constants.Strings.Timesheets.EndTime;
-            tse.Code = code;
-            tse.DateCreated = DateTime.UtcNow;
-            tse.Day = TranslateDayOfWeek(day.ToString());
-            tse.Chargeable = tse.IsEntryChargeable();
-
-            return tse;
-        }
-
         private static string TranslateDayOfWeek(string dayOfWeek)
         {
             if (dayOfWeek.Equals("Monday"))

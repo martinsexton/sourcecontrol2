@@ -17,17 +17,17 @@ declare var $: any;
 })
 
 export class ProjectComponent {
-  public projectsToDisplay: Project[];
+  public projectsToDisplay: Project[] = [];
   public clients: Client[];
 
   public selectedClient: Client;
   public activeTab: string = "Active";
+  public showInActiveProjects: boolean = false;
 
   public userMessage: string;
   public selectedRole: string;
   public loading = true;
   public existingCodes: string[] = [];
-  public projectsForCurrentPage: Project[];
   public clientsCurrentPage: number = 1;
   public projectsCurrentPage: number = 1;
   public pageLimit: number = 10;
@@ -35,10 +35,10 @@ export class ProjectComponent {
   public searchFilter: string = "";
 
 
-  newProject: Project = new Project(0, '', '', '', '', true, new Date);
+  newProject: Project = new Project(0, '', '', '', '', true, new Date, true);
   newClient: Client = new Client(0, "", true);
   projectSaved: boolean = false;
-  selectedProject: Project = new Project(0, '', '', '', '', true, new Date);
+  selectedProject: Project = new Project(0, '', '', '', '', true, new Date, true);
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private _projectService: ProjectService, private _router: Router) {
     this.retrieveClients();
@@ -47,8 +47,8 @@ export class ProjectComponent {
   displayProjectsForSelectedClient(client) {
     this.selectedClient = client;
     this.projectsCurrentPage = 1;
-    if (this.selectedClient.projects) {
-      this.setupProjectsForCurrentPage();
+    if (this.selectedClient) {
+      this.retrieveProjectsForClient(this.selectedClient, this.projectsCurrentPage);
     }
   }
 
@@ -69,18 +69,17 @@ export class ProjectComponent {
 
 
   activeTabClicked() {
+    this.showInActiveProjects = false;
     this.activeTab = "Active";
     //Reset page count. 
     this.clientsCurrentPage = 1;
-
-    this.projectsForCurrentPage = [];
     this.projectsToDisplay = [];
     this.retrieveClients();
   }
 
   inactiveTabClicked() {
+    this.showInActiveProjects = true;
     this.activeTab = "Inactive";
-    this.projectsForCurrentPage = [];
     this.projectsToDisplay = [];
     //Reset page count. 
     this.clientsCurrentPage = 1;
@@ -102,27 +101,6 @@ export class ProjectComponent {
     }
   }
 
-  setupProjectsForCurrentPage() {
-    var startingIndex = 0;
-    var index = 0;
-
-    this.projectsToDisplay = this.selectedClient.projects;
-
-    //reset client current page array
-    this.projectsForCurrentPage = [];
-
-    if (this.projectsCurrentPage > 1) {
-      startingIndex = (this.projectsCurrentPage - 1) * this.projectPageLimit;
-    }
-
-    for (let p of this.projectsToDisplay) {
-      if (index >= startingIndex && index < (startingIndex + this.projectPageLimit)) {
-        this.projectsForCurrentPage.push(p);
-      }
-      index = index + 1;
-    }
-  }
-
   previousPage() {
     this.clientsCurrentPage = this.clientsCurrentPage - 1;
     this.retrieveClients();
@@ -130,7 +108,7 @@ export class ProjectComponent {
 
   previousProjectPage() {
     this.projectsCurrentPage = this.projectsCurrentPage - 1;
-    this.setupProjectsForCurrentPage();
+    this.retrieveProjectsForClient(this.selectedClient, this.projectsCurrentPage);
   }
 
   nextPage() {
@@ -140,7 +118,7 @@ export class ProjectComponent {
 
   nextProjectPage() {
     this.projectsCurrentPage = this.projectsCurrentPage + 1;
-    this.setupProjectsForCurrentPage();
+    this.retrieveProjectsForClient(this.selectedClient, this.projectsCurrentPage);
   }
 
   isProjectActive(project: Project) {
@@ -161,6 +139,21 @@ export class ProjectComponent {
     }
   }
 
+  retrieveProjectsForClient(c : Client, currentPage: number) {
+    this._projectService.getProjectsForClient(c.id, this.showInActiveProjects, currentPage, this.projectPageLimit).subscribe(result => {
+      this.loading = false;
+      this.projectsToDisplay = result;
+    }, error => {
+      this.userMessage = "Failed to retrieve projects"
+      $('.toast').toast('show');
+      console.error(error);
+    });
+  }
+
+  triggerProjectRetrieve() {
+    this.retrieveProjectsForClient(this.selectedClient, this.projectsCurrentPage);
+  }
+
   retrieveClientsForFilter() {
     this._projectService.getClientsForFilter(this.searchFilter, this.activeTab == "Active", this.clientsCurrentPage, this.pageLimit).subscribe(result => {
       this.loading = false;
@@ -169,7 +162,9 @@ export class ProjectComponent {
 
         //Will need to set the two below based on first client on current page.
         this.selectedClient = this.clients[0];
-        this.displayProjectsForSelectedClient(this.clients[0]);
+        this.projectsCurrentPage = 1;
+
+        this.retrieveProjectsForClient(this.selectedClient, this.projectsCurrentPage)
 
         for (let client of this.clients) {
           for (let p of client.projects) {
@@ -179,7 +174,7 @@ export class ProjectComponent {
       }
       else {
         //clear the projects if no clients found
-        this.projectsForCurrentPage = [];
+        this.projectsToDisplay = [];
       }
     }, error => {
       this.userMessage = "Failed to retrieve Client Details"
@@ -196,7 +191,8 @@ export class ProjectComponent {
 
         //Will need to set the two below based on first client on current page.
         this.selectedClient = this.clients[0];
-        this.displayProjectsForSelectedClient(this.clients[0]);
+        this.projectsCurrentPage = 1;
+        this.retrieveProjectsForClient(this.selectedClient, this.projectsCurrentPage)
 
         for (let client of this.clients) {
           for (let p of client.projects) {

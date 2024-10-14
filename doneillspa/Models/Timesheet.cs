@@ -45,7 +45,6 @@ namespace doneillspa.Models
             foreach (TimesheetEntry tse in TimesheetEntries)
             {
                 tse.DateCreated = todaysDate;
-                tse.Chargeable = tse.IsEntryChargeable();
             }
         }
 
@@ -136,20 +135,12 @@ namespace doneillspa.Models
             }
         }
 
-        public void RecordAnnualLeaveForDay(DayOfWeek day)
-        {
-            TimesheetEntry tse = TimesheetFactory.CreateFullDayEntryForDay(Constants.Strings.Timesheets.NonChargeableCodes.AnnualLeave, day);
-            AddTimesheetEntry(tse);
-        }
-
         public void AddTimesheetEntry(TimesheetEntry entry)
         {
             if (CanAddTimesheetEntry(entry))
             {
                 //Set date created on timesheet entry
                 entry.DateCreated = DateTime.UtcNow;
-                //Determine if timesheet entry is chargeable or not.
-                entry.Chargeable = entry.IsEntryChargeable();
 
                 TimesheetEntries.Add(entry);
             }

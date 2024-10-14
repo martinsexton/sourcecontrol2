@@ -18,18 +18,6 @@ namespace ProjectReportJob.Data
         public bool Chargeable { get; set; }
         public Timesheet Timesheet { get; set; }
 
-        public bool IsEntryChargeable()
-        {
-            if (Code.Equals("NC4") || Code.Equals("NC5") || Code.Equals("NC6"))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
         public int DurationInHours()
         {
             string[] hrsmins = StartTime.Split(':');

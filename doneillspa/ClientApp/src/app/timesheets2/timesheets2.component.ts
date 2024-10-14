@@ -4,7 +4,6 @@ import { Timesheet } from '../timesheet';
 import { TimesheetEntry } from '../timesheetentry';
 import { TimesheetCode } from '../timesheetcode';
 import { Project } from '../project';
-import { NonChargeableTime } from '../nonchargeabletime';
 import * as moment from 'moment';
 
 import {
@@ -104,7 +103,7 @@ export class Timesheet2Component {
 
     if (this.activeProjects) {
       for (let p of this.activeProjects) {
-        let code = new TimesheetCode(p.code, p.name, true);
+        let code = new TimesheetCode(p.code, p.name, p.chargeable);
         this.timesheetCodes.push(code);
       }
     }
@@ -163,12 +162,14 @@ export class Timesheet2Component {
   selectProject(proj: TimesheetCode) {
     this.selectedProjectName = proj.description;
     this.newEntry.code = proj.code;
+    this.newEntry.chargeable = proj.chargeable;
     $("#dropdown_coins").dropdown('toggle');
   }
 
   selectProjectOnEdit(proj: TimesheetCode) {
     this.selectedProjectName = proj.description;
     this.timesheetEntryToEdit.code = proj.code;
+    this.timesheetEntryToEdit.chargeable = proj.chargeable;
     $("#dropdown_coins_edit").dropdown('toggle');
   }
 
@@ -250,7 +251,9 @@ export class Timesheet2Component {
   }
 
   addTimesheetEntry() {
-    let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details, '', true);
+    this.selectedProjectName = '';
+
+    let entry: TimesheetEntry = new TimesheetEntry(this.newEntry.code, this.selectedDay, this.newEntry.startTime, this.newEntry.endTime, this.newEntry.details, '', this.newEntry.chargeable);
     if (this.timesheetExists) {
       this.persistTimesheetEntry(entry);
     }
@@ -807,6 +810,11 @@ export class Timesheet2Component {
       totalMins += this.deriveElapsedTimeInMins(item.startTime, item.endTime);
     }
     if (totalMins > 0) {
+      //Remove Lunch Break
+      if (totalMins >= (5 * 60)) {
+        totalMins = totalMins - 30;
+      }
+
       var hours = Math.floor(totalMins / 60);
       var minutes = totalMins % 60;
 

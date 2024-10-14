@@ -11,7 +11,6 @@ namespace doneillspa.Dtos.Mappings
     {
         public AutoMapperProfile()
         {
-            CreateMap<EmailNotification, EmailNotificationDto>();
             CreateMap<TimesheetNote, TimesheetNoteDto>();
             CreateMap<Project, ProjectDto>()
                 .ForMember(dest =>

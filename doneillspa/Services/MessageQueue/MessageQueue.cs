@@ -12,7 +12,7 @@ namespace doneillspa.Services.MessageQueue
     {
         private IConfiguration Configuration;
         
-        private string QUEUE_NAME = "reports";
+        private string QUEUE_NAME = "livefixreports";
         private string azureStorageConnectionString = "";
 
         public MessageQueue(IConfiguration configuration)
