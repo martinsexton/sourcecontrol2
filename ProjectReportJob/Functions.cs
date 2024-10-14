@@ -215,7 +215,7 @@ namespace ProjectReportJob
                             weeklyDuration += daily;
                         }
                         WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), "", "", "", "", "Weekly Payable Hours", GetDurationInformation(weeklyDuration), rowIndex);
-                        rowIndex += 1;
+                        rowIndex += 2;
                     }
                 }
 
@@ -253,7 +253,7 @@ namespace ProjectReportJob
 
                 dailyDuration.Add(durationForDay);
                 //WriteRow(worksheetPart.Worksheet.GetFirstChild<SheetData>(), "", "", "", "", "Daily Total", (durationForDay/60).ToString(), rowIndex);
-                rowIndex += 1;
+                //rowIndex += 1;
             }
             return rowIndex;
         }
